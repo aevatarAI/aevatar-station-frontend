@@ -1,6 +1,5 @@
 import Demo from "@/app/demo";
 import LayoutDefault from "@/layouts/LayoutDefault";
-import ContextProviders from "@/store/Provider";
 import { type PropsWithChildren, Suspense, lazy } from "react";
 import { Route, Switch } from "wouter";
 
@@ -23,30 +22,28 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
 const App = () => (
   <LayoutDefault>
     <Switch>
-      <ContextProviders>
-        <Route path="/">
-          <WithLazyLoading>
-            <Overview />
-          </WithLazyLoading>
-        </Route>
+      <Route path="/">
+        <WithLazyLoading>
+          <Overview />
+        </WithLazyLoading>
+      </Route>
 
-        <Route path="/welcome">
-          <WithLazyLoading>
-            <Welcome />
-          </WithLazyLoading>
-        </Route>
+      <Route path="/welcome">
+        <WithLazyLoading>
+          <Welcome />
+        </WithLazyLoading>
+      </Route>
 
-        <Route path="/demo">
-          <WithLazyLoading>
-            <Demo />
-          </WithLazyLoading>
-        </Route>
+      <Route path="/demo">
+        <WithLazyLoading>
+          <Demo />
+        </WithLazyLoading>
+      </Route>
 
-        {/* Default route in a switch */}
-        {/* <Route>
+      {/* Default route in a switch */}
+      {/* <Route>
           <div className="text-white text-center">404: No such page!</div>
         </Route> */}
-      </ContextProviders>
     </Switch>
   </LayoutDefault>
 );

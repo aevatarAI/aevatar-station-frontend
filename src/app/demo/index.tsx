@@ -1,5 +1,8 @@
 import DataTable from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { myPersistentAtom } from "@/state/persistentAtom";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { type Payment, columns } from "./columns";
 
@@ -15,7 +18,20 @@ async function getData(): Promise<Payment[]> {
     },
   ];
 }
-
+function AtomInput() {
+  const [value, setValue] = useAtom(myPersistentAtom);
+  return (
+    <div>
+      <span className="text-white">input: {value}</span>
+      <Input
+        className=" w-[200px] text-white"
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </div>
+  );
+}
 export default function DemoPage() {
   const [data, setData] = useState<Payment[]>([]);
 
@@ -31,8 +47,9 @@ export default function DemoPage() {
   }));
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto p-10 flex gap-4 flex-col">
       <DataTable columns={columns} data={tableData} />
+      <AtomInput />
     </div>
   );
 }

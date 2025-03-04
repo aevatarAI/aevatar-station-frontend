@@ -1,0 +1,39 @@
+name: Deploy to Testnet
+
+on:
+  push:
+    branches: ["develop"]
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+
+      - run: pnpm install
+      - name: create env file
+        run: |
+          touch .env
+          echo VITE_APP_NETWORKTYPE=TESTNET >> .env
+      - run: pnpm build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TESTNET }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TESTNET }}
+          aws-region: ap-northeast-1
+
+      - name: Sync to S3
+        run: aws s3 sync ./dist/client s3://${{ secrets.AWS_S3_BUCKET_TESTNET }}

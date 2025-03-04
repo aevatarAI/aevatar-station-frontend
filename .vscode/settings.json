@@ -1,0 +1,13 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
+	"editor.bracketPairColorization.enabled": true,
+	"editor.guides.bracketPairs": "active",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "never",
+		"source.fixAll": "never",
+		"source.fixAll.stylelint": "explicit",
+		"source.fixAll.prettier": "explicit"
+	},
+	"typescript.preferences.importModuleSpecifier": "non-relative"
+}

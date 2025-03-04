@@ -1,6 +1,7 @@
+import Demo from "@/app/demo";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import ContextProviders from "@/store/Provider";
-import { lazy, type PropsWithChildren, Suspense } from "react";
+import { type PropsWithChildren, Suspense, lazy } from "react";
 import { Route, Switch } from "wouter";
 
 const Overview = lazy(() => import("./app/Overview"));
@@ -32,6 +33,12 @@ const App = () => (
         <Route path="/welcome">
           <WithLazyLoading>
             <Welcome />
+          </WithLazyLoading>
+        </Route>
+
+        <Route path="/demo">
+          <WithLazyLoading>
+            <Demo />
           </WithLazyLoading>
         </Route>
 

@@ -1,9 +1,9 @@
-import { type ReactNode, useCallback, useMemo } from "react";
-import { Button } from "antd";
-import clsx from "clsx";
 import ReactErrorBoundary, {
   ErrorBoundaryTrue,
 } from "@/components/ErrorBoundary/errorBoundary";
+import { Button } from "@/components/ui/button";
+import clsx from "clsx";
+import { type ReactNode, useCallback, useMemo } from "react";
 
 export type ErrorBoundaryProps = {
   children: ReactNode;
@@ -28,7 +28,8 @@ export default function ErrorBoundary({ children }: ErrorBoundaryProps) {
             </div>
           </div>
         );
-      }}>
+      }}
+    >
       {children}
     </ReactErrorBoundary>
   );

@@ -1,3 +1,6 @@
+import Login from "@/app/Account/Login";
+import Register from "@/app/Account/Register";
+import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { type PropsWithChildren, Suspense, lazy } from "react";
@@ -37,6 +40,24 @@ const App = () => (
       <Route path="/demo">
         <WithLazyLoading>
           <Demo />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/login">
+        <WithLazyLoading>
+          <Login />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/register">
+        <WithLazyLoading>
+          <Register />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/verification">
+        <WithLazyLoading>
+          <Verification />
         </WithLazyLoading>
       </Route>
 

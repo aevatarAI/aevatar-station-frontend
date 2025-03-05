@@ -9,6 +9,7 @@ export default {
       syne: ["Syne"],
       pro: ["Source Code Pro"],
       kode: ["Kode Mono", "monospace"],
+      "source-code": ['"Source Code Pro"'],
     },
     extend: {
       keyframes: {

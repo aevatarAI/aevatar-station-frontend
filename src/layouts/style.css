@@ -24,11 +24,11 @@
 }
 
 .cutCorner.cutCorner__white {
-  border: 1px solid #b9b9b9;
+  border: 1px solid #303030;
 }
 
 .cutCorner.cutCorner__white:before {
-  border-bottom: 2rem solid #b9b9b9;
+  border-bottom: 2rem solid #303030;
 }
 
 * {

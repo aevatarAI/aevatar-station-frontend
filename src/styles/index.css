@@ -4,6 +4,13 @@
 
 @layer base {
   body {
-    @apply flex items-center justify-center m-0 min-h-screen min-w-[320px] bg-[#141415] font-syne;
+    @apply m-0 min-h-screen min-w-[320px] bg-[#141415] font-syne text-white;
   }
+}
+
+.aevatarai-text-gradient {
+  background: linear-gradient(91deg, #fff 15%, #999 98.97%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

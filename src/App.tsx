@@ -2,12 +2,15 @@ import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
+import Header from "@/components/Header";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { type PropsWithChildren, Suspense, lazy } from "react";
 import { Route, Switch } from "wouter";
 
 const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
+const Profile = lazy(() => import("./app/Profile"));
+const Dashboard = lazy(() => import("./app/Dashboard"));
 
 const Loading = () => (
   <div className="page-container flex w-full flex-col pt-[140px]">
@@ -18,8 +21,12 @@ const Loading = () => (
     </div>
   </div>
 );
+
 const WithLazyLoading = ({ children }: PropsWithChildren) => (
-  <Suspense fallback={<Loading />}>{children}</Suspense>
+  <Suspense fallback={<Loading />}>
+    <Header />
+    {children}
+  </Suspense>
 );
 
 const App = () => (
@@ -58,6 +65,35 @@ const App = () => (
       <Route path="/verification">
         <WithLazyLoading>
           <Verification />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/profile/:menu/:tab">
+        <WithLazyLoading>
+          <Profile />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/profile/:menu">
+        <WithLazyLoading>
+          <Profile />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/profile">
+        <WithLazyLoading>
+          <Profile />
+        </WithLazyLoading>
+      </Route>
+
+      <Route path="/dashboard">
+        <WithLazyLoading>
+          <Dashboard />
+        </WithLazyLoading>
+      </Route>
+      <Route path="/dashboard/:tab">
+        <WithLazyLoading>
+          <Dashboard />
         </WithLazyLoading>
       </Route>
 

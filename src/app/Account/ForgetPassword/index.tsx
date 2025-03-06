@@ -49,7 +49,7 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-white text-[12px] px-[16px] py-[8px]"
+                className="bg-white text-black-light text-[12px] px-[16px] py-[8px]"
               >
                 resend password
               </Button>
@@ -86,7 +86,7 @@ const ForgotPasswordDialog = () => {
                 </DialogClose>
                 <Button
                   type="submit"
-                  className="bg-white text-[12px] px-[16px] py-[8px]"
+                  className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
                 >
                   Submit
                 </Button>

@@ -1,3 +1,6 @@
+import Add from "@/assets/+.svg?react";
+import StepSelect from "@/assets/step_select.svg?react";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -10,9 +13,6 @@ import {
 } from "@/constants/cls";
 import clsx from "clsx";
 import { useState } from "react";
-import StepSelect from "@/assets/step_select.svg?react";
-import { Button } from "@/components/ui/button";
-import Add from "@/assets/+.svg?react";
 
 export interface IOriganisactionHeaderProps {
   className?: string;
@@ -39,8 +39,9 @@ export default function OriganisactionHeader({
     <div
       className={clsx(
         "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
-        className
-      )}>
+        className,
+      )}
+    >
       <Popover open={orgOpen} onOpenChange={setOrgOpen}>
         <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
           {organisation}
@@ -53,13 +54,14 @@ export default function OriganisactionHeader({
                 className={clsx(
                   itemClassName,
                   itemHoverClassName,
-                  organisation === item && itemSelectClassName
+                  organisation === item && itemSelectClassName,
                 )}
                 onClick={() => {
                   setOrganisation(item);
                   setOrgOpen(false);
                 }}
-                key={item}>
+                key={item}
+              >
                 {item}
               </div>
             ))}
@@ -87,13 +89,14 @@ export default function OriganisactionHeader({
                 className={clsx(
                   itemClassName,
                   itemHoverClassName,
-                  project === item && itemSelectClassName
+                  project === item && itemSelectClassName,
                 )}
                 onClick={() => {
                   setProject(item);
                   setPjtOpen(false);
                 }}
-                key={item}>
+                key={item}
+              >
                 {item}
               </div>
             ))}

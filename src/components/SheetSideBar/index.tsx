@@ -1,9 +1,9 @@
 "use client";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Menu from "@/assets/menu.svg?react";
 import { SideBar } from "@/components/SideBar";
 import { DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function SheetSideBar() {
   return (
@@ -14,7 +14,8 @@ export function SheetSideBar() {
       <SheetContent
         side="left"
         closable={false}
-        className="w-[200px] pt-[35px] p-0">
+        className="w-[200px] pt-[35px] p-0"
+      >
         <DialogTitle className="hidden" />
         <SideBar />
       </SheetContent>

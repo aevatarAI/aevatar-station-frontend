@@ -1,3 +1,4 @@
+import ForgotPasswordDialog from "@/app/Account/ForgetPassword";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,7 +25,7 @@ const Login = () => {
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">
-          Not a member yet?{" "}
+          not a member yet? &nbsp;
           <span className="font-normal text-white">register</span>
         </p>
       </div>
@@ -84,7 +85,7 @@ const Login = () => {
                 log in
               </Button>
               <div className="text-right">
-                <span className="text-[12px]">forgot password?</span>
+                <ForgotPasswordDialog />
               </div>
             </div>
           </form>

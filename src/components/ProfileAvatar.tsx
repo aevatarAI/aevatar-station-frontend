@@ -5,12 +5,12 @@ import {
 } from "@/components/ui/popover";
 
 import profileImg from "@/assets/profile.png";
-import { clearLocalJWT } from "@/components/auth/utils/jwt";
-import { useNavigate } from "@/hooks/navigate";
-import { useMemo, useState } from "react";
 import Copy from "@/components/Copy";
-import clsx from "clsx";
+import { clearLocalJWT } from "@/components/auth/utils/jwt";
 import { itemClassName, itemHoverClassName } from "@/constants/cls";
+import { useNavigate } from "@/hooks/navigate";
+import clsx from "clsx";
+import { useMemo, useState } from "react";
 
 export default function ProfileAvatar() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function ProfileAvatar() {
 
   const useInfo = useMemo(
     () => ({ email: "xxxx.xx@gmail.com", userName: "userName" }),
-    []
+    [],
   );
 
   return (
@@ -43,7 +43,8 @@ export default function ProfileAvatar() {
               setOpen(false);
 
               navigate("/profile");
-            }}>
+            }}
+          >
             profile
           </div>
           <div
@@ -53,7 +54,8 @@ export default function ProfileAvatar() {
               clearLocalJWT();
               setOpen(false);
               navigate("/");
-            }}>
+            }}
+          >
             Log out
           </div>
         </PopoverContent>

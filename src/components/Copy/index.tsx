@@ -1,7 +1,7 @@
-import { useCopyToClipboard } from "react-use";
+import CopyIcon from "@/assets/copy.svg?react";
 import clsx from "clsx";
 import { useCallback } from "react";
-import CopyIcon from "@/assets/copy.svg?react";
+import { useCopyToClipboard } from "react-use";
 
 export default function Copy({
   toCopy,
@@ -25,7 +25,8 @@ export default function Copy({
           onClick();
         }
       }}
-      className={clsx("flex-row-center cursor-pointer", className)}>
+      className={clsx("flex-row-center cursor-pointer", className)}
+    >
       <CopyIcon />
       {children}
     </span>

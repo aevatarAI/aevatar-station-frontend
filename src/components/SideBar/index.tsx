@@ -1,19 +1,19 @@
 "use client";
 
+import General from "@/assets/general.svg?react";
+import Member from "@/assets/member.svg?react";
+import Notication from "@/assets/notication.svg?react";
+import NoticationEmpty from "@/assets/notification_empty.svg?react";
+import Project from "@/assets/project.svg?react";
+import Role from "@/assets/role.svg?react";
 import { socialMediaList } from "@/constants/socialMedia";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { useLocation, useParams } from "wouter";
-import General from "@/assets/general.svg?react";
-import Project from "@/assets/project.svg?react";
-import Role from "@/assets/role.svg?react";
-import Member from "@/assets/member.svg?react";
-import Notication from "@/assets/notication.svg?react";
-import NoticationEmpty from "@/assets/notification_empty.svg?react";
 
 import { useNavigate } from "@/hooks/navigate";
-import { useAtom } from "jotai";
 import { notificationAtom } from "@/state/atoms/notification";
+import { useAtom } from "jotai";
 
 const menuItemClx =
   "relative flex text-[#606060] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
@@ -95,7 +95,7 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/profile/notications",
       },
     ],
-    [isNotification]
+    [isNotification],
   );
 
   const profileMenuMap = useMemo(
@@ -104,7 +104,7 @@ export function SideBar({ className }: ISideBarProps) {
       organisation: organisationList,
       projects: projectList,
     }),
-    [profileList]
+    [profileList],
   );
 
   const selectTab = useMemo(() => {
@@ -127,8 +127,9 @@ export function SideBar({ className }: ISideBarProps) {
           onClick={() => navigate("/dashboard/apikeys")}
           className={clsx(
             menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx
-          )}>
+            selectTab === "apikeys" && menuItemSelectedClx,
+          )}
+        >
           <General />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
@@ -144,12 +145,14 @@ export function SideBar({ className }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#606060] mb-[34px]"
-            )}>
+              item[0] === "profile" && "border-b border-[#606060] mb-[34px]",
+            )}
+          >
             <div
               className={clsx(
-                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
-              )}>
+                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]",
+              )}
+            >
               {item[0]}
             </div>
             <div className="flex flex-col gap-[10px]">
@@ -161,8 +164,9 @@ export function SideBar({ className }: ISideBarProps) {
                     menuItemClx,
                     selectMenu === item[0] &&
                       selectTab === tab.text &&
-                      menuItemSelectedClx
-                  )}>
+                      menuItemSelectedClx,
+                  )}
+                >
                   {tab.icon}
                   <span className={clsx(menuItemTextClx)}>{tab.text}</span>
                 </div>
@@ -172,15 +176,16 @@ export function SideBar({ className }: ISideBarProps) {
         ))}
       </div>
     ),
-    [profileMenuMap, selectTab, selectMenu, navigate]
+    [profileMenuMap, selectTab, selectMenu, navigate],
   );
 
   return (
     <div
       className={clsx(
         "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px]",
-        className
-      )}>
+        className,
+      )}
+    >
       {pathname.startsWith("/dashboard") && dashboardMenu}
       {pathname.startsWith("/profile") && profileMenu}
 
@@ -191,7 +196,8 @@ export function SideBar({ className }: ISideBarProps) {
             key={item.title}
             href={item.href}
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+          >
             {item.title}
           </a>
         ))}

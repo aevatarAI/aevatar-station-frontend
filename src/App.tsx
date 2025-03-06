@@ -1,5 +1,6 @@
 import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
+import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
@@ -29,6 +30,10 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
   </Suspense>
 );
 
+const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
+  <Suspense fallback={<Loading />}>{children}</Suspense>
+);
+
 const App = () => (
   <LayoutDefault>
     <Switch>
@@ -51,21 +56,27 @@ const App = () => (
       </Route>
 
       <Route path="/login">
-        <WithLazyLoading>
+        <WithLazyLoadingNoHaeader>
           <Login />
-        </WithLazyLoading>
+        </WithLazyLoadingNoHaeader>
       </Route>
 
       <Route path="/register">
-        <WithLazyLoading>
+        <WithLazyLoadingNoHaeader>
           <Register />
-        </WithLazyLoading>
+        </WithLazyLoadingNoHaeader>
       </Route>
 
       <Route path="/verification">
-        <WithLazyLoading>
+        <WithLazyLoadingNoHaeader>
           <Verification />
-        </WithLazyLoading>
+        </WithLazyLoadingNoHaeader>
+      </Route>
+
+      <Route path="/reset-password">
+        <WithLazyLoadingNoHaeader>
+          <ResetPasswordPage />
+        </WithLazyLoadingNoHaeader>
       </Route>
 
       <Route path="/profile/:menu/:tab">

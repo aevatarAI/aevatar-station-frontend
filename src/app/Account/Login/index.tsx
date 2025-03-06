@@ -1,4 +1,4 @@
-import ForgotPasswordDialog from "@/app/Account/ForgetPassword";
+import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,

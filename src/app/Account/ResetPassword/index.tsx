@@ -22,7 +22,7 @@ const ResetPassword = () => {
     console.log(values);
   }
   return (
-    <div className=" flex flex-col text-white w-[426px] gap-4">
+    <div className=" flex flex-col text-white w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
@@ -90,9 +90,9 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center px-[47px]">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
-        <DescHome className="items-center" />
+        <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />
         <ResetPassword />
       </div>

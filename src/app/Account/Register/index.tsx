@@ -22,7 +22,7 @@ const Register = () => {
   }
 
   return (
-    <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
+    <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">

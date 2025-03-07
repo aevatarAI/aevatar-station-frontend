@@ -1,3 +1,5 @@
+import Layout from "@/app/Account/Layout";
+import LoginImage from "@/assets/login.png";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,9 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
 import { useForm } from "react-hook-form";
-
 const Login = () => {
   const form = useForm();
   function onSubmit(values: any) {
@@ -21,7 +21,7 @@ const Login = () => {
     console.log(values);
   }
   return (
-    <div className=" flex flex-col text-white w-[408px] gap-4">
+    <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">
@@ -96,11 +96,9 @@ const Login = () => {
 };
 const LoginPage = () => {
   return (
-    <div className="relative">
-      <div className="mt-[190px] ml-[114px]">
-        <Login />
-      </div>
-    </div>
+    <Layout backgroundImage={LoginImage}>
+      <Login />
+    </Layout>
   );
 };
 export default LoginPage;

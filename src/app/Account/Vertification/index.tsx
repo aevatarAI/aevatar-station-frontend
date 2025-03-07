@@ -1,3 +1,5 @@
+import Layout from "@/app/Account/Layout";
+import VerificationImage from "@/assets/verification.png";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { useForm } from "react-hook-form";
-
 const Verification = () => {
   const form = useForm();
 
@@ -21,7 +22,7 @@ const Verification = () => {
   }
 
   return (
-    <div className="flex flex-col text-white w-[408px] gap-4">
+    <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">
@@ -78,11 +79,9 @@ const Verification = () => {
 
 const VerificationPage = () => {
   return (
-    <div className="relative">
-      <div className="mt-[190px] ml-[114px]">
-        <Verification />
-      </div>
-    </div>
+    <Layout backgroundImage={VerificationImage}>
+      <Verification />
+    </Layout>
   );
 };
 

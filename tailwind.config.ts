@@ -70,6 +70,7 @@ export default {
         "black-light": "#303030",
         "gray-light": "#B9B9B9",
         "gray-deep": "#606060",
+        "dialog-dark": "#171717",
       },
     },
   },

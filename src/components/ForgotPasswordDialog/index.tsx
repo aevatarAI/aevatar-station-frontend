@@ -26,7 +26,7 @@ const ForgotPasswordDialog = () => {
       <DialogTrigger asChild>
         <span className="text-[12px] cursor-pointer">forgot password?</span>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[328px] border-0 p-5 flex flex-col gap-7">
+      <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
           <DialogTitle className="text-gradient inline">
             forgot Password?

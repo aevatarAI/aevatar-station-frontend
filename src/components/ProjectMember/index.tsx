@@ -1,10 +1,7 @@
-import InviteMembersDialog from "@/components/AddMembersDialog";
+import AddMembersDialog from "@/components/AddMembersDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
-import {
-  type IMemberList,
-  columns,
-} from "@/components/OrganisationMember/columns";
+import { type IMemberList, columns } from "@/components/ProjectMember/columns";
 import {
   Select,
   SelectContent,
@@ -19,7 +16,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 const roleList = ["owner", "member"];
 
-export default function OrganisationMember() {
+export default function ProjectMember() {
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
   const [loading, setLoading] = useState<boolean>();
 
@@ -29,31 +26,24 @@ export default function OrganisationMember() {
       setMemberList([
         {
           id: "1",
-          name: "name",
+          name: "test",
           email: "user123@aelf.io",
           isRemove: true,
-          organisationRole: "owner",
+          projectRole: "owner",
         },
         {
           id: "2",
-          name: "name22222222222",
-          email: "user123@aelf.io",
+          name: "test",
+          email: "user@aelf.io",
           isRemove: false,
-          organisationRole: "owner",
-        },
-        {
-          id: "3",
-          name: "name22223332222222",
-          email: "user123@aelf.io",
-          isRemove: true,
-          organisationRole: "owner",
+          projectRole: "owner",
         },
         {
           id: "4",
-          name: "name22223332222222",
+          name: "test",
           email: "user123@aelf.io",
           isRemove: false,
-          organisationRole: "owner",
+          projectRole: "pending",
         },
       ]);
       setLoading(false);
@@ -72,24 +62,26 @@ export default function OrganisationMember() {
     () =>
       memberList.map((item) => ({
         ...item,
-        role: (
-          <Select
-            // open={item.id === "1"}
-            value={item.organisationRole}
-            onValueChange={(v) => onChangeRole(item.id, v)}
-          >
-            <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
-              {roleList.map((item) => (
-                <SelectItem className="text-[14px]" key={item} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ),
+        role:
+          item.projectRole === "pending" ? (
+            <span className="text-[12px]">invite pending</span>
+          ) : (
+            <Select
+              value={item.projectRole}
+              onValueChange={(v) => onChangeRole(item.id, v)}
+            >
+              <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                {roleList.map((item) => (
+                  <SelectItem className="text-[14px]" key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
             {item.isRemove ? (
@@ -113,11 +105,11 @@ export default function OrganisationMember() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>Organisation name members</div>
-        <InviteMembersDialog />
+        <AddMembersDialog />
       </div>
       <DataTable
         className={clsx(!loading && memberList.length && "min-w-[600px]")}
-        tableHeadClassName={"first:pl-[15px]"}
+        tableHeadClassName={"first:pl-[15px] "}
         columns={columns}
         loading={loading}
         data={tableData}

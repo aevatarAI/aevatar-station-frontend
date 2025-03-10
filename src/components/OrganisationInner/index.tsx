@@ -1,5 +1,5 @@
+import InviteMembersDialog from "@/components/AddMembersDialog";
 import General from "@/components/General";
-import InvitMembersDialog from "@/components/InvitMembersDialog";
 import OrganisationMember from "@/components/OrganisationMember";
 import OrganisationProjects from "@/components/OrganisationProjects";
 import OrganisationRole from "@/components/OrganisationRole";

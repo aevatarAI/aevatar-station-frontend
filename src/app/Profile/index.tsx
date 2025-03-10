@@ -1,5 +1,6 @@
 import OrganisationInner from "@/components/OrganisationInner";
 import ProfileInner from "@/components/ProfileInner";
+import ProjectsInner from "@/components/ProjectsInner";
 import { SideBar } from "@/components/SideBar";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 
@@ -14,6 +15,7 @@ export default function Profile() {
       <div className="pt-[31px] lg:pt-[39px] px-[20px] lg:pl-[43px] lg:pr-[40px] flex-1 overflow-auto">
         {selectMenu === "profile" && <ProfileInner tab={selectTab} />}
         {selectMenu === "organisation" && <OrganisationInner tab={selectTab} />}
+        {selectMenu === "projects" && <ProjectsInner tab={selectTab} />}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import React from "react";
 import { useForm } from "react-hook-form";
 const Register = () => {
@@ -21,13 +22,21 @@ const Register = () => {
     console.log(values);
   }
 
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">
           already registered? &nbsp;
-          <span className="font-normal text-white">login</span>
+          <span
+            className="font-normal text-white cursor-pointer"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            login
+          </span>
         </p>
       </div>
       <div className="border border-black-light w-full" />

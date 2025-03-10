@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .cutCorner {
   position: relative;
   border: 1px solid #303030;
@@ -43,3 +47,36 @@
 .text-gradient {
   @apply bg-gradient-to-r from-white to-[#999999] inline-block text-transparent bg-clip-text;
 }
+
+.cutCornerNoBorder {
+  position: relative;
+  border: 1px solid #303030;
+  display: inline-block;
+}
+
+.cutCornerNoBorder::before {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  content: "";
+  border-bottom: 2rem solid #303030;
+  border-left: 2rem solid transparent;
+}
+
+.cutCornerNoBorder::after {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  content: "";
+  border-bottom: 2rem solid;
+  @apply border-background;
+  border-left: 2rem solid transparent;
+}
+
+/* .cutCornerNoBorder.cutCorner__white {
+  border: 1px solid #303030;
+}
+
+.cutCornerNoBorder.cutCorner__white:before {
+  border-bottom: 2rem solid #303030;
+} */

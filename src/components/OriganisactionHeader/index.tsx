@@ -68,7 +68,7 @@ export default function OriganisactionHeader({
           </div>
 
           <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] ">
-            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold leading-normal lowercase">
+            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
               <Add />
               create organisation
             </Button>
@@ -103,11 +103,11 @@ export default function OriganisactionHeader({
           </div>
 
           <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] hidden">
-            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold leading-normal lowercase">
+            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
               <Add />
               create organisation
             </Button>
-            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold leading-normal lowercase">
+            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
               <Add />
               create organisation
             </Button>

@@ -18,7 +18,7 @@ export default function ProfileAvatar() {
 
   const useInfo = useMemo(
     () => ({ email: "xxxx.xx@gmail.com", userName: "userName" }),
-    [],
+    []
   );
 
   return (
@@ -35,7 +35,7 @@ export default function ProfileAvatar() {
           )}
           <div className={itemClassName}>
             <span>{useInfo?.email}</span>
-            <Copy toCopy={useInfo.email} />
+            <Copy toCopy={useInfo.email} iconClassName="w-[20px] h-[20px]" />
           </div>
           <div
             className={clsx(itemClassName, itemHoverClassName)}
@@ -43,8 +43,7 @@ export default function ProfileAvatar() {
               setOpen(false);
 
               navigate("/profile");
-            }}
-          >
+            }}>
             profile
           </div>
           <div
@@ -54,8 +53,7 @@ export default function ProfileAvatar() {
               clearLocalJWT();
               setOpen(false);
               navigate("/");
-            }}
-          >
+            }}>
             Log out
           </div>
         </PopoverContent>

@@ -14,6 +14,7 @@ import { useLocation, useParams } from "wouter";
 import { useNavigate } from "@/hooks/navigate";
 import { notificationAtom } from "@/state/atoms/notification";
 import { useAtom } from "jotai";
+import { useSideBarParams } from "@/hooks/useSideBarParams";
 
 const menuItemClx =
   "relative flex text-[#606060] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
@@ -70,13 +71,9 @@ export interface ISideBarProps {
   className?: string;
 }
 
-const tabList = ["apiKeys", "general", "notications", "member", "role"];
-
-const menuList = ["profile", "organisation", "projects"];
-
 export function SideBar({ className }: ISideBarProps) {
   const [pathname] = useLocation();
-  const params = useParams();
+  const params = useParams<{ tab?: string; menu?: string }>();
   const navigate = useNavigate();
   const [isNotification] = useAtom(notificationAtom);
 
@@ -95,7 +92,7 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/profile/notications",
       },
     ],
-    [isNotification],
+    [isNotification]
   );
 
   const profileMenuMap = useMemo(
@@ -104,21 +101,10 @@ export function SideBar({ className }: ISideBarProps) {
       organisation: organisationList,
       projects: projectList,
     }),
-    [profileList],
+    [profileList]
   );
 
-  const selectTab = useMemo(() => {
-    const defaultTab = pathname.startsWith("/dashboard")
-      ? "apikeys"
-      : "general";
-    if (tabList.includes(params?.tab ?? defaultTab)) return params?.tabs;
-    return defaultTab;
-  }, [params, pathname]);
-
-  const selectMenu = useMemo(() => {
-    if (menuList.includes(params?.menu ?? "profile")) return params?.menu;
-    return "profile";
-  }, [params]);
+  const [selectMenu, selectTab] = useSideBarParams();
 
   const dashboardMenu = useMemo(() => {
     return (
@@ -127,9 +113,8 @@ export function SideBar({ className }: ISideBarProps) {
           onClick={() => navigate("/dashboard/apikeys")}
           className={clsx(
             menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx,
-          )}
-        >
+            selectTab === "apikeys" && menuItemSelectedClx
+          )}>
           <General />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
@@ -145,14 +130,12 @@ export function SideBar({ className }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#606060] mb-[34px]",
-            )}
-          >
+              item[0] === "profile" && "border-b border-[#606060] mb-[34px]"
+            )}>
             <div
               className={clsx(
-                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]",
-              )}
-            >
+                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
+              )}>
               {item[0]}
             </div>
             <div className="flex flex-col gap-[10px]">
@@ -164,9 +147,8 @@ export function SideBar({ className }: ISideBarProps) {
                     menuItemClx,
                     selectMenu === item[0] &&
                       selectTab === tab.text &&
-                      menuItemSelectedClx,
-                  )}
-                >
+                      menuItemSelectedClx
+                  )}>
                   {tab.icon}
                   <span className={clsx(menuItemTextClx)}>{tab.text}</span>
                 </div>
@@ -176,16 +158,15 @@ export function SideBar({ className }: ISideBarProps) {
         ))}
       </div>
     ),
-    [profileMenuMap, selectTab, selectMenu, navigate],
+    [profileMenuMap, selectTab, selectMenu, navigate]
   );
 
   return (
     <div
       className={clsx(
         "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px]",
-        className,
-      )}
-    >
+        className
+      )}>
       {pathname.startsWith("/dashboard") && dashboardMenu}
       {pathname.startsWith("/profile") && profileMenu}
 
@@ -196,8 +177,7 @@ export function SideBar({ className }: ISideBarProps) {
             key={item.title}
             href={item.href}
             target="_blank"
-            rel="noreferrer"
-          >
+            rel="noreferrer">
             {item.title}
           </a>
         ))}

@@ -13,8 +13,8 @@
   right: -1px;
   bottom: -1px;
   content: "";
-  border-bottom: 2rem solid #303030;
-  border-left: 2rem solid transparent;
+  border-bottom: 15px solid #303030;
+  border-left: 15px solid transparent;
 }
 
 .cutCorner::after {
@@ -22,9 +22,9 @@
   right: -2px;
   bottom: -2px;
   content: "";
-  border-bottom: 2rem solid;
+  border-bottom: 15px solid;
   @apply border-background;
-  border-left: 2rem solid transparent;
+  border-left: 15px solid transparent;
 }
 
 .cutCorner.cutCorner__white {
@@ -32,7 +32,7 @@
 }
 
 .cutCorner.cutCorner__white:before {
-  border-bottom: 2rem solid #303030;
+  border-bottom: 15px solid #303030;
 }
 
 * {

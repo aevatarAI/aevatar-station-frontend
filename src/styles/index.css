@@ -19,3 +19,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.aevatarai-text-gradient-center {
+  background: linear-gradient(91deg, #fff 0%, #999 16%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

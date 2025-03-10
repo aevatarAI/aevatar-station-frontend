@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import { useForm } from "react-hook-form";
 const Login = () => {
   const form = useForm();
@@ -20,13 +21,22 @@ const Login = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+
+  const navigate = useNavigate();
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
         <p className="text-[#B9B9B9] font-normal text-[12px]">
           not a member yet? &nbsp;
-          <span className="font-normal text-white">register</span>
+          <span
+            className="font-normal text-white cursor-pointer"
+            onClick={() => {
+              navigate("/register");
+            }}
+          >
+            register
+          </span>
         </p>
       </div>
       <div className="border border-black-light w-full" />

@@ -11,18 +11,62 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
-import React from "react";
+import { useToast } from "@/hooks/use-toast";
+import { register, sendRegisterCode } from "@/services/auth";
+import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
+import { sleep } from "@etransfer/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSetAtom } from "jotai";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  name: z.string(),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+});
+
 const Register = () => {
-  const form = useForm();
-
-  function onSubmit(values: any) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
-
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const navigate = useNavigate();
+  // atom, for verification page
+  const setName = useSetAtom(usernameAtom);
+  const setEmail = useSetAtom(emailAtom);
+  const setPassword = useSetAtom(passwordAtom);
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      setLoading(true);
+      const { name, email, password } = values;
+      try {
+        const response = await sendRegisterCode(email);
+        setName(name);
+        setEmail(email);
+        setPassword(password);
+        toast({
+          description: response.message || "Send Register Code successful!",
+        });
+        await sleep(2000);
+        setLoading(false);
+        navigate("/verification");
+      } catch (error) {
+        toast({
+          description: "Send Register Code failed. Please try again.",
+        });
+        setLoading(false);
+      }
+    },
+    [toast, navigate, setName, setEmail, setPassword],
+  );
+
   return (
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
@@ -111,6 +155,7 @@ const Register = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                disabled={loading}
               >
                 send Verification Code
               </Button>

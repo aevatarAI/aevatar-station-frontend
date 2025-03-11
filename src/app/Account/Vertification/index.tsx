@@ -24,12 +24,13 @@ const formSchema = z.object({
 });
 
 const Verification = () => {
-  const form = useForm();
   const [email] = useAtom(emailAtom);
   const [password] = useAtom(passwordAtom);
   const [name] = useAtom(usernameAtom);
   const { toast } = useToast();
-
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {

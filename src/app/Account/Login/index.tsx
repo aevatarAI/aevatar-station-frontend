@@ -13,14 +13,50 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
-import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
+import { login } from "@/services/auth";
+import { accessTokenAtom } from "@/state/atoms";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSetAtom } from "jotai";
+import { useCallback, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  username: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+});
+
 const Login = () => {
-  const form = useForm();
-  function onSubmit(values: any) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const { toast } = useToast();
+  const setAccessToken = useSetAtom(accessTokenAtom);
+  const [loading, setLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      setLoading(true);
+      const { username, password } = values;
+      try {
+        const { data } = await login(username, password);
+        setAccessToken(data.access_token);
+        console.log("Login successful!");
+      } catch (err) {
+        toast({
+          description: "Login failed. Please check your credentials.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast, setAccessToken],
+  );
 
   const navigate = useNavigate();
   return (
@@ -91,8 +127,9 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                disabled={loading}
               >
-                log in
+                {loading ? "logging in" : "log in"}
               </Button>
               <div className="text-right">
                 <ForgotPasswordDialog />

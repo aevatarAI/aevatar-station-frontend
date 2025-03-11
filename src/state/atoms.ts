@@ -10,3 +10,7 @@ export const accessTokenAtom = atomWithStorage<string | null>(
   "access_token",
   null,
 );
+// register
+export const emailAtom = atom("");
+export const passwordAtom = atom("");
+export const usernameAtom = atom("");

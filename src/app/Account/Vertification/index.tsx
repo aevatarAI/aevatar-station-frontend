@@ -10,17 +10,69 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { useToast } from "@/hooks/use-toast";
+import { register, sendRegisterCode } from "@/services/auth";
+import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  verificationCode: z.string(),
+});
+
 const Verification = () => {
   const form = useForm();
+  const [email] = useAtom(emailAtom);
+  const [password] = useAtom(passwordAtom);
+  const [name] = useAtom(usernameAtom);
+  const { toast } = useToast();
 
-  function onSubmit(values: any) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      try {
+        const response = await register({
+          userName: name,
+          emailAddress: email,
+          password,
+          code: values.verificationCode,
+        });
 
+        if (response.code === "20000") {
+          toast({
+            description: response.message || "Registration successful!",
+          });
+        } else {
+          toast({
+            description:
+              response.message || "Registration failed. Please try again.",
+          });
+        }
+      } catch (error) {
+        console.error(error, "register error");
+        toast({
+          description: "Network error. Please try again later.",
+        });
+      }
+    },
+    [toast, name, email, password],
+  );
+
+  const sendVerificationCode = useCallback(async () => {
+    try {
+      const response = await sendRegisterCode(email);
+      toast({
+        description: response.message || "Send Register Code successful!",
+      });
+    } catch (error) {
+      console.error(error, "Send Register Code error");
+      toast({
+        description: "Send Register Code failed. Please try again.",
+      });
+    }
+  }, [toast, email]);
   return (
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
@@ -67,7 +119,12 @@ const Verification = () => {
                 register
               </Button>
               <div className="text-right">
-                <span className="text-[12px]">resend email</span>
+                <span
+                  className="text-[12px] cursor-pointer"
+                  onClick={sendVerificationCode}
+                >
+                  resend email
+                </span>
               </div>
             </div>
           </form>

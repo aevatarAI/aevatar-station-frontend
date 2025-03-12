@@ -1,5 +1,6 @@
 import LogoIcon from "@/assets/logo.svg?react";
 import Copy from "@/components/Copy";
+import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { accessTokenAtom } from "@/state/atoms";
@@ -22,7 +23,7 @@ const WelcomePage: React.FC = () => {
   const [hasInvitation] = useState(false);
   const email = "duke_geng@aelf.io";
   return (
-    <div className="flex flex-col items-center lg:justify-center min-h-screen ">
+    <div className="flex flex-col items-center lg:justify-center min-h-screen relative">
       <LogoIcon
         width={50}
         height={50}
@@ -97,6 +98,9 @@ const WelcomePage: React.FC = () => {
           </div>
         )}
       </div>
+      {socialMediaReander(
+        "fixed lg:absolute w-full lg:w-[275px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+      )}
     </div>
   );
 };

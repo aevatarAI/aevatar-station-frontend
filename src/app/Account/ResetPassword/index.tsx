@@ -1,5 +1,6 @@
 import DescHome from "@/components/DescHome";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
+import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -72,7 +73,7 @@ const ResetPassword = () => {
     [toast, userId, resetToken],
   );
   return (
-    <div className=" flex flex-col text-white w-full lg:w-[426px] gap-4">
+    <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
@@ -141,12 +142,15 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px]">
+    <div className="relative flex justify-center px-[47px] h-screen ">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
         <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />
         <ResetPassword />
       </div>
+      {socialMediaReander(
+        "fixed lg:absolute w-full lg:w-[408px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+      )}
     </div>
   );
 };

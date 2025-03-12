@@ -98,7 +98,7 @@ export default function OrganisationProjects() {
             {item.isRemove ? (
               <DeleteDialog
                 onYes={onDeleteYes}
-                title={"Are you sure you want to delete the project"}
+                title={"Are you sure you want to delete the project?"}
                 description={
                   "*Once deleted, the existing project will become invalid."
                 }

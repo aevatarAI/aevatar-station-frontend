@@ -5,8 +5,10 @@ import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import LayoutDefault from "@/layouts/LayoutDefault";
+import { sleep } from "@etransfer/utils";
 import { type PropsWithChildren, Suspense, lazy } from "react";
 import { Route, Switch } from "wouter";
+import ReactLoading from "react-loading";
 
 const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
@@ -14,11 +16,14 @@ const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));
 
 const Loading = () => (
-  <div className="page-container flex w-full flex-col pt-[140px]">
-    <div className="mx-auto mb-10 w-full max-w-2xl rounded-md bg-black bg-opacity-75 p-[34px] px-[48px] shadow-lg">
-      <div className="text-center text-4xl font-bold text-white">
-        Loading...
+  <div
+    data-testid="page-loading"
+    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50">
+    <div className="flex text-2xl font-bold text-gray-800 flex items-center">
+      <div className="text-white font-syne text-lg font-semibold leading-normal lowercase text-[18px]">
+        Scanning......
       </div>
+      <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
     </div>
   </div>
 );

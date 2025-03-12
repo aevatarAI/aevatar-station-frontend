@@ -51,7 +51,7 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "flex items-center justify-center gap-[20px] text-white font-syne text-[12px] font-semibold leading-normal lowercase cursor-pointer ",
+              "flex items-center justify-center gap-[20px] text-white font-syne text-[14px] font-semibold leading-normal lowercase cursor-pointer ",
               "lg:gap-[34px]",
             )}
           >
@@ -77,7 +77,7 @@ export default function Header() {
                 </div>
                 <div
                   onClick={() => {
-                    navigate("/profile/profile/notications");
+                    navigate("/profile/profile/notifications");
                   }}
                 >
                   {isNotication ? (

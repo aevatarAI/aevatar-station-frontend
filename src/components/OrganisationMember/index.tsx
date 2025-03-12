@@ -76,8 +76,7 @@ export default function OrganisationMember() {
           <Select
             // open={item.id === "1"}
             value={item.organisationRole}
-            onValueChange={(v) => onChangeRole(item.id, v)}
-          >
+            onValueChange={(v) => onChangeRole(item.id, v)}>
             <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
@@ -95,7 +94,7 @@ export default function OrganisationMember() {
             {item.isRemove ? (
               <DeleteDialog
                 onYes={onDeleteYes}
-                title={"Are you sure you want to delete the member"}
+                title={"Are you sure you want to delete the member?"}
                 description={
                   "*Once deleted, the existing member will become invalid."
                 }
@@ -106,7 +105,7 @@ export default function OrganisationMember() {
           </div>
         ),
       })),
-    [memberList, onDeleteYes, onChangeRole],
+    [memberList, onDeleteYes, onChangeRole]
   );
 
   return (

@@ -21,6 +21,7 @@ export default defineConfig((config) => ({
   },
 
   server: {
+    allowedHosts: true,
     proxy: {
       "/connect": {
         target: "https://auth-station-staging.aevatar.ai",

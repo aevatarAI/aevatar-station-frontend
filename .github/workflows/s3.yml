@@ -1,4 +1,4 @@
-name: Deploy to Testnet
+name: Deploy to Mainnet
 
 on:
   push:

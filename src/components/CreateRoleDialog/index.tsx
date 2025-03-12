@@ -71,54 +71,54 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="sm:max-w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]">
+        className="sm:max-w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
         <DialogHeader>
-          <DialogTitle className="aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
             create role
           </DialogTitle>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-y-[28px] pt-[22px] items-start content-start self-stretch">
-                <FormField
-                  key={"roleName"}
-                  control={form.control}
-                  name={"roleName"}
-                  render={({ field }) => (
-                    <FormItem aria-labelledby="emailLabel" className="w-full">
-                      <FormLabel id="emailLabel">role name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="-" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex justify-between items-start self-stretch pt-[8px]">
-                  <Button
-                    className="text-[12px] py-[7px] leading-[14px]"
-                    type="reset"
-                    onClick={() => {
-                      setOpen(false);
-                    }}>
-                    cancel
-                  </Button>
-                  <Button
-                    className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                    type="submit">
-                    {btnLoading && (
-                      <Loading
-                        className={clsx("aevatarai-loading-icon")}
-                        style={{ width: 14, height: 14 }}
-                      />
-                    )}
-                    <span>{btnLoading ? "inviting" : "invite"}</span>
-                  </Button>
-                </div>
-              </div>
-            </form>
-          </Form>
         </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex flex-col gap-y-[28px] items-start content-start self-stretch">
+              <FormField
+                key={"roleName"}
+                control={form.control}
+                name={"roleName"}
+                render={({ field }) => (
+                  <FormItem aria-labelledby="emailLabel" className="w-full">
+                    <FormLabel id="emailLabel">role name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="-" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex justify-between items-start self-stretch pt-[8px]">
+                <Button
+                  className="text-[12px] py-[7px] leading-[14px]"
+                  type="reset"
+                  onClick={() => {
+                    setOpen(false);
+                  }}>
+                  cancel
+                </Button>
+                <Button
+                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
+                  type="submit">
+                  {btnLoading && (
+                    <Loading
+                      className={clsx("aevatarai-loading-icon")}
+                      style={{ width: 14, height: 14 }}
+                    />
+                  )}
+                  <span>{btnLoading ? "inviting" : "invite"}</span>
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

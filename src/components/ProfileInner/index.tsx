@@ -1,5 +1,5 @@
 import General from "@/components/General";
-import Notications from "@/components/Notications";
+import Notifications from "@/components/Notifications";
 import type { TAB_LIST } from "@/constants/sideBar";
 import { sleep } from "@etransfer/utils";
 import { useCallback } from "react";
@@ -22,7 +22,7 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
           onConfirm={onNameSave}
         />
       )}
-      {tab === "notications" && <Notications />}
+      {tab === "notifications" && <Notifications />}
     </div>
   );
 }

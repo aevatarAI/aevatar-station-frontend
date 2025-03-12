@@ -2,6 +2,7 @@
 
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
+import ApikeysIcon from "@/assets/api_keys.svg?react";
 import Notication from "@/assets/notication.svg?react";
 import NoticationEmpty from "@/assets/notification_empty.svg?react";
 import Project from "@/assets/project.svg?react";
@@ -15,15 +16,11 @@ import { useNavigate } from "@/hooks/navigate";
 import { notificationAtom } from "@/state/atoms/notification";
 import { useAtom } from "jotai";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
-
-const menuItemClx =
-  "relative flex text-[#606060] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
-
-const menuItemSelectedClx =
-  "bg-white/40 text-white before:w-[8px] before:h-full before:absolute before:right-0 before:bg-white";
-
-const menuItemTextClx =
-  "font-syne text-[12px] font-semibold leading-normal lowercase";
+import {
+  menuItemClx,
+  menuItemSelectedClx,
+  menuItemTextClx,
+} from "@/constants/cls";
 
 const organisationList = [
   {
@@ -88,8 +85,8 @@ export function SideBar({ className }: ISideBarProps) {
       },
       {
         icon: isNotification ? <Notication /> : <NoticationEmpty />,
-        text: "notications",
-        url: "/profile/profile/notications",
+        text: "notifications",
+        url: "/profile/profile/notifications",
       },
     ],
     [isNotification]
@@ -115,7 +112,7 @@ export function SideBar({ className }: ISideBarProps) {
             menuItemClx,
             selectTab === "apikeys" && menuItemSelectedClx
           )}>
-          <General />
+          <ApikeysIcon />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
       </div>
@@ -130,11 +127,11 @@ export function SideBar({ className }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#606060] mb-[34px]"
+              item[0] === "profile" && "border-b border-[#303030] mb-[34px]"
             )}>
             <div
               className={clsx(
-                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
+                "text-[#B9B9B9] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
               )}>
               {item[0]}
             </div>

@@ -87,7 +87,7 @@ export default function ProjectMember() {
             {item.isRemove ? (
               <DeleteDialog
                 onYes={onDeleteYes}
-                title={"Are you sure you want to delete the member"}
+                title={"Are you sure you want to delete the member?"}
                 description={
                   "*Once deleted, the existing member will become invalid."
                 }

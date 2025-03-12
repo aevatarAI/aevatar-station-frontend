@@ -64,7 +64,7 @@ export default function InviteMembersDialog() {
         // duration: 30000000,
       });
     },
-    [toast],
+    [toast]
   );
 
   useEffect(() => {
@@ -80,11 +80,10 @@ export default function InviteMembersDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent
-        aria-describedby="create new api key"
-        className="sm:max-w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]"
-      >
+        aria-describedby="add new member"
+        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             add team members
           </DialogTitle>
           <Form {...form}>
@@ -99,20 +98,18 @@ export default function InviteMembersDialog() {
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}
-                      >
+                        onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[193px] left-[48px] -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                           {addressList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
                               key={item}
-                              value={item}
-                            >
+                              value={item}>
                               {item}
                             </SelectItem>
                           ))}
@@ -131,20 +128,18 @@ export default function InviteMembersDialog() {
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}
-                      >
+                        onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[193px] left-[48px] -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                           {roleList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
                               key={item}
-                              value={item}
-                            >
+                              value={item}>
                               {item}
                             </SelectItem>
                           ))}
@@ -160,14 +155,12 @@ export default function InviteMembersDialog() {
                     type="reset"
                     onClick={() => {
                       setOpen(false);
-                    }}
-                  >
+                    }}>
                     cancel
                   </Button>
                   <Button
                     className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                    type="submit"
-                  >
+                    type="submit">
                     {btnLoading && (
                       <Loading
                         className={clsx("aevatarai-loading-icon")}

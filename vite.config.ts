@@ -10,7 +10,8 @@ export default defineConfig((config) => ({
 
   resolve: {
     alias: {
-      "@": config.mode === "production" ? __dirname : resolve(__dirname, "./src"),
+      "@":
+        config.mode === "production" ? __dirname : resolve(__dirname, "./src"),
     },
   },
 
@@ -21,6 +22,7 @@ export default defineConfig((config) => ({
   },
 
   server: {
+    allowedHosts: true,
     proxy: {
       "/connect": {
         target: "https://auth-station-staging.aevatar.ai",

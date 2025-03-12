@@ -1,9 +1,11 @@
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { Button } from "@/components/ui/button";
-import { sleep } from "@etransfer/utils";
+import { useToast } from "@/hooks/use-toast";
+import { handleErrorMessage, sleep } from "@etransfer/utils";
+import dayjs from "dayjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export default function Notications() {
+export default function Notifications() {
   const [noticationList, setNoticationList] = useState<
     {
       id: string;
@@ -42,19 +44,43 @@ export default function Notications() {
     ]);
   }, []);
 
+  const { toast } = useToast();
+
   const onJoin = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+    try {
+      await sleep(1000);
+      toast({
+        title: "",
+        description: "successfully joined",
+      });
+    } catch (error) {
+      toast({
+        title: "",
+        description: handleErrorMessage(error, "something error"),
+      });
+    }
+  }, [toast]);
 
   const onDecline = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+    try {
+      await sleep(1000);
+      toast({
+        title: "",
+        description: "successfully declined",
+      });
+    } catch (error) {
+      toast({
+        title: "",
+        description: handleErrorMessage(error, "something error"),
+      });
+    }
+  }, [toast]);
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[#303030]">
         <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
-          Notications
+          Notifications
         </div>
       </div>
       <div className="pt-[30px]">
@@ -64,7 +90,7 @@ export default function Notications() {
             key={item.id}>
             <div className="mb-[15px] lg:mb-0">
               <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase mb-[10px]">
-                {item.timestamp}
+                {dayjs(item.timestamp).format("DD/MM/YYYY HH:mm")}
               </div>
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
                 <span className="text-white">{`${item.name} `}</span>

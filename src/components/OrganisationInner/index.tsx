@@ -1,4 +1,3 @@
-import InviteMembersDialog from "@/components/AddMembersDialog";
 import General from "@/components/General";
 import OrganisationMember from "@/components/OrganisationMember";
 import OrganisationProjects from "@/components/OrganisationProjects";

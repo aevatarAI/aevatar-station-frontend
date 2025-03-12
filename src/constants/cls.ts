@@ -9,3 +9,12 @@ export const itemSelectClassName =
 
 export const textGradient =
   "text-white font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient";
+
+export const menuItemClx =
+  "relative flex text-[#B9B9B9] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
+
+export const menuItemSelectedClx =
+  "bg-white/40 text-white before:w-[8px] before:h-full before:absolute before:right-0 before:bg-white";
+
+export const menuItemTextClx =
+  "font-syne text-[12px] font-semibold leading-normal lowercase";

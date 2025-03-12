@@ -1,7 +1,7 @@
 export const TAB_LIST = [
   "apikeys",
   "general",
-  "notications",
+  "notifications",
   "member",
   "role",
   "project",

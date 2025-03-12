@@ -1,3 +1,5 @@
 export type TDataResponse<T> = {
-  data?: T;
+  code: string;
+  message: string;
+  data: T;
 };

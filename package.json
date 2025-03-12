@@ -36,6 +36,7 @@
 		"@tanstack/react-table": "^8.20.6",
 		"@vitejs/plugin-react": "^4.3.4",
 		"aelf-sdk": "^3.4.15",
+		"axios": "^1.8.2",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",

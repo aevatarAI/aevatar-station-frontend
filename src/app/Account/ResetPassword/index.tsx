@@ -1,5 +1,6 @@
 import DescHome from "@/components/DescHome";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
+import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,18 +12,68 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { useToast } from "@/hooks/use-toast";
+import { resetPassword } from "@/services/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { z } from "zod";
+const formSchema = z.object({
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+  confirmPassword: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+});
 const ResetPassword = () => {
-  const form = useForm();
-  function onSubmit(values: any) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const [userId, setUserId] = useState("");
+  const [resetToken, setResetToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlUserId = params.get("userid") || "";
+    const urlResetToken = params.get("resetToken") || "";
+
+    if (!urlUserId || !urlResetToken) {
+      toast({
+        description: "Invalid reset link.",
+      });
+      return;
+    }
+
+    setUserId(urlUserId);
+    setResetToken(urlResetToken);
+  }, [toast]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      setLoading(true);
+      const { password } = values;
+      try {
+        const result = await resetPassword(userId, resetToken, password);
+        if (result.code === "20000" && result.data) {
+          console.log("Reset successful!");
+        } else {
+          toast({
+            description: "Invalid reset token.",
+          });
+        }
+      } catch {
+        toast({
+          description: "Reset failed. Please try again.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast, userId, resetToken],
+  );
   return (
-    <div className=" flex flex-col text-white w-full lg:w-[426px] gap-4">
+    <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
@@ -78,6 +129,7 @@ const ResetPassword = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                disabled={loading}
               >
                 submit
               </Button>
@@ -90,12 +142,15 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px]">
+    <div className="relative flex justify-center px-[47px] h-screen ">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
         <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />
         <ResetPassword />
       </div>
+      {socialMediaReander(
+        "fixed lg:absolute w-full lg:w-[408px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+      )}
     </div>
   );
 };

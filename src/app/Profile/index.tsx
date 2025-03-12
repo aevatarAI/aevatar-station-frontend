@@ -1,3 +1,4 @@
+import { request } from "@/api";
 import OrganisationInner from "@/components/OrganisationInner";
 import ProfileInner from "@/components/ProfileInner";
 import ProjectsInner from "@/components/ProjectsInner";

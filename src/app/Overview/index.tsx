@@ -1,25 +1,25 @@
 import Thumbprint from "@/assets/thumbprint.svg?react";
 
-import robotImg1 from "@/assets/Overview/robot1.png";
-import robotImg2 from "@/assets/Overview/robot2.png";
-import robotImg3 from "@/assets/Overview/robot3.png";
-import robotImg4 from "@/assets/Overview/robot4.png";
 import Logo from "@/assets/logo.svg?react";
+import robotImg1 from "@/assets/overview/robot1.png";
+import robotImg2 from "@/assets/overview/robot2.png";
+import robotImg3 from "@/assets/overview/robot3.png";
+import robotImg4 from "@/assets/overview/robot4.png";
 
-import { websiteLink, githubLink, docsLink } from "@/constants/socialMedia";
+import { docsLink, githubLink, websiteLink } from "@/constants/socialMedia";
 
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 
 const socialMediaList = [websiteLink, githubLink, docsLink];
 
 import LoginButton from "@/components/auth/LoginButton";
-import { useCallback, useMemo } from "react";
 import clsx from "clsx";
+import { useCallback, useMemo } from "react";
 
 export default function Overview() {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    []
+    [],
   );
 
   const socialMediaReander = useCallback(
@@ -27,21 +27,23 @@ export default function Overview() {
       <div
         className={clsx(
           "inline-flex items-center gap-[71px] lg:gap-[69px]",
-          className
-        )}>
+          className,
+        )}
+      >
         {socialMediaList.map((item) => (
           <a
             className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal lowercase"
             key={item.title}
             href={item.href}
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+          >
             {item.title}
           </a>
         ))}
       </div>
     ),
-    []
+    [],
   );
 
   return (

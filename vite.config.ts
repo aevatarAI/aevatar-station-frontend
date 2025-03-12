@@ -10,8 +10,7 @@ export default defineConfig((config) => ({
 
   resolve: {
     alias: {
-      "@":
-        config.mode === "production" ? __dirname : resolve(__dirname, "./src"),
+      "@": resolve(__dirname, "./src"),
     },
   },
 

@@ -10,17 +10,33 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { sendResetPasswordEmail } from "@/services/auth";
 import React, { useState } from "react";
 
 const ForgotPasswordDialog = () => {
+  const { toast } = useToast();
   const [email, setEmail] = React.useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle the submission logic here
-    console.log("Email submitted:", email);
-  };
+  const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const result = await sendResetPasswordEmail(email);
+      if (result.code === "20000") {
+        toast({ description: "Reset password email sent successfully!" });
+        setIsSubmitted(true);
+      } else {
+        toast({ description: "Failed to send reset password email." });
+      }
+    } catch {
+      toast({ description: "An error occurred. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -87,6 +103,7 @@ const ForgotPasswordDialog = () => {
                 <Button
                   type="submit"
                   className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
+                  disabled={loading}
                 >
                   Submit
                 </Button>

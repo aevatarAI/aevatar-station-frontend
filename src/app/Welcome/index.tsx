@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { accessTokenAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const WelcomePage: React.FC = () => {
   const [accessToken] = useAtom(accessTokenAtom);
   console.log(accessToken, "accessToken");
@@ -20,8 +20,14 @@ const WelcomePage: React.FC = () => {
     setOrg(value);
   };
 
-  const [hasInvitation] = useState(false);
+  const [hasInvitation, setHasInvitation] = useState(false);
   const email = "duke_geng@aelf.io";
+
+  useEffect(() => {
+    const invited = localStorage.getItem("welcome");
+
+    setHasInvitation(!!invited);
+  }, []);
   return (
     <div className="flex flex-col items-center lg:justify-center min-h-screen relative">
       <LogoIcon

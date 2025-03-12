@@ -86,9 +86,17 @@ const PROJECT_API_LIST = {
   },
 };
 
+const PROFILE_API_LIST = {
+  editProfile: {
+    target: "/api/account/my-profile",
+    baseConfig: { method: "PUT" },
+  },
+};
+
 export const EXPAND_APIS = {
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,
+  profile: PROFILE_API_LIST,
 };
 
 export type EXPAND_REQ_TYPES = {

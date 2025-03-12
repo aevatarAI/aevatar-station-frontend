@@ -11,20 +11,19 @@ import {
   itemHoverClassName,
   itemSelectClassName,
 } from "@/constants/cls";
+import {
+  CURRENT_ORGANIZATION_ATOM,
+  CURRENT_PROJECT_ATOM,
+  ORGANIZATIONS_LIST_ATOM,
+  PROJECT_LIST_ATOM,
+} from "@/state/atoms/organisation";
 import clsx from "clsx";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { useMemo, useState } from "react";
 
 export interface IOriganisactionHeaderProps {
   className?: string;
 }
-
-const organisationList = [
-  "organisation name #1",
-  "organisation name #2",
-  "organisation name #3",
-];
-
-const projectList = ["project name #1", "project name #2", "project name #3"];
 
 export default function OriganisactionHeader({
   className,
@@ -32,19 +31,32 @@ export default function OriganisactionHeader({
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
 
-  const [organisation, setOrganisation] = useState<string>(organisationList[0]);
-  const [project, setProject] = useState<string>(projectList[0]);
+  const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
+    CURRENT_ORGANIZATION_ATOM
+  );
+  console.log(organisationList, "organisationList==");
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
+  const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const currentOrganisation = useMemo(
+    () => organisationList.find((item) => item.id === currentOrganisationId),
+    [organisationList, currentOrganisationId]
+  );
+
+  const currentProject = useMemo(
+    () => projectList.find((item) => item.id === currentProjectId),
+    [projectList, currentProjectId]
+  );
 
   return (
     <div
       className={clsx(
         "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
-        className,
-      )}
-    >
+        className
+      )}>
       <Popover open={orgOpen} onOpenChange={setOrgOpen}>
         <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
-          {organisation}
+          {currentOrganisation?.displayName ?? "--"}
           <StepSelect />
         </PopoverTrigger>
         <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
@@ -54,32 +66,31 @@ export default function OriganisactionHeader({
                 className={clsx(
                   itemClassName,
                   itemHoverClassName,
-                  organisation === item && itemSelectClassName,
+                  currentOrganisationId === item.id && itemSelectClassName
                 )}
                 onClick={() => {
-                  setOrganisation(item);
+                  setCurrentOrganisationId(item.id);
                   setOrgOpen(false);
                 }}
-                key={item}
-              >
-                {item}
+                key={item.id}>
+                {item.displayName}
               </div>
             ))}
           </div>
 
-          <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] ">
+          {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] ">
             <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
               <Add />
               create organisation
             </Button>
-          </div>
+          </div> */}
         </PopoverContent>
       </Popover>
       <div>/</div>
 
       <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
         <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
-          {project}
+          {currentProject?.displayName ?? "--"}
           <StepSelect />
         </PopoverTrigger>
         <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
@@ -89,15 +100,14 @@ export default function OriganisactionHeader({
                 className={clsx(
                   itemClassName,
                   itemHoverClassName,
-                  project === item && itemSelectClassName,
+                  currentProject?.id === item.id && itemSelectClassName
                 )}
                 onClick={() => {
-                  setProject(item);
+                  setCurrentProjectId(item.id);
                   setPjtOpen(false);
                 }}
-                key={item}
-              >
-                {item}
+                key={item.id}>
+                {item?.displayName ?? "--"}
               </div>
             ))}
           </div>
@@ -109,7 +119,7 @@ export default function OriganisactionHeader({
             </Button>
             <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
               <Add />
-              create organisation
+              create project
             </Button>
           </div>
         </PopoverContent>

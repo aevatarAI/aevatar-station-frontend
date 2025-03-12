@@ -47,7 +47,7 @@ export function getRequestConfig(base: BaseConfig, config?: requestConfig) {
   }
   const { baseConfig, extendUrlSuffix = "" } = base || {};
   const { query, method, params, data } = config || {};
-  console.log(extendUrlSuffix, "extendUrlSuffix===1");
+
   return {
     ...config,
     ...baseConfig,

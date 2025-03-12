@@ -11,6 +11,7 @@ eventsServer.prototype.parseEvent = function (
 	name: string,
 	eventMap: string[],
 ) {
+	// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 	const obj: any = (this[name] = {});
 
 	for (const item of eventMap) {

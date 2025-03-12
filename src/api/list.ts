@@ -39,13 +39,56 @@ const ORGANIZATIONS_API_LIST = {
   },
   getOrganizationPermissions: {
     target: "/api/organizations",
+    extendUrlSuffix: "/permissions",
+    baseConfig: { method: "GET" },
+  },
+};
+
+const PROJECT_API_LIST = {
+  getUserProject: "/api/projects",
+  getProjectDetail: "/api/projects",
+  addProject: {
+    target: "/api/projects",
+    baseConfig: { method: "POST" },
+  },
+  editProject: {
+    target: "/api/projects",
+    baseConfig: { method: "PUT" },
+  },
+  deleteProject: {
+    target: "/api/projects",
+    baseConfig: { method: "DELETE" },
+  },
+  getProjectMembers: {
+    target: "/api/projects",
+    extendUrlSuffix: "/members",
+    baseConfig: { method: "GET" },
+  },
+  editProjectMembers: {
+    target: "/api/projects",
+    extendUrlSuffix: "/members",
+    baseConfig: { method: "PUT" },
+  },
+  getProjectRoles: {
+    target: "/api/projects",
     extendUrlSuffix: "/roles",
+    baseConfig: { method: "GET" },
+  },
+  editProjectRoles: {
+    target: "/api/projects",
+    extendUrlSuffix: "/member-roles",
+    baseConfig: { method: "PUT" },
+  },
+  getProjectPermissions: {
+    target: "/api/projects",
+    extendUrlSuffix: "/permissions",
     baseConfig: { method: "GET" },
   },
 };
 
 export const EXPAND_APIS = {
   organizations: ORGANIZATIONS_API_LIST,
+  projects: PROJECT_API_LIST,
 };
 
 export type EXPAND_REQ_TYPES = {

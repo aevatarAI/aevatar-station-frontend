@@ -82,7 +82,7 @@ const ForgotPasswordDialog = () => {
             </DialogDescription>
             <form onSubmit={handleSubmit} className="flex flex-col gap-7">
               <div className="space-y-2">
-                <Label htmlFor="email">email Address</Label>
+                <Label htmlFor="email">email address</Label>
                 <Input
                   id="email"
                   type="email"

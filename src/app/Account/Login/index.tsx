@@ -1,5 +1,8 @@
 import Layout from "@/app/Account/Layout";
-import LoginImage from "@/assets/login.png";
+import robotImg1 from "@/assets/overview/robot1.png";
+import robotImg2 from "@/assets/overview/robot2.png";
+import robotImg3 from "@/assets/overview/robot3.png";
+import robotImg4 from "@/assets/overview/robot4.png";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,10 +21,11 @@ import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
+const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
   username: z.string().email({
     message: "Please enter a valid email address.",
@@ -63,7 +67,7 @@ const Login = () => {
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-[#B9B9B9] font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[12px] font-source-code">
           not a member yet?&nbsp;
           <span
             className="font-normal text-white cursor-pointer font-source-code"
@@ -143,8 +147,12 @@ const Login = () => {
   );
 };
 const LoginPage = () => {
+  const randomImage = useMemo(
+    () => images[Math.floor(Math.random() * images.length)],
+    [],
+  );
   return (
-    <Layout backgroundImage={LoginImage}>
+    <Layout backgroundImage={randomImage}>
       <Login />
     </Layout>
   );

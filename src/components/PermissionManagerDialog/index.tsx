@@ -268,7 +268,7 @@ export default function PermissionManagerDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="sm:max-w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-[#303030]">
+        className="w-[328px] sm:w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-[#303030]">
         <DialogHeader>
           <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-[22px] lowercase pb-[18px] border-b border-[#303030]">
             Permission - manager
@@ -330,7 +330,7 @@ export default function PermissionManagerDialog({
                       <div className="ml-[26px] flex flex-col gap-[8px]">
                         {item[1]?.permissionList.map((childPermission) => (
                           <CheckboxLabel
-                            wrapperClassName="py-0"
+                            wrapperClassName="py-[0px]"
                             key={childPermission}
                             checked={item[1]?.checked?.includes(
                               childPermission

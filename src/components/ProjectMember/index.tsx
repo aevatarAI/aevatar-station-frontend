@@ -64,7 +64,7 @@ export default function ProjectMember() {
         ...item,
         role:
           item.projectRole === "pending" ? (
-            <span className="text-[12px]">invite pending</span>
+            <span className="text-[12px] font-syne">invite pending</span>
           ) : (
             <Select
               value={item.projectRole}

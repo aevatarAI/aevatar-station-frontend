@@ -95,7 +95,7 @@ export default function Header() {
 
         {pathname !== "/welcome" && (
           <div className="lg:hidden py-[12px]">
-            <OriganisactionHeader className="justify-center" />
+            <OriganisactionHeader className="justify-start px-[20px]" />
           </div>
         )}
       </div>

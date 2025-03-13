@@ -83,7 +83,7 @@ const Register = () => {
           </span>
         </p>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -157,7 +157,7 @@ const Register = () => {
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
                 disabled={loading}
               >
-                send Verification Code
+                send verification code
               </Button>
             </div>
           </form>

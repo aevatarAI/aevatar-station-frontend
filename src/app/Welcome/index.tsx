@@ -29,17 +29,17 @@ const WelcomePage: React.FC = () => {
     setHasInvitation(!!invited);
   }, []);
   return (
-    <div className="flex flex-col items-center lg:justify-center min-h-screen relative">
+    <div className="flex flex-col items-center lg:justify-center relative min-h-[calc(100vh-60px)]">
       <LogoIcon
         width={50}
         height={50}
         className="mb-[45px] mt-[57px] lg:mt-[85px]"
       />
       <div className="text-center mb-[72px]">
-        <h1 className="text-gradient text-[36px] lg:text-[54px] font-semibold leading-none">
+        <h1 className="text-gradient text-[36px] lg:text-[54px] font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
         </h1>
-        <p className="text-gray-light text-[14px]">
+        <p className="text-gray-light text-[14px] font-source-code">
           create or join an organisation
         </p>
       </div>
@@ -49,7 +49,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[12px] text-gray-light">
+          <p className="text-[12px] text-gray-light font-source-code">
             create a new organisation - You will be the owner
           </p>
         </div>
@@ -60,7 +60,7 @@ const WelcomePage: React.FC = () => {
               <h2 className="font-semibold text-[18px] mb-3 text-white">
                 join an existing organisation
               </h2>
-              <p className="text-[12px] text-gray-light">
+              <p className="text-[12px] text-gray-light font-source-code">
                 pending invitations for your approval
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
@@ -93,13 +93,17 @@ const WelcomePage: React.FC = () => {
             <h2 className="font-semibold text-[18px] mb-3 text-white">
               join an existing organisation
             </h2>
-            <p className="text-[12px] text-gray-light">
-              pending invitations for your approval
+            <p className="text-[12px] text-gray-light font-source-code">
+              you haven’t received an invitation yet. Share your email with the
+              organization owner.
             </p>
             <div className="w-full h-[1px] bg-black-light my-4" />
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[12px]">{email}</span>
-              <Copy toCopy={email} className="text-gray-light" />
+              <span className="text-[12px] font-source-code">{email}</span>
+              <Copy
+                toCopy={email}
+                className="text-gray-light hover:text-white"
+              />
             </div>
           </div>
         )}

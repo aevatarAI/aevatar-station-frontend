@@ -77,7 +77,7 @@ const ResetPassword = () => {
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -95,6 +95,7 @@ const ResetPassword = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="password"
                         {...field}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
@@ -110,10 +111,11 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[12px] font-semibold">
-                      confirm (repear) the password*
+                      confirm (repeat) the password*
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="password"
                         {...field}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
@@ -142,14 +144,14 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px] h-screen ">
+    <div className="relative flex justify-center px-[47px] min-h-screen flex-col items-center">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
         <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />
         <ResetPassword />
       </div>
       {socialMediaReander(
-        "fixed lg:absolute w-full lg:w-[408px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+        "relative lg:absolute w-full lg:w-[408px] lg:bottom-[40px] px-[47px] lg:px-0 mt-[68px] lg:mt-auto mb-[40px] lg:mb-auto",
       )}
     </div>
   );

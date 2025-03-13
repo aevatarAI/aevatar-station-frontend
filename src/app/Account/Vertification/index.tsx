@@ -83,7 +83,7 @@ const Verification = () => {
           <span className="font-normal text-white">login</span>
         </p>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form

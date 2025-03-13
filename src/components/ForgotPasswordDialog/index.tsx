@@ -40,7 +40,9 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[12px] cursor-pointer">forgot password?</span>
+        <span className="text-[12px] cursor-pointer font-source-code">
+          forgot password?
+        </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
@@ -50,7 +52,7 @@ const ForgotPasswordDialog = () => {
         </DialogHeader>
         {isSubmitted ? (
           <div>
-            <DialogDescription className="mb-7">
+            <DialogDescription className="mb-7 font-source-code">
               an account recovery email has been sent. if you don’t see it in 15
               minutes, check your junk folder and mark it as ‘not junk’.
             </DialogDescription>

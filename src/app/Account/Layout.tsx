@@ -24,7 +24,7 @@ export default function Layout({
         </div>
         {children}
         {socialMediaReander(
-          "fixed lg:absolute w-full lg:w-[408px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+          "relative lg:absolute w-full lg:w-[408px] mt-[68px] lg:mt-auto lg:bottom-[40px]",
         )}
       </div>
       <div className="basis-1/2 justify-center py-10 pr-10 hidden lg:block">

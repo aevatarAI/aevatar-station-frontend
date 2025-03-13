@@ -63,10 +63,10 @@ const Login = () => {
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-[#B9B9B9] font-normal text-[12px]">
-          not a member yet? &nbsp;
+        <p className="text-[#B9B9B9] font-normal text-[12px] font-source-code">
+          not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer"
+            className="font-normal text-white cursor-pointer font-source-code"
             onClick={() => {
               navigate("/register");
             }}
@@ -75,7 +75,7 @@ const Login = () => {
           </span>
         </p>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -112,6 +112,7 @@ const Login = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="password"
                         {...field}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"

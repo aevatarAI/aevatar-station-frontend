@@ -103,6 +103,9 @@ const Verification = () => {
                       <Input
                         placeholder="Enter verification code"
                         {...field}
+                        {...form.register("verificationCode", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

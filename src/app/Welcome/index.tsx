@@ -79,7 +79,7 @@ const WelcomePage: React.FC = () => {
                     <RadioGroupItem value={org.id} id={org.id} />
                     <label
                       htmlFor={org.id}
-                      className="text-[11px] text-gray-light"
+                      className="text-[11px] text-gray-light font-source-code"
                     >
                       {org.name}
                     </label>

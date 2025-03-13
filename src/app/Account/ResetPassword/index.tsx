@@ -20,10 +20,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 const formSchema = z.object({
   password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
+    message: "password must be at least 8 characters.",
   }),
   confirmPassword: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
+    message: "password must be at least 8 characters.",
   }),
 });
 const ResetPassword = () => {
@@ -98,6 +98,9 @@ const ResetPassword = () => {
                         type="password"
                         placeholder="password"
                         {...field}
+                        {...form.register("password", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -118,6 +121,9 @@ const ResetPassword = () => {
                         type="password"
                         placeholder="password"
                         {...field}
+                        {...form.register("confirmPassword", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

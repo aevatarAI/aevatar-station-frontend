@@ -28,10 +28,10 @@ import { z } from "zod";
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
   username: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "please enter a valid email address.",
   }),
   password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
+    message: "password must be at least 8 characters.",
   }),
 });
 
@@ -97,8 +97,11 @@ const Login = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email"
                         {...field}
+                        {...form.register("username", {
+                          required: "required",
+                        })}
+                        placeholder="Enter your email"
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -119,6 +122,9 @@ const Login = () => {
                         type="password"
                         placeholder="password"
                         {...field}
+                        {...form.register("password", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

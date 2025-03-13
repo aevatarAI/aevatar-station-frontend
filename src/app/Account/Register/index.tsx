@@ -24,10 +24,10 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z.string(),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "please enter a valid email address.",
   }),
   password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
+    message: "password must be at least 8 characters.",
   }),
 });
 
@@ -103,6 +103,9 @@ const Register = () => {
                       <Input
                         placeholder="Enter your name"
                         {...field}
+                        {...form.register("name", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -122,6 +125,9 @@ const Register = () => {
                       <Input
                         placeholder="Enter your email"
                         {...field}
+                        {...form.register("email", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -142,6 +148,9 @@ const Register = () => {
                         placeholder="Enter your password"
                         type="password"
                         {...field}
+                        {...form.register("password", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

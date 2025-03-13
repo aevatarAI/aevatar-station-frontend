@@ -10,7 +10,7 @@ export default function Layout({
   backgroundImage: string;
 }) {
   return (
-    <div className="flex flex-col h-screen lg:flex-row lg:gap-20 relative min-h-[600px]">
+    <div className="flex flex-col h-screen lg:flex-row relative min-h-[600px]">
       <LogoIcon className="absolute top-10 left-10 hidden lg:block" />
 
       <div className=" flex flex-col gap-[30px] lg:gap-[36px] basis-1/2 items-start lg:justify-center lg:items-center py-9 px-[47px] relative">
@@ -29,7 +29,7 @@ export default function Layout({
       </div>
       <div className="basis-1/2 justify-center py-10 pr-10 hidden lg:block">
         <div
-          className="w-full h-full min-h-[80vh] cutCorner bg-no-repeat bg-cover bg-center"
+          className="w-full h-full min-h-[80vh] cutCornerBig bg-no-repeat bg-cover bg-center"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
       </div>

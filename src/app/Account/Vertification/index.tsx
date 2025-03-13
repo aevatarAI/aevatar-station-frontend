@@ -78,8 +78,8 @@ const Verification = () => {
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-[#B9B9B9] font-normal text-[12px]">
-          already registered? &nbsp;
+        <p className="text-gray-light font-normal text-[12px] font-source-code">
+          already registered?&nbsp;
           <span className="font-normal text-white">login</span>
         </p>
       </div>

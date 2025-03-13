@@ -29,7 +29,7 @@ const WelcomePage: React.FC = () => {
     setHasInvitation(!!invited);
   }, []);
   return (
-    <div className="flex flex-col items-center lg:justify-center relative min-h-[calc(100vh-60px)]">
+    <div className="flex flex-col items-center lg:justify-center relative min-h-[calc(100vh-60px)] px-5">
       <LogoIcon
         width={50}
         height={50}
@@ -61,7 +61,8 @@ const WelcomePage: React.FC = () => {
                 join an existing organisation
               </h2>
               <p className="text-[12px] text-gray-light font-source-code">
-                pending invitations for your approval
+                you haven’t received an invitation yet. Share your address with
+                the organisation owner
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
 
@@ -90,12 +91,11 @@ const WelcomePage: React.FC = () => {
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
-            <h2 className="font-semibold text-[18px] mb-3 text-white">
+            <h2 className="font-semibold text-[18px] mb-3 text-white font-source-code">
               join an existing organisation
             </h2>
             <p className="text-[12px] text-gray-light font-source-code">
-              you haven’t received an invitation yet. Share your email with the
-              organization owner.
+              pending invitations for your approval
             </p>
             <div className="w-full h-[1px] bg-black-light my-4" />
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
@@ -109,7 +109,7 @@ const WelcomePage: React.FC = () => {
         )}
       </div>
       {socialMediaReander(
-        "fixed lg:absolute w-full lg:w-[275px] bottom-[40px] px-[47px] lg:px-0 left-0 lg:left-auto",
+        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios';
 interface Content {
   organizeId: string;
   role: string;
@@ -59,9 +60,18 @@ const mockData: Notification[] = [
   }
 ]
 
+const fetchNotifications = async () => {
+  try {
+    const response = await axios.get('/api/notifications')
+    return response.data
+  } catch (err) {
+    throw new Error('Unable to fetch notifications')
+  }
+}
+
 export const useGetNotifications = () => {
   return useQuery({
     queryKey: ['notifications'],
-    queryFn: () => Promise.resolve(mockData)
+    queryFn: fetchNotifications,
   })
 } 

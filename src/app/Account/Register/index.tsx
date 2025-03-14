@@ -135,7 +135,7 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email"
+                        placeholder="enter your email"
                         {...field}
                         {...form.register("email", {
                           required: "required",
@@ -157,7 +157,7 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your password"
+                        placeholder="enter your password"
                         type="password"
                         {...field}
                         {...form.register("password", {

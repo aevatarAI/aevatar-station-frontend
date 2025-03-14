@@ -90,7 +90,7 @@ const WelcomePage: React.FC = () => {
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
-            <h2 className="font-semibold text-[18px] mb-3 text-white font-source-code">
+            <h2 className="font-semibold text-[18px] mb-3 text-white ">
               join an existing organisation
             </h2>
             <p className="text-[12px] text-gray-light font-source-code">

@@ -119,7 +119,7 @@ const Login = () => {
                         {...form.register("username", {
                           required: "required",
                         })}
-                        placeholder="Enter your email"
+                        placeholder="enter your email"
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

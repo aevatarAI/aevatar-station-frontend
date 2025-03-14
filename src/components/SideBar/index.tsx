@@ -21,48 +21,11 @@ import {
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
-
-const organisationList = [
-  {
-    icon: <General />,
-    text: "general",
-    url: "/profile/organisation/general",
-  },
-  {
-    icon: <Project />,
-    text: "project",
-    url: "/profile/organisation/project",
-  },
-  {
-    icon: <Member />,
-    text: "member",
-    url: "/profile/organisation/member",
-  },
-  {
-    icon: <Role />,
-    text: "role",
-    url: "/profile/organisation/role",
-  },
-];
-
-const projectList = [
-  {
-    icon: <General />,
-    text: "general",
-    url: "/profile/projects/general",
-  },
-
-  {
-    icon: <Member />,
-    text: "member",
-    url: "/profile/projects/member",
-  },
-  {
-    icon: <Role />,
-    text: "role",
-    url: "/profile/projects/role",
-  },
-];
+import {
+  CURRENT_PROJECT_ATOM,
+  ORGANIZATIONS_LIST_ATOM,
+  PROJECT_LIST_ATOM,
+} from "@/state/atoms/organisation";
 
 export interface ISideBarProps {
   className?: string;
@@ -74,7 +37,59 @@ export function SideBar({ className }: ISideBarProps) {
   const navigate = useNavigate();
   const [isNotification] = useAtom(notificationAtom);
 
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
+  const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+
   console.log(params, pathname, "params===");
+
+  const organisationMenuList = useMemo(() => {
+    if (organisationList.length <= 0) return [];
+
+    return [
+      {
+        icon: <General />,
+        text: "general",
+        url: "/profile/organisation/general",
+      },
+      {
+        icon: <Project />,
+        text: "project",
+        url: "/profile/organisation/project",
+      },
+      {
+        icon: <Member />,
+        text: "member",
+        url: "/profile/organisation/member",
+      },
+      {
+        icon: <Role />,
+        text: "role",
+        url: "/profile/organisation/role",
+      },
+    ];
+  }, [organisationList]);
+
+  const projectMenuList = useMemo(() => {
+    if (projectList.length <= 0) return [];
+    return [
+      {
+        icon: <General />,
+        text: "general",
+        url: "/profile/projects/general",
+      },
+
+      {
+        icon: <Member />,
+        text: "member",
+        url: "/profile/projects/member",
+      },
+      {
+        icon: <Role />,
+        text: "role",
+        url: "/profile/projects/role",
+      },
+    ];
+  }, [projectList]);
 
   const profileList = useMemo(
     () => [
@@ -92,14 +107,16 @@ export function SideBar({ className }: ISideBarProps) {
     [isNotification]
   );
 
-  const profileMenuMap = useMemo(
-    () => ({
-      profile: profileList,
-      organisation: organisationList,
-      projects: projectList,
-    }),
-    [profileList]
-  );
+  const profileMenuMap = useMemo(() => {
+    const menu: {
+      profile: typeof profileList;
+      organisation?: typeof organisationMenuList;
+      projects?: typeof projectMenuList;
+    } = { profile: profileList };
+    if (organisationMenuList.length) menu.organisation = organisationMenuList;
+    if (projectMenuList.length) menu.projects = projectMenuList;
+    return menu;
+  }, [profileList, projectMenuList, organisationMenuList]);
 
   const [selectMenu, selectTab] = useSideBarParams();
 
@@ -161,7 +178,7 @@ export function SideBar({ className }: ISideBarProps) {
   return (
     <div
       className={clsx(
-        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px]",
+        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
         className
       )}>
       {pathname.startsWith("/dashboard") && dashboardMenu}

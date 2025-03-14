@@ -126,7 +126,7 @@ export default function OrganisationMember() {
                 </SelectContent>
               </Select>
             ) : (
-              <div className="text-[12px] font-syne">invite pending</div>
+              <div className="text-[12px] font-syne font-semibold">invite pending</div>
             )}
           </>
         ),

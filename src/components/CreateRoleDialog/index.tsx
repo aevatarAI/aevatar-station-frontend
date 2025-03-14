@@ -71,7 +71,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="sm:max-w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
         <DialogHeader>
           <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
             create role

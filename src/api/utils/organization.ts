@@ -125,7 +125,7 @@ export interface IRoles {
 }
 
 export interface IMemberItem {
-  userId: string;
+  id: string;
   userName: string;
 
   email: string;
@@ -143,34 +143,33 @@ export const getOrganizationMembers = async (
   // return result.data?.items ?? [];
   return [
     {
-      userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       userName: "string",
-      email: "string",
+      email: "axxx.ss@cxx.com",
       roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
     },
     {
-      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
       userName: "string1",
-      email: "string1",
+      email: "ss.ss@a.cxx",
       roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     },
     {
-      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
       userName: "string1",
-      email: "string1",
+      email: "aaa.ss@xx.xx",
       roleId: null,
     },
     {
-      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
       userName: "string1",
-      email: "string1",
+      email:  "aaa.ss@xx.xxs",
       roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
     },
   ];
 };
 
 export interface IRoleItem {
-  organizationId: string;
   roleName: string;
   roleId: string;
 }
@@ -185,12 +184,10 @@ export const getOrganizationRoles = async (
   // return result.data.items;
   return [
     {
-      organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       roleName: "owner",
     },
     {
-      organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
       roleName: "member",
     },

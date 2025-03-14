@@ -1,4 +1,5 @@
 import type {
+  IMemberItem,
   IOrganizationItem,
   IProjectItem,
   IRoleItem,
@@ -36,6 +37,20 @@ export const CURRENT_PROJECT_ATOM = atomWithStorage<string | null>(
 
 export const CURRENT_ORGANIZATION_ROLE_ATOM = atomWithStorage<IRoleItem[]>(
   "current_organization_roles_atom",
+  [],
+  undefined,
+  { getOnInit: true }
+);
+
+export const ORGANIZATION_MEMBER_ATOM = atomWithStorage<IMemberItem[]>(
+  "current_organization_member_atom",
+  [],
+  undefined,
+  { getOnInit: true }
+);
+
+export const CURRENT_PROJECT_ROLE_ATOM = atomWithStorage<IRoleItem[]>(
+  "current_project_roles_atom",
   [],
   undefined,
   { getOnInit: true }

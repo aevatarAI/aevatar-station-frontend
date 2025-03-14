@@ -113,7 +113,7 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your name"
+                        placeholder="enter your name"
                         {...field}
                         {...form.register("name", {
                           required: "required",

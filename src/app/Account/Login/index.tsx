@@ -160,12 +160,12 @@ const Login = () => {
               >
                 {loading ? "logging in" : "log in"}
               </Button>
-              <div className="text-right">
-                <ForgotPasswordDialog />
-              </div>
             </div>
           </form>
         </Form>
+        <div className="text-right">
+          <ForgotPasswordDialog />
+        </div>
       </div>
     </div>
   );

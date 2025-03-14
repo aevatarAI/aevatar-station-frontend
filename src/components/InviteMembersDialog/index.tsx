@@ -30,43 +30,41 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "@/assets/loading.svg?react";
 import clsx from "clsx";
-import { sleep } from "@etransfer/utils";
-import { useToast } from "@/hooks/use-toast";
+
 import {
   inviteMembersForm,
   type TInviteMembersKeyForm,
 } from "@/constants/form/inviteMembers";
+import { useAtom } from "jotai";
+import { CURRENT_ORGANIZATION_ROLE_ATOM } from "@/state/atoms/organisation";
 
-import { Checkbox } from "@/components/ui/checkbox";
+export default function InviteMembersDialog({
+  defaultRole,
+  onAddMember,
+}: {
+  defaultRole?: string;
+  onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
+}) {
+  const [roleList] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
 
-const roleList = ["owner", "member"];
-
-export default function InviteMembersDialog() {
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
-      role: "owner",
+      role: defaultRole,
     },
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
-  const { toast } = useToast();
-
   const onSubmit = useCallback(
     async (values: TInviteMembersKeyForm) => {
       console.log(values, "values===");
       setBtnLoading(true);
-      await sleep(2000);
+      await onAddMember(values);
       setBtnLoading(false);
       setOpen(false);
-      toast({
-        title: "",
-        description: "successfully created",
-        // duration: 30000000,
-      });
     },
-    [toast]
+    [onAddMember]
   );
 
   useEffect(() => {
@@ -125,9 +123,9 @@ export default function InviteMembersDialog() {
                         {roleList.map((item) => (
                           <SelectItem
                             className="text-[14px]"
-                            key={item}
-                            value={item}>
-                            {item}
+                            key={item.roleId}
+                            value={item.roleId}>
+                            {item.roleName}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -137,7 +135,7 @@ export default function InviteMembersDialog() {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="defaultProject"
                 render={({ field }) => (
@@ -154,7 +152,7 @@ export default function InviteMembersDialog() {
                     </FormLabel>
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button

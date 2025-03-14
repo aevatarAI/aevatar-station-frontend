@@ -1,12 +1,31 @@
 import { request } from "@/api";
+import { getOrganizationRoles } from "@/api/utils/organization";
 import OrganisationInner from "@/components/OrganisationInner";
 import ProfileInner from "@/components/ProfileInner";
 import ProjectsInner from "@/components/ProjectsInner";
 import { SideBar } from "@/components/SideBar";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
+import {
+  CURRENT_ORGANIZATION_ATOM,
+  CURRENT_ORGANIZATION_ROLE_ATOM,
+} from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
+import { useCallback, useEffect } from "react";
 
 export default function Profile() {
   const [selectMenu, selectTab] = useSideBarParams();
+
+  const [, setRoles] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
+  const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const getRoleList = useCallback(async () => {
+    if (!currentOrganisationId) return;
+    const result = await getOrganizationRoles(currentOrganisationId);
+    setRoles(result);
+  }, [currentOrganisationId, setRoles]);
+
+  useEffect(() => {
+    getRoleList();
+  }, [getRoleList]);
 
   return (
     <div className="flex flex-col lg:flex-row  h-[calc(100vh-60px)]">

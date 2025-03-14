@@ -81,3 +81,131 @@ export const getProjectList = async (
   // if (result.code !== "SUCCESS_CODE") throw result.message;
   // return result.data.items;
 };
+
+export interface IPermissionsItem {
+  name: string;
+}
+
+export const getOrganizationPermissions = async (organizationId: string) => {
+  // const result: TDataResponse<{ items: IPermissionsItem[] }> =
+  //   await request.organizations.getOrganizationPermissions({
+  //     query: organizationId,
+  //   });
+  // return result.data?.items;
+  await sleep(3000);
+  return [
+    {
+      name: "create",
+    },
+    {
+      name: "edit",
+    },
+    {
+      name: "delete",
+    },
+    {
+      name: "memberAdd",
+    },
+    {
+      name: "memberDelete",
+    },
+  ];
+};
+
+export enum InvitationStatus {
+  Pending = 0,
+  Joined = 1,
+  Declined = 2,
+}
+
+export interface IRoles {
+  organizationId: string;
+  roleId: string;
+  roleName: string;
+}
+
+export interface IMemberItem {
+  userId: string;
+  userName: string;
+
+  email: string;
+
+  roleId: string | null;
+}
+
+export const getOrganizationMembers = async (
+  organizationId: string
+): Promise<IMemberItem[]> => {
+  // const result: TDataResponse<{ items: IMemberItem[] }> =
+  //   await request.organizations.getOrganizationMembers({
+  //     query: organizationId,
+  //   });
+  // return result.data?.items ?? [];
+  return [
+    {
+      userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      userName: "string",
+      email: "string",
+      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
+    },
+    {
+      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      userName: "string1",
+      email: "string1",
+      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    },
+    {
+      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      userName: "string1",
+      email: "string1",
+      roleId: null,
+    },
+    {
+      userId: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
+      userName: "string1",
+      email: "string1",
+      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
+    },
+  ];
+};
+
+export interface IRoleItem {
+  organizationId: string;
+  roleName: string;
+  roleId: string;
+}
+
+export const getOrganizationRoles = async (
+  organizationId: string
+): Promise<IRoleItem[]> => {
+  // const result: TDataResponse<{ items: IRoleItem[] }> =
+  //   await request.organizations.getOrganizationRoles({
+  //     query: organizationId,
+  //   });
+  // return result.data.items;
+  return [
+    {
+      organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      roleName: "owner",
+    },
+    {
+      organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
+      roleName: "member",
+    },
+  ];
+};
+
+// roles: [
+//   {
+//     organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//     roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//     roleName: "owner",
+//   },
+//   {
+//     organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//     roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
+//     roleName: "member",
+//   },
+// ],

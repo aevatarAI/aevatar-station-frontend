@@ -5,7 +5,9 @@ import OriganisactionHeader from "@/components/OriganisactionHeader";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { SheetSideBar } from "@/components/SheetSideBar";
 import { useNavigate } from "@/hooks/navigate";
+import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
+import { useAtom } from "jotai";
 import { useMemo } from "react";
 import { useLocation } from "wouter";
 
@@ -26,22 +28,21 @@ export default function Header() {
   const isNotication = true;
 
   console.log(pathname, "pathname==");
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
 
   return (
     <div
       className={clsx(
         "lg:h-[60px]",
         pathname === "/welcome" ? "h-[60px]" : "h-[110px]",
-        ignoreHeaders.includes(pathname) && "hidden",
-      )}
-    >
+        ignoreHeaders.includes(pathname) && "hidden"
+      )}>
       <div className={clsx("fixed z-10 w-full  bg-[#000]", hidden && "hidden")}>
         <div
           className={clsx(
             "border-b border-[#303030] flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
-            "lg:px-[16px] lg:py-[13px] lg:pl-[19px]",
-          )}
-        >
+            "lg:px-[16px] lg:py-[13px] lg:pl-[19px]"
+          )}>
           <div>
             {pathname === "/welcome" && <img src={aevatarAi} alt="aevatarAi" />}
             {pathname !== "/welcome" && (
@@ -52,34 +53,32 @@ export default function Header() {
           <div
             className={clsx(
               "flex items-center justify-center gap-[20px] text-white font-syne text-[14px] font-semibold leading-normal lowercase cursor-pointer ",
-              "lg:gap-[34px]",
-            )}
-          >
+              "lg:gap-[34px]"
+            )}>
             {pathname !== "/welcome" && (
               <>
                 <div
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
+                    !projectList.length && "text-[#606060] cursor-not-allowed"
                   )}
                   onClick={() => {
+                    if (!projectList.length) return;
                     navigate("/dashboard");
-                  }}
-                >
+                  }}>
                   dashboard
                 </div>
                 <div
                   className={clsx(pathname.startsWith("/profile") && selectCls)}
                   onClick={() => {
                     navigate("/profile");
-                  }}
-                >
+                  }}>
                   settings
                 </div>
                 <div
                   onClick={() => {
                     navigate("/profile/profile/notifications");
-                  }}
-                >
+                  }}>
                   {isNotication ? (
                     <Notication />
                   ) : (

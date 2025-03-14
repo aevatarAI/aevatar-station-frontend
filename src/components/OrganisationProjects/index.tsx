@@ -1,103 +1,128 @@
 import ProjectEditDialog from "@/components/ProjectEditDialog";
 import DataTable from "@/components/DataTable";
-import {
-  columns,
-  type IProjectList,
-} from "@/components/OrganisationProjects/columns";
+import { columns } from "@/components/OrganisationProjects/columns";
 import { textGradient } from "@/constants/cls";
-import { sleep } from "@etransfer/utils";
+import { handleErrorMessage, sleep } from "@etransfer/utils";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TProjectEditForm } from "@/constants/form/project";
 import DeleteDialog from "@/components/DeleteDialog";
+import { useAtom } from "jotai";
+import {
+  CURRENT_ORGANIZATION_ATOM,
+  PROJECT_LIST_ATOM,
+} from "@/state/atoms/organisation";
+import { getProjectList } from "@/api/utils/organization";
+import { useToast } from "@/hooks/use-toast";
+import { request } from "@/api";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 
 export default function OrganisationProjects() {
-  const [projectList, setProjectList] = useState<IProjectList[]>([]);
   const [loading, setLoading] = useState<boolean>();
+  const { toast } = useToast();
+  const [projectList, setProjectList] = useAtom(PROJECT_LIST_ATOM);
+  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+
+  const userPermissions = useUserPermissions();
+
+  const updateProjectList = useCallback(async () => {
+    try {
+      if (!organizationId) return;
+      setLoading(true);
+
+      const list = await getProjectList(organizationId);
+      setProjectList(list);
+      setLoading(false);
+    } catch (error) {
+      toast({
+        description: handleErrorMessage(error),
+      });
+      setLoading(false);
+    }
+  }, [organizationId, setProjectList, toast]);
 
   useEffect(() => {
-    setLoading(true);
-    sleep(2000).then(() => {
-      setProjectList([
-        {
-          id: "1",
-          name: "name",
-          domainName: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys111111",
-          created:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          isEdit: true,
-          isRemove: true,
-          members: 0,
-        },
-        {
-          id: "2",
-          name: "name22222222222",
-          domainName: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys111111",
-          created:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          isEdit: true,
-          isRemove: true,
-          members: 0,
-        },
-        {
-          id: "3",
-          name: "name22223332222222",
-          domainName: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys111111",
-          created:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          isEdit: true,
-          isRemove: true,
-          members: 0,
-        },
-        {
-          id: "4",
-          name: "name22223332222222",
-          domainName: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys111111",
-          created:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          isEdit: true,
-          isRemove: true,
-          members: 0,
-        },
-      ]);
-      setLoading(false);
-    });
-  }, []);
+    updateProjectList();
+  }, [updateProjectList]);
 
-  const onEdit = useCallback(async (values: TProjectEditForm) => {
-    console.log(values, "values===");
-    await sleep(2000);
-  }, []);
+  const onEdit = useCallback(
+    async ({ name, domainName }: TProjectEditForm, id: string) => {
+      try {
+        await request.projects.editProject({
+          query: id,
+          data: {
+            displayName: name,
+            domainName,
+          },
+        });
+        await sleep(500);
+        updateProjectList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error),
+        });
+      }
+    },
+    [updateProjectList, toast]
+  );
 
-  const onCreate = useCallback(async (values: TProjectEditForm) => {
-    console.log(values, "values===");
+  const onCreate = useCallback(
+    async ({ domainName, name }: TProjectEditForm) => {
+      try {
+        if (!organizationId) return;
+        await request.projects.addProject({
+          data: {
+            organizationId,
+            displayName: name,
+            domainName,
+          },
+        });
+        await sleep(500);
+        updateProjectList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error),
+        });
+      }
+    },
+    [organizationId, toast, updateProjectList]
+  );
 
-    await sleep(2000);
-  }, []);
-
-  const onDeleteYes = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+  const onDeleteYes = useCallback(
+    async (id: string) => {
+      try {
+        const result = await request.projects.deleteProject({
+          query: id,
+        });
+        console.log(result, "result=");
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error),
+        });
+      }
+    },
+    [toast]
+  );
 
   const tableData = useMemo(
     () =>
       projectList.map((item) => ({
         ...item,
         operation: (
-          <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {item.isEdit ? (
+          <div className="flex items-center gap-[7px] pl-[20px]">
+            {userPermissions?.edit ? (
               <ProjectEditDialog
                 type="edit"
-                name={item.name}
+                name={item.displayName}
                 domainName={item.domainName}
-                onSubmit={onEdit}
+                onSubmit={(v) => onEdit(v, item.id)}
               />
             ) : (
               <span />
             )}
-            {item.isRemove ? (
+            {userPermissions?.delete ? (
               <DeleteDialog
-                onYes={onDeleteYes}
+                onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the project?"}
                 description={
                   "*Once deleted, the existing project will become invalid."
@@ -109,14 +134,18 @@ export default function OrganisationProjects() {
           </div>
         ),
       })),
-    [projectList, onEdit, onDeleteYes]
+    [projectList, userPermissions, onEdit, onDeleteYes]
   );
   console.log(loading, "loading==");
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
-        <ProjectEditDialog type="create" onSubmit={onCreate} />
+        {userPermissions?.create ? (
+          <ProjectEditDialog type="create" onSubmit={onCreate} />
+        ) : (
+          <span />
+        )}
       </div>
       <DataTable
         className={clsx(!loading && projectList.length && "min-w-[600px]")}

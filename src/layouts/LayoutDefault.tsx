@@ -1,3 +1,8 @@
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery
+} from '@tanstack/react-query';
 import "@fontsource/source-code-pro";
 import "@fontsource/syne";
 import "@fontsource/syne/600.css";
@@ -13,18 +18,22 @@ import type React from "react";
 
 import ProviderComponent from "@/components/providers/webProvider";
 
+const queryClient = new QueryClient();
+
 export default function LayoutDefault({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <ProviderComponent>
-      <div>
-        <div className="flex-grow">{children}</div>
-        <Loading />
-        <Toaster />
-      </div>
-    </ProviderComponent>
+    <QueryClientProvider client={queryClient}>
+      <ProviderComponent>
+        <div>
+          <div className="flex-grow">{children}</div>
+          <Loading />
+          <Toaster />
+        </div>
+      </ProviderComponent>
+    </QueryClientProvider>
   );
 }

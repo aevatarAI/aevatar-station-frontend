@@ -1,6 +1,6 @@
 import { request } from "@/api";
 import General from "@/components/General";
-import Notifications from "@/components/Notifications";
+import { Notifications } from "@/components/Notifications";
 import type { TAB_LIST } from "@/constants/sideBar";
 import { useToast } from "@/hooks/use-toast";
 import { handleErrorMessage, sleep } from "@etransfer/utils";

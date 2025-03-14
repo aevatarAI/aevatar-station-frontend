@@ -4,8 +4,10 @@ import ProfileInner from "@/components/ProfileInner";
 import ProjectsInner from "@/components/ProjectsInner";
 import { SideBar } from "@/components/SideBar";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
+import { useWebSocket } from "@/hooks/useWebSocket";
 
 export default function Profile() {
+  useWebSocket();
   const [selectMenu, selectTab] = useSideBarParams();
 
   return (

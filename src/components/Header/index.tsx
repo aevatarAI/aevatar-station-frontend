@@ -23,7 +23,7 @@ export default function Header() {
   }, [pathname]);
 
   // TODO
-  const isNotication = true;
+  const isNotification = true;
 
   console.log(pathname, "pathname==");
 
@@ -80,7 +80,7 @@ export default function Header() {
                     navigate("/profile/profile/notifications");
                   }}
                 >
-                  {isNotication ? (
+                  {isNotification ? (
                     <Notication />
                   ) : (
                     <NoticationEmpty className="text-white" />

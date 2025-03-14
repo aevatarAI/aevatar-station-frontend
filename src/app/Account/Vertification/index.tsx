@@ -101,7 +101,7 @@ const Verification = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter verification code"
+                        placeholder="enter verification code"
                         {...field}
                         {...form.register("verificationCode", {
                           required: "required",

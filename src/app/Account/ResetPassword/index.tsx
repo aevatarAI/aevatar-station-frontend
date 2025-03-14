@@ -12,20 +12,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { resetPassword } from "@/services/auth";
+import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-const formSchema = z.object({
-  password: z.string().min(8, {
-    message: "password must be at least 8 characters.",
-  }),
-  confirmPassword: z.string().min(8, {
-    message: "password must be at least 8 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "password must be at least 8 characters long")
+      .regex(
+        /[^a-zA-Z0-9]/,
+        "password must contain at least one non-alphanumeric character",
+      )
+      .regex(
+        /[a-z]/,
+        "password must contain at least one lowercase letter ('a'-'z')",
+      )
+      .regex(
+        /[A-Z]/,
+        "password must contain at least one uppercase letter ('A'-'Z')",
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "passwords do not match",
+    path: ["confirmPassword"],
+  });
 const ResetPassword = () => {
   const [userId, setUserId] = useState("");
   const [resetToken, setResetToken] = useState("");
@@ -33,9 +50,8 @@ const ResetPassword = () => {
   const { toast } = useToast();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const urlUserId = params.get("userid") || "";
+    const urlUserId = params.get("userId") || "";
     const urlResetToken = params.get("resetToken") || "";
-
     if (!urlUserId || !urlResetToken) {
       toast({
         description: "Invalid reset link.",
@@ -49,17 +65,20 @@ const ResetPassword = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
       const { password } = values;
       try {
         const result = await resetPassword(userId, resetToken, password);
-        if (result.code === "20000" && result.data) {
-          console.log("Reset successful!");
+        if (result.code === "20001" && result.data) {
+          console.log("reset successful!");
+          sleep(2000);
+          navigate("/login");
         } else {
           toast({
-            description: "Invalid reset token.",
+            description: result.message || "Invalid reset token.",
           });
         }
       } catch {
@@ -70,7 +89,7 @@ const ResetPassword = () => {
         setLoading(false);
       }
     },
-    [toast, userId, resetToken],
+    [toast, userId, resetToken, navigate],
   );
   return (
     <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">

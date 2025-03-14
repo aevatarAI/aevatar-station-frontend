@@ -28,6 +28,11 @@ export default defineConfig((config) => ({
         changeOrigin: true,
         secure: false,
       },
+      "/api": {
+        target: "https://station-developer-staging.aevatar.ai/developer-client",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 }));

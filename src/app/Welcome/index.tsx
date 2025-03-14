@@ -9,7 +9,6 @@ import type React from "react";
 import { useEffect, useState } from "react";
 const WelcomePage: React.FC = () => {
   const [accessToken] = useAtom(accessTokenAtom);
-  console.log(accessToken, "accessToken");
   const [org, setOrg] = useState<string>();
   const organisations = [
     { id: "org1", name: "organisation #1" },
@@ -29,7 +28,7 @@ const WelcomePage: React.FC = () => {
     setHasInvitation(!!invited);
   }, []);
   return (
-    <div className="flex flex-col items-center lg:justify-center relative min-h-[calc(100vh-60px)] px-5">
+    <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon
         width={50}
         height={50}

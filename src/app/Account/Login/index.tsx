@@ -20,8 +20,8 @@ import { useToast } from "@/hooks/use-toast";
 import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSetAtom } from "jotai";
-import { useCallback, useMemo, useState } from "react";
+import { useAtom, useSetAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -30,28 +30,42 @@ const formSchema = z.object({
   username: z.string().email({
     message: "please enter a valid email address.",
   }),
-  password: z.string().min(8, {
-    message: "password must be at least 8 characters.",
-  }),
+  password: z
+    .string()
+    .min(8, "password must be at least 8 characters long")
+    .regex(
+      /[^a-zA-Z0-9]/,
+      "password must contain at least one non-alphanumeric character",
+    )
+    .regex(
+      /[a-z]/,
+      "password must contain at least one lowercase letter ('a'-'z')",
+    )
+    .regex(
+      /[A-Z]/,
+      "password must contain at least one uppercase letter ('A'-'Z')",
+    ),
 });
 
 const Login = () => {
   const { toast } = useToast();
-  const setAccessToken = useSetAtom(accessTokenAtom);
+  const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
       const { username, password } = values;
       try {
-        const { data } = await login(username, password);
+        const data = await login(username, password);
         setAccessToken(data.access_token);
-        console.log("Login successful!");
+        navigate("/welcome");
       } catch (err) {
+        console.error(err, "err");
         toast({
           description: "Login failed. Please check your credentials.",
         });
@@ -59,10 +73,14 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken],
+    [toast, setAccessToken, navigate],
   );
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/welcome");
+    }
+  }, [accessToken, navigate]);
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">

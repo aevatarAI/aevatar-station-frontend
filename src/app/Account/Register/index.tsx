@@ -26,9 +26,21 @@ const formSchema = z.object({
   email: z.string().email({
     message: "please enter a valid email address.",
   }),
-  password: z.string().min(8, {
-    message: "password must be at least 8 characters.",
-  }),
+  password: z
+    .string()
+    .min(8, "password must be at least 8 characters long")
+    .regex(
+      /[^a-zA-Z0-9]/,
+      "password must contain at least one non-alphanumeric character",
+    )
+    .regex(
+      /[a-z]/,
+      "password must contain at least one lowercase letter ('a'-'z')",
+    )
+    .regex(
+      /[A-Z]/,
+      "password must contain at least one uppercase letter ('A'-'Z')",
+    ),
 });
 
 const Register = () => {

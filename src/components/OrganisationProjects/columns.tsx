@@ -1,19 +1,10 @@
+import type { IProjectItem } from "@/api/utils/organization";
 import Copy from "@/components/Copy";
 import { shortenString } from "@/lib/text";
 import type { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
-export interface IProjectList {
-  id: string;
-  name: string;
-  domainName: string;
-  members: number;
-  created: string | number;
-  isEdit?: boolean;
-  isRemove?: boolean;
-}
-
-export interface IProjectTable extends IProjectList {
+export interface IProjectTable extends IProjectItem {
   operation?: JSX.Element;
 }
 
@@ -23,7 +14,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "Name",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[15px] font-semibold pl-[15px] pr-[19px]">
-        {row.original.name}
+        {row.original.displayName}
       </div>
     ),
   },
@@ -45,7 +36,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "members",
     cell: ({ row }) => (
       <div className="pr-[19px] w-[175px] font-source-code">
-        {row.original.members}
+        {row.original.memberCount}
       </div>
     ),
   },
@@ -54,7 +45,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "created",
     cell: ({ row }) => (
       <div className="pr-[19px] w-[175px] font-source-code">
-        {dayjs(row.original.created).format("DD/MM/YYYY HH:mm")}
+        {dayjs(row.original.creationTime).format("DD/MM/YYYY HH:mm")}
       </div>
     ),
   },

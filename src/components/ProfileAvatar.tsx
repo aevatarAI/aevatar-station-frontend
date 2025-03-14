@@ -57,7 +57,7 @@ export default function ProfileAvatar() {
               setOpen(false);
               navigate("/");
             }}>
-            Log out
+            log out
           </div>
         </PopoverContent>
       </Popover>

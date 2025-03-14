@@ -8,7 +8,7 @@ export default function Dashboard() {
   // TODO
   useUpdateOrganisations();
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-60px)]">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-60px)] bg-[#000]">
       <div className="hidden lg:block w-[200px]  bg-[#191919] min-w-[200px]">
         <SideBar />
       </div>

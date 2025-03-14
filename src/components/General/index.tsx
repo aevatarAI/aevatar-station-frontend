@@ -38,7 +38,7 @@ export default function General({
   const buttonELe = useMemo(
     () => (
       <LoadingButton
-        className={clsx(_buttonProps?.className)}
+        className={clsx(_buttonProps?.className, "font-semibold")}
         onClick={async () => {
           if (!inputText) return;
           await onConfirm?.(inputText);

@@ -62,8 +62,7 @@ const mockData: Notification[] = [
 
 const fetchNotifications = async () => {
   try {
-    const response = await axios.get('/api/notifications')
-    return response.data
+    return Promise.resolve(mockData)
   } catch (err) {
     throw new Error('Unable to fetch notifications')
   }

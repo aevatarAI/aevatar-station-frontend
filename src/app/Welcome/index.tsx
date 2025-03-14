@@ -9,7 +9,6 @@ import type React from "react";
 import { useEffect, useState } from "react";
 const WelcomePage: React.FC = () => {
   const [accessToken] = useAtom(accessTokenAtom);
-  console.log(accessToken, "accessToken");
   const [org, setOrg] = useState<string>();
   const organisations = [
     { id: "org1", name: "organisation #1" },
@@ -29,7 +28,7 @@ const WelcomePage: React.FC = () => {
     setHasInvitation(!!invited);
   }, []);
   return (
-    <div className="flex flex-col items-center lg:justify-center relative min-h-[calc(100vh-60px)] px-5">
+    <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon
         width={50}
         height={50}
@@ -91,7 +90,7 @@ const WelcomePage: React.FC = () => {
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
-            <h2 className="font-semibold text-[18px] mb-3 text-white font-source-code">
+            <h2 className="font-semibold text-[18px] mb-3 text-white ">
               join an existing organisation
             </h2>
             <p className="text-[12px] text-gray-light font-source-code">

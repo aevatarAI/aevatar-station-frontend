@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -30,41 +29,47 @@ import {
   type TInviteMembersKeyForm,
   inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { useToast } from "@/hooks/use-toast";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
+import type { IMemberItem } from "@/api/utils/organization";
 
-const roleList = ["owner", "member"];
-const addressList = ["user123@aelf.io"];
-export default function InviteMembersDialog() {
+interface IInviteMembersDialogProps {
+  defaultRoleId?: string;
+  defaulteEmail?: string;
+  orgMemberList: IMemberItem[];
+  onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
+}
+
+export default function InviteMembersDialog({
+  defaultRoleId,
+  defaulteEmail,
+  orgMemberList,
+  onAddMember,
+}: IInviteMembersDialogProps) {
+  const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
+
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
-      role: "owner",
-      email: "user123@aelf.io",
+      role: defaultRoleId ?? roleList[0]?.roleId,
+      email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
-  const { toast } = useToast();
-
   const onSubmit = useCallback(
     async (values: TInviteMembersKeyForm) => {
       setBtnLoading(true);
-      await sleep(2000);
+      await onAddMember(values);
       setBtnLoading(false);
       setOpen(false);
-      toast({
-        title: "",
-        description: "successfully created",
-        // duration: 30000000,
-      });
     },
-    [toast]
+    [onAddMember]
   );
 
   useEffect(() => {
@@ -105,12 +110,12 @@ export default function InviteMembersDialog() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
-                          {addressList.map((item) => (
+                          {orgMemberList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
-                              key={item}
-                              value={item}>
-                              {item}
+                              key={item.email}
+                              value={item.email}>
+                              {item.email}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -138,9 +143,9 @@ export default function InviteMembersDialog() {
                           {roleList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
-                              key={item}
-                              value={item}>
-                              {item}
+                              key={item.roleId}
+                              value={item.roleId}>
+                              {item.roleName}
                             </SelectItem>
                           ))}
                         </SelectContent>

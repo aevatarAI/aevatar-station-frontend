@@ -1,15 +1,8 @@
+import type { IMemberItem } from "@/api/utils/organization";
 import Copy from "@/components/Copy";
 import type { ColumnDef } from "@tanstack/react-table";
 
-export interface IMemberList {
-  id: string;
-  name: string;
-  email: string;
-  organisationRole: string;
-  isRemove?: boolean;
-}
-
-export interface IMemberTable extends IMemberList {
+export interface IMemberTable extends IMemberItem {
   operation?: JSX.Element;
   role?: JSX.Element;
 }
@@ -20,7 +13,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
     header: "Name",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
-        {row.original.name}
+        {row.original.userName}
       </div>
     ),
   },

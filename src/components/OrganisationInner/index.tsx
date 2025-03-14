@@ -1,9 +1,11 @@
+import { request } from "@/api";
 import General from "@/components/General";
 import OrganisationMember from "@/components/OrganisationMember";
 import OrganisationProjects from "@/components/OrganisationProjects";
 import OrganisationRole from "@/components/OrganisationRole";
 import type { TAB_LIST } from "@/constants/sideBar";
-import { sleep } from "@etransfer/utils";
+import { useToast } from "@/hooks/use-toast";
+import { handleErrorMessage, sleep } from "@etransfer/utils";
 import { useCallback } from "react";
 
 interface IOrganisationInnerProps {
@@ -11,9 +13,27 @@ interface IOrganisationInnerProps {
 }
 
 export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
-  const onNameSave = useCallback(async () => {
-    await sleep(2000);
-  }, []);
+  const { toast } = useToast();
+  const onNameSave = useCallback(
+    async (displayName: string) => {
+      try {
+        await sleep(2000);
+        await request.organizations.editOrganization({
+          params: {
+            displayName,
+          },
+        });
+        toast({
+          description: "Successfully",
+        });
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "Error: save name"),
+        });
+      }
+    },
+    [toast]
+  );
   return (
     <div>
       {tab === "general" && (

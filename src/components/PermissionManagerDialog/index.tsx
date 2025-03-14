@@ -7,16 +7,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
 import clsx from "clsx";
 import { useToast } from "@/hooks/use-toast";
-import {
-  inviteMembersForm,
-  type TInviteMembersKeyForm,
-} from "@/constants/form/inviteMembers";
+
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
   menuItemClx,
@@ -112,19 +106,9 @@ export interface IPermissionManagerDialogProps {
 export default function PermissionManagerDialog({
   onSave,
 }: IPermissionManagerDialogProps) {
-  const form = useForm<TInviteMembersKeyForm>({
-    resolver: zodResolver(inviteMembersForm),
-    defaultValues: {
-      role: "owner",
-    },
-  });
   const [open, setOpen] = useState(false);
 
   const { toast } = useToast();
-
-  useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
 
   const [permissionMap, setPermissionMap] =
     useState<{ [x in string]: { [x in string]: TChildPermission } }>();

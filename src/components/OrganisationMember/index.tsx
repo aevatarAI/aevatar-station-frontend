@@ -19,16 +19,16 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
+  ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
 import { handleErrorMessage, sleep } from "@etransfer/utils";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { TInviteMembersKeyForm } from "@/constants/form/inviteMembers";
 import { request } from "@/api";
 
 export default function OrganisationMember() {
-  const [memberList, setMemberList] = useState<IMemberItem[]>([]);
+  const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
   const [loading, setLoading] = useState<boolean>();
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
@@ -49,7 +49,7 @@ export default function OrganisationMember() {
       });
       setLoading(false);
     }
-  }, [toast, organizationId]);
+  }, [toast, organizationId, setMemberList]);
 
   useEffect(() => {
     getMembers();
@@ -110,7 +110,7 @@ export default function OrganisationMember() {
             {item.roleId ? (
               <Select
                 value={item.roleId}
-                onValueChange={(v) => onChangeRole(item.userId, v)}>
+                onValueChange={(v) => onChangeRole(item.id, v)}>
                 <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -134,9 +134,7 @@ export default function OrganisationMember() {
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
             {userPermissions.memberDelete ? (
               <DeleteDialog
-                onYes={() =>
-                  onSetMember(item.email, false, item.roleId || "")
-                }
+                onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
                 description={
                   "*Once deleted, the existing member will become invalid."

@@ -36,15 +36,15 @@ const formSchema = z.object({
     .min(8, "password must be at least 8 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character"
+      "password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')"
+      "password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')"
+      "password must contain at least one uppercase letter ('A'-'Z')",
     ),
 });
 
@@ -75,7 +75,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate]
+    [toast, setAccessToken, navigate],
   );
 
   useEffect(() => {
@@ -93,7 +93,8 @@ const Login = () => {
             className="font-normal text-white cursor-pointer font-source-code"
             onClick={() => {
               navigate("/register");
-            }}>
+            }}
+          >
             register
           </span>
         </p>
@@ -103,7 +104,8 @@ const Login = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="gap-5 flex flex-col">
+            className="gap-5 flex flex-col"
+          >
             <div className="flex flex-col gap-5">
               <FormField
                 control={form.control}
@@ -156,7 +158,8 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
-                disabled={loading}>
+                disabled={loading}
+              >
                 {loading ? "logging in" : "log in"}
               </Button>
             </div>
@@ -172,7 +175,7 @@ const Login = () => {
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    []
+    [],
   );
   return (
     <Layout backgroundImage={randomImage}>

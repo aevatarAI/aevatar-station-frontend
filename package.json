@@ -6,7 +6,9 @@
 		"lint": "biome lint --write .",
 		"format": "biome format --write .",
 		"shadcn": "npx shadcn@latest",
-		"install-hooks": "lefthook install"
+		"install-hooks": "lefthook install",
+		"test": "vitest --coverage",
+		"test:dev": "vitest --watch"
 	},
 	"dependencies": {
 		"@aelf-web-login/wallet-adapter-base": "0.3.2-alpha.3",

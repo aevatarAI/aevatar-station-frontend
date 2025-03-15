@@ -69,7 +69,7 @@ const Login = () => {
       } catch (err) {
         console.error(err, "err");
         toast({
-          description: "Login failed. Please check your credentials.",
+          description: "Login failed. Please check your username and password.",
         });
       } finally {
         setLoading(false);

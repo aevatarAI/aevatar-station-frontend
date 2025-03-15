@@ -84,6 +84,11 @@ export const getProjectList = async (
 
 export interface IPermissionsItem {
   name: string;
+  displayName: string;
+  parentName?: null | string;
+  isGranted: boolean;
+  allowedProviders: any[];
+  grantedProviders: any[];
 }
 
 export const getOrganizationPermissions = async (organizationId: string) => {
@@ -95,19 +100,84 @@ export const getOrganizationPermissions = async (organizationId: string) => {
   await sleep(3000);
   return [
     {
-      name: "create",
+      name: "DeveloperPlatform.Organizations",
+      displayName: "Permission:Organizations",
+      parentName: null,
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
     },
     {
-      name: "edit",
+      name: "DeveloperPlatform.Organizations.Create",
+      displayName: "Permission:Organizations.Create",
+      parentName: "DeveloperPlatform.Organizations",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
     },
     {
-      name: "delete",
+      name: "DeveloperPlatform.Organizations.Edit",
+      displayName: "Permission:Organizations.Edit",
+      parentName: "DeveloperPlatform.Organizations",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
     },
     {
-      name: "memberAdd",
+      name: "DeveloperPlatform.Organizations.Delete",
+      displayName: "Permission:Organizations.Delete",
+      parentName: "DeveloperPlatform.Organizations",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
     },
     {
-      name: "memberDelete",
+      name: "DeveloperPlatform.OrganizationMembers",
+      displayName: "Permission:OrganizationMembers",
+      parentName: null,
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
+    },
+    {
+      name: "DeveloperPlatform.OrganizationMembers.Manage",
+      displayName: "Permission:OrganizationMembers.Manage",
+      parentName: "DeveloperPlatform.OrganizationMembers",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
+    },
+    {
+      name: "DeveloperPlatform.ApiKeys",
+      displayName: "Permission:ApiKeys",
+      parentName: null,
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
+    },
+    {
+      name: "DeveloperPlatform.ApiKeys.Create",
+      displayName: "Permission:ApiKeys.Create",
+      parentName: "DeveloperPlatform.ApiKeys",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
+    },
+    {
+      name: "DeveloperPlatform.ApiKeys.Edit",
+      displayName: "Permission:ApiKeys.Edit",
+      parentName: "DeveloperPlatform.ApiKeys",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
+    },
+    {
+      name: "DeveloperPlatform.ApiKeys.Delete",
+      displayName: "Permission:ApiKeys.Delete",
+      parentName: "DeveloperPlatform.ApiKeys",
+      isGranted: true,
+      allowedProviders: [],
+      grantedProviders: [],
     },
   ];
 };
@@ -163,7 +233,7 @@ export const getOrganizationMembers = async (
     {
       id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
       userName: "string1",
-      email:  "aaa.ss@xx.xxs",
+      email: "aaa.ss@xx.xxs",
       roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
     },
   ];

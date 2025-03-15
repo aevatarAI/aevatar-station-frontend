@@ -26,6 +26,8 @@ import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 
 export interface ISideBarProps {
   className?: string;
@@ -39,12 +41,14 @@ export function SideBar({ className }: ISideBarProps) {
 
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const userPermissions = useUserPermissions();
+  const userProjectPermissions = useProjectPermissions();
 
   console.log(params, pathname, "params===");
 
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
-
+    if (!userPermissions.organizations) return [];
     return [
       {
         icon: <General />,
@@ -61,16 +65,17 @@ export function SideBar({ className }: ISideBarProps) {
         text: "member",
         url: "/profile/organisation/member",
       },
-      {
-        icon: <Role />,
-        text: "role",
-        url: "/profile/organisation/role",
-      },
+      // {
+      //   icon: <Role />,
+      //   text: "role",
+      //   url: "/profile/organisation/role",
+      // },
     ];
-  }, [organisationList]);
+  }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
     if (projectList.length <= 0) return [];
+    if (!userProjectPermissions.projects) return [];
     return [
       {
         icon: <General />,
@@ -83,13 +88,13 @@ export function SideBar({ className }: ISideBarProps) {
         text: "member",
         url: "/profile/projects/member",
       },
-      {
-        icon: <Role />,
-        text: "role",
-        url: "/profile/projects/role",
-      },
+      // {
+      //   icon: <Role />,
+      //   text: "role",
+      //   url: "/profile/projects/role",
+      // },
     ];
-  }, [projectList]);
+  }, [projectList, userProjectPermissions.projects]);
 
   const profileList = useMemo(
     () => [

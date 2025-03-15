@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
@@ -28,6 +29,7 @@ const Verification = () => {
   const [password] = useAtom(passwordAtom);
   const [name] = useAtom(usernameAtom);
   const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -80,7 +82,14 @@ const Verification = () => {
         <h2 className="text-[18px] font-semibold">verification</h2>
         <p className="text-gray-light font-normal text-[12px] font-source-code">
           already registered?&nbsp;
-          <span className="font-normal text-white">login</span>
+          <span
+            className="font-normal text-white cursor-pointer"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            login
+          </span>
         </p>
       </div>
       <div className="h-[1px] bg-black-light w-full" />

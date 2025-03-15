@@ -47,7 +47,10 @@ const ForgotPasswordDialog = () => {
           toast({ description: "Reset password email sent successfully!" });
           setIsSubmitted(true);
         } else {
-          toast({ description: "Failed to send reset password email." });
+          toast({
+            description:
+              result.message || "Failed to send reset password email.",
+          });
         }
       } catch {
         toast({ description: "An error occurred. Please try again." });

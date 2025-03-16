@@ -2,11 +2,8 @@ import { NOTIFIED } from "@/constants";
 import { Notification } from "@/hooks/useGetNotifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const NOTIFICATIONS_URL = 'http://localhost:3000/notifications';
-
 const updateNotification = async ({notificationId, status }: {notificationId: string, status: string}) => {
-    console.log('updateNotification', notificationId)
-    return await fetch(NOTIFICATIONS_URL, {
+    return await fetch('/notifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

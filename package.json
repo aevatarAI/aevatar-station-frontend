@@ -7,7 +7,8 @@
 		"format": "biome format --write .",
 		"shadcn": "npx shadcn@latest",
 		"install-hooks": "lefthook install",
-		"test": "vitest --coverage",
+		"test": "vitest run",
+		"test:coverage": "vitest run --coverage",
 		"test:dev": "vitest --watch"
 	},
 	"dependencies": {

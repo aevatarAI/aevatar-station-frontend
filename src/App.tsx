@@ -5,10 +5,11 @@ import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import LayoutDefault from "@/layouts/LayoutDefault";
-import { sleep } from "@etransfer/utils";
 import { type PropsWithChildren, Suspense, lazy } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import ReactLoading from "react-loading";
+import { accessTokenAtom } from "@/state/atoms";
+import { useAtom } from "jotai";
 
 const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
@@ -39,6 +40,17 @@ const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>{children}</Suspense>
 );
 
+const PrivateRoute = ({ path, children }: { path: string, children: React.ReactNode }) => {
+  const [accessToken] = useAtom(accessTokenAtom);
+  const isAuthenticated = accessToken || localStorage.getItem('access_token')
+
+  if (!isAuthenticated) {
+    return <Redirect to="/login"/>
+  }
+
+  return <Route path={path}>{children}</Route>           
+}
+
 const App = () => (
   <LayoutDefault>
     <Switch>
@@ -54,11 +66,11 @@ const App = () => (
         </WithLazyLoading>
       </Route>
 
-      <Route path="/demo">
+      <PrivateRoute path="/demo">
         <WithLazyLoading>
           <Demo />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       <Route path="/login">
         <WithLazyLoadingNoHaeader>
@@ -84,34 +96,35 @@ const App = () => (
         </WithLazyLoadingNoHaeader>
       </Route>
 
-      <Route path="/profile/:menu/:tab">
+      <PrivateRoute path="/profile/:menu/:tab">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/profile/:menu">
+      <PrivateRoute path="/profile/:menu">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/profile">
+      <PrivateRoute path="/profile">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/dashboard">
+      <PrivateRoute path="/dashboard">
         <WithLazyLoading>
           <Dashboard />
         </WithLazyLoading>
-      </Route>
-      <Route path="/dashboard/:tab">
+      </PrivateRoute>
+
+      <PrivateRoute path="/dashboard/:tab">
         <WithLazyLoading>
           <Dashboard />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       {/* Default route in a switch */}
       {/* <Route>

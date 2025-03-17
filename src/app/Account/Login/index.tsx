@@ -1,4 +1,3 @@
-import { request } from "@/api";
 import { service } from "@/api/axios";
 import Layout from "@/app/Account/Layout";
 import robotImg1 from "@/assets/overview/robot1.png";
@@ -10,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,9 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
-import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useState } from "react";
@@ -58,12 +56,8 @@ const Login = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
 
-  const getUserProfile = useCallback(async () => {
-    const result = await request.profile.getProfile();
-    setProfile(result.data);
-  }, [setProfile]);
+  const getUserProfile = useUpdateProfile();
 
   const navigate = useNavigate();
   const onSubmit = useCallback(

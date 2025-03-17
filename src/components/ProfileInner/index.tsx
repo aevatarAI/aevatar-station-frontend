@@ -3,6 +3,7 @@ import General from "@/components/General";
 import Notifications from "@/components/Notifications";
 import type { TAB_LIST } from "@/constants/sideBar";
 import { useToast } from "@/hooks/use-toast";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage, sleep } from "@etransfer/utils";
 import { useAtom } from "jotai";
@@ -14,6 +15,8 @@ interface IProfileInnerProps {
 export default function ProfileInner({ tab }: IProfileInnerProps) {
   const { toast } = useToast();
   const [profile] = useAtom(USER_PROFILE_ATOM);
+  const getUserProfile = useUpdateProfile();
+
   const onNameSave = useCallback(
     async (userName: string) => {
       try {
@@ -31,13 +34,14 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
         toast({
           description: "Successfully",
         });
+        getUserProfile();
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "Error: save name"),
         });
       }
     },
-    [toast, profile]
+    [toast, profile, getUserProfile]
   );
   return (
     <div>

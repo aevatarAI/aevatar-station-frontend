@@ -1,7 +1,7 @@
 import myEvents from "@/utils/myEvent";
 import axios from "axios";
 
-const isDeniedRequest = (error: { message: string }) => {
+export const isDeniedRequest = (error: { message: string }) => {
   try {
     const message: string = error.message;
     if (message.includes("401")) return true;

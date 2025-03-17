@@ -96,14 +96,8 @@ Nonce: ${Date.now()}`;
 	const getAuthTokenRef = useRef(getAuthToken);
 	getAuthTokenRef.current = getAuthToken;
 
-	// useEffect(() => {
-	//   if (!isConnected) return;
-	//   getAuthTokenRef.current();
-	// }, [isConnected]);
-
 	useEffect(() => {
 		const { remove } = myEvents.AuthorizationExpired.addListener(() => {
-			console.log("DeniedRequest");
 			if (!isSignedRef.current) return;
 			clearLocalJWT();
 			getAuthTokenRef.current();

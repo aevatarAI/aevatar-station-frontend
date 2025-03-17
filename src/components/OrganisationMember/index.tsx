@@ -118,9 +118,9 @@ export default function OrganisationMember() {
                   {roleList.map((roleItem) => (
                     <SelectItem
                       className="text-[14px]"
-                      key={roleItem.roleId}
-                      value={roleItem.roleId}>
-                      {roleItem.roleName}
+                      key={roleItem.id}
+                      value={roleItem.id}>
+                      {roleItem.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -132,7 +132,7 @@ export default function OrganisationMember() {
         ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.memberDelete ? (
+            {userPermissions.organizationMembersManage ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -153,9 +153,9 @@ export default function OrganisationMember() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>Organisation name members</div>
-        {userPermissions.memberAdd ? (
+        {userPermissions.organizationMembersManage ? (
           <InviteMembersDialog
-            defaultRole={roleList[0]?.roleId}
+            defaultRole={roleList[0]?.id}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)
             }

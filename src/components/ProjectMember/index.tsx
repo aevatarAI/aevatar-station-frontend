@@ -120,9 +120,9 @@ export default function ProjectMember() {
               {roleList.map((item) => (
                 <SelectItem
                   className="text-[14px]"
-                  key={item.roleId}
-                  value={item.roleId}>
-                  {item.roleName}
+                  key={item.id}
+                  value={item.id}>
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -156,7 +156,7 @@ export default function ProjectMember() {
 
         {userPermissions.projectsMembersManage ? (
           <AddMembersDialog
-            defaultRoleId={roleList[0]?.roleId}
+            defaultRoleId={roleList[0]?.id}
             orgMemberList={orgMemberList}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)

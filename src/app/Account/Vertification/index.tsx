@@ -47,6 +47,7 @@ const Verification = () => {
           toast({
             description: response.message || "Registration successful!",
           });
+          navigate("/welcome");
         } else {
           toast({
             description:
@@ -60,7 +61,7 @@ const Verification = () => {
         });
       }
     },
-    [toast, name, email, password],
+    [toast, navigate, name, email, password]
   );
 
   const sendVerificationCode = useCallback(async () => {
@@ -86,8 +87,7 @@ const Verification = () => {
             className="font-normal text-white cursor-pointer"
             onClick={() => {
               navigate("/login");
-            }}
-          >
+            }}>
             login
           </span>
         </p>
@@ -97,8 +97,7 @@ const Verification = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="gap-5 flex flex-col"
-          >
+            className="gap-5 flex flex-col">
             <div className="flex flex-col gap-5">
               <FormField
                 control={form.control}
@@ -127,15 +126,13 @@ const Verification = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
-              >
+                className="w-full flex justify-center border border-transparent bg-white text-black-light">
                 register
               </Button>
               <div className="text-right">
                 <span
                   className="text-[12px] cursor-pointer"
-                  onClick={sendVerificationCode}
-                >
+                  onClick={sendVerificationCode}>
                   resend email
                 </span>
               </div>

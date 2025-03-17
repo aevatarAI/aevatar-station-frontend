@@ -149,12 +149,12 @@ export const getProjectRoles = async (
   // return result.data.items;
   return [
     {
-      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      roleName: "owner",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      name: "owner",
     },
     {
-      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-      roleName: "member",
+      id: "fa85f64-5717-4562-b3fc-2c963f66a",
+      name: "member",
     },
   ];
 };

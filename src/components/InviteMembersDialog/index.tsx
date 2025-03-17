@@ -123,9 +123,9 @@ export default function InviteMembersDialog({
                         {roleList.map((item) => (
                           <SelectItem
                             className="text-[14px]"
-                            key={item.roleId}
-                            value={item.roleId}>
-                            {item.roleName}
+                            key={item.id}
+                            value={item.id}>
+                            {item.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

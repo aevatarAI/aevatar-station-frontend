@@ -9,6 +9,8 @@ export const atomicAevatarAtom = atom<TAtomicAevatar[]>([]);
 export const accessTokenAtom = atomWithStorage<string | null>(
   "access_token",
   null,
+  undefined,
+  { getOnInit: true }
 );
 // register
 export const emailAtom = atom("");

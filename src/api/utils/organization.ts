@@ -190,8 +190,8 @@ export enum InvitationStatus {
 
 export interface IRoles {
   organizationId: string;
-  roleId: string;
-  roleName: string;
+  id: string;
+  name: string;
 }
 
 export interface IMemberItem {
@@ -240,8 +240,8 @@ export const getOrganizationMembers = async (
 };
 
 export interface IRoleItem {
-  roleName: string;
-  roleId: string;
+  name: string;
+  id: string;
 }
 
 export const getOrganizationRoles = async (
@@ -254,12 +254,12 @@ export const getOrganizationRoles = async (
   // return result.data.items;
   return [
     {
-      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      roleName: "owner",
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      name: "owner",
     },
     {
-      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-      roleName: "member",
+      id: "fa85f64-5717-4562-b3fc-2c963f66a",
+      name: "member",
     },
   ];
 };

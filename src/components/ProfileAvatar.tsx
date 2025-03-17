@@ -6,16 +6,15 @@ import {
 
 import profileImg from "@/assets/profile.png";
 import Copy from "@/components/Copy";
+import { clearLocalJWT } from "@/components/auth/utils/jwt";
 import { itemClassName, itemHoverClassName } from "@/constants/cls";
 import { useNavigate } from "@/hooks/navigate";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { useLogout } from "@/hooks/useLogout";
 
 export default function ProfileAvatar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>();
-  const logout = useLogout()
 
   const useInfo = useMemo(
     () => ({ email: "xxxx.xx@gmail.com", userName: "userName" }),
@@ -53,9 +52,10 @@ export default function ProfileAvatar() {
           <div
             className={clsx(itemClassName, itemHoverClassName)}
             onClick={async () => {
-              logout();
+              // TODO clear userLogin
+              clearLocalJWT();
               setOpen(false);
-              navigate("/login");
+              navigate("/");
             }}>
             log out
           </div>

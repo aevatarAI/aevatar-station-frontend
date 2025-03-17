@@ -26,7 +26,3 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-input {
-  -webkit-text-size-adjust: 100%;
-}

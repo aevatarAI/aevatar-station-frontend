@@ -21,8 +21,8 @@ import { useToast } from "@/hooks/use-toast";
 import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -50,7 +50,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const { toast } = useToast();
-  const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
+  const [_, setAccessToken] = useAtom(accessTokenAtom);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,11 +78,6 @@ const Login = () => {
     [toast, setAccessToken, navigate],
   );
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/welcome");
-    }
-  }, [accessToken, navigate]);
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">

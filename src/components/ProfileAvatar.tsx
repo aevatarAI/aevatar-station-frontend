@@ -3,17 +3,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import profileImg from "@/assets/profile.png";
 import Copy from "@/components/Copy";
-import { clearLocalJWT } from "@/components/auth/utils/jwt";
 import { itemClassName, itemHoverClassName } from "@/constants/cls";
 import { useNavigate } from "@/hooks/navigate";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
+import { useLogout } from "@/hooks/useLogout";
 
 export default function ProfileAvatar() {
   const navigate = useNavigate();
+  const logout = useLogout();
   const [open, setOpen] = useState<boolean>();
 
   const useInfo = useMemo(
@@ -52,10 +52,9 @@ export default function ProfileAvatar() {
           <div
             className={clsx(itemClassName, itemHoverClassName)}
             onClick={async () => {
-              // TODO clear userLogin
-              clearLocalJWT();
+              logout();
               setOpen(false);
-              navigate("/");
+              navigate("/login");
             }}>
             log out
           </div>

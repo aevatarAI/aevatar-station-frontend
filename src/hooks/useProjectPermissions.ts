@@ -7,11 +7,16 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo } from "react";
 
 type TUserPermissions = {
-  create?: boolean;
-  edit?: boolean;
-  delete?: boolean;
-  memberAdd?: boolean;
-  memberDelete?: boolean;
+  projects?: boolean;
+  projectsCreate?: boolean;
+  projectsEdit?: boolean;
+  projectsDelete?: boolean;
+  projectsMembers?: boolean;
+  projectsMembersManage?: boolean;
+  apiKeys?: boolean;
+  apiKeysCreate?: boolean;
+  apiKeysEdit?: boolean;
+  apiKeysDelete?: boolean;
 };
 
 export const useProjectPermissions = () => {
@@ -40,11 +45,38 @@ export const useProjectPermissions = () => {
   return useMemo(() => {
     const _permissions: TUserPermissions = {};
     permissions?.forEach((item) => {
-      if (item.name === "create") _permissions.create = true;
-      if (item.name === "edit") _permissions.edit = true;
-      if (item.name === "delete") _permissions.delete = true;
-      if (item.name === "memberAdd") _permissions.memberAdd = true;
-      if (item.name === "memberDelete") _permissions.memberDelete = true;
+      switch (item.displayName) {
+        case "Permission:Organizations":
+          _permissions.projects = item.isGranted;
+          break;
+        case "Permission:Organizations.Create":
+          _permissions.projectsCreate = item.isGranted;
+          break;
+        case "Permission:Organizations.Edit":
+          _permissions.projectsEdit = item.isGranted;
+          break;
+        case "Permission:Organizations.Delete":
+          _permissions.projectsDelete = item.isGranted;
+          break;
+        case "Permission:OrganizationMembers":
+          _permissions.projectsMembers = item.isGranted;
+          break;
+        case "Permission:OrganizationMembers.Manage":
+          _permissions.projectsMembersManage = item.isGranted;
+          break;
+        case "Permission:ApiKeys":
+          _permissions.apiKeys = item.isGranted;
+          break;
+        case "Permission:ApiKeys.Create":
+          _permissions.apiKeysCreate = item.isGranted;
+          break;
+        case "Permission:ApiKeys.Edit":
+          _permissions.apiKeysEdit = item.isGranted;
+          break;
+        case "Permission:ApiKeys.Delete":
+          _permissions.apiKeysDelete = item.isGranted;
+          break;
+      }
     });
     return _permissions;
   }, [permissions]);

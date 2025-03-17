@@ -10,6 +10,8 @@ import { Route, Switch, Redirect } from "wouter";
 import ReactLoading from "react-loading";
 import { accessTokenAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
+import { service } from "@/api/axios";
+import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 
 const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
@@ -40,28 +42,36 @@ const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>{children}</Suspense>
 );
 
-const PrivateRoute = ({ path, children }: { path: string, children: React.ReactNode }) => {
+const PrivateRoute = ({
+  path,
+  children,
+}: {
+  path: string;
+  children: React.ReactNode;
+}) => {
   const [accessToken] = useAtom(accessTokenAtom);
-  const isAuthenticated = accessToken || localStorage.getItem('access_token')
+  const authenticated = accessToken || localStorage.getItem("access_token");
 
-  if (!isAuthenticated) {
-    return <Redirect to="/login"/>
+  if (!authenticated) {
+    return <Redirect to="/login" />;
   }
-
-  return <Route path={path}>{children}</Route>           
-}
+  if (!service.defaults.headers.Authorization)
+    service.defaults.headers.Authorization = authenticated;
+  return <Route path={path}>{children}</Route>;
+};
 
 const App = () => (
   <LayoutDefault>
     <Switch>
       <Route path="/">
         <WithLazyLoading>
-          <Overview />
+          <Login />
         </WithLazyLoading>
       </Route>
 
       <Route path="/welcome">
         <WithLazyLoading>
+          <SetAuthHeader />
           <Welcome />
         </WithLazyLoading>
       </Route>

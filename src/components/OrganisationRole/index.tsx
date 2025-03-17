@@ -3,6 +3,7 @@ import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 
 import { columns, type IRoleList } from "@/components/OrganisationRole/columns";
+import PermissionManagerDialog from "@/components/PermissionManagerDialog";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -54,17 +55,26 @@ export default function OrganisationRole() {
     await sleep(1000);
   }, []);
 
+  const onPermissionSave = useCallback(async (id: string, value: any) => {
+    console.log(id, value);
+    await sleep(1000);
+  }, []);
+
   const tableData = useMemo(
     () =>
       roleList.map((item) => ({
         ...item,
-        organisationRole: <Button>edit permissions</Button>,
+        organisationRole: (
+          <PermissionManagerDialog
+            onSave={(v) => onPermissionSave(item.id, v)}
+          />
+        ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
             {item.isRemove ? (
               <DeleteDialog
                 onYes={onDeleteYes}
-                title={"Are you sure you want to delete the role"}
+                title={"Are you sure you want to delete the role?"}
                 description={
                   "*Once deleted, the existing role will become invalid."
                 }
@@ -75,7 +85,7 @@ export default function OrganisationRole() {
           </div>
         ),
       })),
-    [roleList, onDeleteYes]
+    [roleList, onDeleteYes, onPermissionSave]
   );
 
   const onCreate = useCallback(async (values: TCreateRoleForm) => {

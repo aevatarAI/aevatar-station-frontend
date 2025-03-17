@@ -29,13 +29,16 @@ export default function ProfileAvatar() {
         </PopoverTrigger>
         <PopoverContent>
           {useInfo.userName && (
-            <div className={clsx(itemClassName, "font-semibold")}>
+            <div className={clsx(itemClassName, "font-semibold font-syne" )}>
               <span>{useInfo?.userName}</span>
             </div>
           )}
           <div className={itemClassName}>
             <span>{useInfo?.email}</span>
-            <Copy toCopy={useInfo.email} iconClassName="w-[20px] h-[20px]" />
+            <Copy
+              toCopy={useInfo.email}
+              iconClassName="w-[20px] h-[20px] text-[#606060] hover:text-[#B9B9B9]"
+            />
           </div>
           <div
             className={clsx(itemClassName, itemHoverClassName)}
@@ -54,7 +57,7 @@ export default function ProfileAvatar() {
               setOpen(false);
               navigate("/");
             }}>
-            Log out
+            log out
           </div>
         </PopoverContent>
       </Popover>

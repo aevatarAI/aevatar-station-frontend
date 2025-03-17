@@ -1,5 +1,6 @@
 import DescHome from "@/components/DescHome";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
+import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,20 +12,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { resetPassword } from "@/services/auth";
+import { resetPassword, verifyResetToken } from "@/services/auth";
+import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-const formSchema = z.object({
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-  confirmPassword: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-});
+const formSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "password must be at least 8 characters long")
+      .regex(
+        /[^a-zA-Z0-9]/,
+        "password must contain at least one non-alphanumeric character",
+      )
+      .regex(
+        /[a-z]/,
+        "password must contain at least one lowercase letter ('a'-'z')",
+      )
+      .regex(
+        /[A-Z]/,
+        "password must contain at least one uppercase letter ('A'-'Z')",
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "passwords do not match",
+    path: ["confirmPassword"],
+  });
 const ResetPassword = () => {
   const [userId, setUserId] = useState("");
   const [resetToken, setResetToken] = useState("");
@@ -32,33 +50,36 @@ const ResetPassword = () => {
   const { toast } = useToast();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const urlUserId = params.get("userid") || "";
+    const urlUserId = params.get("userId") || "";
     const urlResetToken = params.get("resetToken") || "";
-
-    if (!urlUserId || !urlResetToken) {
-      toast({
-        description: "Invalid reset link.",
-      });
-      return;
-    }
-
     setUserId(urlUserId);
     setResetToken(urlResetToken);
-  }, [toast]);
+  }, []);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
+      const verifyResult = await verifyResetToken(userId, resetToken);
+      // data true = valid token
+      if (verifyResult.code !== "20000" || !verifyResult.data) {
+        toast({
+          description: verifyResult.message || "Invalid reset token.",
+        });
+        return;
+      }
       const { password } = values;
       try {
         const result = await resetPassword(userId, resetToken, password);
-        if (result.code === "20000" && result.data) {
-          console.log("Reset successful!");
+        if (result.code === "20001") {
+          console.log("reset successful!");
+          sleep(2000);
+          navigate("/login");
         } else {
           toast({
-            description: "Invalid reset token.",
+            description: result.message || "Invalid reset token.",
           });
         }
       } catch {
@@ -69,14 +90,14 @@ const ResetPassword = () => {
         setLoading(false);
       }
     },
-    [toast, userId, resetToken],
+    [toast, userId, resetToken, navigate],
   );
   return (
-    <div className=" flex flex-col text-white w-full lg:w-[426px] gap-4">
+    <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -94,8 +115,12 @@ const ResetPassword = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="password"
                         {...field}
+                        {...form.register("password", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -109,12 +134,16 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[12px] font-semibold">
-                      confirm (repear) the password*
+                      confirm (repeat) the password*
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="password"
                         {...field}
+                        {...form.register("confirmPassword", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -128,7 +157,7 @@ const ResetPassword = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
-                disabled={loading}
+                disabled={loading && !!userId && !!resetToken}
               >
                 submit
               </Button>
@@ -141,12 +170,15 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px]">
+    <div className="relative flex justify-center px-[47px] min-h-[800px] h-screen flex-col items-center">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
         <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />
         <ResetPassword />
       </div>
+      {socialMediaReander(
+        "relative lg:absolute w-full lg:w-[408px] lg:bottom-[40px] px-[47px] lg:px-0 mt-[68px] lg:mt-auto mb-[40px] lg:mb-auto",
+      )}
     </div>
   );
 };

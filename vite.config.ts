@@ -10,7 +10,7 @@ export default defineConfig((config) => ({
 
   resolve: {
     alias: {
-      "@": config.mode === "production" ? __dirname : resolve(__dirname, "./src"),
+      "@": resolve(__dirname, "./src"),
     },
   },
 
@@ -21,12 +21,32 @@ export default defineConfig((config) => ({
   },
 
   server: {
+    allowedHosts: true,
     proxy: {
       "/connect": {
         target: "https://auth-station-staging.aevatar.ai",
         changeOrigin: true,
         secure: false,
       },
+      "/api": {
+        target: "https://station-developer-staging.aevatar.ai/developer-client",
+        changeOrigin: true,
+        secure: false,
+      },
     },
+  },
+  test: {
+    globals: true,
+    coverage: {
+      provider: "v8",
+    },
+    exclude: [
+      "**/node_modules/**",
+      "**/types/**",
+      "**/constants/**",
+      "**/assets/**",
+    ],
+    environment: "happy-dom",
+    setupFiles: ["./vitest.setup"],
   },
 }));

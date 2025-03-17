@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
@@ -28,6 +29,7 @@ const Verification = () => {
   const [password] = useAtom(passwordAtom);
   const [name] = useAtom(usernameAtom);
   const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -78,12 +80,19 @@ const Verification = () => {
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-[#B9B9B9] font-normal text-[12px]">
-          already registered? &nbsp;
-          <span className="font-normal text-white">login</span>
+        <p className="text-gray-light font-normal text-[12px] font-source-code">
+          already registered?&nbsp;
+          <span
+            className="font-normal text-white cursor-pointer"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            login
+          </span>
         </p>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -101,8 +110,11 @@ const Verification = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter verification code"
+                        placeholder="enter verification code"
                         {...field}
+                        {...form.register("verificationCode", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>

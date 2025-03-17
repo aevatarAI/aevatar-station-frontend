@@ -8,39 +8,65 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
-import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+const formSchema = z.object({
+  email: z.string().email({
+    message: "please enter a valid email address.",
+  }),
+});
 const ForgotPasswordDialog = () => {
   const { toast } = useToast();
-  const [email, setEmail] = React.useState("");
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(true);
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const result = await sendResetPasswordEmail(email);
-      if (result.code === "20000") {
-        toast({ description: "Reset password email sent successfully!" });
-        setIsSubmitted(true);
-      } else {
-        toast({ description: "Failed to send reset password email." });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      setLoading(true);
+      try {
+        const result = await sendResetPasswordEmail(values.email);
+        if (result.code === "20001") {
+          toast({ description: "Reset password email sent successfully!" });
+          setIsSubmitted(true);
+        } else {
+          toast({
+            description:
+              result.message || "Failed to send reset password email.",
+          });
+        }
+      } catch {
+        toast({ description: "An error occurred. Please try again." });
+      } finally {
+        setLoading(false);
       }
-    } catch {
-      toast({ description: "An error occurred. Please try again." });
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [toast],
+  );
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[12px] cursor-pointer">forgot password?</span>
+        <span className="text-[12px] cursor-pointer font-source-code">
+          forgot password?
+        </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
@@ -50,7 +76,7 @@ const ForgotPasswordDialog = () => {
         </DialogHeader>
         {isSubmitted ? (
           <div>
-            <DialogDescription className="mb-7">
+            <DialogDescription className="mb-7 font-source-code">
               an account recovery email has been sent. if you don’t see it in 15
               minutes, check your junk folder and mark it as ‘not junk’.
             </DialogDescription>
@@ -78,37 +104,55 @@ const ForgotPasswordDialog = () => {
               password. if you don't get an email within a few minutes, please
               re-try.
             </DialogDescription>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-7">
-              <div className="space-y-2">
-                <Label htmlFor="email">email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="placeholder:text-gray-deep border-black-light text-white"
-                  required
-                />
-              </div>
-              <div className="flex justify-between items-center">
-                <DialogClose asChild>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-7 mt-4"
+              >
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="block text-[12px] font-semibold">
+                          email address
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="enter your email"
+                            className="placeholder:text-gray-deep border-black-light text-white"
+                            {...field}
+                            {...form.register("email", {
+                              required: "required",
+                            })}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex justify-between items-center">
+                  <DialogClose asChild>
+                    <Button
+                      type="button"
+                      className="text-white text-[12px] px-[16px] py-[8px]"
+                    >
+                      back to Login
+                    </Button>
+                  </DialogClose>
                   <Button
-                    type="button"
-                    className="text-white text-[12px] px-[16px] py-[8px]"
+                    type="submit"
+                    className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
+                    disabled={loading}
                   >
-                    back to Login
+                    Submit
                   </Button>
-                </DialogClose>
-                <Button
-                  type="submit"
-                  className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
-                  disabled={loading}
-                >
-                  Submit
-                </Button>
-              </div>
-            </form>
+                </div>
+              </form>
+            </Form>
           </div>
         )}
       </DialogContent>

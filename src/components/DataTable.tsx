@@ -42,7 +42,9 @@ export default function DataTable<TData, TValue>({
       <Table className={className}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="first:pl-[15px]">
+            <TableRow
+              key={headerGroup.id}
+              className="first:pl-[15px] hover:bg-transparent">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead className={tableHeadClassName} key={header.id}>

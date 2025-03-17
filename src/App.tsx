@@ -6,7 +6,10 @@ import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { type PropsWithChildren, Suspense, lazy } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
+import ReactLoading from "react-loading";
+import { accessTokenAtom } from "@/state/atoms";
+import { useAtom } from "jotai";
 
 const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
@@ -14,11 +17,14 @@ const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));
 
 const Loading = () => (
-  <div className="page-container flex w-full flex-col pt-[140px]">
-    <div className="mx-auto mb-10 w-full max-w-2xl rounded-md bg-black bg-opacity-75 p-[34px] px-[48px] shadow-lg">
-      <div className="text-center text-4xl font-bold text-white">
-        Loading...
+  <div
+    data-testid="page-loading"
+    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50">
+    <div className="flex text-2xl font-bold text-gray-800 flex items-center">
+      <div className="text-white font-syne text-lg font-semibold leading-normal lowercase text-[18px]">
+        Scanning......
       </div>
+      <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
     </div>
   </div>
 );
@@ -33,6 +39,17 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
 const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>{children}</Suspense>
 );
+
+const PrivateRoute = ({ path, children }: { path: string, children: React.ReactNode }) => {
+  const [accessToken] = useAtom(accessTokenAtom);
+  const isAuthenticated = accessToken || localStorage.getItem('access_token')
+
+  if (!isAuthenticated) {
+    return <Redirect to="/login"/>
+  }
+
+  return <Route path={path}>{children}</Route>           
+}
 
 const App = () => (
   <LayoutDefault>
@@ -49,11 +66,11 @@ const App = () => (
         </WithLazyLoading>
       </Route>
 
-      <Route path="/demo">
+      <PrivateRoute path="/demo">
         <WithLazyLoading>
           <Demo />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       <Route path="/login">
         <WithLazyLoadingNoHaeader>
@@ -79,34 +96,35 @@ const App = () => (
         </WithLazyLoadingNoHaeader>
       </Route>
 
-      <Route path="/profile/:menu/:tab">
+      <PrivateRoute path="/profile/:menu/:tab">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/profile/:menu">
+      <PrivateRoute path="/profile/:menu">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/profile">
+      <PrivateRoute path="/profile">
         <WithLazyLoading>
           <Profile />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
-      <Route path="/dashboard">
+      <PrivateRoute path="/dashboard">
         <WithLazyLoading>
           <Dashboard />
         </WithLazyLoading>
-      </Route>
-      <Route path="/dashboard/:tab">
+      </PrivateRoute>
+
+      <PrivateRoute path="/dashboard/:tab">
         <WithLazyLoading>
           <Dashboard />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       {/* Default route in a switch */}
       {/* <Route>

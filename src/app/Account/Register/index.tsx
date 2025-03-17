@@ -24,11 +24,23 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z.string(),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "please enter a valid email address.",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
+  password: z
+    .string()
+    .min(8, "password must be at least 8 characters long")
+    .regex(
+      /[^a-zA-Z0-9]/,
+      "password must contain at least one non-alphanumeric character",
+    )
+    .regex(
+      /[a-z]/,
+      "password must contain at least one lowercase letter ('a'-'z')",
+    )
+    .regex(
+      /[A-Z]/,
+      "password must contain at least one uppercase letter ('A'-'Z')",
+    ),
 });
 
 const Register = () => {
@@ -47,16 +59,19 @@ const Register = () => {
       setLoading(true);
       const { name, email, password } = values;
       try {
-        const response = await sendRegisterCode(email);
+        const result = await sendRegisterCode(email);
         setName(name);
         setEmail(email);
         setPassword(password);
-        toast({
-          description: response.message || "Send Register Code successful!",
-        });
-        await sleep(2000);
+        if (result.code === "20001") {
+          toast({
+            description: "Send Register Code successful!",
+          });
+          await sleep(2000);
+          setLoading(false);
+          navigate("/verification");
+        }
         setLoading(false);
-        navigate("/verification");
       } catch (error) {
         toast({
           description: "Send Register Code failed. Please try again.",
@@ -71,8 +86,8 @@ const Register = () => {
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-[#B9B9B9] font-normal text-[12px]">
-          already registered? &nbsp;
+        <p className="text-gray-light font-normal text-[12px] font-source-code">
+          already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer"
             onClick={() => {
@@ -83,7 +98,7 @@ const Register = () => {
           </span>
         </p>
       </div>
-      <div className="border border-black-light w-full" />
+      <div className="h-[1px] bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -101,8 +116,11 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your name"
+                        placeholder="enter your name"
                         {...field}
+                        {...form.register("name", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -116,12 +134,15 @@ const Register = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[12px] font-semibold">
-                      email Address
+                      email address
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email"
+                        placeholder="enter your email"
                         {...field}
+                        {...form.register("email", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -139,9 +160,12 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your password"
+                        placeholder="enter your password"
                         type="password"
                         {...field}
+                        {...form.register("password", {
+                          required: "required",
+                        })}
                         className="h-[35px] placeholder:text-gray-deep border-black-light"
                       />
                     </FormControl>
@@ -157,7 +181,7 @@ const Register = () => {
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
                 disabled={loading}
               >
-                send Verification Code
+                send verification code
               </Button>
             </div>
           </form>

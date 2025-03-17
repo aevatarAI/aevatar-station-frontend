@@ -1,19 +1,10 @@
+import type { IProjectItem } from "@/api/utils/organization";
 import Copy from "@/components/Copy";
 import { shortenString } from "@/lib/text";
 import type { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
-export interface IProjectList {
-  id: string;
-  name: string;
-  domainName: string;
-  members: number;
-  created: string | number;
-  isEdit?: boolean;
-  isRemove?: boolean;
-}
-
-export interface IProjectTable extends IProjectList {
+export interface IProjectTable extends IProjectItem {
   operation?: JSX.Element;
 }
 
@@ -22,8 +13,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
-        {row.original.name}
+      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
+        {row.original.displayName}
       </div>
     ),
   },
@@ -31,7 +22,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     id: "domainName",
     header: "domain name",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code">
+      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
         <span>{row.original.domainName}</span>
         <Copy
           toCopy={row.original.domainName}
@@ -44,8 +35,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "members",
     header: "members",
     cell: ({ row }) => (
-      <div className="pl-[19px] pr-[19px] w-[175px] font-source-code">
-        {row.original.members}
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+        {row.original.memberCount}
       </div>
     ),
   },
@@ -53,8 +44,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "created",
     header: "created",
     cell: ({ row }) => (
-      <div className="pl-[19px] pr-[19px] w-[175px] font-source-code">
-        {dayjs(row.original.created).format("YYYY-MM-DD HH:mm")}
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+        {dayjs(row.original.creationTime).format("DD/MM/YYYY HH:mm")}
       </div>
     ),
   },

@@ -2,6 +2,7 @@
 
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
+import ApikeysIcon from "@/assets/api_keys.svg?react";
 import Notication from "@/assets/notication.svg?react";
 import NoticationEmpty from "@/assets/notification_empty.svg?react";
 import Project from "@/assets/project.svg?react";
@@ -15,57 +16,16 @@ import { useNavigate } from "@/hooks/navigate";
 import { notificationAtom } from "@/state/atoms/notification";
 import { useAtom } from "jotai";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
-
-const menuItemClx =
-  "relative flex text-[#606060] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
-
-const menuItemSelectedClx =
-  "bg-white/40 text-white before:w-[8px] before:h-full before:absolute before:right-0 before:bg-white";
-
-const menuItemTextClx =
-  "font-syne text-[12px] font-semibold leading-normal lowercase";
-
-const organisationList = [
-  {
-    icon: <General />,
-    text: "general",
-    url: "/profile/organisation/general",
-  },
-  {
-    icon: <Project />,
-    text: "project",
-    url: "/profile/organisation/project",
-  },
-  {
-    icon: <Member />,
-    text: "member",
-    url: "/profile/organisation/member",
-  },
-  {
-    icon: <Role />,
-    text: "role",
-    url: "/profile/organisation/role",
-  },
-];
-
-const projectList = [
-  {
-    icon: <General />,
-    text: "general",
-    url: "/profile/projects/general",
-  },
-
-  {
-    icon: <Member />,
-    text: "member",
-    url: "/profile/projects/member",
-  },
-  {
-    icon: <Role />,
-    text: "role",
-    url: "/profile/projects/role",
-  },
-];
+import {
+  menuItemClx,
+  menuItemSelectedClx,
+  menuItemTextClx,
+} from "@/constants/cls";
+import {
+  CURRENT_PROJECT_ATOM,
+  ORGANIZATIONS_LIST_ATOM,
+  PROJECT_LIST_ATOM,
+} from "@/state/atoms/organisation";
 
 export interface ISideBarProps {
   className?: string;
@@ -77,7 +37,59 @@ export function SideBar({ className }: ISideBarProps) {
   const navigate = useNavigate();
   const [isNotification] = useAtom(notificationAtom);
 
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
+  const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+
   console.log(params, pathname, "params===");
+
+  const organisationMenuList = useMemo(() => {
+    if (organisationList.length <= 0) return [];
+
+    return [
+      {
+        icon: <General />,
+        text: "general",
+        url: "/profile/organisation/general",
+      },
+      {
+        icon: <Project />,
+        text: "project",
+        url: "/profile/organisation/project",
+      },
+      {
+        icon: <Member />,
+        text: "member",
+        url: "/profile/organisation/member",
+      },
+      {
+        icon: <Role />,
+        text: "role",
+        url: "/profile/organisation/role",
+      },
+    ];
+  }, [organisationList]);
+
+  const projectMenuList = useMemo(() => {
+    if (projectList.length <= 0) return [];
+    return [
+      {
+        icon: <General />,
+        text: "general",
+        url: "/profile/projects/general",
+      },
+
+      {
+        icon: <Member />,
+        text: "member",
+        url: "/profile/projects/member",
+      },
+      {
+        icon: <Role />,
+        text: "role",
+        url: "/profile/projects/role",
+      },
+    ];
+  }, [projectList]);
 
   const profileList = useMemo(
     () => [
@@ -88,21 +100,23 @@ export function SideBar({ className }: ISideBarProps) {
       },
       {
         icon: isNotification ? <Notication /> : <NoticationEmpty />,
-        text: "notications",
-        url: "/profile/profile/notications",
+        text: "notifications",
+        url: "/profile/profile/notifications",
       },
     ],
     [isNotification]
   );
 
-  const profileMenuMap = useMemo(
-    () => ({
-      profile: profileList,
-      organisation: organisationList,
-      projects: projectList,
-    }),
-    [profileList]
-  );
+  const profileMenuMap = useMemo(() => {
+    const menu: {
+      profile: typeof profileList;
+      organisation?: typeof organisationMenuList;
+      projects?: typeof projectMenuList;
+    } = { profile: profileList };
+    if (organisationMenuList.length) menu.organisation = organisationMenuList;
+    if (projectMenuList.length) menu.projects = projectMenuList;
+    return menu;
+  }, [profileList, projectMenuList, organisationMenuList]);
 
   const [selectMenu, selectTab] = useSideBarParams();
 
@@ -115,7 +129,7 @@ export function SideBar({ className }: ISideBarProps) {
             menuItemClx,
             selectTab === "apikeys" && menuItemSelectedClx
           )}>
-          <General />
+          <ApikeysIcon />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
       </div>
@@ -130,11 +144,11 @@ export function SideBar({ className }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#606060] mb-[34px]"
+              item[0] === "profile" && "border-b border-[#303030] mb-[34px]"
             )}>
             <div
               className={clsx(
-                "text-[#606060] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
+                "text-[#B9B9B9] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
               )}>
               {item[0]}
             </div>
@@ -164,7 +178,7 @@ export function SideBar({ className }: ISideBarProps) {
   return (
     <div
       className={clsx(
-        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px]",
+        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
         className
       )}>
       {pathname.startsWith("/dashboard") && dashboardMenu}

@@ -42,15 +42,15 @@ export default function DeleteDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="edit api key"
-        className="sm:max-w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[#303030]">
         <DialogHeader />
         <div className="text-center">
           <div className="flex flex-col items-center gap-[16px]">
             <TipIcon />
-            <div className="text-white text-center font-syne text-[18px] font-semibold leading-normal lowercase">
+            <div className="text-white text-center font-syne text-[18px] font-semibold leading-normal lowercase w-[274px]">
               {title}
             </div>
-            <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase">
+            <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase w-[220px]">
               {description}
             </div>
           </div>

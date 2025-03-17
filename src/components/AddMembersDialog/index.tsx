@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -30,41 +29,47 @@ import {
   type TInviteMembersKeyForm,
   inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { useToast } from "@/hooks/use-toast";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
+import type { IMemberItem } from "@/api/utils/organization";
 
-const roleList = ["owner", "member"];
-const addressList = ["user123@aelf.io"];
-export default function InviteMembersDialog() {
+interface IInviteMembersDialogProps {
+  defaultRoleId?: string;
+  defaulteEmail?: string;
+  orgMemberList: IMemberItem[];
+  onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
+}
+
+export default function InviteMembersDialog({
+  defaultRoleId,
+  defaulteEmail,
+  orgMemberList,
+  onAddMember,
+}: IInviteMembersDialogProps) {
+  const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
+
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
-      role: "owner",
-      email: "user123@aelf.io",
+      role: defaultRoleId ?? roleList[0]?.roleId,
+      email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
-  const { toast } = useToast();
-
   const onSubmit = useCallback(
     async (values: TInviteMembersKeyForm) => {
       setBtnLoading(true);
-      await sleep(2000);
+      await onAddMember(values);
       setBtnLoading(false);
       setOpen(false);
-      toast({
-        title: "",
-        description: "successfully created",
-        // duration: 30000000,
-      });
     },
-    [toast],
+    [onAddMember]
   );
 
   useEffect(() => {
@@ -80,11 +85,10 @@ export default function InviteMembersDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent
-        aria-describedby="create new api key"
-        className="sm:max-w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]"
-      >
+        aria-describedby="add new member"
+        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             add team members
           </DialogTitle>
           <Form {...form}>
@@ -99,21 +103,19 @@ export default function InviteMembersDialog() {
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}
-                      >
+                        onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[193px] left-[48px] -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
-                          {addressList.map((item) => (
+                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                          {orgMemberList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
-                              key={item}
-                              value={item}
-                            >
-                              {item}
+                              key={item.email}
+                              value={item.email}>
+                              {item.email}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -131,21 +133,19 @@ export default function InviteMembersDialog() {
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}
-                      >
+                        onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[193px] left-[48px] -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                           {roleList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
-                              key={item}
-                              value={item}
-                            >
-                              {item}
+                              key={item.roleId}
+                              value={item.roleId}>
+                              {item.roleName}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -160,14 +160,12 @@ export default function InviteMembersDialog() {
                     type="reset"
                     onClick={() => {
                       setOpen(false);
-                    }}
-                  >
+                    }}>
                     cancel
                   </Button>
                   <Button
                     className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                    type="submit"
-                  >
+                    type="submit">
                     {btnLoading && (
                       <Loading
                         className={clsx("aevatarai-loading-icon")}

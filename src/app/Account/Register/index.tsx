@@ -59,16 +59,19 @@ const Register = () => {
       setLoading(true);
       const { name, email, password } = values;
       try {
-        const response = await sendRegisterCode(email);
+        const result = await sendRegisterCode(email);
         setName(name);
         setEmail(email);
         setPassword(password);
-        toast({
-          description: response.message || "Send Register Code successful!",
-        });
-        await sleep(2000);
+        if (result.code === "20001") {
+          toast({
+            description: "Send Register Code successful!",
+          });
+          await sleep(2000);
+          setLoading(false);
+          navigate("/verification");
+        }
         setLoading(false);
-        navigate("/verification");
       } catch (error) {
         toast({
           description: "Send Register Code failed. Please try again.",

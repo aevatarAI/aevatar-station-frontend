@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { resetPassword } from "@/services/auth";
+import { resetPassword, verifyResetToken } from "@/services/auth";
 import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useEffect, useState } from "react";
@@ -52,16 +52,9 @@ const ResetPassword = () => {
     const params = new URLSearchParams(window.location.search);
     const urlUserId = params.get("userId") || "";
     const urlResetToken = params.get("resetToken") || "";
-    if (!urlUserId || !urlResetToken) {
-      toast({
-        description: "Invalid reset link.",
-      });
-      return;
-    }
-
     setUserId(urlUserId);
     setResetToken(urlResetToken);
-  }, [toast]);
+  }, []);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -69,10 +62,18 @@ const ResetPassword = () => {
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
+      const verifyResult = await verifyResetToken(userId, resetToken);
+      // data true = valid token
+      if (verifyResult.code !== "20000" || !verifyResult.data) {
+        toast({
+          description: verifyResult.message || "Invalid reset token.",
+        });
+        return;
+      }
       const { password } = values;
       try {
         const result = await resetPassword(userId, resetToken, password);
-        if (result.code === "20001" && result.data) {
+        if (result.code === "20001") {
           console.log("reset successful!");
           sleep(2000);
           navigate("/login");
@@ -156,7 +157,7 @@ const ResetPassword = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
-                disabled={loading}
+                disabled={loading && !!userId && !!resetToken}
               >
                 submit
               </Button>
@@ -169,7 +170,7 @@ const ResetPassword = () => {
 };
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px] min-h-screen flex-col items-center">
+    <div className="relative flex justify-center px-[47px] min-h-[800px] h-screen flex-col items-center">
       <div className="mt-[178px] flex  flex-col gap-[30px]">
         <DescHome className="items-start lg:items-center" />
         <div className="h-[1px] w-full bg-black-light" />

@@ -1,3 +1,4 @@
+import { service } from "@/api/axios";
 import Layout from "@/app/Account/Layout";
 import robotImg1 from "@/assets/overview/robot1.png";
 import robotImg2 from "@/assets/overview/robot2.png";
@@ -20,8 +21,8 @@ import { useToast } from "@/hooks/use-toast";
 import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -49,7 +50,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const { toast } = useToast();
-  const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
+  const [_, setAccessToken] = useAtom(accessTokenAtom);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,12 +63,13 @@ const Login = () => {
       const { username, password } = values;
       try {
         const data = await login(username, password);
+        service.defaults.headers.Authorization = data.access_token;
         setAccessToken(data.access_token);
         navigate("/welcome");
       } catch (err) {
         console.error(err, "err");
         toast({
-          description: "Login failed. Please check your credentials.",
+          description: "Login failed. Please check your username and password.",
         });
       } finally {
         setLoading(false);
@@ -76,11 +78,6 @@ const Login = () => {
     [toast, setAccessToken, navigate],
   );
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/welcome");
-    }
-  }, [accessToken, navigate]);
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">

@@ -1,3 +1,4 @@
+import { accessTokenAtom } from "@/state/atoms";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -13,16 +14,19 @@ export const useLogout = () => {
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const [, setCurrentProject] = useAtom(CURRENT_PROJECT_ATOM);
+  const [, setAccessToken] = useAtom(accessTokenAtom);
 
   return useCallback(() => {
     setOrganizationsList(RESET);
     setProjectList(RESET);
     setCurrentOrganization(RESET);
     setCurrentProject(RESET);
+    setAccessToken(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
     setCurrentOrganization,
     setCurrentProject,
+    setAccessToken,
   ]);
 };

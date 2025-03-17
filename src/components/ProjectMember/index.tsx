@@ -107,7 +107,9 @@ export default function ProjectMember() {
       memberList.map((item) => ({
         ...item,
         role: !item.roleId ? (
-          <span className="text-[12px] font-syne">invite pending</span>
+          <span className="text-[12px] font-syne font-semibold">
+            invite pending
+          </span>
         ) : (
           <Select
             value={item.roleId}

@@ -35,4 +35,18 @@ export default defineConfig((config) => ({
       },
     },
   },
+  test: {
+    globals: true,
+    coverage: {
+      provider: "v8",
+    },
+    exclude: [
+      "**/node_modules/**",
+      "**/types/**",
+      "**/constants/**",
+      "**/assets/**",
+    ],
+    environment: "happy-dom",
+    setupFiles: ["./vitest.setup"],
+  },
 }));

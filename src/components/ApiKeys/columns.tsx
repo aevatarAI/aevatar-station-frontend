@@ -32,7 +32,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     id: "apiKeys",
     header: "api keys",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code pr-[19px]">
+      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.apiKeys)}</span>
         <Copy
           toCopy={row.original.apiKeys}
@@ -45,7 +45,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "createdTime",
     header: "created",
     cell: ({ row }) => (
-      <div className="pr-[19px] w-[175px] font-source-code">
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
         {dayjs(row.original.createdTime).format("DD/MM/YYYY HH:mm")}
       </div>
     ),

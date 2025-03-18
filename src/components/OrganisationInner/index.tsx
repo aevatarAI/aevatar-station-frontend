@@ -19,7 +19,7 @@ export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
       try {
         await sleep(2000);
         await request.organizations.editOrganization({
-          params: {
+          data: {
             displayName,
           },
         });

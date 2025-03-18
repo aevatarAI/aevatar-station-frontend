@@ -91,6 +91,7 @@ const PROFILE_API_LIST = {
     target: "/api/account/my-profile",
     baseConfig: { method: "PUT" },
   },
+  getProfile: "/api/account/my-profile",
 };
 
 export const EXPAND_APIS = {

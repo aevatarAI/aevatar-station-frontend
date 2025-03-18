@@ -15,7 +15,6 @@ import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import {
-  CURRENT_ORGANIZATION_ROLE_ATOM,
   CURRENT_PROJECT_ATOM,
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
@@ -121,9 +120,9 @@ export default function ProjectMember() {
               {roleList.map((item) => (
                 <SelectItem
                   className="text-[14px]"
-                  key={item.roleId}
-                  value={item.roleId}>
-                  {item.roleName}
+                  key={item.id}
+                  value={item.id}>
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -131,7 +130,7 @@ export default function ProjectMember() {
         ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.memberDelete ? (
+            {userPermissions.projectsMembersManage ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -155,9 +154,9 @@ export default function ProjectMember() {
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>projects members</div>
 
-        {userPermissions.memberAdd ? (
+        {userPermissions.projectsMembersManage ? (
           <AddMembersDialog
-            defaultRoleId={roleList[0]?.roleId}
+            defaultRoleId={roleList[0]?.id}
             orgMemberList={orgMemberList}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)

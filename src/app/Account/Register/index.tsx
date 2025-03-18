@@ -70,8 +70,13 @@ const Register = () => {
           await sleep(2000);
           setLoading(false);
           navigate("/verification");
+        } else {
+          toast({
+            description:
+              result.message || "Send Register Code failed. Please try again.",
+          });
+          setLoading(false);
         }
-        setLoading(false);
       } catch (error) {
         toast({
           description: "Send Register Code failed. Please try again.",

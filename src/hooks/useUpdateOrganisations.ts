@@ -21,6 +21,7 @@ export const useUpdateOrganisations = () => {
     async (id: string) => {
       try {
         const list = await getProjectList(id);
+        if (!list.length) return;
         const isSome = list.some((item) => item.id === curProject);
 
         const curId = isSome && curProject ? curProject : list[0].id;
@@ -38,6 +39,7 @@ export const useUpdateOrganisations = () => {
   const updateOrganizationList = useCallback(async () => {
     try {
       const list = await getOrganizationList();
+      console.log(list, "list==a");
       setOrganisations(list);
 
       const isSome = list.some((item) => item.id === curOrg);

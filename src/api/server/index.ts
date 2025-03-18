@@ -54,10 +54,9 @@ export function getRequestConfig(base: BaseConfig, config?: requestConfig) {
     query: (baseConfig.query || "") + (query || "") + (extendUrlSuffix || ""),
     method: method ? method : baseConfig.method,
     params: Object.assign({}, baseConfig.params, params),
-    data: Object.assign({}, baseConfig.data, data),
+    data:
+      baseConfig.data || data
+        ? Object.assign({}, baseConfig.data, data)
+        : undefined,
   };
 }
-
-export const checkIsAuthorized = () => {
-  return !!service.defaults.headers.common.Authorization;
-};

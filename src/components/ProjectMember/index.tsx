@@ -1,4 +1,5 @@
 import { request } from "@/api";
+import { getOrganizationMembers } from "@/api/utils/organization";
 import { getProjectMembers, type IMemberItem } from "@/api/utils/project";
 import AddMembersDialog from "@/components/AddMembersDialog";
 import DataTable from "@/components/DataTable";
@@ -15,11 +16,12 @@ import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import {
+  CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
+import { handleErrorMessage } from "@etransfer/utils";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -32,7 +34,25 @@ export default function ProjectMember() {
   const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
 
-  const userPermissions = useProjectPermissions();
+  const projectPermissions = useProjectPermissions();
+  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const [orgMemberList, setOrgMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
+
+  const updateOrganizationMembers = useCallback(async () => {
+    try {
+      if (!organizationId) return;
+      const result = await getOrganizationMembers(organizationId);
+      setOrgMemberList(result);
+    } catch (error) {
+      toast({
+        description: handleErrorMessage(error),
+      });
+    }
+  }, [toast, organizationId, setOrgMemberList]);
+
+  useEffect(() => {
+    projectPermissions.projectsMembersManage && updateOrganizationMembers();
+  }, [updateOrganizationMembers, projectPermissions.projectsMembersManage]);
 
   const getMembers = useCallback(async () => {
     try {
@@ -55,8 +75,12 @@ export default function ProjectMember() {
 
   const onChangeRole = useCallback(
     async (userId: string, roleId: string) => {
+      if (!projectId) return;
+
       try {
         await request.projects.editProjectRoles({
+          query: projectId,
+
           data: {
             userId,
             roleId,
@@ -65,7 +89,7 @@ export default function ProjectMember() {
         toast({
           description: "Successfully",
         });
-        await sleep(500);
+
         getMembers();
       } catch (error) {
         toast({
@@ -73,13 +97,15 @@ export default function ProjectMember() {
         });
       }
     },
-    [toast, getMembers]
+    [projectId, toast, getMembers]
   );
 
   const onSetMember = useCallback(
     async (email: string, join: boolean, roleId: string) => {
       try {
+        if (!projectId) return;
         const result = await request.projects.editProjectMembers({
+          query: projectId,
           data: {
             email,
             join,
@@ -90,7 +116,6 @@ export default function ProjectMember() {
         toast({
           description: `successfully ${join ? "invited" : "removed"}`,
         });
-        await sleep(1000);
         getMembers();
       } catch (error) {
         toast({
@@ -98,39 +123,46 @@ export default function ProjectMember() {
         });
       }
     },
-    [toast, getMembers]
+    [projectId, toast, getMembers]
   );
-
+  const getRoleName = useCallback(
+    (roleId: string) =>
+      roleList
+        .find((roleItem) => roleItem.id === roleId)
+        ?.name?.split("_")[1] ?? "--",
+    [roleList]
+  );
   const tableData = useMemo(
     () =>
       memberList.map((item) => ({
         ...item,
-        role: !item.roleId ? (
-          <span className="text-[12px] font-syne font-semibold">
-            invite pending
-          </span>
-        ) : (
-          <Select
-            value={item.roleId}
-            onValueChange={(v) => onChangeRole(item.id, v)}>
-            <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
-              {roleList.map((item) => (
-                <SelectItem
-                  className="text-[14px]"
-                  key={item.id}
-                  value={item.id}>
-                  {item.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ),
+        role:
+          !item.roleId || !projectPermissions.projectsMembersManage ? (
+            <span className="text-[12px] font-syne font-semibold lowercase">
+              {item.roleId ? getRoleName(item.roleId) : "invite pending"}
+            </span>
+          ) : (
+            <Select
+              value={item.roleId}
+              onValueChange={(v) => onChangeRole(item.id, v)}>
+              <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                {roleList.map((item) => (
+                  <SelectItem
+                    className="text-[14px]"
+                    key={item.id}
+                    value={item.id}>
+                    {item.name.split("_")[1]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.projectsMembersManage ? (
+            {projectPermissions.projectsMembersManage ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -144,17 +176,22 @@ export default function ProjectMember() {
           </div>
         ),
       })),
-    [memberList, roleList, userPermissions, onSetMember, onChangeRole]
+    [
+      memberList,
+      roleList,
+      projectPermissions,
+      onSetMember,
+      onChangeRole,
+      getRoleName,
+    ]
   );
-
-  const [orgMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>projects members</div>
 
-        {userPermissions.projectsMembersManage ? (
+        {projectPermissions.projectsMembersManage ? (
           <AddMembersDialog
             defaultRoleId={roleList[0]?.id}
             orgMemberList={orgMemberList}

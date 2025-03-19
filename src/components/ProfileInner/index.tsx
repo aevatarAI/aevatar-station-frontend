@@ -20,7 +20,6 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
   const onNameSave = useCallback(
     async (userName: string) => {
       try {
-        await sleep(2000);
         await request.profile.editProfile({
           data: {
             userName,
@@ -49,7 +48,8 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
         <General
           header="profile"
           title={"name"}
-          inputPlaceholder="name"
+          inputPlaceholder={profile?.userName ?? "name"}
+          defaultValue={profile?.userName}
           buttonProps={{ placement: "top-right" }}
           onConfirm={onNameSave}
         />

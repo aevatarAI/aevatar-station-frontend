@@ -26,7 +26,7 @@ import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 
 export interface ISideBarProps {
@@ -41,7 +41,7 @@ export function SideBar({ className }: ISideBarProps) {
 
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const userPermissions = useUserPermissions();
+  const userPermissions = useOrgPermissions();
   const userProjectPermissions = useProjectPermissions();
 
   console.log(params, pathname, "params===");
@@ -49,52 +49,72 @@ export function SideBar({ className }: ISideBarProps) {
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
     if (!userPermissions.organizations) return [];
-    return [
-      {
+    const menuList = [];
+    if (userPermissions.organizationsEdit)
+      menuList.push({
         icon: <General />,
         text: "general",
         url: "/profile/organisation/general",
-      },
-      {
+      });
+    if (
+      userPermissions.organizationsCreate ||
+      userPermissions.organizationsDelete ||
+      userPermissions.organizationsEdit
+    )
+      menuList.push({
         icon: <Project />,
         text: "project",
         url: "/profile/organisation/project",
-      },
-      {
+      });
+
+    if (
+      userPermissions.organizationMembers ||
+      userPermissions.organizationMembersManage
+    ) {
+      menuList.push({
         icon: <Member />,
         text: "member",
         url: "/profile/organisation/member",
-      },
-      // {
-      //   icon: <Role />,
-      //   text: "role",
-      //   url: "/profile/organisation/role",
-      // },
-    ];
+      });
+    }
+
+    return menuList;
+    // {
+    //   icon: <Role />,
+    //   text: "role",
+    //   url: "/profile/organisation/role",
+    // },
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
     if (projectList.length <= 0) return [];
     if (!userProjectPermissions.projects) return [];
-    return [
-      {
+    const menuList = [];
+
+    if (userProjectPermissions.projectsEdit)
+      menuList.push({
         icon: <General />,
         text: "general",
         url: "/profile/projects/general",
-      },
+      });
 
-      {
+    if (
+      userProjectPermissions.projectsMembers ||
+      userProjectPermissions.projectsMembersManage
+    )
+      menuList.push({
         icon: <Member />,
         text: "member",
         url: "/profile/projects/member",
-      },
-      // {
-      //   icon: <Role />,
-      //   text: "role",
-      //   url: "/profile/projects/role",
-      // },
-    ];
-  }, [projectList, userProjectPermissions.projects]);
+      });
+    return menuList;
+
+    // {
+    //   icon: <Role />,
+    //   text: "role",
+    //   url: "/profile/projects/role",
+    // },
+  }, [projectList, userProjectPermissions]);
 
   const profileList = useMemo(
     () => [

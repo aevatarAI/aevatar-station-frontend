@@ -8,7 +8,6 @@ import {
 import Delete from "@/assets/delete_action.svg?react";
 
 import { useCallback, useState } from "react";
-import { sleep } from "@etransfer/utils";
 import { useToast } from "@/hooks/use-toast";
 import TipIcon from "@/assets/tip_icon.svg?react";
 import LoadingButton from "@/components/LoadingButton.tsx";
@@ -27,7 +26,6 @@ export default function DeleteDialog({
   const { toast } = useToast();
 
   const onYesHandler = useCallback(async () => {
-    await sleep(2000);
     await onYes?.();
     toast({
       description: "successfully delete",

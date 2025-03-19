@@ -7,3 +7,10 @@ export const PROJECT_PERMISSION_ATOM = atomWithStorage<IPermissionsItem[]>(
   undefined,
   { getOnInit: true }
 );
+
+export const ORGANIZATION_PERMISSION_ATOM = atomWithStorage<IPermissionsItem[]>(
+  "organization_permission_atom",
+  [],
+  undefined,
+  { getOnInit: true }
+);

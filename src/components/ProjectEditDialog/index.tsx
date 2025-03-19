@@ -23,7 +23,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "@/assets/loading.svg?react";
 import clsx from "clsx";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
+import { handleErrorMessage } from "@etransfer/utils";
 import { useToast } from "@/hooks/use-toast";
 import {
   ProjectEditForm,

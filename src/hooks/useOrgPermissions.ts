@@ -1,7 +1,10 @@
 import { getOrganizationPermissions } from "@/api/utils/organization";
 import { useToast } from "@/hooks/use-toast";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
-import { PROJECT_PERMISSION_ATOM } from "@/state/atoms/permissions";
+import {
+  ORGANIZATION_PERMISSION_ATOM,
+  PROJECT_PERMISSION_ATOM,
+} from "@/state/atoms/permissions";
 import { handleErrorMessage } from "@etransfer/utils";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo } from "react";
@@ -19,11 +22,13 @@ type TUserPermissions = {
   apiKeysDelete?: boolean;
 };
 
-export const useUserPermissions = () => {
+export const useOrgPermissions = () => {
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
 
-  const [permissions, setUserPermissions] = useAtom(PROJECT_PERMISSION_ATOM);
+  const [permissions, setUserPermissions] = useAtom(
+    ORGANIZATION_PERMISSION_ATOM
+  );
 
   const getUserPermissions = useCallback(async () => {
     try {

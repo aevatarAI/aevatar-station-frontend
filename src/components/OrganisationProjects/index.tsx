@@ -2,7 +2,7 @@ import ProjectEditDialog from "@/components/ProjectEditDialog";
 import DataTable from "@/components/DataTable";
 import { columns } from "@/components/OrganisationProjects/columns";
 import { textGradient } from "@/constants/cls";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
+import { handleErrorMessage } from "@etransfer/utils";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TProjectEditForm } from "@/constants/form/project";
@@ -12,34 +12,28 @@ import {
   CURRENT_ORGANIZATION_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { getProjectList } from "@/api/utils/organization";
 import { useToast } from "@/hooks/use-toast";
 import { request } from "@/api";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
-  const [projectList, setProjectList] = useAtom(PROJECT_LIST_ATOM);
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
-  const userPermissions = useUserPermissions();
+  const userPermissions = useOrgPermissions();
+  const updateProjectListHandler = useUpdateProjectHandler();
 
   const updateProjectList = useCallback(async () => {
-    try {
-      if (!organizationId) return;
-      setLoading(true);
+    if (!organizationId) return;
 
-      const list = await getProjectList(organizationId);
-      setProjectList(list);
-      setLoading(false);
-    } catch (error) {
-      toast({
-        description: handleErrorMessage(error),
-      });
-      setLoading(false);
-    }
-  }, [organizationId, setProjectList, toast]);
+    setLoading(true);
+
+    await updateProjectListHandler(organizationId);
+    setLoading(false);
+  }, [organizationId, updateProjectListHandler]);
 
   useEffect(() => {
     updateProjectList();
@@ -55,7 +49,7 @@ export default function OrganisationProjects() {
             domainName,
           },
         });
-        await sleep(500);
+
         updateProjectList();
       } catch (error) {
         toast({
@@ -77,7 +71,7 @@ export default function OrganisationProjects() {
             domainName,
           },
         });
-        await sleep(500);
+
         updateProjectList();
       } catch (error) {
         toast({
@@ -94,6 +88,7 @@ export default function OrganisationProjects() {
         const result = await request.projects.deleteProject({
           query: id,
         });
+        updateProjectList();
         console.log(result, "result=");
       } catch (error) {
         toast({
@@ -101,7 +96,7 @@ export default function OrganisationProjects() {
         });
       }
     },
-    [toast]
+    [toast, updateProjectList]
   );
 
   const tableData = useMemo(

@@ -125,7 +125,7 @@ export default function InviteMembersDialog({
                             className="text-[14px]"
                             key={item.id}
                             value={item.id}>
-                            {item.name}
+                            {item.name.split("_")[1]}
                           </SelectItem>
                         ))}
                       </SelectContent>

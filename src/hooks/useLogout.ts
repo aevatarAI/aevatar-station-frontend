@@ -8,7 +8,10 @@ import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { PROJECT_PERMISSION_ATOM } from "@/state/atoms/permissions";
+import {
+  ORGANIZATION_PERMISSION_ATOM,
+  PROJECT_PERMISSION_ATOM,
+} from "@/state/atoms/permissions";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
@@ -22,6 +25,8 @@ export const useLogout = () => {
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setPermission] = useAtom(PROJECT_PERMISSION_ATOM);
+  const [, setOrgPermission] = useAtom(ORGANIZATION_PERMISSION_ATOM);
+
   const [, setProjectRole] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [, setOrgRole] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const [, setOrgMember] = useAtom(ORGANIZATION_MEMBER_ATOM);
@@ -38,6 +43,7 @@ export const useLogout = () => {
     setProjectRole(RESET);
     setOrgRole(RESET);
     setProfile(RESET);
+    setOrgPermission(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
@@ -49,5 +55,6 @@ export const useLogout = () => {
     setOrgMember,
     setPermission,
     setProjectRole,
+    setOrgPermission,
   ]);
 };

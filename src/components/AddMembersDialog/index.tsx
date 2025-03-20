@@ -55,7 +55,7 @@ export default function InviteMembersDialog({
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
-      role: defaultRoleId ?? roleList[0]?.roleId,
+      role: defaultRoleId ?? roleList[0]?.id,
       email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
@@ -143,9 +143,9 @@ export default function InviteMembersDialog({
                           {roleList.map((item) => (
                             <SelectItem
                               className="text-[14px]"
-                              key={item.roleId}
-                              value={item.roleId}>
-                              {item.roleName}
+                              key={item.id}
+                              value={item.id}>
+                              {item.name.split("_")[1]}
                             </SelectItem>
                           ))}
                         </SelectContent>

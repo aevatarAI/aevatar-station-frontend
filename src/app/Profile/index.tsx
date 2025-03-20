@@ -10,6 +10,7 @@ import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
+  CURRENT_PROJECT_ATOM,
   CURRENT_PROJECT_ROLE_ATOM,
 } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
@@ -34,7 +35,7 @@ export default function Profile() {
 
   const [, setProjectRoles] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
 
-  const [projectId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
 
   const getProjectRoleList = useCallback(async () => {
     if (!projectId) return;

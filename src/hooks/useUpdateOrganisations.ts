@@ -1,5 +1,5 @@
 import { getOrganizationList, getProjectList } from "@/api/utils/organization";
-import { useToast } from "@/hooks/use-toast";
+import { toast, useToast } from "@/hooks/use-toast";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -10,23 +10,26 @@ import { handleErrorMessage } from "@etransfer/utils";
 import { useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
 
-export const useUpdateOrganisations = () => {
-  const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [curOrg, setCurOrganisations] = useAtom(CURRENT_ORGANIZATION_ATOM);
+export const useUpdateProjectHandler = () => {
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const [curProject, setCurProject] = useAtom(CURRENT_PROJECT_ATOM);
   const { toast } = useToast();
 
-  const updateProjectList = useCallback(
+  return useCallback(
     async (id: string) => {
       try {
         const list = await getProjectList(id);
-        if (!list.length) return;
+        if (!list.length) {
+          setProjectList(list);
+          setCurProject(null);
+          return;
+        }
         const isSome = list.some((item) => item.id === curProject);
 
         const curId = isSome && curProject ? curProject : list[0].id;
+
         setProjectList(list);
-        if (!curProject) setCurProject(curId);
+        if (!isSome) setCurProject(curId);
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "fetch Project error"),
@@ -35,13 +38,25 @@ export const useUpdateOrganisations = () => {
     },
     [setProjectList, setCurProject, toast, curProject]
   );
+};
 
-  const updateOrganizationList = useCallback(async () => {
+export const useUpdateOrganisationsHandler = () => {
+  const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const [curOrg, setCurOrganisations] = useAtom(CURRENT_ORGANIZATION_ATOM);
+
+  const { toast } = useToast();
+
+  const updateProjectList = useUpdateProjectHandler();
+
+  return useCallback(async () => {
     try {
       const list = await getOrganizationList();
-      console.log(list, "list==a");
-      setOrganisations(list);
 
+      setOrganisations(list);
+      if (!list.length) {
+        setCurOrganisations(null);
+        return;
+      }
       const isSome = list.some((item) => item.id === curOrg);
       const curId = isSome && curOrg ? curOrg : list[0].id;
       if (!isSome) setCurOrganisations(curId);
@@ -52,6 +67,10 @@ export const useUpdateOrganisations = () => {
       });
     }
   }, [curOrg, setOrganisations, setCurOrganisations, toast, updateProjectList]);
+};
+
+export const useUpdateOrganisations = () => {
+  const updateOrganizationList = useUpdateOrganisationsHandler();
 
   useEffect(() => {
     updateOrganizationList();

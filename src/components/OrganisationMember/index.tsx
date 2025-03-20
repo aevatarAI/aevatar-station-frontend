@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/select";
 import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
+import { handleErrorMessage } from "@etransfer/utils";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -34,7 +34,7 @@ export default function OrganisationMember() {
   const { toast } = useToast();
   const [roleList] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
 
-  const userPermissions = useUserPermissions();
+  const userPermissions = useOrgPermissions();
 
   const getMembers = useCallback(async () => {
     try {
@@ -58,7 +58,11 @@ export default function OrganisationMember() {
   const onChangeRole = useCallback(
     async (userId: string, roleId: string) => {
       try {
+        if (!organizationId) return;
+
         await request.organizations.editOrganizationRoles({
+          query: organizationId,
+
           data: {
             userId,
             roleId,
@@ -67,19 +71,22 @@ export default function OrganisationMember() {
         toast({
           description: "Successfully",
         });
+        getMembers();
       } catch (error) {
         toast({
           description: handleErrorMessage(error),
         });
       }
     },
-    [toast]
+    [organizationId, toast, getMembers]
   );
 
   const onSetMember = useCallback(
     async (email: string, join: boolean, roleId: string) => {
       try {
+        if (!organizationId) return;
         const result = await request.organizations.editOrganizationMembers({
+          query: organizationId,
           data: {
             email,
             join,
@@ -90,7 +97,6 @@ export default function OrganisationMember() {
         toast({
           description: `successfully ${join ? "invited" : "removed"}`,
         });
-        await sleep(1000);
         getMembers();
       } catch (error) {
         toast({
@@ -98,7 +104,7 @@ export default function OrganisationMember() {
         });
       }
     },
-    [toast, getMembers]
+    [organizationId, toast, getMembers]
   );
 
   const tableData = useMemo(
@@ -120,13 +126,15 @@ export default function OrganisationMember() {
                       className="text-[14px]"
                       key={roleItem.id}
                       value={roleItem.id}>
-                      {roleItem.name}
+                      {roleItem.name.split("_")[1]}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             ) : (
-              <div className="text-[12px] font-syne font-semibold">invite pending</div>
+              <div className="text-[12px] font-syne font-semibold">
+                invite pending
+              </div>
             )}
           </>
         ),

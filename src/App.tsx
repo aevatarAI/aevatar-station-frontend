@@ -13,7 +13,6 @@ import { useAtom } from "jotai";
 import { service } from "@/api/axios";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 
-const Overview = lazy(() => import("./app/Overview"));
 const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));

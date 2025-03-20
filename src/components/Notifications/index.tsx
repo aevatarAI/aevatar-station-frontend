@@ -45,7 +45,7 @@ export const Notifications = ({ data, isLoading, isError, query }: Notifications
             key={item.id}>
             <div className="mb-[15px] lg:mb-0">
               <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase mb-[10px]">
-                {dayjs(item.createTime).format('D.MM.YYYY')}
+                {dayjs(item.createTime).format("DD/MM/YYYY HH:mm")}
               </div>
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
                 <span className="text-white">{`${item.creatorId} `}</span>

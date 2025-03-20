@@ -11,9 +11,8 @@ import { socialMediaList } from "@/constants/socialMedia";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { useLocation, useParams } from "wouter";
-
 import { useNavigate } from "@/hooks/navigate";
-import { notificationAtom } from "@/state/atoms/notification";
+import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { useAtom } from "jotai";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import {
@@ -22,7 +21,6 @@ import {
   menuItemTextClx,
 } from "@/constants/cls";
 import {
-  CURRENT_PROJECT_ATOM,
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
@@ -37,14 +35,12 @@ export function SideBar({ className }: ISideBarProps) {
   const [pathname] = useLocation();
   const params = useParams<{ tab?: string; menu?: string }>();
   const navigate = useNavigate();
-  const [isNotification] = useAtom(notificationAtom);
 
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const [notificationClicked, setNotificationClicked] = useAtom(NOTIFICATION_ATOM);
   const userPermissions = useOrgPermissions();
   const userProjectPermissions = useProjectPermissions();
-
-  console.log(params, pathname, "params===");
 
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
@@ -117,19 +113,21 @@ export function SideBar({ className }: ISideBarProps) {
   }, [projectList, userProjectPermissions]);
 
   const profileList = useMemo(
-    () => [
-      {
-        icon: <General />,
-        text: "general",
-        url: "/profile/profile/general",
-      },
-      {
-        icon: isNotification ? <Notication /> : <NoticationEmpty />,
-        text: "notifications",
-        url: "/profile/profile/notifications",
-      },
-    ],
-    [isNotification]
+    () => {
+      return [
+        {
+          icon: <General />,
+          text: "general",
+          url: "/profile/profile/general",
+        },
+        {
+          icon: notificationClicked ? <NoticationEmpty /> : <Notication />,
+          text: "notifications",
+          url: "/profile/profile/notifications",
+        },
+      ]
+    },
+    [notificationClicked]
   );
 
   const profileMenuMap = useMemo(() => {
@@ -181,7 +179,12 @@ export function SideBar({ className }: ISideBarProps) {
               {item[1].map((tab) => (
                 <div
                   key={tab.text}
-                  onClick={() => navigate(tab.url)}
+                  onClick={() => {
+                    if (tab.url.includes('notifications')) {
+                      setNotificationClicked(true)
+                    }
+                    navigate(tab.url)
+                  }}
                   className={clsx(
                     menuItemClx,
                     selectMenu === item[0] &&

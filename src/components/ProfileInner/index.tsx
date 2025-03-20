@@ -3,16 +3,28 @@ import General from "@/components/General";
 import { Notifications } from "@/components/Notifications";
 import type { TAB_LIST } from "@/constants/sideBar";
 import { useToast } from "@/hooks/use-toast";
+import { QueryProps, useGetNotifications, useSignalR } from "@/hooks/useGetNotifications";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage, sleep } from "@etransfer/utils";
 import { useAtom } from "jotai";
-import { useCallback } from "react";
+import { accessTokenAtom } from '@/state/atoms';
+import { useState, useCallback } from "react";
 
+const useAccessTokenAtom = () => {
+  const [accessToken] = useAtom(accessTokenAtom)
+  const validAccessToken = typeof accessToken === 'string' ? accessToken : '';
+  return validAccessToken
+}
 interface IProfileInnerProps {
   tab: (typeof TAB_LIST)[number];
 }
 export default function ProfileInner({ tab }: IProfileInnerProps) {
+  const accessToken = useAccessTokenAtom();
+  const [query, setQuery] = useState<QueryProps>({ pageIndex: 0, pageSize: 3 });
+  const { data, isLoading, isError } = useGetNotifications(query);
+  useSignalR(accessToken);
+
   const { toast } = useToast();
   const [profile] = useAtom(USER_PROFILE_ATOM);
   const getUserProfile = useUpdateProfile();
@@ -54,7 +66,15 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
           onConfirm={onNameSave}
         />
       )}
-      {tab === "notifications" && <Notifications />}
+      {tab === "notifications" && (
+        <Notifications 
+          data={data} 
+          isLoading={isLoading} 
+          isError={isError}
+          query={query}
+          onQueryUpdate={setQuery}
+        />
+      )}
     </div>
   );
 }

@@ -2,6 +2,17 @@ import type { API_REQ_FUNCTION } from "./types";
 
 export const DEFAULT_METHOD = "GET";
 
+const NOTIFICATIONS_API_LIST = {
+  getNotifications: {
+    target: "/api/notification",
+    baseConfig: { method: "GET" },
+  },
+  updateNotification: {
+    target: "/api/notification/response",
+    baseConfig: { method: "POST" }
+  }
+}
+
 const ORGANIZATIONS_API_LIST = {
   getUserOrganizations: "/api/organizations",
   getOrganizationDetail: "/api/organizations",
@@ -95,6 +106,7 @@ const PROFILE_API_LIST = {
 };
 
 export const EXPAND_APIS = {
+  notifications: NOTIFICATIONS_API_LIST,
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,
   profile: PROFILE_API_LIST,

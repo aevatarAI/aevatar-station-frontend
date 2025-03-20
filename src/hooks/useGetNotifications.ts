@@ -1,76 +1,58 @@
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios';
-interface Content {
-  organizeId: string;
-  role: string;
-}
+import { useQuery } from '@tanstack/react-query';
+import * as signalR from '@microsoft/signalr';
+import { request } from "@/api";
 export interface Notification {
   id: string;
   type: number;
-  content: Content;
-  status: string;
-  creator: string;
-  creatTime: number | string;
+  content: string;
+  status: number;
+  creatorId: string;
+  createTime: string;
+  receiver: string;
 }
 
-const mockData: Notification[] = [
-  {
-    id: "1",
-    type: 0,
-    content: {
-      organizeId: "Aelf Organisation",
-      role: "owner"
-    },
-    status: "0",
-    creator: "Fred",
-    creatTime: Date.now(),
-  },
-  {
-    id: "2",
-    type: 0,
-    content: {
-      organizeId: "Bitcoin Organisation",
-      role: "owner"
-    },
-    status: "0",
-    creator: "Phillip",
-    creatTime: Date.now(),
-  },
-  {
-    id: "3",
-    type: 1,
-    content: {
-      organizeId: "DogeCoin Organisation",
-      role: "owner"
-    },
-    status: "1",
-    creator: "Min Xue",
-    creatTime: Date.now(),
-  },
-  {
-    id: "4",
-    type: 1,
-    content: {
-      organizeId: "Ethereum Organisation",
-      role: "owner"
-    },
-    status: "2",
-    creator: "Cotton",
-    creatTime: Date.now(),
-  }
-]
-
-const fetchNotifications = async () => {
-  try {
-    return Promise.resolve(mockData)
-  } catch (err) {
-    throw new Error('Unable to fetch notifications')
-  }
+export interface QueryProps {
+  pageIndex: number;
+  pageSize: number;
 }
 
-export const useGetNotifications = () => {
+const fetchNotifications = async (query: QueryProps) => {
+  return request.notifications.getNotifications({params: {...query}});
+}
+
+export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {  
   return useQuery({
-    queryKey: ['notifications'],
-    queryFn: fetchNotifications,
+    queryKey: ['notifications', { pageIndex, pageSize }],
+    queryFn: () => fetchNotifications({ pageIndex, pageSize }),
+    refetchInterval: 1000 * 60 * 5,
+    enabled: Number(pageIndex) >= 0 && Number(pageSize) >= 0
   })
-} 
+}
+
+const establishSignalR = async (token: string) => {
+    try {
+      const connection = new signalR.HubConnectionBuilder()
+        .withUrl('/api/notifications', {
+          withCredentials: false,
+          accessTokenFactory: () => {
+            return token.replace(/^Bearer\s+/, '');
+          }
+        })
+        .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect()
+        .build();
+
+      const isConnected = await connection.start();
+      return isConnected
+    } catch (e) {
+      throw new Error('Unable to connect to websocket server')
+    }
+}
+
+export const useSignalR = (token: string) => {
+  return useQuery({
+    queryKey: ['signalR', { token }],
+    queryFn: () => establishSignalR(token),
+    staleTime: Infinity
+  })
+}

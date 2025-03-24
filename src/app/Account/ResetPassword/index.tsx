@@ -74,7 +74,6 @@ const ResetPassword = () => {
       try {
         const result = await resetPassword(userId, resetToken, password);
         if (result.code === "20001") {
-          console.log("reset successful!");
           sleep(2000);
           navigate("/login");
         } else {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ACCEPTED, DECLINED, DEFAULT, INVITED } from '@/constants';
 import { useUpdateNotification } from "@/hooks/useUpdateNotifications";
 import { QueryProps, Notification } from '@/hooks/useGetNotifications';
+import { truncate } from "@/utils/helpers";
 interface NotificationsProps {
   data?: { data: Notification[] };
   isLoading: boolean;
@@ -50,7 +51,7 @@ export const Notifications = ({ data, isLoading, isError, query }: Notifications
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
                 <span className="text-white">{`${item.creatorId} `}</span>
                 <span>has invited you to join</span>
-                <span className="text-white">{` ${item.content}`}</span>
+                <span className="text-white">{` ${truncate(item.content, 'has invited you to join')}`}</span>
               </div>
             </div>
             <div className="flex gap-[12px] items-center">

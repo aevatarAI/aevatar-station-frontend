@@ -33,10 +33,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Loading from "@/assets/loading.svg?react";
 import clsx from "clsx";
-import { sleep } from "@etransfer/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateAPIKey } from "@/hooks/useCreateAPIKey";
 
-const projectList = ["project1", "project2", "project3"];
+const projectList = ["02d2d4de-dfca-dc54-3e79-3a18c8cb355c"];
 
 export default function CreateApiKeyDialog() {
   const form = useForm<TCreateApiKeyForm>({
@@ -44,20 +44,18 @@ export default function CreateApiKeyDialog() {
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
-
+  const { mutate } = useCreateAPIKey();
   const { toast } = useToast();
 
   const onSubmit = useCallback(
-    async (values: TCreateApiKeyForm) => {
-      console.log(values, "values===");
+    async (data: TCreateApiKeyForm) => {
       setBtnLoading(true);
-      await sleep(2000);
+      mutate(data);
       setBtnLoading(false);
       setOpen(false);
       toast({
         title: "",
         description: "successfully created",
-        // duration: 30000000,
       });
     },
     [toast]
@@ -87,9 +85,9 @@ export default function CreateApiKeyDialog() {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-[16px] items-start content-start self-stretch">
               <FormField
-                key={"name"}
+                key="keyName"
                 control={form.control}
-                name={"name"}
+                name="keyName"
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">name of the key</FormLabel>
@@ -101,8 +99,9 @@ export default function CreateApiKeyDialog() {
                 )}
               />
               <FormField
+                key="projectId"
                 control={form.control}
-                name="project"
+                name="projectId"
                 render={({ field }) => (
                   <FormItem aria-labelledby="project" className="w-full">
                     <FormLabel id="project">project</FormLabel>

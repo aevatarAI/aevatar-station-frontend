@@ -3,19 +3,15 @@ import Copy from "@/components/Copy";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { accessTokenAtom } from "@/state/atoms";
-import { useAtom } from "jotai";
 import type React from "react";
 import { useEffect, useState } from "react";
 const WelcomePage: React.FC = () => {
-  const [accessToken] = useAtom(accessTokenAtom);
-  const [org, setOrg] = useState<string>();
+  const [_, setOrg] = useState<string>();
   const organisations = [
     { id: "org1", name: "organisation #1" },
     { id: "org2", name: "organisation #2" },
   ];
   const onRadioChange = (value: string) => {
-    console.log(value, "xxxx");
     setOrg(value);
   };
 

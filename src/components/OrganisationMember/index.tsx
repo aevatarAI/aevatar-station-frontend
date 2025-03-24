@@ -93,7 +93,6 @@ export default function OrganisationMember() {
             roleId,
           },
         });
-        console.log(result, "result==");
         toast({
           description: `successfully ${join ? "invited" : "removed"}`,
         });

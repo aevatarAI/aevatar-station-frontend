@@ -6,7 +6,7 @@ export const isDeniedRequest = (error: { message: string }) => {
     const message: string = error.message;
     if (message.includes("401")) return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   return false;
 };

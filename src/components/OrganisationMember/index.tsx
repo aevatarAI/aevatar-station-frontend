@@ -1,10 +1,11 @@
+import { request } from "@/api";
 import {
-  getOrganizationMembers,
   type IMemberItem,
+  getOrganizationMembers,
 } from "@/api/utils/organization";
-import InviteMembersDialog from "@/components/InviteMembersDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
+import InviteMembersDialog from "@/components/InviteMembersDialog";
 import { columns } from "@/components/OrganisationMember/columns";
 import {
   Select,
@@ -21,11 +22,10 @@ import {
   CURRENT_ORGANIZATION_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { request } from "@/api";
 
 export default function OrganisationMember() {
   const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
@@ -78,7 +78,7 @@ export default function OrganisationMember() {
         });
       }
     },
-    [organizationId, toast, getMembers]
+    [organizationId, toast, getMembers],
   );
 
   const onSetMember = useCallback(
@@ -104,7 +104,7 @@ export default function OrganisationMember() {
         });
       }
     },
-    [organizationId, toast, getMembers]
+    [organizationId, toast, getMembers],
   );
 
   const tableData = useMemo(
@@ -116,7 +116,8 @@ export default function OrganisationMember() {
             {item.roleId ? (
               <Select
                 value={item.roleId}
-                onValueChange={(v) => onChangeRole(item.id, v)}>
+                onValueChange={(v) => onChangeRole(item.id, v)}
+              >
                 <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -125,7 +126,8 @@ export default function OrganisationMember() {
                     <SelectItem
                       className="text-[14px]"
                       key={roleItem.id}
-                      value={roleItem.id}>
+                      value={roleItem.id}
+                    >
                       {roleItem.name.split("_")[1]}
                     </SelectItem>
                   ))}
@@ -154,7 +156,7 @@ export default function OrganisationMember() {
           </div>
         ),
       })),
-    [memberList, userPermissions, roleList, onSetMember, onChangeRole]
+    [memberList, userPermissions, roleList, onSetMember, onChangeRole],
   );
 
   return (

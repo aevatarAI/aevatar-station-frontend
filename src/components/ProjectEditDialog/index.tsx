@@ -1,4 +1,5 @@
 import Plus from "@/assets/+.svg?react";
+import Edit from "@/assets/edit_action.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,19 +17,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Edit from "@/assets/edit_action.svg?react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
-import { handleErrorMessage } from "@etransfer/utils";
-import { useToast } from "@/hooks/use-toast";
 import {
   ProjectEditForm,
   type TProjectEditForm,
 } from "@/constants/form/project";
+import { useToast } from "@/hooks/use-toast";
+import { handleErrorMessage } from "@/utils/error";
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface IProjectEditDialogProps {
   type: "edit" | "create";
@@ -79,7 +79,7 @@ export default function ProjectEditDialog({
         setBtnLoading(false);
       }
     },
-    [toast, onFinish, type]
+    [toast, onFinish, type],
   );
 
   useEffect(() => {
@@ -109,7 +109,8 @@ export default function ProjectEditDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             {type === "create" ? "create project" : "edit project"}
@@ -138,7 +139,8 @@ export default function ProjectEditDialog({
                 render={({ field }) => (
                   <FormItem
                     aria-labelledby="domainNameLabel"
-                    className="w-full">
+                    className="w-full"
+                  >
                     <FormLabel id="domainNameLabel">domain name</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
@@ -153,12 +155,14 @@ export default function ProjectEditDialog({
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
                   className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}

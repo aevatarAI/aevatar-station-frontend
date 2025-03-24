@@ -6,7 +6,7 @@ import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
 
@@ -36,7 +36,7 @@ export const useUpdateProjectHandler = () => {
         });
       }
     },
-    [setProjectList, setCurProject, toast, curProject]
+    [setProjectList, setCurProject, toast, curProject],
   );
 };
 

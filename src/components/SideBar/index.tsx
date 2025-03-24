@@ -1,31 +1,31 @@
 "use client";
 
+import ApikeysIcon from "@/assets/api_keys.svg?react";
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
-import ApikeysIcon from "@/assets/api_keys.svg?react";
 import Notication from "@/assets/notication.svg?react";
 import NoticationEmpty from "@/assets/notification_empty.svg?react";
 import Project from "@/assets/project.svg?react";
 import Role from "@/assets/role.svg?react";
-import { socialMediaList } from "@/constants/socialMedia";
-import clsx from "clsx";
-import { useMemo } from "react";
-import { useLocation, useParams } from "wouter";
-import { useNavigate } from "@/hooks/navigate";
-import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
-import { useAtom } from "jotai";
-import { useSideBarParams } from "@/hooks/useSideBarParams";
 import {
   menuItemClx,
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
+import { socialMediaList } from "@/constants/socialMedia";
+import { useNavigate } from "@/hooks/navigate";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import { useSideBarParams } from "@/hooks/useSideBarParams";
+import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { useOrgPermissions } from "@/hooks/useOrgPermissions";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useMemo } from "react";
+import { useLocation, useParams } from "wouter";
 
 export interface ISideBarProps {
   className?: string;
@@ -38,7 +38,8 @@ export function SideBar({ className }: ISideBarProps) {
 
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [notificationClicked, setNotificationClicked] = useAtom(NOTIFICATION_ATOM);
+  const [notificationClicked, setNotificationClicked] =
+    useAtom(NOTIFICATION_ATOM);
   const userPermissions = useOrgPermissions();
   const userProjectPermissions = useProjectPermissions();
 
@@ -112,23 +113,20 @@ export function SideBar({ className }: ISideBarProps) {
     // },
   }, [projectList, userProjectPermissions]);
 
-  const profileList = useMemo(
-    () => {
-      return [
-        {
-          icon: <General />,
-          text: "general",
-          url: "/profile/profile/general",
-        },
-        {
-          icon: notificationClicked ? <NoticationEmpty /> : <Notication />,
-          text: "notifications",
-          url: "/profile/profile/notifications",
-        },
-      ]
-    },
-    [notificationClicked]
-  );
+  const profileList = useMemo(() => {
+    return [
+      {
+        icon: <General />,
+        text: "general",
+        url: "/profile/profile/general",
+      },
+      {
+        icon: notificationClicked ? <NoticationEmpty /> : <Notication />,
+        text: "notifications",
+        url: "/profile/profile/notifications",
+      },
+    ];
+  }, [notificationClicked]);
 
   const profileMenuMap = useMemo(() => {
     const menu: {
@@ -150,8 +148,9 @@ export function SideBar({ className }: ISideBarProps) {
           onClick={() => navigate("/dashboard/apikeys")}
           className={clsx(
             menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx
-          )}>
+            selectTab === "apikeys" && menuItemSelectedClx,
+          )}
+        >
           <ApikeysIcon />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
@@ -167,12 +166,14 @@ export function SideBar({ className }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#303030] mb-[34px]"
-            )}>
+              item[0] === "profile" && "border-b border-[#303030] mb-[34px]",
+            )}
+          >
             <div
               className={clsx(
-                "text-[#B9B9B9] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]"
-              )}>
+                "text-[#B9B9B9] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]",
+              )}
+            >
               {item[0]}
             </div>
             <div className="flex flex-col gap-[10px]">
@@ -180,17 +181,18 @@ export function SideBar({ className }: ISideBarProps) {
                 <div
                   key={tab.text}
                   onClick={() => {
-                    if (tab.url.includes('notifications')) {
-                      setNotificationClicked(true)
+                    if (tab.url.includes("notifications")) {
+                      setNotificationClicked(true);
                     }
-                    navigate(tab.url)
+                    navigate(tab.url);
                   }}
                   className={clsx(
                     menuItemClx,
                     selectMenu === item[0] &&
                       selectTab === tab.text &&
-                      menuItemSelectedClx
-                  )}>
+                      menuItemSelectedClx,
+                  )}
+                >
                   {tab.icon}
                   <span className={clsx(menuItemTextClx)}>{tab.text}</span>
                 </div>
@@ -200,15 +202,17 @@ export function SideBar({ className }: ISideBarProps) {
         ))}
       </div>
     ),
-    [profileMenuMap, selectTab, selectMenu, navigate]
+    [profileMenuMap, selectTab, selectMenu, navigate, setNotificationClicked],
   );
 
   return (
     <div
+      data-testid="sidebar-id"
       className={clsx(
         "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
-        className
-      )}>
+        className,
+      )}
+    >
       {pathname.startsWith("/dashboard") && dashboardMenu}
       {pathname.startsWith("/profile") && profileMenu}
 
@@ -219,7 +223,8 @@ export function SideBar({ className }: ISideBarProps) {
             key={item.title}
             href={item.href}
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+          >
             {item.title}
           </a>
         ))}

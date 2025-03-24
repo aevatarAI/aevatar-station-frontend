@@ -11,7 +11,7 @@ import {
   CURRENT_PROJECT_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -29,11 +29,11 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
 
   const curProject = useMemo(
     () => projectList.find((item) => item.id === projectId),
-    [projectList, projectId]
+    [projectList, projectId],
   );
 
   const [domainName, setDomainName] = useState<string>(
-    curProject?.domainName ?? ""
+    curProject?.domainName ?? "",
   );
 
   const generalRef = useRef<IGeneralInstance>();
@@ -62,7 +62,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
         });
       }
     },
-    [toast, projectId, organizationId, domainName, updateProjectList]
+    [toast, projectId, organizationId, domainName, updateProjectList],
   );
 
   const extraInput = useMemo(
@@ -79,7 +79,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
         />
       </div>
     ),
-    [domainName, curProject?.domainName]
+    [domainName, curProject?.domainName],
   );
 
   return (

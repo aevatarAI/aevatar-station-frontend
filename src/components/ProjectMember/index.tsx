@@ -1,6 +1,6 @@
 import { request } from "@/api";
 import { getOrganizationMembers } from "@/api/utils/organization";
-import { getProjectMembers, type IMemberItem } from "@/api/utils/project";
+import { type IMemberItem, getProjectMembers } from "@/api/utils/project";
 import AddMembersDialog from "@/components/AddMembersDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
@@ -21,7 +21,7 @@ import {
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -97,7 +97,7 @@ export default function ProjectMember() {
         });
       }
     },
-    [projectId, toast, getMembers]
+    [projectId, toast, getMembers],
   );
 
   const onSetMember = useCallback(
@@ -123,14 +123,14 @@ export default function ProjectMember() {
         });
       }
     },
-    [projectId, toast, getMembers]
+    [projectId, toast, getMembers],
   );
   const getRoleName = useCallback(
     (roleId: string) =>
       roleList
         .find((roleItem) => roleItem.id === roleId)
         ?.name?.split("_")[1] ?? "--",
-    [roleList]
+    [roleList],
   );
   const tableData = useMemo(
     () =>
@@ -144,7 +144,8 @@ export default function ProjectMember() {
           ) : (
             <Select
               value={item.roleId}
-              onValueChange={(v) => onChangeRole(item.id, v)}>
+              onValueChange={(v) => onChangeRole(item.id, v)}
+            >
               <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -153,7 +154,8 @@ export default function ProjectMember() {
                   <SelectItem
                     className="text-[14px]"
                     key={item.id}
-                    value={item.id}>
+                    value={item.id}
+                  >
                     {item.name.split("_")[1]}
                   </SelectItem>
                 ))}
@@ -183,9 +185,12 @@ export default function ProjectMember() {
       onSetMember,
       onChangeRole,
       getRoleName,
-    ]
+    ],
   );
-
+  const _orgMemberList = useMemo(
+    () => orgMemberList.filter((item) => item.roleId),
+    [orgMemberList],
+  );
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
@@ -194,7 +199,7 @@ export default function ProjectMember() {
         {projectPermissions.projectsMembersManage ? (
           <AddMembersDialog
             defaultRoleId={roleList[0]?.id}
-            orgMemberList={orgMemberList}
+            orgMemberList={_orgMemberList}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)
             }

@@ -2,19 +2,10 @@ import CreateRoleDialog from "@/components/CreateRoleDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 
-import { columns, type IRoleList } from "@/components/OrganisationRole/columns";
+import { type IRoleList, columns } from "@/components/OrganisationRole/columns";
 import PermissionManagerDialog from "@/components/PermissionManagerDialog";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { textGradient } from "@/constants/cls";
 import type { TCreateRoleForm } from "@/constants/form/createRole";
-import { sleep } from "@etransfer/utils";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -24,40 +15,35 @@ export default function OrganisationRole() {
 
   useEffect(() => {
     setLoading(true);
-    sleep(1000).then(() => {
-      setRoleList([
-        {
-          id: "1",
-          role: "name",
-          isRemove: true,
-        },
-        {
-          id: "2",
-          role: "name22222222222",
-          isRemove: false,
-        },
-        {
-          id: "3",
-          role: "name22223332222222",
-          isRemove: true,
-        },
-        {
-          id: "4",
-          role: "name22223332222222",
-          isRemove: false,
-        },
-      ]);
-      setLoading(false);
-    });
+    setRoleList([
+      {
+        id: "1",
+        role: "name",
+        isRemove: true,
+      },
+      {
+        id: "2",
+        role: "name22222222222",
+        isRemove: false,
+      },
+      {
+        id: "3",
+        role: "name22223332222222",
+        isRemove: true,
+      },
+      {
+        id: "4",
+        role: "name22223332222222",
+        isRemove: false,
+      },
+    ]);
+    setLoading(false);
   }, []);
 
-  const onDeleteYes = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+  const onDeleteYes = useCallback(async () => {}, []);
 
   const onPermissionSave = useCallback(async (id: string, value: any) => {
     console.log(id, value);
-    await sleep(1000);
   }, []);
 
   const tableData = useMemo(
@@ -85,12 +71,11 @@ export default function OrganisationRole() {
           </div>
         ),
       })),
-    [roleList, onDeleteYes, onPermissionSave]
+    [roleList, onDeleteYes, onPermissionSave],
   );
 
   const onCreate = useCallback(async (values: TCreateRoleForm) => {
     console.log(values, "values===");
-    await sleep(1000);
   }, []);
 
   return (

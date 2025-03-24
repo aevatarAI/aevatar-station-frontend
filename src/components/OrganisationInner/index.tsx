@@ -10,7 +10,7 @@ import {
   CURRENT_ORGANIZATION_ATOM,
   ORGANIZATIONS_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
@@ -44,11 +44,11 @@ export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
         });
       }
     },
-    [toast, orgId, updateOrganizationList]
+    [toast, orgId, updateOrganizationList],
   );
   const curOrg = useMemo(
     () => orgList.find((item) => item.id === orgId),
-    [orgId, orgList]
+    [orgId, orgList],
   );
 
   const generalRef = useRef<IGeneralInstance>();

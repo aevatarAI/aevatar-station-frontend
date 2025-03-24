@@ -5,7 +5,7 @@ import {
   ORGANIZATION_PERMISSION_ATOM,
   PROJECT_PERMISSION_ATOM,
 } from "@/state/atoms/permissions";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo } from "react";
 
@@ -27,7 +27,7 @@ export const useOrgPermissions = () => {
   const { toast } = useToast();
 
   const [permissions, setUserPermissions] = useAtom(
-    ORGANIZATION_PERMISSION_ATOM
+    ORGANIZATION_PERMISSION_ATOM,
   );
 
   const getUserPermissions = useCallback(async () => {

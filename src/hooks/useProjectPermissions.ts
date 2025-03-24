@@ -2,7 +2,7 @@ import { getProjectPermissions } from "@/api/utils/project";
 import { useToast } from "@/hooks/use-toast";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { PROJECT_PERMISSION_ATOM } from "@/state/atoms/permissions";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo } from "react";
 

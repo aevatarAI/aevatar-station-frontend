@@ -1,21 +1,21 @@
-import ProjectEditDialog from "@/components/ProjectEditDialog";
+import { request } from "@/api";
 import DataTable from "@/components/DataTable";
-import { columns } from "@/components/OrganisationProjects/columns";
-import { textGradient } from "@/constants/cls";
-import { handleErrorMessage } from "@etransfer/utils";
-import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { TProjectEditForm } from "@/constants/form/project";
 import DeleteDialog from "@/components/DeleteDialog";
-import { useAtom } from "jotai";
+import { columns } from "@/components/OrganisationProjects/columns";
+import ProjectEditDialog from "@/components/ProjectEditDialog";
+import { textGradient } from "@/constants/cls";
+import type { TProjectEditForm } from "@/constants/form/project";
+import { useToast } from "@/hooks/use-toast";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { useToast } from "@/hooks/use-toast";
-import { request } from "@/api";
-import { useOrgPermissions } from "@/hooks/useOrgPermissions";
-import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
+import { handleErrorMessage } from "@/utils/error";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
@@ -57,7 +57,7 @@ export default function OrganisationProjects() {
         });
       }
     },
-    [updateProjectList, toast]
+    [updateProjectList, toast],
   );
 
   const onCreate = useCallback(
@@ -79,7 +79,7 @@ export default function OrganisationProjects() {
         });
       }
     },
-    [organizationId, toast, updateProjectList]
+    [organizationId, toast, updateProjectList],
   );
 
   const onDeleteYes = useCallback(
@@ -96,7 +96,7 @@ export default function OrganisationProjects() {
         });
       }
     },
-    [toast, updateProjectList]
+    [toast, updateProjectList],
   );
 
   const tableData = useMemo(
@@ -129,7 +129,7 @@ export default function OrganisationProjects() {
           </div>
         ),
       })),
-    [projectList, userPermissions, onEdit, onDeleteYes]
+    [projectList, userPermissions, onEdit, onDeleteYes],
   );
   console.log(loading, "loading==");
   return (

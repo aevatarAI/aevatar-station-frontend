@@ -112,7 +112,6 @@ export default function ProjectMember() {
             roleId,
           },
         });
-        console.log(result, "result==");
         toast({
           description: `successfully ${join ? "invited" : "removed"}`,
         });

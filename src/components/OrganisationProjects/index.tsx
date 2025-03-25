@@ -89,7 +89,6 @@ export default function OrganisationProjects() {
           query: id,
         });
         updateProjectList();
-        console.log(result, "result=");
       } catch (error) {
         toast({
           description: handleErrorMessage(error),
@@ -131,7 +130,6 @@ export default function OrganisationProjects() {
       })),
     [projectList, userPermissions, onEdit, onDeleteYes],
   );
-  console.log(loading, "loading==");
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">

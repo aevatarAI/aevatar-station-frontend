@@ -58,7 +58,6 @@ export default function InviteMembersDialog({
 
   const onSubmit = useCallback(
     async (values: TInviteMembersKeyForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
       await onAddMember(values);
       setBtnLoading(false);

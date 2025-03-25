@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import {
   editKeyApiForm,
   type TEditApiKeyForm,
@@ -26,10 +25,12 @@ import { useForm } from "react-hook-form";
 import Edit from "@/assets/edit_action.svg?react";
 import clsx from "clsx";
 import Loading from "@/assets/loading.svg?react";
-import { sleep } from "@etransfer/utils";
 import { useToast } from "@/hooks/use-toast";
+interface EditApiKeyDialogProps {
+  onYes: (name: string) => Promise<void>;
+};
 
-export default function EditApiKeyDialog() {
+export default function EditApiKeyDialog({ onYes }: EditApiKeyDialogProps) {
   const form = useForm<TEditApiKeyForm>({
     resolver: zodResolver(editKeyApiForm),
   });
@@ -39,9 +40,8 @@ export default function EditApiKeyDialog() {
 
   const onSubmit = useCallback(
     async (values: TEditApiKeyForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
-      await sleep(2000);
+      onYes(values.name);
       setBtnLoading(false);
       setOpen(false);
       toast({

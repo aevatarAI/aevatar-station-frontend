@@ -9,8 +9,7 @@ interface UpdateNotificationProps {
 }
 
 const updateNotification = (body: UpdateNotificationProps) => {
-    const data = JSON.stringify(body)
-    return request.notifications.updateNotification({ data })
+    return request.notifications.updateNotification({ data: body })
 }
 
 interface MutationProps {
@@ -46,7 +45,6 @@ export const useUpdateNotification = (query: QueryProps) => {
                 })
 
             } catch (e) {
-                console.log('error', e)
                 return { data: [] }
             }
         },

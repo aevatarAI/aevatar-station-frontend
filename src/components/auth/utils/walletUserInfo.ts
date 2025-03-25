@@ -25,7 +25,6 @@ export const setStoreWalletUserInfo = (info: TWalletUserInfo) => {
 	try {
 		localStorage.setItem(WALLET_USER_INFO_STORE_KEY, JSON.stringify(info));
 	} catch (error) {
-		console.log("setStoreWalletUserInfo error", error);
 	}
 };
 

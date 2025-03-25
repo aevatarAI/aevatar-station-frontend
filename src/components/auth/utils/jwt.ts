@@ -24,7 +24,7 @@ export const getLocalJWT = (key: string) => {
 		if (Date.now() - 0.5 * Day > cData?.expiresTime) return;
 		return cData;
 	} catch (error) {
-		console.log("getLocalJWT error", error);
+		console.error(error)
 		return;
 	}
 };

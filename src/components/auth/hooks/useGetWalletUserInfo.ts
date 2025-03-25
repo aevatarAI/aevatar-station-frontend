@@ -28,7 +28,6 @@ export const useGetWalletUserInfo = () => {
 				managerAddress: managerAddress,
 			};
 		} catch (error) {
-			console.log("useGetWalletUserInfo: error", error);
 			throw new Error("Failed to obtain user information");
 		}
 	}, [isConnect, walletInfo, walletType]);

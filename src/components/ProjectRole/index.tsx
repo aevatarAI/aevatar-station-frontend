@@ -48,7 +48,6 @@ export default function ProjectRole() {
   }, []);
 
   const onPermissionSave = useCallback(async (id: string, value: any) => {
-    console.log(id, value);
     await sleep(1000);
   }, []);
 
@@ -81,7 +80,6 @@ export default function ProjectRole() {
   );
 
   const onCreate = useCallback(async (values: TCreateRoleForm) => {
-    console.log(values, "values===");
     await sleep(1000);
   }, []);
 

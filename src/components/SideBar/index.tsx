@@ -75,12 +75,13 @@ export function SideBar({ className }: ISideBarProps) {
       });
     }
 
+    menuList.push({
+      icon: <Role />,
+      text: "role",
+      url: "/profile/organisation/role",
+    });
+
     return menuList;
-    // {
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/organisation/role",
-    // },
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
@@ -104,13 +105,13 @@ export function SideBar({ className }: ISideBarProps) {
         text: "member",
         url: "/profile/projects/member",
       });
-    return menuList;
 
-    // {
+    // menuList.push({
     //   icon: <Role />,
     //   text: "role",
     //   url: "/profile/projects/role",
-    // },
+    // });
+    return menuList;
   }, [projectList, userProjectPermissions]);
 
   const profileList = useMemo(() => {

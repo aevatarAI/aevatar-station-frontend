@@ -9,9 +9,9 @@ const NOTIFICATIONS_API_LIST = {
   },
   updateNotification: {
     target: "/api/notification/response",
-    baseConfig: { method: "POST" }
-  }
-}
+    baseConfig: { method: "POST" },
+  },
+};
 
 const ORGANIZATIONS_API_LIST = {
   getUserOrganizations: "/api/organizations",
@@ -42,6 +42,16 @@ const ORGANIZATIONS_API_LIST = {
     target: "/api/organizations",
     extendUrlSuffix: "/roles",
     baseConfig: { method: "GET" },
+  },
+  addOrganizationRoles: {
+    target: "/api/organizations",
+    extendUrlSuffix: "/roles",
+    baseConfig: { method: "POST" },
+  },
+  deleteOrganizationRoles: {
+    target: "/api/organizations",
+    // extendUrlSuffix: "/roles",
+    baseConfig: { method: "DELETE" },
   },
   editOrganizationRoles: {
     target: "/api/organizations",

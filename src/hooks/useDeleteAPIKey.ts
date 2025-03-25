@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface DeleteAPIPayload {
     projectId: string;
-    apiKeyId: string;
+    id: string;
   }
   
 const deleteAPIKey = (data: DeleteAPIPayload) => {
-    return request.apiKeys.deleteAPIKey({ query: data.projectId })
+    return request.apiKeys.deleteAPIKey({ query: data.id })
 }
   
 export const useDeleteAPIKey = () => {

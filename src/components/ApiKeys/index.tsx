@@ -32,7 +32,7 @@ export default function ApiKeys() {
           />
           <DeleteDialog
               title="Are you sure you want to delete the API key?"
-              onYes={async () => mutate({ projectId: item.projectId, apiKeyId: item.id })}
+              onYes={async () => mutate({ projectId: item.projectId, id: item.id })}
               description={
                 "*Once deleted, the existing API key will become invalid."
               }

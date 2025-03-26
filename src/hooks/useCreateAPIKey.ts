@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface CreateAPIPayload {
     projectId: string;
-    keyName: string;
+    name: string;
   }
   
 const createAPIKey = (data: CreateAPIPayload) => {

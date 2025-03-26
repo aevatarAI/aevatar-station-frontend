@@ -85,9 +85,9 @@ export default function CreateApiKeyDialog() {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-[16px] items-start content-start self-stretch">
               <FormField
-                key="keyName"
+                key="name"
                 control={form.control}
-                name="keyName"
+                name="name"
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">name of the key</FormLabel>

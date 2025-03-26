@@ -15,19 +15,19 @@ const NOTIFICATIONS_API_LIST = {
 
 const API_KEYS_API_LIST = {
   getAPIKeys: {
-    target: "/api/apikey",
+    target: "/api/appId",
     baseConfig: { method: "GET" }
   },
   createAPIKey: {
-    target: "/api/apikey",
+    target: "/api/appId",
     baseConfig: { method: "POST" }
   },
   updateAPIKey: {
-    target: "/api/apikey",
+    target: "/api/appId",
     baseConfig: { method: "PUT" }
   },
   deleteAPIKey: {
-    target: "/api/apikey",
+    target: "/api/appId",
     baseConfig: { method: "DELETE" }
   }
 }

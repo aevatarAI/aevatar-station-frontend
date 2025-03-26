@@ -6,8 +6,8 @@ import dayjs from "dayjs";
 export interface IApiKeysList {
   id: string;
   projectId: string;
-  apiKeyName: string;
-  apiKey: string;
+  appName: string;
+  appSecret: string;
   createTime: number | string;
   creatorName: string;
   isEdit?: boolean;
@@ -25,7 +25,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     header: "Name",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
-        {row.original.apiKeyName}
+        {row.original.appName}
       </div>
     ),
   },
@@ -43,9 +43,9 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     header: "api key",
     cell: ({ row }) => (
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
-        <span>{shortenString(row.original.apiKey)}</span>
+        <span>{shortenString(row.original.appSecret)}</span>
         <Copy
-          toCopy={row.original.apiKey}
+          toCopy={row.original.appSecret}
           className="text-[#606060] hover:text-white"
         />
       </div>

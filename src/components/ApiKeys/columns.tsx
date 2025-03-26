@@ -7,6 +7,7 @@ export interface IApiKeysList {
   id: string;
   projectId: string;
   appName: string;
+  appId: string;
   appSecret: string;
   createTime: number | string;
   creatorName: string;
@@ -33,8 +34,12 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "clientId",
     header: "client id",
     cell: ({ row }) => (
-      <div className="min-w-[125px] font-source-code">
-        {row.original.id || "Unknown"}
+      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
+        <span>{row.original.appId}</span>
+        <Copy
+          toCopy={row.original.appSecret}
+          className="text-[#606060] hover:text-white"
+        />
       </div>
     ),
   },

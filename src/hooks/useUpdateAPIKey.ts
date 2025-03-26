@@ -9,7 +9,7 @@ interface UpdateAPIPayload {
   
 const updateAPIKey = (data: UpdateAPIPayload) => {
     return request.apiKeys.updateAPIKey({ 
-        data: { apiKeyName: data.name }, 
+        data: { appName: data.name }, 
         query: data.id,
     });
 }

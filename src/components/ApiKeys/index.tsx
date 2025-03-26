@@ -26,7 +26,7 @@ export default function ApiKeys() {
     return data.data.map((item: IApiKeysList) => ({
       ...item,
       operation: (
-        <div className="flex justify-end gap-[7px] pr-[15px]">
+        <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
           <EditApiKeyDialog 
               onYes={async (name: string) => mutationUpdate({ id: item.id, name, projectId: item.projectId })}
           />
@@ -40,7 +40,7 @@ export default function ApiKeys() {
         </div>
       ),
     }))
-  }  
+  }
 
   return (
     <div>

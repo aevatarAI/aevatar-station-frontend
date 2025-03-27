@@ -116,7 +116,6 @@ describe("useOrgPermissions Hook", () => {
     });
     // 调用 Hook
     const { result } = renderHook(() => useOrgPermissions());
-    console.log(result, "result=====");
     // 等待初始化完成
     await act(async () => {});
 

@@ -108,7 +108,7 @@ export default function ProjectMember() {
           query: projectId,
           data: {
             email,
-            join,
+            join: true,
             roleId,
           },
         });

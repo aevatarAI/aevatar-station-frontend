@@ -1,5 +1,6 @@
 import Add from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
+import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,10 +12,10 @@ import {
   itemHoverClassName,
   itemSelectClassName,
 } from "@/constants/cls";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
-  ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
@@ -30,8 +31,7 @@ export default function OriganisactionHeader({
 }: IOriganisactionHeaderProps) {
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
-
-  const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const { data: organisationList } = useGetOrganizations();
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
     CURRENT_ORGANIZATION_ATOM
   );
@@ -39,8 +39,8 @@ export default function OriganisactionHeader({
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentOrganisation = useMemo(
-    () => organisationList.find((item) => item.id === currentOrganisationId),
-    [organisationList, currentOrganisationId]
+    () => organisationList?.data?.items.find((item: any) => item.id === currentOrganisationId),
+    [organisationList?.data?.items, currentOrganisationId]
   );
   
   const currentProject = useMemo(
@@ -62,7 +62,7 @@ export default function OriganisactionHeader({
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
             <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[10px] max-h-[300px] scrollbar-hide overflow-auto">
-              {organisationList.map((item) => (
+              {organisationList?.data?.items.map((item: any) => (
                 <div
                   className={clsx(
                     itemClassName,

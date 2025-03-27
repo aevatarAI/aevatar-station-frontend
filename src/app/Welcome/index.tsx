@@ -3,26 +3,41 @@ import Copy from "@/components/Copy";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ACCEPTED } from "@/constants";
+import { useEmail } from "@/hooks/useEmail";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
+import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
+import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { navigate } from "wouter/use-browser-location";
+
 const WelcomePage: React.FC = () => {
-  const [_, setOrg] = useState<string>();
-  const organisations = [
-    { id: "org1", name: "organisation #1" },
-    { id: "org2", name: "organisation #2" },
-  ];
+  const email = useEmail();
+  const [selectValue, setSelectValue] = useState("");
+  const { data: organisations } = useGetOrganizations();
+  const { data: invitations, isLoading } = useGetOrganisationInvites();
+  const { mutate, isPending } = useUpdateJoinNotifications();
+
+  if (organisations?.data.items.length > 0) {
+    navigate("/profile");
+    return;
+  }
+
+  // [TODO] Remove after backend sorts
+  const reversed = reverse(invitations?.data)
+  const invites = deduplicate(reversed, "organizationId");
+  const hasInvites = invites.length > 0;
+
   const onRadioChange = (value: string) => {
-    setOrg(value);
+    setSelectValue(value)
   };
 
-  const [hasInvitation, setHasInvitation] = useState(false);
-  const email = "duke_geng@aelf.io";
+  if (isLoading) {
+    return <div>loading...</div>
+  }
 
-  useEffect(() => {
-    const invited = localStorage.getItem("welcome");
-
-    setHasInvitation(!!invited);
-  }, []);
   return (
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon
@@ -49,15 +64,14 @@ const WelcomePage: React.FC = () => {
           </p>
         </div>
 
-        {hasInvitation ? (
+        {hasInvites ? (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col justify-between cutCornerNoBorder border-0 min-h-[285px]">
             <div>
               <h2 className="font-semibold text-[18px] mb-3 text-white">
                 join an existing organisation
               </h2>
               <p className="text-[12px] text-gray-light font-source-code">
-                you haven’t received an invitation yet. Share your address with
-                the organisation owner
+                pending invitations for your approval
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
 
@@ -65,7 +79,7 @@ const WelcomePage: React.FC = () => {
                 defaultValue=""
                 className="space-y-[18px]"
                 onValueChange={onRadioChange}>
-                {organisations.map((org) => (
+                {invites?.map((org: any) => (
                   <div
                     key={org.id}
                     className="flex items-center space-x-[10px]">
@@ -73,13 +87,15 @@ const WelcomePage: React.FC = () => {
                     <label
                       htmlFor={org.id}
                       className="text-[11px] text-gray-light font-source-code">
-                      {org.name}
+                      {org.organizationName}
                     </label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
-            <Button className="mx-auto bottom-0 w-[226px]">join</Button>
+            <Button disabled={isPending || !selectValue} className="mx-auto bottom-0 w-[226px]" onClick={() => {
+              mutate({id: selectValue, status: ACCEPTED});
+            }}>{isPending ? "joining..." : "join"}</Button>
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
@@ -87,7 +103,8 @@ const WelcomePage: React.FC = () => {
               join an existing organisation
             </h2>
             <p className="text-[12px] text-gray-light font-source-code">
-              pending invitations for your approval
+              you haven’t received an invitation yet. Share your address with
+              the organisation owner
             </p>
             <div className="w-full h-[1px] bg-black-light my-4" />
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">

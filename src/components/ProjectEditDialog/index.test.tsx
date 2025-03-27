@@ -42,10 +42,6 @@ describe("ProjectEditDialog Component", () => {
 
     // 验证对话框标题
     expect(screen.getByText("create project")).toBeInTheDocument();
-    console.log(
-      screen.getAllByLabelText("project name").length,
-      "getAllByLabelText==",
-    );
     // // 验证表单字段和按钮
     // expect(screen.getByLabelText("project name")).toBeInTheDocument();
     // expect(screen.getByLabelText("domain name")).toBeInTheDocument();

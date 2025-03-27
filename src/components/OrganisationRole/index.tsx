@@ -43,7 +43,6 @@ export default function OrganisationRole() {
   const onDeleteYes = useCallback(async () => {}, []);
 
   const onPermissionSave = useCallback(async (id: string, value: any) => {
-    console.log(id, value);
   }, []);
 
   const tableData = useMemo(
@@ -75,7 +74,6 @@ export default function OrganisationRole() {
   );
 
   const onCreate = useCallback(async (values: TCreateRoleForm) => {
-    console.log(values, "values===");
   }, []);
 
   return (

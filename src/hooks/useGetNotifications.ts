@@ -25,7 +25,7 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
   return useQuery({
     queryKey: ['notifications', { pageIndex, pageSize }],
     queryFn: () => fetchNotifications({ pageIndex, pageSize }),
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: 5000,
     enabled: Number(pageIndex) >= 0 && Number(pageSize) >= 0
   })
 }

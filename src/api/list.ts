@@ -7,6 +7,10 @@ const NOTIFICATIONS_API_LIST = {
     target: "/api/notification",
     baseConfig: { method: "GET" },
   },
+  getInvites: {
+    target: "/api/notification/organization",
+    baseConfig: { method: "GET" },
+  },
   updateNotification: {
     target: "/api/notification/response",
     baseConfig: { method: "POST" }

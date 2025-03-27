@@ -28,12 +28,11 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationMember() {
-  const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
-  const [loading, setLoading] = useState<boolean>();
-  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>();
+  const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
+  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const [roleList] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
-
   const userPermissions = useOrgPermissions();
 
   const getMembers = useCallback(async () => {

@@ -68,12 +68,12 @@ const App = () => (
         </WithLazyLoading>
       </Route>
 
-      <Route path="/welcome">
+      <PrivateRoute path="/welcome">
         <WithLazyLoading>
           <SetAuthHeader />
           <Welcome />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       <PrivateRoute path="/demo">
         <WithLazyLoading>

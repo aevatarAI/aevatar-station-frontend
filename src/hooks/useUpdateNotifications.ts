@@ -2,6 +2,7 @@ import axios from 'axios';
 import { QueryProps, Notification } from "@/hooks/useGetNotifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { request } from '@/api';
+import { navigate } from 'wouter/use-browser-location';
 
 interface UpdateNotificationProps {
     id: string;
@@ -12,18 +13,13 @@ const updateNotification = (body: UpdateNotificationProps) => {
     return request.notifications.updateNotification({ data: body })
 }
 
-interface MutationProps {
-    id: string;
-    status: number;
-}
-
 export const useUpdateNotification = (query: QueryProps) => {
     const queryClient = useQueryClient()
 
     return useMutation({
         mutationKey: ['updateNotification', query],
         mutationFn: updateNotification,
-        onMutate: async ({id, status}: MutationProps) => {
+        onMutate: async ({id, status}: UpdateNotificationProps) => {
             try {
                 await queryClient.cancelQueries({ queryKey: ['notifications', query] })
         
@@ -56,6 +52,19 @@ export const useUpdateNotification = (query: QueryProps) => {
              * [TODO] - To refetch and re-render the page
              * queryClient.invalidateQueries({ queryKey: ['notifications'] })
             */
+        }
+    })
+}
+
+export const useUpdateJoinNotifications = () => {
+    return useMutation({
+        mutationKey: ['join'],
+        mutationFn: updateNotification,
+        onSettled: () => {
+            navigate('/profile')
+        },
+        onError: () => {
+            console.error("There was an issue updating join notifications")
         }
     })
 }

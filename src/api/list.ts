@@ -7,9 +7,32 @@ const NOTIFICATIONS_API_LIST = {
     target: "/api/notification",
     baseConfig: { method: "GET" },
   },
+  getInvites: {
+    target: "/api/notification/organization",
+    baseConfig: { method: "GET" },
+  },
   updateNotification: {
     target: "/api/notification/response",
     baseConfig: { method: "POST" },
+  },
+};
+
+const API_KEYS_API_LIST = {
+  getAPIKeys: {
+    target: "/api/appId",
+    baseConfig: { method: "GET" },
+  },
+  createAPIKey: {
+    target: "/api/appId",
+    baseConfig: { method: "POST" },
+  },
+  updateAPIKey: {
+    target: "/api/appId",
+    baseConfig: { method: "PUT" },
+  },
+  deleteAPIKey: {
+    target: "/api/appId",
+    baseConfig: { method: "DELETE" },
   },
 };
 
@@ -120,6 +143,7 @@ const PROFILE_API_LIST = {
 };
 
 export const EXPAND_APIS = {
+  apiKeys: API_KEYS_API_LIST,
   notifications: NOTIFICATIONS_API_LIST,
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,

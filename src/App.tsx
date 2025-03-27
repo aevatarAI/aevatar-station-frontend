@@ -1,17 +1,17 @@
+import { service } from "@/api/axios";
 import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
+import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 import LayoutDefault from "@/layouts/LayoutDefault";
-import { type PropsWithChildren, Suspense, lazy } from "react";
-import { Route, Switch, Redirect } from "wouter";
-import ReactLoading from "react-loading";
 import { accessTokenAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
-import { service } from "@/api/axios";
-import { SetAuthHeader } from "@/hooks/SetAuthHeader";
+import { type PropsWithChildren, Suspense, lazy } from "react";
+import ReactLoading from "react-loading";
+import { Redirect, Route, Switch } from "wouter";
 
 const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
@@ -20,7 +20,8 @@ const Dashboard = lazy(() => import("./app/Dashboard"));
 const Loading = () => (
   <div
     data-testid="page-loading"
-    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50">
+    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50"
+  >
     <div className="flex text-2xl font-bold text-gray-800 flex items-center">
       <div className="text-white font-syne text-lg font-semibold leading-normal lowercase text-[18px]">
         Scanning......
@@ -68,12 +69,12 @@ const App = () => (
         </WithLazyLoading>
       </Route>
 
-      <Route path="/welcome">
+      <PrivateRoute path="/welcome">
         <WithLazyLoading>
           <SetAuthHeader />
           <Welcome />
         </WithLazyLoading>
-      </Route>
+      </PrivateRoute>
 
       <PrivateRoute path="/demo">
         <WithLazyLoading>

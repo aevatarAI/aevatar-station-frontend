@@ -9,7 +9,7 @@ import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useLocation } from "wouter";
 
 const selectCls = "underline decoration-solid decoration-slice";

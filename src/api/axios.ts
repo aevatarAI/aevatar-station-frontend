@@ -6,7 +6,7 @@ export const isDeniedRequest = (error: { message: string }) => {
     const message: string = error.message;
     if (message.includes("401")) return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   return false;
 };
@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
       myEvents.AuthorizationExpired.emit();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const service = axiosInstance;

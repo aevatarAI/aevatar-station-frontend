@@ -57,7 +57,6 @@ export default function ProjectEditDialog({
 
   const onSubmit = useCallback(
     async (values: TProjectEditForm) => {
-      console.log(values, "values===");
       try {
         setBtnLoading(true);
         await onFinish?.(values);

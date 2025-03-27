@@ -38,7 +38,6 @@ describe("ProjectEditDialog Component", () => {
     fireEvent.click(screen.getByText("create"));
 
     expect(screen.getByText("create project")).toBeInTheDocument();
-
     // expect(screen.getByLabelText("project name")).toBeInTheDocument();
     // expect(screen.getByLabelText("domain name")).toBeInTheDocument();
     // expect(screen.getByText("cancel")).toBeInTheDocument();

@@ -21,8 +21,8 @@ interface IOrganisationInnerProps {
 export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
   const { toast } = useToast();
   const [orgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
-  const updateOrganizationList = useUpdateOrganisationsHandler();
   const [orgList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const updateOrganizationList = useUpdateOrganisationsHandler();
 
   const onNameSave = useCallback(
     async (displayName: string) => {

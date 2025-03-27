@@ -85,11 +85,10 @@ export default function OrganisationProjects() {
   const onDeleteYes = useCallback(
     async (id: string) => {
       try {
-        const result = await request.projects.deleteProject({
+        await request.projects.deleteProject({
           query: id,
         });
         updateProjectList();
-        console.log(result, "result=");
       } catch (error) {
         toast({
           description: handleErrorMessage(error),
@@ -131,7 +130,6 @@ export default function OrganisationProjects() {
       })),
     [projectList, userPermissions, onEdit, onDeleteYes],
   );
-  console.log(loading, "loading==");
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">

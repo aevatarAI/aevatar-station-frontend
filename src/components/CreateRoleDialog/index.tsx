@@ -44,7 +44,6 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
 
   const onSubmit = useCallback(
     async (values: TCreateRoleForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
       await onCreate?.(values);
       setBtnLoading(false);

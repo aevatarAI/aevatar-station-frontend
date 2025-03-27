@@ -67,9 +67,11 @@ export default function OrganisationRole() {
     [currentOrganisationId, toast],
   );
 
-  const onPermissionSave = useCallback(async (id: string, value: any) => {
-    console.log(id, value);
-  }, []);
+  const onPermissionSave = useCallback(
+    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    async (id: string, value: any) => {},
+    [],
+  );
 
   const tableData = useMemo(
     () =>

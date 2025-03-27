@@ -6,24 +6,18 @@ import {
   useGetNotifications,
   useSignalR,
 } from "@/hooks/useGetNotifications";
-import { accessTokenAtom } from "@/state/atoms";
 
-import { useAtom } from "jotai";
 import { useCallback, useState } from "react";
-
-const useAccessTokenAtom = () => {
-  const [accessToken] = useAtom(accessTokenAtom);
-  const validAccessToken = typeof accessToken === "string" ? accessToken : "";
-  return validAccessToken;
-};
 interface IProfileInnerProps {
   tab: (typeof TAB_LIST)[number];
 }
 export default function ProfileInner({ tab }: IProfileInnerProps) {
-  const accessToken = useAccessTokenAtom();
-  const [query, setQuery] = useState<QueryProps>({ pageIndex: 0, pageSize: 3 });
+  const [query, setQuery] = useState<QueryProps>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const { data, isLoading, isError } = useGetNotifications(query);
-  useSignalR(accessToken);
+  useSignalR();
 
   return (
     <div>

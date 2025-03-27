@@ -50,8 +50,8 @@ export default function ProjectRole() {
     await sleep(1000);
   }, []);
 
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const onPermissionSave = useCallback(async (id: string, value: any) => {
-    console.log(id, value);
     await sleep(1000);
   }, []);
 
@@ -84,8 +84,7 @@ export default function ProjectRole() {
     [roleList, projectPermissions?.projectsEdit, onDeleteYes, onPermissionSave],
   );
 
-  const onCreate = useCallback(async (values: TCreateRoleForm) => {
-    console.log(values, "values===");
+  const onCreate = useCallback(async (_values: TCreateRoleForm) => {
     await sleep(1000);
   }, []);
 

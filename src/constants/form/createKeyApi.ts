@@ -7,7 +7,7 @@ export const createApiKeyForm = z.object({
     .string()
     .min(1, { message: REQUIRED_MESSAGE })
     .max(100, { message: "Name should be less than 100 characters" }),
-  project: z.string(),
+  projectId: z.string(),
 });
 
 export type TCreateApiKeyForm = z.infer<typeof createApiKeyForm>;

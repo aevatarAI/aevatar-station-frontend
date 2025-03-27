@@ -1,6 +1,5 @@
 import Add from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
-import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -20,7 +19,7 @@ import {
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export interface IOriganisactionHeaderProps {
   className?: string;
@@ -31,7 +30,7 @@ export default function OriganisactionHeader({
 }: IOriganisactionHeaderProps) {
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
-  const { data: organisationList } = useGetOrganizations();
+  const { data: organisationList, refetch } = useGetOrganizations();
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
     CURRENT_ORGANIZATION_ATOM
   );
@@ -47,6 +46,10 @@ export default function OriganisactionHeader({
     () => projectList.find((item) => item.id === currentProjectId),
     [projectList, currentProjectId]
   );
+
+  useEffect(() => {
+    refetch();
+  }, [])
 
   return (
     <div

@@ -7,241 +7,360 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import clsx from "clsx";
 import { useToast } from "@/hooks/use-toast";
+import clsx from "clsx";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type { CheckedState } from "@radix-ui/react-checkbox";
+import {
+  type IRolePermissionsItem,
+  getOrganizationRolesPermission,
+} from "@/api/utils/organization";
+import CheckboxLabel from "@/components/CheckboxLabel";
+import LoadingButton from "@/components/LoadingButton.tsx";
 import {
   menuItemClx,
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
-import CheckboxLabel from "@/components/CheckboxLabel";
-import LoadingButton from "@/components/LoadingButton.tsx";
+import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
+import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useAtom } from "jotai";
+import { useUpdateEffect } from "react-use";
 
 const checkboxCls =
   "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#606060] data-[state=checked]:border-[#606060]";
 
 type TChildPermission = {
   permission: string;
-  permissionList: string[];
-  checked: string[];
-};
-
-type TPermission = {
-  permission: string;
+  checked?: boolean;
   permissionList: TChildPermission[];
 };
 
-const permission: TPermission[] = [
-  {
-    permission: "book store",
-    permissionList: [
-      {
-        permission: "author_management",
-        permissionList: [
-          "author_management_create_books",
-          "author_management_delete_books",
-          "author_management_edit_books",
-        ],
-        checked: [
-          "author_management_create_books",
-          "author_management_delete_books",
-        ],
-      },
-    ],
-  },
-  {
-    permission: "identity management",
-    permissionList: [
-      {
-        permission: "identity_management",
-        permissionList: [
-          "identity_management_create_books",
-          "identity_management_delete_books",
-          "identity_management_edit_books",
-        ],
-        checked: [],
-      },
-    ],
-  },
-  {
-    permission: "tenant management",
-    permissionList: [
-      {
-        permission: "tenant_management",
-        permissionList: [
-          "tenant_management_create_books",
-          "tenant_management_delete_books",
-          "tenant_management_edit_books",
-        ],
-        checked: [
-          "tenant_management_create_books",
-          "tenant_management_delete_books",
-          "tenant_management_edit_books",
-        ],
-      },
-      {
-        permission: "tenant1_management",
-        permissionList: [
-          "tenant1_management_create_books",
-          "tenant1_management_delete_books",
-          "tenant1_management_edit_books",
-        ],
-        checked: [
-          "tenant1_management_create_books",
-          "tenant1_management_edit_books",
-        ],
-      },
-    ],
-  },
-];
+const buildTreeFromPermissions = (
+  permissions: IRolePermissionsItem[],
+): TChildPermission[] => {
+  const nodeMap = new Map<string, TChildPermission>();
+
+  permissions.forEach((item) => {
+    nodeMap.set(item.name, {
+      permission: item.name,
+      checked: item.isGranted,
+      permissionList: [],
+    });
+  });
+
+  const tree: TChildPermission[] = [];
+
+  permissions.forEach((item) => {
+    const node = nodeMap.get(item.name);
+    if (item.parentName) {
+      const parent = nodeMap.get(item.parentName);
+      if (parent) {
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        parent.permissionList.push(node!);
+      }
+    } else {
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      tree.push(node!);
+    }
+  });
+
+  return tree;
+};
+const TreeNode = ({
+  node,
+  onCheckChange,
+}: {
+  node: TChildPermission;
+  onCheckChange: (checkedNode: TChildPermission, isChecked: boolean) => void;
+}) => {
+  const handleCheckChange = (checked: CheckedState) => {
+    onCheckChange(node, checked === true);
+  };
+
+  return (
+    <div>
+      <CheckboxLabel
+        className={checkboxCls}
+        wrapperClassName="pb-[18px]"
+        checked={node.checked}
+        onCheckedChange={handleCheckChange}
+        text={node.permission}
+      />
+      <div className="ml-[26px] flex flex-col gap-[8px]">
+        {node.permissionList.map((child) => (
+          <TreeNode
+            key={child.permission}
+            node={child}
+            onCheckChange={onCheckChange}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const TreeCheckbox = ({
+  permissions,
+  onPermissionsChanged,
+}: {
+  permissions: TChildPermission;
+  onPermissionsChanged: (permissions: TChildPermission) => void;
+}) => {
+  const updateChildNodes = (node: TChildPermission, checked: boolean) => {
+    node.checked = checked;
+    if (node.permissionList.length > 0) {
+      node.permissionList.forEach((child) => updateChildNodes(child, checked));
+    }
+  };
+
+  const updateParentNodes = (
+    tree: TChildPermission[],
+    targetNode: TChildPermission,
+  ) => {
+    const findParent = (
+      nodes: TChildPermission[],
+      child: TChildPermission,
+    ): TChildPermission | null => {
+      for (const node of nodes) {
+        if (node.permissionList.includes(child)) {
+          return node;
+        }
+        const parent = findParent(node.permissionList, child);
+        if (parent) {
+          return parent;
+        }
+      }
+      return null;
+    };
+
+    const parent = findParent(tree, targetNode);
+    if (parent) {
+      const allChecked = parent.permissionList.every((child) => child.checked);
+      // const someChecked = parent.permissionList.some((child) => child.checked);
+      parent.checked = allChecked;
+      updateParentNodes(tree, parent);
+    }
+  };
+
+  const handleToggle = (node: TChildPermission, checked: boolean) => {
+    const updateTree = (nodes: TChildPermission[]): TChildPermission[] => {
+      return nodes.map((n) => {
+        if (n.permission === node.permission) {
+          updateChildNodes(n, checked);
+        } else if (n.permissionList.length > 0) {
+          n.permissionList = updateTree(n.permissionList);
+        }
+        return n;
+      });
+    };
+
+    permissions.permissionList = updateTree([...permissions.permissionList]);
+    updateParentNodes(permissions.permissionList, node);
+    onPermissionsChanged(permissions);
+  };
+
+  return (
+    <div key={permissions.permission}>
+      {permissions.permissionList.map((node) => (
+        <TreeNode
+          key={node.permission}
+          node={node}
+          onCheckChange={handleToggle}
+        />
+      ))}
+    </div>
+  );
+};
+
+type TFlatPermission = {
+  name: string;
+  isGranted?: boolean;
+};
+
+function flattenPermissions(data: {
+  [key: string]: TChildPermission;
+}): TFlatPermission[] {
+  const result: TFlatPermission[] = [];
+
+  // Recursive function to process each permission node
+  function processPermission(permissionObj: TChildPermission): void {
+    result.push({
+      name: permissionObj.permission,
+      isGranted: permissionObj.checked ?? false, // Default to false if 'checked' is undefined
+    });
+
+    // If there are child permissions, process them recursively
+    if (
+      permissionObj.permissionList &&
+      permissionObj.permissionList.length > 0
+    ) {
+      for (const childPermission of permissionObj.permissionList) {
+        processPermission(childPermission);
+      }
+    }
+  }
+
+  // Iterate through the top-level keys of the input object
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      // Safe hasOwnProperty check
+      processPermission(data[key]);
+    }
+  }
+
+  return result;
+}
 
 export interface IPermissionManagerDialogProps {
-  onSave: (value: {
-    [x in string]: { [x in string]: TChildPermission };
-  }) => Promise<void>;
+  roleName: string;
+  onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 export default function PermissionManagerDialog({
+  roleName,
   onSave,
 }: IPermissionManagerDialogProps) {
   const [open, setOpen] = useState(false);
-
+  const [curOrgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
+  const [permissionOrigin, setPermissionOrigin] = useState<
+    IRolePermissionsItem[]
+  >([]);
 
-  const [permissionMap, setPermissionMap] =
-    useState<{ [x in string]: { [x in string]: TChildPermission } }>();
+  const getRolePermissions = useCallback(async () => {
+    if (!curOrgId) return;
+    const result = await getOrganizationRolesPermission(curOrgId, {
+      providerName: "R",
+      providerKey: roleName,
+    });
+
+    const list = result.groups[0].permissions;
+    setPermissionOrigin(list);
+  }, [curOrgId, roleName]);
+
+  const permission = useMemo(
+    () => buildTreeFromPermissions(permissionOrigin),
+    [permissionOrigin],
+  );
+
+  const permissionOrgMap = useMemo(() => {
+    const map = new Map<string, TFlatPermission>();
+    permissionOrigin.forEach((item) => {
+      map.set(item.name, { name: item.name, isGranted: item.isGranted });
+    });
+    return map;
+  }, [permissionOrigin]);
 
   useEffect(() => {
-    const map: { [x in string]: { [x in string]: TChildPermission } } = {};
-    permission.forEach((item) => {
-      const itemMap: { [x in string]: TChildPermission } = {};
-      item.permissionList.forEach((child) => {
-        itemMap[child.permission] = child;
-      });
-      map[item.permission] = itemMap;
+    getRolePermissions();
+  }, [getRolePermissions]);
+
+  const [permissionMap, setPermissionMap] =
+    useState<{ [x in string]: TChildPermission }>();
+
+  useEffect(() => {
+    const map: { [x in string]: TChildPermission } = {};
+    const _permission: TChildPermission[] = JSON.parse(
+      JSON.stringify(permission ?? []),
+    );
+    _permission?.forEach((item) => {
+      map[item.permission] = item;
       return item.permission;
     });
     setPermissionMap(map);
-  }, []);
+  }, [permission]);
 
-  const titles = useMemo(() => permission.map((item) => item.permission), []);
+  const titles = useMemo(
+    () => permission?.map((item) => item.permission) ?? [],
+    [permission],
+  );
 
   const [permissionTab, setPermissionTab] = useState<string>(titles[0]);
 
-  const currentPermission = useMemo(
-    () => permissionMap?.[permissionTab],
-    [permissionMap, permissionTab]
+  console.log(
+    permissionMap,
+    permissionMap?.[permissionTab],
+    "permissionMap===",
   );
 
-  const checkChildAllSelect = useCallback(
-    (list?: string[], checkedList?: string[]) =>
-      list?.length === checkedList?.length &&
-      list?.every((item) => checkedList?.includes(item)),
-    []
-  );
-
-  const allSelected = useMemo(() => {
-    return Object.entries(permissionMap ?? {}).every((permissionItem) => {
-      return Object.entries(permissionItem[1]).every((childItem) =>
-        checkChildAllSelect(childItem[1].permissionList, childItem[1].checked)
-      );
-    });
-  }, [permissionMap, checkChildAllSelect]);
-
-  const allChildSelected = useCallback(
-    (permissionTab: string) => {
-      return Object.entries(permissionMap?.[permissionTab] ?? {}).every(
-        (permissionItem) => {
-          return checkChildAllSelect(
-            permissionItem[1].permissionList,
-            permissionItem[1].checked
-          );
-        }
-      );
-    },
-    [permissionMap, checkChildAllSelect]
-  );
-
-  const onChildPermissionCheckedChange = useCallback(
-    (
-      checked: CheckedState,
-      permissionItem: string,
-      childPermission: string,
-      permission: string
-    ) => {
-      setPermissionMap((v) => {
-        if (!v) return v;
-
-        if (!v[permission]) return v;
-        if (!v[permission][childPermission]) return v;
-
-        if (checked === true) {
-          v[permission][childPermission].checked.push(permissionItem);
-        } else if (!checked) {
-          v[permission][childPermission].checked = v[permission][
-            childPermission
-          ].checked.filter((item) => item !== permissionItem);
-        }
-        return { ...v };
-      });
-    },
-    []
-  );
-
-  const onChildPermissonAllChecked = useCallback(
-    (checked: CheckedState, childPermission: string, permission: string) => {
-      setPermissionMap((v) => {
-        if (!v?.[permission]?.[childPermission]) return v;
-        if (checked === true) {
-          v[permission][childPermission].checked =
-            v[permission][childPermission].permissionList;
-        } else if (!checked) {
-          v[permission][childPermission].checked = [];
-        }
-        return { ...v };
-      });
-    },
-    []
-  );
-
-  const onAllCheckedChange = useCallback((checked: CheckedState) => {
-    setPermissionMap((v) => {
-      if (!v) return;
-      Object.entries(v).map((permissionItem) =>
-        Object.entries(permissionItem[1]).map((childPermission) => {
-          childPermission[1].checked =
-            checked === true ? childPermission[1].permissionList : [];
-          return childPermission;
-        })
-      );
-      return { ...v };
-    });
-  }, []);
-
-  const onAllChildCheckedChange = useCallback(
-    (checked: CheckedState, permission: string) => {
-      setPermissionMap((v) => {
-        if (!v?.[permission]) return;
-        Object.entries(v[permission]).forEach((childPermission) => {
-          v[permission][childPermission[0]].checked =
-            checked === true ? childPermission[1].permissionList : [];
-        });
-        return { ...v };
-      });
-    },
-    []
-  );
+  useUpdateEffect(() => {
+    setPermissionTab(titles[2]);
+  }, [titles[2]]);
 
   const onSaveHandler = useCallback(async () => {
     if (!permissionMap) return;
-    await onSave(permissionMap);
+    // await onSave(permissionMap);
+    const flatPermission = flattenPermissions(permissionMap);
+    const filterList = flatPermission.filter(
+      (item) => permissionOrgMap.get(item.name)?.isGranted !== item.isGranted,
+    );
+    await onSave(filterList);
     toast({
       title: "",
       description: "successfully saved",
     });
-  }, [onSave, permissionMap, toast]);
+  }, [onSave, permissionMap, permissionOrgMap, toast]);
+
+  const onChildPermissionsChanged = useCallback(
+    (permissions: TChildPermission) => {
+      setPermissionMap((v) => {
+        if (!v) return v;
+        v[permissionTab] = permissions;
+        v[permissionTab].checked = permissions.permissionList.every(
+          (item) => item.checked,
+        );
+        return { ...v };
+      });
+    },
+    [permissionTab],
+  );
+
+  const allChildSelected = useCallback(
+    (permissionTab: string) => {
+      return permissionMap?.[permissionTab]?.checked;
+    },
+    [permissionMap],
+  );
+
+  const updateChildNodes = useCallback(
+    (node: TChildPermission, checked: boolean) => {
+      node.checked = checked;
+      if (node.permissionList.length > 0) {
+        node.permissionList.forEach((child) =>
+          updateChildNodes(child, checked),
+        );
+      }
+      return node;
+    },
+    [],
+  );
+
+  const onAllChildCheckedChange = useCallback(
+    (checked: CheckedState, permission: string) => {
+      setPermissionMap((v) => {
+        if (!v) return v;
+        updateChildNodes(v[permission], checked === true);
+
+        return { ...v };
+      });
+    },
+    [updateChildNodes],
+  );
+
+  const onAllCheckedChange = useCallback(
+    (checked: CheckedState) => {
+      if (!permissionMap) return;
+      Object.entries(permissionMap).forEach((item) => {
+        onAllChildCheckedChange(checked, item[0]);
+      });
+    },
+    [permissionMap, onAllChildCheckedChange],
+  );
+
+  const allSelected = useMemo(() => {
+    if (!permissionMap) return false;
+    return Object.entries(permissionMap).every((item) => item[1].checked);
+  }, [permissionMap]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -252,7 +371,8 @@ export default function PermissionManagerDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] sm:w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-[#303030]">
+        className="w-[328px] sm:w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-[#303030]"
+      >
         <DialogHeader>
           <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-[22px] lowercase pb-[18px] border-b border-[#303030]">
             Permission - manager
@@ -276,8 +396,9 @@ export default function PermissionManagerDialog({
                       menuItemClx,
                       permissionTab === title && menuItemSelectedClx,
                       "whitespace-nowrap",
-                      "lg:max-w-[162px] lg:whitespace-normal"
-                    )}>
+                      "lg:max-w-[162px] lg:whitespace-normal",
+                    )}
+                  >
                     <span className={clsx(menuItemTextClx)}>{title}</span>
                   </div>
                 ))}
@@ -295,45 +416,12 @@ export default function PermissionManagerDialog({
                   }
                   text="select all"
                 />
-
-                <div>
-                  {Object.entries(currentPermission ?? {}).map((item) => (
-                    <div key={item[0]}>
-                      <CheckboxLabel
-                        className={checkboxCls}
-                        wrapperClassName="pb-[18px]"
-                        checked={checkChildAllSelect(
-                          item[1]?.permissionList,
-                          item[1]?.checked
-                        )}
-                        onCheckedChange={(v) =>
-                          onChildPermissonAllChecked(v, item[0], permissionTab)
-                        }
-                        text={item[0]}
-                      />
-                      <div className="ml-[26px] flex flex-col gap-[8px]">
-                        {item[1]?.permissionList.map((childPermission) => (
-                          <CheckboxLabel
-                            wrapperClassName="py-[0px]"
-                            key={childPermission}
-                            checked={item[1]?.checked?.includes(
-                              childPermission
-                            )}
-                            onCheckedChange={(v) => {
-                              onChildPermissionCheckedChange(
-                                v,
-                                childPermission,
-                                item[0],
-                                permissionTab
-                              );
-                            }}
-                            text={childPermission}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {permissionMap?.[permissionTab] && (
+                  <TreeCheckbox
+                    permissions={permissionMap?.[permissionTab]}
+                    onPermissionsChanged={onChildPermissionsChanged}
+                  />
+                )}
               </div>
             </div>
 
@@ -343,13 +431,15 @@ export default function PermissionManagerDialog({
                 type="reset"
                 onClick={() => {
                   setOpen(false);
-                }}>
+                }}
+              >
                 cancel
               </Button>
 
               <LoadingButton
                 className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                onClick={onSaveHandler}>
+                onClick={onSaveHandler}
+              >
                 save
               </LoadingButton>
             </div>

@@ -143,7 +143,7 @@ export default function ProjectMember() {
             </span>
           ) : (
             <Select
-              value={item.roleId}
+              value={item.roleId ?? ""}
               onValueChange={(v) => onChangeRole(item.id, v)}
             >
               <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">

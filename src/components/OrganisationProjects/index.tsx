@@ -105,7 +105,7 @@ export default function OrganisationProjects() {
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
-            {userPermissions?.organizationsEdit ? (
+            {userPermissions?.projectsEdit ? (
               <ProjectEditDialog
                 type="edit"
                 name={item.displayName}
@@ -115,7 +115,7 @@ export default function OrganisationProjects() {
             ) : (
               <span />
             )}
-            {userPermissions?.organizationsDelete ? (
+            {userPermissions?.projectsDelete ? (
               <DeleteDialog
                 onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the project?"}
@@ -136,7 +136,7 @@ export default function OrganisationProjects() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
-        {userPermissions?.organizationsCreate ? (
+        {userPermissions?.projectsEdit ? (
           <ProjectEditDialog type="create" onSubmit={onCreate} />
         ) : (
           <span />

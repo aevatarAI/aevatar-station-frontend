@@ -54,9 +54,9 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/general",
       });
     if (
-      userPermissions.organizationsCreate ||
-      userPermissions.organizationsDelete ||
-      userPermissions.organizationsEdit
+      userPermissions.projects ||
+      userPermissions.projectsDelete ||
+      userPermissions.projectsEdit
     )
       menuList.push({
         icon: <Project />,

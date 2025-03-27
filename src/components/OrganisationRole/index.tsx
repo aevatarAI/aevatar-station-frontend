@@ -77,6 +77,7 @@ export default function OrganisationRole() {
         ...item,
         organisationRole: (
           <PermissionManagerDialog
+            roleName={item.name}
             onSave={(v) => onPermissionSave(item.id, v)}
           />
         ),

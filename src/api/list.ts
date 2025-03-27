@@ -63,6 +63,10 @@ const ORGANIZATIONS_API_LIST = {
     extendUrlSuffix: "/permissions",
     baseConfig: { method: "GET" },
   },
+  getOrganizationRolePermissions: {
+    target: "/api/organization-permissions",
+    baseConfig: { method: "GET" },
+  },
 };
 
 const PROJECT_API_LIST = {

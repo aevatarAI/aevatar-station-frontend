@@ -2,69 +2,110 @@ import CreateRoleDialog from "@/components/CreateRoleDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 
-import { columns, type IRoleList } from "./columns";
-import PermissionManagerDialog from "@/components/PermissionManagerDialog";
+import { request } from "@/api";
+import type { IRoleItem } from "@/api/utils/organization";
+import { getProjectRoles } from "@/api/utils/project";
+import type { TFlatPermission } from "@/components/PermissionManagerInnerDialog";
+import ProjectRoleManagerDialog from "@/components/ProjectRoleManagerDialog";
 import { textGradient } from "@/constants/cls";
 import type { TCreateRoleForm } from "@/constants/form/createRole";
+import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import {
+  CURRENT_PROJECT_ATOM,
+  CURRENT_PROJECT_ROLE_ATOM,
+} from "@/state/atoms/organisation";
+import { handleErrorMessage } from "@/utils/error";
 import { sleep } from "@etransfer/utils";
 import clsx from "clsx";
+import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { columns } from "./columns";
 
 export default function ProjectRole() {
-  const [roleList, setRoleList] = useState<IRoleList[]>([]);
+  const [roleList, setProjectRoles] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [loading, setLoading] = useState<boolean>();
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const { toast } = useToast();
+  const projectPermissions = useProjectPermissions();
+
+  const getRoleList = useCallback(async () => {
+    try {
+      if (!projectId) return;
+      setLoading(true);
+      const result = await getProjectRoles(projectId);
+      setProjectRoles(result);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+
+      toast({
+        description: handleErrorMessage(error, "get roles list"),
+      });
+    }
+  }, [projectId, toast, setProjectRoles]);
 
   useEffect(() => {
-    setLoading(true);
-    sleep(1000).then(() => {
-      setRoleList([
-        {
-          id: "1",
-          role: "name",
-          isRemove: true,
-        },
-        {
-          id: "2",
-          role: "name22222222222",
-          isRemove: false,
-        },
-        {
-          id: "3",
-          role: "name22223332222222",
-          isRemove: true,
-        },
-        {
-          id: "4",
-          role: "name22223332222222",
-          isRemove: false,
-        },
-      ]);
-      setLoading(false);
-    });
-  }, []);
+    getRoleList();
+  }, [getRoleList]);
 
-  const onDeleteYes = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+  const onDeleteYes = useCallback(
+    async (id: string) => {
+      try {
+        if (!projectId) return;
+        await request.projects.deleteProjectRoles({
+          query: `${projectId}/roles/${id}`,
+        });
+        toast({
+          description: "Successfully delete",
+        });
+        getRoleList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "get roles list"),
+        });
+      }
+    },
+    [projectId, toast, getRoleList],
+  );
 
-  const onPermissionSave = useCallback(async (id: string, value: any) => {
-    await sleep(1000);
-  }, []);
+  const onPermissionSave = useCallback(
+    async (item: IRoleItem, values: TFlatPermission[]) => {
+      if (!projectId) return;
+      await request.projects.setProjectRolePermissions({
+        query: projectId,
+        params: {
+          providerName: "R",
+          providerKey: item.name,
+        },
+        data: {
+          permissions: values,
+        },
+      });
+    },
+    [projectId],
+  );
 
   const tableData = useMemo(
     () =>
       roleList.map((item) => ({
         ...item,
-        projectRole: (
-          <PermissionManagerDialog
-            onSave={(v) => onPermissionSave(item.id, v)}
-          />
-        ),
+        projectRole:
+          item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
+            <ProjectRoleManagerDialog
+              isOwner={item.name.split("_")[1].toLocaleLowerCase() === "owner"}
+              roleName={item.name}
+              onSave={(v) => onPermissionSave(item, v)}
+            />
+          ) : (
+            <span />
+          ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {item.isRemove ? (
+            {projectPermissions.projectsEdit &&
+            item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
               <DeleteDialog
-                onYes={onDeleteYes}
+                onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the role?"}
                 description={
                   "*Once deleted, the existing role will become invalid."
@@ -76,12 +117,29 @@ export default function ProjectRole() {
           </div>
         ),
       })),
-    [roleList, onDeleteYes, onPermissionSave]
+    [roleList, projectPermissions?.projectsEdit, onDeleteYes, onPermissionSave],
   );
 
-  const onCreate = useCallback(async (values: TCreateRoleForm) => {
-    await sleep(1000);
-  }, []);
+  const onCreate = useCallback(
+    async (values: TCreateRoleForm) => {
+      console.log(values, "values===");
+      try {
+        if (!projectId) return;
+        await request.organizations.addOrganizationRoles({
+          query: projectId,
+          data: {
+            name: values.roleName,
+          },
+        });
+        getRoleList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "create role error"),
+        });
+      }
+    },
+    [projectId, toast, getRoleList],
+  );
 
   return (
     <div>

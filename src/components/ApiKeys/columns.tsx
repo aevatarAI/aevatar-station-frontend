@@ -69,7 +69,11 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "creatorName",
     header: "created by",
     cell: ({ row }) => {
-      return <div className="min-w-[125px] text-[15px] font-semibold">{row.original.creatorName || "Unknown"}</div>
+      return (
+        <div className="min-w-[125px] text-[15px] font-semibold">
+          {row.original.creatorName || "Unknown"}
+        </div>
+      );
     },
   },
   {

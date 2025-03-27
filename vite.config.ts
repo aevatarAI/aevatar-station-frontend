@@ -29,7 +29,8 @@ export default defineConfig((config) => ({
         secure: false,
       },
       "/api": {
-        target: "https://station-developer-staging.aevatar.ai/developer-client",
+        target:
+          "https://station-developer-staging.aevatar.ai/developer2-client",
         ws: true,
         changeOrigin: true,
         secure: false,

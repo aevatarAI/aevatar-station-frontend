@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ACCEPTED } from "@/constants";
 import { useEmail } from "@/hooks/useEmail";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
@@ -26,16 +26,16 @@ const WelcomePage: React.FC = () => {
   }
 
   // [TODO] Remove after backend sorts
-  const reversed = reverse(invitations?.data)
+  const reversed = reverse(invitations?.data);
   const invites = deduplicate(reversed, "organizationId");
   const hasInvites = invites.length > 0;
 
   const onRadioChange = (value: string) => {
-    setSelectValue(value)
+    setSelectValue(value);
   };
 
   if (isLoading) {
-    return <div>loading...</div>
+    return <div>loading...</div>;
   }
 
   return (
@@ -78,24 +78,33 @@ const WelcomePage: React.FC = () => {
               <RadioGroup
                 defaultValue=""
                 className="space-y-[18px]"
-                onValueChange={onRadioChange}>
+                onValueChange={onRadioChange}
+              >
                 {invites?.map((org: any) => (
                   <div
                     key={org.id}
-                    className="flex items-center space-x-[10px]">
+                    className="flex items-center space-x-[10px]"
+                  >
                     <RadioGroupItem value={org.id} id={org.id} />
                     <label
                       htmlFor={org.id}
-                      className="text-[11px] text-gray-light font-source-code">
+                      className="text-[11px] text-gray-light font-source-code"
+                    >
                       {org.organizationName}
                     </label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
-            <Button disabled={isPending || !selectValue} className="mx-auto bottom-0 w-[226px]" onClick={() => {
-              mutate({id: selectValue, status: ACCEPTED});
-            }}>{isPending ? "joining..." : "join"}</Button>
+            <Button
+              disabled={isPending || !selectValue}
+              className="mx-auto bottom-0 w-[226px]"
+              onClick={() => {
+                mutate({ id: selectValue, status: ACCEPTED });
+              }}
+            >
+              {isPending ? "joining..." : "join"}
+            </Button>
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
@@ -118,7 +127,7 @@ const WelcomePage: React.FC = () => {
         )}
       </div>
       {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around"
+        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",
       )}
     </div>
   );

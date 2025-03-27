@@ -1,4 +1,5 @@
 import Plus from "@/assets/+.svg?react";
+import Loading from "@/assets/loading.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,16 +26,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  createApiKeyForm,
   type TCreateApiKeyForm,
+  createApiKeyForm,
 } from "@/constants/form/createKeyApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
 import { useToast } from "@/hooks/use-toast";
 import { useCreateAPIKey } from "@/hooks/useCreateAPIKey";
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const projectList = ["02d2d4de-dfca-dc54-3e79-3a18c8cb355c"];
 
@@ -47,6 +47,7 @@ export default function CreateApiKeyDialog() {
   const { mutate } = useCreateAPIKey();
   const { toast } = useToast();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const onSubmit = useCallback(
     async (data: TCreateApiKeyForm) => {
       setBtnLoading(true);
@@ -58,7 +59,7 @@ export default function CreateApiKeyDialog() {
         description: "successfully created",
       });
     },
-    [toast]
+    [toast],
   );
 
   useEffect(() => {
@@ -75,7 +76,8 @@ export default function CreateApiKeyDialog() {
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             create new api key
@@ -108,7 +110,8 @@ export default function CreateApiKeyDialog() {
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
-                      onValueChange={field.onChange}>
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger aria-disabled={field?.disabled}>
                           <SelectValue placeholder="Select" />
@@ -119,7 +122,8 @@ export default function CreateApiKeyDialog() {
                           <SelectItem
                             className="text-[14px]"
                             key={item}
-                            value={item}>
+                            value={item}
+                          >
                             {item}
                           </SelectItem>
                         ))}
@@ -135,12 +139,14 @@ export default function CreateApiKeyDialog() {
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
                   className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}

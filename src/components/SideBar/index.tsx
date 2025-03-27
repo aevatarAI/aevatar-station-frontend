@@ -45,7 +45,7 @@ export function SideBar({ className }: ISideBarProps) {
 
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
-    if (!userPermissions.organizations) return [];
+    // if (!userPermissions.organizations) return [];
     const menuList = [];
     if (userPermissions.organizationsEdit)
       menuList.push({
@@ -54,9 +54,10 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/general",
       });
     if (
-      userPermissions.organizationsCreate ||
-      userPermissions.organizationsDelete ||
-      userPermissions.organizationsEdit
+      userPermissions.projects ||
+      userPermissions.projectsCreate ||
+      userPermissions.projectsDelete ||
+      userPermissions.projectsEdit
     )
       menuList.push({
         icon: <Project />,
@@ -74,13 +75,19 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/member",
       });
     }
+    if (
+      userPermissions.role ||
+      userPermissions.roleCreate ||
+      userPermissions.roleDelete ||
+      userPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/organisation/role",
+      });
 
     return menuList;
-    // {
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/organisation/role",
-    // },
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
@@ -95,22 +102,25 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/projects/general",
       });
 
-    if (
-      userProjectPermissions.projectsMembers ||
-      userProjectPermissions.projectsMembersManage
-    )
+    if (userProjectPermissions.member || userProjectPermissions.memberManage)
       menuList.push({
         icon: <Member />,
         text: "member",
         url: "/profile/projects/member",
       });
-    return menuList;
 
-    // {
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/projects/role",
-    // },
+    if (
+      userProjectPermissions.role ||
+      userProjectPermissions.roleCreate ||
+      userProjectPermissions.roleDelete ||
+      userProjectPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/projects/role",
+      });
+    return menuList;
   }, [projectList, userProjectPermissions]);
 
   const profileList = useMemo(() => {

@@ -1,6 +1,6 @@
+import { SUCCESS_CODE } from "@/api/constants";
 import type { TDataResponse } from "@/api/types/index";
 import { request } from "..";
-import { SUCCESS_CODE } from "@/api/constants";
 
 export interface IOrganizationItem {
   id: string;
@@ -25,7 +25,7 @@ export interface IProjectItem {
 }
 
 export const getProjectList = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IProjectItem[]> => {
   const result: TDataResponse<{ items: IProjectItem[] }> =
     await request.projects.getUserProject({
@@ -66,6 +66,11 @@ export interface IRoles {
   name: string;
 }
 
+export enum IMemberStatus {
+  joined = 0,
+  pending = 1,
+}
+
 export interface IMemberItem {
   id: string;
   userName: string;
@@ -73,10 +78,11 @@ export interface IMemberItem {
   email: string;
 
   roleId: string | null;
+  status: IMemberStatus; // 0: joined，1：pending
 }
 
 export const getOrganizationMembers = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IMemberItem[]> => {
   const result: TDataResponse<{ items: IMemberItem[] }> =
     await request.organizations.getOrganizationMembers({
@@ -91,11 +97,46 @@ export interface IRoleItem {
 }
 
 export const getOrganizationRoles = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IRoleItem[]> => {
   const result: TDataResponse<{ items: IRoleItem[] }> =
     await request.organizations.getOrganizationRoles({
       query: organizationId,
     });
   return result.data.items;
+};
+
+export interface IRolePermissionsItem {
+  name: string;
+  displayName: string;
+  parentName?: string | null;
+  isGranted?: boolean;
+  allowedProviders: string[];
+  grantedProviders: { providerName: string; providerKey: string }[];
+}
+
+export interface IRolePermissionGroupsItem {
+  name: string;
+  displayName: string;
+  displayNameKey: string;
+  displayNameResource: string;
+  permissions: IRolePermissionsItem[];
+}
+
+export interface IRolePermission {
+  entityDisplayName: string;
+  groups: IRolePermissionGroupsItem[];
+}
+
+export const getOrganizationRolesPermission = async (
+  organizationId: string,
+  params: { providerName: string; providerKey: string },
+): Promise<IRolePermission> => {
+  const result: TDataResponse<IRolePermission> =
+    await request.organizations.getOrganizationRolePermissions({
+      query: organizationId,
+      params,
+    });
+
+  return result.data;
 };

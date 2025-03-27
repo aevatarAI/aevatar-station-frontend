@@ -51,8 +51,8 @@ export default function ProjectMember() {
   }, [toast, organizationId, setOrgMemberList]);
 
   useEffect(() => {
-    projectPermissions.projectsMembersManage && updateOrganizationMembers();
-  }, [updateOrganizationMembers, projectPermissions.projectsMembersManage]);
+    projectPermissions.member && updateOrganizationMembers();
+  }, [updateOrganizationMembers, projectPermissions.member]);
 
   const getMembers = useCallback(async () => {
     try {
@@ -104,7 +104,7 @@ export default function ProjectMember() {
     async (email: string, join: boolean, roleId: string) => {
       try {
         if (!projectId) return;
-        const result = await request.projects.editProjectMembers({
+        await request.projects.editProjectMembers({
           query: projectId,
           data: {
             email,
@@ -136,13 +136,13 @@ export default function ProjectMember() {
       memberList.map((item) => ({
         ...item,
         role:
-          !item.roleId || !projectPermissions.projectsMembersManage ? (
+          !item.roleId || !projectPermissions.memberManage ? (
             <span className="text-[12px] font-syne font-semibold lowercase">
               {item.roleId ? getRoleName(item.roleId) : "invite pending"}
             </span>
           ) : (
             <Select
-              value={item.roleId}
+              value={item.roleId ?? ""}
               onValueChange={(v) => onChangeRole(item.id, v)}
             >
               <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
@@ -163,7 +163,7 @@ export default function ProjectMember() {
           ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {projectPermissions.projectsMembersManage ? (
+            {projectPermissions.memberManage ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -195,7 +195,7 @@ export default function ProjectMember() {
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>projects members</div>
 
-        {projectPermissions.projectsMembersManage ? (
+        {projectPermissions.memberManage ? (
           <AddMembersDialog
             defaultRoleId={roleList[0]?.id}
             orgMemberList={_orgMemberList}

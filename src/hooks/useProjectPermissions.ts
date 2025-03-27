@@ -7,16 +7,25 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo } from "react";
 
 type TUserPermissions = {
+  organizations?: boolean;
+  organizationsCreate?: boolean;
+  organizationsEdit?: boolean;
+  organizationsDelete?: boolean;
+  member?: boolean;
+  memberManage?: boolean;
   projects?: boolean;
   projectsCreate?: boolean;
   projectsEdit?: boolean;
   projectsDelete?: boolean;
-  projectsMembers?: boolean;
-  projectsMembersManage?: boolean;
+
   apiKeys?: boolean;
   apiKeysCreate?: boolean;
   apiKeysEdit?: boolean;
   apiKeysDelete?: boolean;
+  role?: boolean;
+  roleCreate?: boolean;
+  roleEdit?: boolean;
+  roleDelete?: boolean;
 };
 
 export const useProjectPermissions = () => {
@@ -47,22 +56,34 @@ export const useProjectPermissions = () => {
     permissions?.forEach((item) => {
       switch (item.displayName) {
         case "Permission:Organizations":
-          _permissions.projects = item.isGranted;
+          _permissions.organizations = item.isGranted;
           break;
         case "Permission:Organizations.Create":
-          _permissions.projectsCreate = item.isGranted;
+          _permissions.organizationsCreate = item.isGranted;
           break;
         case "Permission:Organizations.Edit":
-          _permissions.projectsEdit = item.isGranted;
+          _permissions.organizationsEdit = item.isGranted;
           break;
         case "Permission:Organizations.Delete":
+          _permissions.organizationsDelete = item.isGranted;
+          break;
+        case "Permission:Projects":
+          _permissions.projects = item.isGranted;
+          break;
+        case "Permission:Projects.Create":
+          _permissions.projectsCreate = item.isGranted;
+          break;
+        case "Permission:Projects.Edit":
+          _permissions.projectsEdit = item.isGranted;
+          break;
+        case "Permission:Projects.Delete":
           _permissions.projectsDelete = item.isGranted;
           break;
-        case "Permission:OrganizationMembers":
-          _permissions.projectsMembers = item.isGranted;
+        case "Permission:Members":
+          _permissions.member = item.isGranted;
           break;
-        case "Permission:OrganizationMembers.Manage":
-          _permissions.projectsMembersManage = item.isGranted;
+        case "Permission:Members.Manage":
+          _permissions.memberManage = item.isGranted;
           break;
         case "Permission:ApiKeys":
           _permissions.apiKeys = item.isGranted;
@@ -75,6 +96,19 @@ export const useProjectPermissions = () => {
           break;
         case "Permission:ApiKeys.Delete":
           _permissions.apiKeysDelete = item.isGranted;
+          break;
+
+        case "Permission:Roles":
+          _permissions.role = item.isGranted;
+          break;
+        case "Permission:Roles.Create":
+          _permissions.roleCreate = item.isGranted;
+          break;
+        case "Permission:Roles.Edit":
+          _permissions.roleEdit = item.isGranted;
+          break;
+        case "Permission:Roles.Delete":
+          _permissions.roleDelete = item.isGranted;
           break;
       }
     });

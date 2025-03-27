@@ -32,31 +32,35 @@ export default function OriganisactionHeader({
   const [pjtOpen, setPjtOpen] = useState<boolean>();
   const { data: organisationList, refetch } = useGetOrganizations();
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
-    CURRENT_ORGANIZATION_ATOM
+    CURRENT_ORGANIZATION_ATOM,
   );
 
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentOrganisation = useMemo(
-    () => organisationList?.data?.items.find((item: any) => item.id === currentOrganisationId),
-    [organisationList?.data?.items, currentOrganisationId]
+    () =>
+      organisationList?.data?.items.find(
+        (item: any) => item.id === currentOrganisationId,
+      ),
+    [organisationList?.data?.items, currentOrganisationId],
   );
-  
+
   const currentProject = useMemo(
     () => projectList.find((item) => item.id === currentProjectId),
-    [projectList, currentProjectId]
+    [projectList, currentProjectId],
   );
 
   useEffect(() => {
     refetch();
-  }, [])
+  }, [refetch]);
 
   return (
     <div
       className={clsx(
         "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
-        className
-      )}>
+        className,
+      )}
+    >
       {currentOrganisation ? (
         <Popover open={orgOpen} onOpenChange={setOrgOpen}>
           <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
@@ -70,13 +74,14 @@ export default function OriganisactionHeader({
                   className={clsx(
                     itemClassName,
                     itemHoverClassName,
-                    currentOrganisationId === item.id && itemSelectClassName
+                    currentOrganisationId === item.id && itemSelectClassName,
                   )}
                   onClick={() => {
                     setCurrentOrganisationId(item.id);
                     setOrgOpen(false);
                   }}
-                  key={item.id}>
+                  key={item.id}
+                >
                   {item.displayName}
                 </div>
               ))}
@@ -110,13 +115,14 @@ export default function OriganisactionHeader({
                   className={clsx(
                     itemClassName,
                     itemHoverClassName,
-                    currentProject?.id === item.id && itemSelectClassName
+                    currentProject?.id === item.id && itemSelectClassName,
                   )}
                   onClick={() => {
                     setCurrentProjectId(item.id);
                     setPjtOpen(false);
                   }}
-                  key={item.id}>
+                  key={item.id}
+                >
                   {item?.displayName ?? "--"}
                 </div>
               ))}

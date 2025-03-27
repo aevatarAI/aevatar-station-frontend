@@ -100,16 +100,16 @@ export const useOrgPermissions = () => {
           break;
 
         case "Permission:Roles":
-          _permissions.apiKeys = item.isGranted;
+          _permissions.role = item.isGranted;
           break;
         case "Permission:Roles.Create":
-          _permissions.apiKeysCreate = item.isGranted;
+          _permissions.roleCreate = item.isGranted;
           break;
         case "Permission:Roles.Edit":
-          _permissions.apiKeysEdit = item.isGranted;
+          _permissions.roleEdit = item.isGranted;
           break;
         case "Permission:Roles.Delete":
-          _permissions.apiKeysDelete = item.isGranted;
+          _permissions.roleDelete = item.isGranted;
           break;
       }
     });

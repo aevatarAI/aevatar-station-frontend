@@ -45,7 +45,7 @@ export function SideBar({ className }: ISideBarProps) {
 
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
-    if (!userPermissions.organizations) return [];
+    // if (!userPermissions.organizations) return [];
     const menuList = [];
     if (userPermissions.organizationsEdit)
       menuList.push({
@@ -55,6 +55,7 @@ export function SideBar({ className }: ISideBarProps) {
       });
     if (
       userPermissions.projects ||
+      userPermissions.projectsCreate ||
       userPermissions.projectsDelete ||
       userPermissions.projectsEdit
     )
@@ -74,12 +75,17 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/member",
       });
     }
-
-    menuList.push({
-      icon: <Role />,
-      text: "role",
-      url: "/profile/organisation/role",
-    });
+    if (
+      userPermissions.role ||
+      userPermissions.roleCreate ||
+      userPermissions.roleDelete ||
+      userPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/organisation/role",
+      });
 
     return menuList;
   }, [organisationList, userPermissions]);
@@ -96,21 +102,24 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/projects/general",
       });
 
-    if (
-      userProjectPermissions.projectsMembers ||
-      userProjectPermissions.projectsMembersManage
-    )
+    if (userProjectPermissions.member || userProjectPermissions.memberManage)
       menuList.push({
         icon: <Member />,
         text: "member",
         url: "/profile/projects/member",
       });
 
-    // menuList.push({
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/projects/role",
-    // });
+    if (
+      userProjectPermissions.role ||
+      userProjectPermissions.roleCreate ||
+      userProjectPermissions.roleDelete ||
+      userProjectPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/projects/role",
+      });
     return menuList;
   }, [projectList, userProjectPermissions]);
 

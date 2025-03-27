@@ -90,6 +90,10 @@ const ORGANIZATIONS_API_LIST = {
     target: "/api/organization-permissions",
     baseConfig: { method: "GET" },
   },
+  setOrganizationRolePermissions: {
+    target: "/api/organization-permissions",
+    baseConfig: { method: "PUT" },
+  },
 };
 
 const PROJECT_API_LIST = {
@@ -131,6 +135,23 @@ const PROJECT_API_LIST = {
     target: "/api/projects",
     extendUrlSuffix: "/permissions",
     baseConfig: { method: "GET" },
+  },
+  deleteProjectRoles: {
+    target: "/api/projects",
+    baseConfig: { method: "DELETE" },
+  },
+  addProjectRoles: {
+    target: "/api/projects",
+    extendUrlSuffix: "/roles",
+    baseConfig: { method: "POST" },
+  },
+  getProjectRolePermissions: {
+    target: "/api/project-permissions",
+    baseConfig: { method: "GET" },
+  },
+  setProjectRolePermissions: {
+    target: "/api/project-permissions",
+    baseConfig: { method: "PUT" },
   },
 };
 

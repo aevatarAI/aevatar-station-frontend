@@ -1,11 +1,12 @@
 import { request } from "@/api";
-import { getOrganizationRoles } from "@/api/utils/organization";
+import { type IRoleItem, getOrganizationRoles } from "@/api/utils/organization";
 import CreateRoleDialog from "@/components/CreateRoleDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 
 import { columns } from "@/components/OrganisationRole/columns";
 import PermissionManagerDialog from "@/components/PermissionManagerDialog";
+import type { TFlatPermission } from "@/components/PermissionManagerInnerDialog";
 import { textGradient } from "@/constants/cls";
 import type { TCreateRoleForm } from "@/constants/form/createRole";
 import { useToast } from "@/hooks/use-toast";
@@ -58,34 +59,50 @@ export default function OrganisationRole() {
         toast({
           description: "Successfully delete",
         });
+        getRoleList();
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "get roles list"),
         });
       }
     },
-    [currentOrganisationId, toast],
+    [currentOrganisationId, toast, getRoleList],
   );
-
   const onPermissionSave = useCallback(
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-    async (id: string, value: any) => {},
-    [],
+    async (item: IRoleItem, values: TFlatPermission[]) => {
+      if (!currentOrganisationId) return;
+      await request.organizations.setOrganizationRolePermissions({
+        query: currentOrganisationId,
+        params: {
+          providerName: "R",
+          providerKey: item.name,
+        },
+        data: {
+          permissions: values,
+        },
+      });
+    },
+    [currentOrganisationId],
   );
 
   const tableData = useMemo(
     () =>
       roleList.map((item) => ({
         ...item,
-        organisationRole: (
-          <PermissionManagerDialog
-            roleName={item.name}
-            onSave={(v) => onPermissionSave(item.id, v)}
-          />
-        ),
+        organisationRole:
+          item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
+            <PermissionManagerDialog
+              isOwner={item.name.split("_")[1].toLocaleLowerCase() === "owner"}
+              roleName={item.name}
+              onSave={(v) => onPermissionSave(item, v)}
+            />
+          ) : (
+            <span />
+          ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.organizationsEdit ? (
+            {userPermissions.roleDelete &&
+            item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
               <DeleteDialog
                 onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the role?"}
@@ -107,20 +124,20 @@ export default function OrganisationRole() {
       console.log(values, "values===");
       try {
         if (!currentOrganisationId) return;
-        const result = await request.organizations.addOrganizationRoles({
+        await request.organizations.addOrganizationRoles({
           query: currentOrganisationId,
           data: {
             name: values.roleName,
           },
         });
-        console.log(result, "result===");
+        getRoleList();
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "create role error"),
         });
       }
     },
-    [currentOrganisationId, toast],
+    [currentOrganisationId, toast, getRoleList],
   );
 
   return (

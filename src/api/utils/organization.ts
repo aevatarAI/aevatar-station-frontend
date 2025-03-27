@@ -123,7 +123,7 @@ export interface IRolePermissionGroupsItem {
   permissions: IRolePermissionsItem[];
 }
 
-interface IRolePermission {
+export interface IRolePermission {
   entityDisplayName: string;
   groups: IRolePermissionGroupsItem[];
 }
@@ -132,183 +132,11 @@ export const getOrganizationRolesPermission = async (
   organizationId: string,
   params: { providerName: string; providerKey: string },
 ): Promise<IRolePermission> => {
-  // const result: TDataResponse<{ items: IRolePermission[] }> =
-  //   await request.organizations.getOrganizationRolePermissions({
-  //     query: organizationId,
-  //     params,
-  //   });
+  const result: TDataResponse<IRolePermission> =
+    await request.organizations.getOrganizationRolePermissions({
+      query: organizationId,
+      params,
+    });
 
-  // return result.data;
-
-  return {
-    entityDisplayName: "entityDisplayName",
-    groups: [
-      {
-        name: "string",
-        displayName: "string",
-        displayNameKey: "string",
-        displayNameResource: "string",
-        permissions: [
-          {
-            name: "permission AA",
-            displayName: "permission AA",
-            parentName: "permission A",
-            isGranted: false,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission A",
-            displayName: "permission A",
-            parentName: null,
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission AB",
-            displayName: "permission AB",
-            parentName: "permission A",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-
-          {
-            name: "permission BA",
-            displayName: "permission BA",
-            parentName: "permission B",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission B",
-            displayName: "permission B",
-            parentName: null,
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission BB",
-            displayName: "permission BB",
-            parentName: "permission B",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-
-          {
-            name: "permission CA",
-            displayName: "permission CA",
-            parentName: "permission C",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission C",
-            displayName: "permission C",
-            parentName: null,
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission CB",
-            displayName: "permission CB",
-            parentName: "permission C",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission CAC",
-            displayName: "permission CAC",
-            parentName: "permission CA",
-            isGranted: false,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission CAB",
-            displayName: "permission CAB",
-            parentName: "permission CA",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-          {
-            name: "permission CAA",
-            displayName: "permission CAA",
-            parentName: "permission CA",
-            isGranted: true,
-            allowedProviders: ["string"],
-            grantedProviders: [
-              {
-                providerName: "string",
-                providerKey: "string",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
+  return result.data;
 };

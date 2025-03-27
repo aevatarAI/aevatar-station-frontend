@@ -11,10 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  type IRolePermissionsItem,
-  getOrganizationRolesPermission,
-} from "@/api/utils/organization";
+import type { IRolePermissionsItem } from "@/api/utils/organization";
+import CardLoading from "@/components/CardLoading";
 import CheckboxLabel from "@/components/CheckboxLabel";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import {
@@ -22,9 +20,8 @@ import {
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
-import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
+import { handleErrorMessage } from "@/utils/error";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import { useAtom } from "jotai";
 import { useUpdateEffect } from "react-use";
 
 const checkboxCls =
@@ -172,7 +169,7 @@ const TreeCheckbox = ({
   );
 };
 
-type TFlatPermission = {
+export type TFlatPermission = {
   name: string;
   isGranted?: boolean;
 };
@@ -216,30 +213,18 @@ function flattenPermissions(data: {
 }
 
 export interface IPermissionManagerDialogProps {
-  roleName: string;
+  permissionOrigin: IRolePermissionsItem[];
+  isOwner?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
-export default function PermissionManagerDialog({
-  roleName,
+
+export default function PermissionManagerInnerDialog({
+  permissionOrigin,
+  isOwner,
   onSave,
 }: IPermissionManagerDialogProps) {
   const [open, setOpen] = useState(false);
-  const [curOrgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
-  const [permissionOrigin, setPermissionOrigin] = useState<
-    IRolePermissionsItem[]
-  >([]);
-
-  const getRolePermissions = useCallback(async () => {
-    if (!curOrgId) return;
-    const result = await getOrganizationRolesPermission(curOrgId, {
-      providerName: "R",
-      providerKey: roleName,
-    });
-
-    const list = result.groups[0].permissions;
-    setPermissionOrigin(list);
-  }, [curOrgId, roleName]);
 
   const permission = useMemo(
     () => buildTreeFromPermissions(permissionOrigin),
@@ -253,10 +238,6 @@ export default function PermissionManagerDialog({
     });
     return map;
   }, [permissionOrigin]);
-
-  useEffect(() => {
-    getRolePermissions();
-  }, [getRolePermissions]);
 
   const [permissionMap, setPermissionMap] =
     useState<{ [x in string]: TChildPermission }>();
@@ -291,20 +272,23 @@ export default function PermissionManagerDialog({
   }, [titles[0]]);
 
   const onSaveHandler = useCallback(async () => {
-    if (!permissionMap) return;
-    console.log(permissionMap, "permissionMap==filterList");
-    // await onSave(permissionMap);
-    const flatPermission = flattenPermissions(permissionMap);
-    console.log(flatPermission, "flatPermission==filterList");
-    const filterList = flatPermission.filter(
-      (item) => permissionOrgMap.get(item.name)?.isGranted !== item.isGranted,
-    );
-    console.log(filterList, "filterList==");
-    await onSave(filterList);
-    toast({
-      title: "",
-      description: "successfully saved",
-    });
+    try {
+      if (!permissionMap) return;
+      const flatPermission = flattenPermissions(permissionMap);
+      const filterList = flatPermission.filter(
+        (item) => permissionOrgMap.get(item.name)?.isGranted !== item.isGranted,
+      );
+      await onSave(filterList);
+      setOpen(false);
+      toast({
+        title: "",
+        description: "successfully saved",
+      });
+    } catch (error) {
+      toast({
+        description: handleErrorMessage(error, "saved error"),
+      });
+    }
   }, [onSave, permissionMap, permissionOrgMap, toast]);
 
   const onChildPermissionsChanged = useCallback(
@@ -373,7 +357,7 @@ export default function PermissionManagerDialog({
     if (!permissionMap) return false;
     return Object.entries(permissionMap).every((item) => isAllChecked(item[1]));
   }, [permissionMap, isAllChecked]);
-
+  console.log(isOwner, "isOwner==");
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -390,66 +374,82 @@ export default function PermissionManagerDialog({
             Permission - manager
           </DialogTitle>
         </DialogHeader>
-        <div className="pt-[18px]">
-          <CheckboxLabel
-            wrapperClassName="pb-[18px] pt-0 border-b border-[#303030]"
-            checked={allSelected}
-            onCheckedChange={onAllCheckedChange}
-            text="grant all permissions"
-          />
-          <div className="h-[387px] lg:h-[260px] overflow-auto flex flex-col">
-            <div className="flex flex-col lg:flex-row gap-[8px] pt-[20px]">
-              <div className="flex flex-row lg:flex-col gap-[10px] overflow-auto pb-[20px] ">
-                {titles.map((title) => (
-                  <div
-                    key={title}
-                    onClick={() => setPermissionTab(title)}
-                    className={clsx(
-                      menuItemClx,
-                      permissionTab === title && menuItemSelectedClx,
-                      "whitespace-nowrap",
-                      "lg:max-w-[162px] lg:whitespace-normal",
-                    )}
-                  >
-                    <span className={clsx(menuItemTextClx)}>
-                      {title?.split(".")?.[1] ?? title}
-                    </span>
+
+        <div
+          className={clsx(
+            "pt-[18px]",
+            !permissionOrigin?.length && " h-[387px] lg:h-[260px]",
+          )}
+        >
+          {!permissionOrigin?.length ? (
+            <div className={clsx("absolute top-[130px] w-full")}>
+              <CardLoading className="ml-[-20px]" />
+            </div>
+          ) : (
+            <>
+              <CheckboxLabel
+                wrapperClassName="pb-[18px] pt-0 border-b border-[#303030]"
+                checked={allSelected}
+                onCheckedChange={onAllCheckedChange}
+                text="grant all permissions"
+              />
+              <div className="h-[387px] lg:h-[260px] overflow-auto flex flex-col">
+                <div className="flex flex-col lg:flex-row gap-[8px] pt-[20px]">
+                  <div className="flex flex-row lg:flex-col gap-[10px] overflow-auto pb-[20px] ">
+                    {titles.map((title) => (
+                      <div
+                        key={title}
+                        onClick={() => setPermissionTab(title)}
+                        className={clsx(
+                          menuItemClx,
+                          permissionTab === title && menuItemSelectedClx,
+                          "whitespace-nowrap",
+                          "lg:max-w-[162px] lg:whitespace-normal",
+                        )}
+                      >
+                        <span className={clsx(menuItemTextClx)}>
+                          {title?.split(".")?.[1] ?? title}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              {/* permission card */}
-              <div className="flex-1">
-                <div className="aevatarai-text-gradient-center font-syne text-[18px] font-semibold leading-[22px] lowercase  pb-[14px] border-b border-[#303030]">
-                  {permissionTab?.split(".")?.[1] ?? permissionTab}
+                  {/* permission card */}
+                  <div className="flex-1">
+                    <div className="aevatarai-text-gradient-center font-syne text-[18px] font-semibold leading-[22px] lowercase  pb-[14px] border-b border-[#303030]">
+                      {permissionTab?.split(".")?.[1] ?? permissionTab}
+                    </div>
+                    {permissionMap?.[permissionTab] && (
+                      <TreeCheckbox
+                        permissions={permissionMap?.[permissionTab]}
+                        onPermissionsChanged={onChildPermissionsChanged}
+                      />
+                    )}
+                  </div>
                 </div>
-                {permissionMap?.[permissionTab] && (
-                  <TreeCheckbox
-                    permissions={permissionMap?.[permissionTab]}
-                    onPermissionsChanged={onChildPermissionsChanged}
-                  />
+
+                {!isOwner && (
+                  <div className="flex justify-between items-start self-stretch pt-[28px] mt-auto">
+                    <Button
+                      className="text-[12px] py-[7px] leading-[14px]"
+                      type="reset"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      cancel
+                    </Button>
+
+                    <LoadingButton
+                      className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
+                      onClick={onSaveHandler}
+                    >
+                      save
+                    </LoadingButton>
+                  </div>
                 )}
               </div>
-            </div>
-
-            <div className="flex justify-between items-start self-stretch pt-[28px] mt-auto">
-              <Button
-                className="text-[12px] py-[7px] leading-[14px]"
-                type="reset"
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                cancel
-              </Button>
-
-              <LoadingButton
-                className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                onClick={onSaveHandler}
-              >
-                save
-              </LoadingButton>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

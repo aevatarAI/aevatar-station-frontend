@@ -8,6 +8,11 @@ interface JwtPayloadExtend extends JwtPayload {
 
 export const useEmail = () => {
     const accessToken = useAccessTokenAtom();
+
+    if (!accessToken) {
+        return ""
+    }
+
     const decoded = jwtDecode<JwtPayloadExtend>(accessToken);
     return decoded?.email ? decoded.email : "";
-  }
+}

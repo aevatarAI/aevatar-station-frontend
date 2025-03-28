@@ -34,9 +34,10 @@ export default function ProfileAvatar() {
             </div>
           )}
           <div className={itemClassName}>
-            <span>{profile?.email ?? "--"}</span>
+            <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{profile?.email ?? "--"}</span>
             {profile?.email && (
               <Copy
+                description="email address copied"
                 toCopy={profile.email}
                 iconClassName="w-[20px] h-[20px] text-[#606060] hover:text-[#B9B9B9]"
               />

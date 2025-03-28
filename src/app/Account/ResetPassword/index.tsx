@@ -1,11 +1,10 @@
 import DescHome from "@/components/DescHome";
-import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
+import LogoIcon from "@/assets/logo.svg?react";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,11 +14,12 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { resetPassword, verifyResetToken } from "@/services/auth";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { CustomButton } from "@/components/CustomButton";
+
 const formSchema = z
   .object({
     password: z
@@ -63,7 +63,6 @@ const ResetPassword = () => {
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
       const verifyResult = await verifyResetToken(userId, resetToken);
-      // data true = valid token
       if (verifyResult.code !== "20000" || !verifyResult.data) {
         toast({
           description: verifyResult.message || "Invalid reset token.",
@@ -74,7 +73,9 @@ const ResetPassword = () => {
       try {
         const result = await resetPassword(userId, resetToken, password);
         if (result.code === "20001") {
-          sleep(2000);
+          toast({
+            description: "password updated successfully",
+          });
           navigate("/login");
         } else {
           toast({
@@ -115,7 +116,7 @@ const ResetPassword = () => {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="enter your new password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
@@ -133,12 +134,12 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[12px] font-semibold">
-                      confirm (repeat) the password*
+                      confirm new password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="re-enter your new password"
                         {...field}
                         {...form.register("confirmPassword", {
                           required: "required",
@@ -167,17 +168,21 @@ const ResetPassword = () => {
     </div>
   );
 };
+
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px] min-h-[800px] h-screen flex-col items-center">
-      <div className="mt-[178px] flex  flex-col gap-[30px]">
-        <DescHome className="items-start lg:items-center" />
-        <div className="h-[1px] w-full bg-black-light" />
-        <ResetPassword />
+    <div className="flex flex-col pt-10 px-10">
+      <CustomButton path="/"><LogoIcon /></CustomButton>  
+      <div className="relative flex px-[47px] max-h-[832px] h-screen flex-col items-center justify-between pt-[113px]">
+        <div className="flex flex-col gap-[30px]">
+          <DescHome className="items-start lg:items-center" />
+          <div className="h-[1px] w-full bg-black-light" />
+          <ResetPassword />
+        </div>
+        {socialMediaReander(
+          "relative w-full lg:w-[408px] px-[47px] lg:px-0 lg:mb-[40px]",
+        )}
       </div>
-      {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[408px] lg:bottom-[40px] px-[47px] lg:px-0 mt-[68px] lg:mt-auto mb-[40px] lg:mb-auto",
-      )}
     </div>
   );
 };

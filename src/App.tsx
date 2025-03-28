@@ -5,6 +5,7 @@ import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
+import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { accessTokenAtom } from "@/state/atoms";
@@ -57,7 +58,13 @@ const PrivateRoute = ({
   }
   if (!service.defaults.headers.Authorization)
     service.defaults.headers.Authorization = authenticated;
-  return <Route path={path}>{children}</Route>;
+  return (
+    <Route path={path}>
+      <AccessTokenUpdater />
+
+      {children}
+    </Route>
+  );
 };
 
 const App = () => (

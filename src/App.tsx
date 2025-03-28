@@ -38,7 +38,9 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
 );
 
 const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
-  <Suspense fallback={<Loading />}>{children}</Suspense>
+  <Suspense fallback={<Loading />}>
+    {children}
+  </Suspense>
 );
 
 const PrivateRoute = ({
@@ -135,10 +137,9 @@ const App = () => (
         </WithLazyLoading>
       </PrivateRoute>
 
-      {/* Default route in a switch */}
-      {/* <Route>
+      <Route>
           <div className="text-white text-center">404: No such page!</div>
-        </Route> */}
+        </Route>
     </Switch>
   </LayoutDefault>
 );

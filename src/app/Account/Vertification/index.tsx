@@ -84,7 +84,7 @@ const Verification = () => {
         <p className="text-gray-light font-normal text-[12px] font-source-code">
           already registered?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer"
+            className="font-normal text-white cursor-pointer hover:text-gray-light"
             onClick={() => {
               navigate("/login");
             }}>
@@ -131,7 +131,7 @@ const Verification = () => {
               </Button>
               <div className="text-right">
                 <span
-                  className="text-[12px] cursor-pointer"
+                  className="text-[12px] cursor-pointer font-source-code text-white hover:text-gray-light"
                   onClick={sendVerificationCode}>
                   resend email
                 </span>

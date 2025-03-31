@@ -69,7 +69,6 @@ describe("ProfileGeneral Component", () => {
 
   it("should render the ProfileGeneral component correctly", () => {
     render(<ProfileGeneral />);
-    screen.debug();
 
     expect(screen.getByPlaceholderText("TestUser")).toBeInTheDocument();
     expect(screen.getByText("save")).toBeInTheDocument();

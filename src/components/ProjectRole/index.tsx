@@ -125,7 +125,7 @@ export default function ProjectRole() {
       console.log(values, "values===");
       try {
         if (!projectId) return;
-        await request.organizations.addOrganizationRoles({
+        await request.projects.addProjectRoles({
           query: projectId,
           data: {
             name: values.roleName,

@@ -1,5 +1,6 @@
 import LoginImage from "@/assets/login.png";
 import LogoIcon from "@/assets/logo-white.svg?react";
+import { CustomButton } from "@/components/CustomButton";
 import DescHome from "@/components/DescHome";
 import socialMediaReander from "@/components/SocialMediaReander";
 export default function Layout({
@@ -11,8 +12,9 @@ export default function Layout({
 }) {
   return (
     <div className="flex flex-col h-screen lg:flex-row relative min-h-[600px]">
-      <LogoIcon className="absolute top-10 left-10 hidden lg:block" />
-
+      <CustomButton path="/">
+        <LogoIcon className="absolute top-10 left-10 hidden lg:block" />
+      </CustomButton>
       <div className=" flex flex-col gap-[30px] lg:gap-[36px] basis-1/2 items-start lg:justify-center lg:items-center py-9 px-[47px] relative">
         <DescHome className="w-full lg:w-[408px]" />
         <div className="h-[1px] w-full lg:w-[408px] bg-black-light hidden lg:block" />

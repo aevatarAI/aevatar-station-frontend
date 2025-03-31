@@ -8,11 +8,11 @@ import profileImg from "@/assets/profile.png";
 import Copy from "@/components/Copy";
 import { itemClassName, itemHoverClassName } from "@/constants/cls";
 import { useNavigate } from "@/hooks/navigate";
-import clsx from "clsx";
-import { useState } from "react";
 import { useLogout } from "@/hooks/useLogout";
-import { useAtom } from "jotai";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useState } from "react";
 
 export default function ProfileAvatar() {
   const navigate = useNavigate();
@@ -34,9 +34,18 @@ export default function ProfileAvatar() {
             </div>
           )}
           <div className={itemClassName}>
-            <span>{profile?.email ?? "--"}</span>
+            <span
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {profile?.email ?? "--"}
+            </span>
             {profile?.email && (
               <Copy
+                description="email address copied"
                 toCopy={profile.email}
                 iconClassName="w-[20px] h-[20px] text-[#606060] hover:text-[#B9B9B9]"
               />
@@ -48,7 +57,8 @@ export default function ProfileAvatar() {
               setOpen(false);
 
               navigate("/profile");
-            }}>
+            }}
+          >
             profile
           </div>
           <div
@@ -57,7 +67,8 @@ export default function ProfileAvatar() {
               logout();
               setOpen(false);
               navigate("/login");
-            }}>
+            }}
+          >
             log out
           </div>
         </PopoverContent>

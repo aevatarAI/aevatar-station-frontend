@@ -17,11 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -64,14 +63,14 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[12px] cursor-pointer font-source-code">
+        <span className="text-[12px] cursor-pointer font-source-code text-white hover:text-gray-light">
           forgot password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline">
-            forgot Password?
+          <DialogTitle className="text-gradient inline mt-[4px]">
+            forgot password?
           </DialogTitle>
         </DialogHeader>
         {isSubmitted ? (
@@ -86,7 +85,7 @@ const ForgotPasswordDialog = () => {
                   type="button"
                   className="text-white text-[12px] px-[16px] py-[8px]"
                 >
-                  back to Login
+                  back to login
                 </Button>
               </DialogClose>
               <Button
@@ -140,7 +139,7 @@ const ForgotPasswordDialog = () => {
                       type="button"
                       className="text-white text-[12px] px-[16px] py-[8px]"
                     >
-                      back to Login
+                      back to login
                     </Button>
                   </DialogClose>
                   <Button
@@ -148,7 +147,7 @@ const ForgotPasswordDialog = () => {
                     className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
                     disabled={loading}
                   >
-                    Submit
+                    submit
                   </Button>
                 </div>
               </form>

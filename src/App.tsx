@@ -143,10 +143,9 @@ const App = () => (
         </WithLazyLoading>
       </PrivateRoute>
 
-      {/* Default route in a switch */}
-      {/* <Route>
-          <div className="text-white text-center">404: No such page!</div>
-        </Route> */}
+      <Route>
+        <div className="text-white text-center">404: No such page!</div>
+      </Route>
     </Switch>
   </LayoutDefault>
 );

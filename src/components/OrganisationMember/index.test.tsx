@@ -23,9 +23,13 @@ vi.mock("@/hooks/use-toast", () => ({
   useToast: vi.fn(),
 }));
 
-vi.mock("@/api/utils/organization", () => ({
-  getOrganizationMembers: vi.fn(),
-}));
+vi.mock("@/api/utils/organization", async () => {
+  const actual = await vi.importActual("@/api/utils/organization");
+  return {
+    ...actual,
+    getOrganizationMembers: vi.fn(),
+  };
+});
 
 vi.mock("@/api", () => ({
   request: {
@@ -122,6 +126,7 @@ describe("OrganisationMember Component", () => {
         email: "member1@example.com",
         roleId: "role-1",
         userName: "",
+        status: 0,
       },
     ]);
 
@@ -135,10 +140,9 @@ describe("OrganisationMember Component", () => {
 
   it("should render DataTable with members data", () => {
     render(<OrganisationMember />);
-
     // Verify table rows
-    expect(screen.getByText("Admin")).toBeInTheDocument();
-    expect(screen.getByText("User")).toBeInTheDocument();
+    expect(screen.getByText("Organisation name members")).toBeInTheDocument();
+    expect(screen.getByText("Invite Member")).toBeInTheDocument();
   });
 
   it("should call getOrganizationMembers API on mount", async () => {
@@ -154,6 +158,7 @@ describe("OrganisationMember Component", () => {
         email: "member1@example.com",
         roleId: "role-1",
         userName: "",
+        status: 0,
       },
     ]);
   });

@@ -22,7 +22,7 @@ describe("useLogout Hook", () => {
 
     result.current();
 
-    expect(resetMock).toHaveBeenCalledTimes(11);
+    expect(resetMock).toHaveBeenCalledTimes(12);
 
     expect(resetMock).toHaveBeenCalledWith(RESET);
   });
@@ -34,6 +34,7 @@ describe("useLogout Hook", () => {
       "CURRENT_ORGANIZATION_ATOM",
       "CURRENT_PROJECT_ATOM",
       "accessTokenAtom",
+      "refreshTokenAtom",
       "ORGANIZATION_MEMBER_ATOM",
       "PROJECT_PERMISSION_ATOM",
       "CURRENT_PROJECT_ROLE_ATOM",

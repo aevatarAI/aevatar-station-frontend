@@ -28,7 +28,8 @@ const WelcomePage: React.FC = () => {
   // [TODO] Remove after backend sorts
   const reversed = reverse(invitations?.data);
   const invites = deduplicate(reversed, "organizationId");
-  const hasInvites = invites.length > 0;
+  // const hasInvites = invites.length > 0;
+  const hasInvites = false; // [TODO] - To remove
 
   const onRadioChange = (value: string) => {
     setSelectValue(value);
@@ -119,6 +120,7 @@ const WelcomePage: React.FC = () => {
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
               <span className="text-[12px] font-source-code">{email}</span>
               <Copy
+                description="email address copied"
                 toCopy={email}
                 className="text-gray-light hover:text-white"
               />

@@ -20,7 +20,7 @@ describe("ForgotPasswordDialog Component", () => {
     fireEvent.click(trigger);
 
     // Check if the dialog content is rendered
-    expect(screen.getByText("forgot Password?")).toBeInTheDocument();
+    expect(screen.getByText("forgot password?")).toBeInTheDocument();
     expect(
       screen.getByText(
         /a password reset link will be sent to your email to reset your password/i,

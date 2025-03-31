@@ -87,7 +87,6 @@ vi.mock("@/components/DeleteDialog", () => ({
 
 describe("ProjectMember Component", () => {
   const mockToast = vi.fn();
-  const mockSetMemberList = vi.fn();
   const mockSetOrgMemberList = vi.fn();
 
   beforeEach(() => {

@@ -94,7 +94,7 @@ const Login = () => {
         <p className="text-gray-light font-normal text-[12px] font-source-code">
           not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-source-code"
+            className="font-normal text-white cursor-pointer font-source-code text-white hover:text-gray-light"
             onClick={() => {
               navigate("/register");
             }}

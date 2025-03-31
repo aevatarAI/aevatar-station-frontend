@@ -33,7 +33,7 @@ export default function PermissionManagerDialog({
       providerKey: roleName,
     });
 
-    const list = result.groups[0].permissions;
+    const list = result?.groups[0].permissions;
     setPermissionOrigin(list);
   }, [curOrgId, roleName]);
 

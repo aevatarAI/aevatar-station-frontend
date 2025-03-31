@@ -134,6 +134,7 @@ describe("ProjectMember Component", () => {
         email: "org1@example.com",
         roleId: "role-1",
         userName: "",
+        status: 0,
       },
     ]);
 
@@ -146,7 +147,7 @@ describe("ProjectMember Component", () => {
     // Verify table rows
 
     // // Verify Invite Member button
-    expect(screen.getByText("Invite Member")).toBeInTheDocument();
+    expect(screen.getByText("projects members")).toBeInTheDocument();
   });
 
   it("should call getProjectMembers API on mount", async () => {

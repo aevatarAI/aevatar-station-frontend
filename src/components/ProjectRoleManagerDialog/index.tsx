@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  type IRolePermissionsItem,
-  getOrganizationRolesPermission,
-} from "@/api/utils/organization";
+import type { IRolePermissionsItem } from "@/api/utils/organization";
 
 import { getProjectRolesPermission } from "@/api/utils/project";
 import PermissionManagerInnerDialog, {
@@ -37,8 +34,8 @@ export default function ProjectRoleManagerDialog({
       providerName: "R",
       providerKey: roleName,
     });
-
-    const list = result.groups[0].permissions;
+    if (!result) return;
+    const list = result?.groups[0].permissions;
     setPermissionOrigin(list);
   }, [projectId, roleName]);
 

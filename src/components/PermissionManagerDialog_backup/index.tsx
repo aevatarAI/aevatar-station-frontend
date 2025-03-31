@@ -185,7 +185,6 @@ function flattenPermissions(data: {
   function processPermission(permission: TChildPermission): void {
     const { permission: name, checked } = permission;
 
-    // 如果 `name` 不在结果集，添加到 Map
     if (!resultMap.has(name)) {
       resultMap.set(name, {
         name,
@@ -193,14 +192,11 @@ function flattenPermissions(data: {
       });
     }
 
-    // 如果已经存在，更新 `isGranted` 如果有变化（可以自定义更新逻辑）
-    // 保持 `isGranted = isGranted OR checked` 的逻辑（慎重考虑更新逻辑）
     const existing = resultMap.get(name);
     if (existing) {
       existing.isGranted = existing.isGranted || checked;
     }
 
-    // 递归处理子权限
     for (const childPermission of permission.permissionList) {
       processPermission(childPermission);
     }

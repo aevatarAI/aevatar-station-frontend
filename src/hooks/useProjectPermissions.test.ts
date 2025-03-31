@@ -28,8 +28,8 @@ describe("useProjectPermissions Hook", () => {
   const mockSetPermissions = vi.fn();
   const mockToast = vi.fn();
   const mockPermissions = [
-    { displayName: "Permission:Organizations", isGranted: true },
-    { displayName: "Permission:Organizations.Create", isGranted: false },
+    { displayName: "Permission:Projects", isGranted: true },
+    { displayName: "Permission:Projects.Create", isGranted: false },
   ];
 
   beforeEach(() => {
@@ -59,8 +59,8 @@ describe("useProjectPermissions Hook", () => {
 
   it("should fetch and set project permissions correctly", async () => {
     const mockPermissions = [
-      { displayName: "Permission:Organizations", isGranted: true },
-      { displayName: "Permission:Organizations.Create", isGranted: false },
+      { displayName: "Permission:Projects", isGranted: true },
+      { displayName: "Permission:Projects.Create", isGranted: false },
     ];
 
     vi.mocked(getProjectPermissions).mockResolvedValue(mockPermissions as any);
@@ -72,7 +72,7 @@ describe("useProjectPermissions Hook", () => {
     expect(getProjectPermissions).toHaveBeenCalledWith(mockProjectId);
 
     expect(mockSetPermissions).toHaveBeenCalledWith(mockPermissions);
-
+    console.log(result.current, "result.current==");
     expect(result.current).toEqual({
       projects: true,
       projectsCreate: false,

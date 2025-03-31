@@ -59,9 +59,9 @@ vi.mock("@/components/DeleteDialog", () => ({
 vi.mock("@/hooks/useOrgPermissions", () => ({
   __esModule: true,
   useOrgPermissions: vi.fn(() => ({
-    organizationsCreate: true,
-    organizationsEdit: true,
-    organizationsDelete: true,
+    projectsCreate: true,
+    projectsEdit: true,
+    projectsDelete: true,
   })),
 }));
 
@@ -122,8 +122,8 @@ describe("OrganisationProjects Component", () => {
   it("should call addProject API on create project", async () => {
     render(<OrganisationProjects />);
     // Trigger project creation
-    const createButton = screen.getByText("Create Project");
-    fireEvent.click(createButton);
+    const createButton = screen.getAllByText("Create Project");
+    fireEvent.click(createButton[0]);
 
     // Verify API call
     await waitFor(() =>

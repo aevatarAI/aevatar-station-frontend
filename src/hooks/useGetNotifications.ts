@@ -8,7 +8,7 @@ export interface Notification {
   content: string;
   status: number;
   creatorId: string;
-  createTime: string;
+  creationTime: string;
   receiver: string;
 }
 

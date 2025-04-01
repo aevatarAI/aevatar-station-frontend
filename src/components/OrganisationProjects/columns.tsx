@@ -25,6 +25,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
         <span>{row.original.domainName}</span>
         <Copy
+          description="domain name copied"
           toCopy={row.original.domainName}
           className="text-[#606060] hover:text-white"
         />

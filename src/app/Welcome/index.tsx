@@ -12,6 +12,7 @@ import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
 import { useState } from "react";
 import { navigate } from "wouter/use-browser-location";
+import Loading from "@/components/Loading";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
@@ -20,23 +21,22 @@ const WelcomePage: React.FC = () => {
   const { data: invitations, isLoading } = useGetOrganisationInvites();
   const { mutate, isPending } = useUpdateJoinNotifications();
 
-  if (organisations?.data.items.length > 0) {
-    navigate("/profile");
-    return;
-  }
-
   // [TODO] Remove after backend sorts
-  const reversed = reverse(invitations?.data)
+  const reversed = reverse(invitations?.data);
   const invites = deduplicate(reversed, "organizationId");
-  // const hasInvites = invites.length > 0;
-  const hasInvites = false; // [TODO] - To remove
+  const hasInvites = invites.length > 0;
 
   const onRadioChange = (value: string) => {
-    setSelectValue(value)
+    setSelectValue(value);
   };
 
   if (isLoading) {
-    return <div>loading...</div>
+    return <Loading />;
+  }
+
+  if (organisations?.data.items.length > 0) {
+    navigate("/profile");
+    return;
   }
 
   return (
@@ -79,24 +79,33 @@ const WelcomePage: React.FC = () => {
               <RadioGroup
                 defaultValue=""
                 className="space-y-[18px]"
-                onValueChange={onRadioChange}>
+                onValueChange={onRadioChange}
+              >
                 {invites?.map((org: any) => (
                   <div
                     key={org.id}
-                    className="flex items-center space-x-[10px]">
+                    className="flex items-center space-x-[10px]"
+                  >
                     <RadioGroupItem value={org.id} id={org.id} />
                     <label
                       htmlFor={org.id}
-                      className="text-[11px] text-gray-light font-source-code">
+                      className="text-[11px] text-gray-light font-source-code"
+                    >
                       {org.organizationName}
                     </label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
-            <Button disabled={isPending || !selectValue} className="mx-auto bottom-0 w-[226px]" onClick={() => {
-              mutate({id: selectValue, status: ACCEPTED});
-            }}>{isPending ? "joining..." : "join"}</Button>
+            <Button
+              disabled={isPending || !selectValue}
+              className="mx-auto bottom-0 w-[226px]"
+              onClick={() => {
+                mutate({ id: selectValue, status: ACCEPTED });
+              }}
+            >
+              {isPending ? "joining..." : "join"}
+            </Button>
           </div>
         ) : (
           <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">

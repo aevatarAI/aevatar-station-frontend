@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { register, sendRegisterCode } from "@/services/auth";
+import { useLogin } from "@/hooks/useLogin";
+import { login, register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,6 +34,9 @@ const Verification = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const { loginUser } = useLogin();
+
+  // [TODO] - Test with QA
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
@@ -47,7 +51,20 @@ const Verification = () => {
           toast({
             description: response.message || "Registration successful!",
           });
-          navigate("/welcome");
+
+          const isLoggedIn = await loginUser(name, password);
+
+          if (isLoggedIn) {
+            navigate("/welcome");
+          }
+
+          // if (loginResponse.code === "20000") {
+          //   navigate("/welcome");
+          // } else {
+          //   toast({
+          //     description: "Unable to login.",
+          //   });
+          // }
         } else {
           toast({
             description:
@@ -87,7 +104,8 @@ const Verification = () => {
             className="font-normal text-white cursor-pointer hover:text-gray-light"
             onClick={() => {
               navigate("/login");
-            }}>
+            }}
+          >
             login
           </span>
         </p>
@@ -97,7 +115,8 @@ const Verification = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="gap-5 flex flex-col">
+            className="gap-5 flex flex-col"
+          >
             <div className="flex flex-col gap-5">
               <FormField
                 control={form.control}
@@ -126,13 +145,15 @@ const Verification = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light">
+                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+              >
                 register
               </Button>
               <div className="text-right">
                 <span
                   className="text-[12px] cursor-pointer font-source-code text-white hover:text-gray-light"
-                  onClick={sendVerificationCode}>
+                  onClick={sendVerificationCode}
+                >
                   resend email
                 </span>
               </div>

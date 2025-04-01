@@ -37,6 +37,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
         <span>{row.original.appId}</span>
         <Copy
+          description="client id copied"
           toCopy={row.original.appSecret}
           className="text-[#606060] hover:text-white"
         />
@@ -50,6 +51,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.appSecret)}</span>
         <Copy
+          description="api key copied"
           toCopy={row.original.appSecret}
           className="text-[#606060] hover:text-white"
         />
@@ -69,7 +71,11 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "creatorName",
     header: "created by",
     cell: ({ row }) => {
-      return <div className="min-w-[125px] text-[15px] font-semibold">{row.original.creatorName || "Unknown"}</div>
+      return (
+        <div className="min-w-[125px] text-[15px] font-semibold">
+          {row.original.creatorName || "Unknown"}
+        </div>
+      );
     },
   },
   {

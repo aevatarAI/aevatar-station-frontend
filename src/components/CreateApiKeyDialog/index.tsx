@@ -35,8 +35,14 @@ import Loading from "@/assets/loading.svg?react";
 import clsx from "clsx";
 import { useToast } from "@/hooks/use-toast";
 import { useCreateAPIKey } from "@/hooks/useCreateAPIKey";
-
-const projectList = ["02d2d4de-dfca-dc54-3e79-3a18c8cb355c"];
+import { useGetProjects } from "@/hooks/useGetProjects";
+interface APIKey {
+  id: string;
+  displayName: string;
+  domainName: string;
+  creationTime: number;
+  memberCount: number;
+}
 
 export default function CreateApiKeyDialog() {
   const form = useForm<TCreateApiKeyForm>({
@@ -44,6 +50,7 @@ export default function CreateApiKeyDialog() {
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
+  const { data: projectList, isLoading } = useGetProjects();
   const { mutate } = useCreateAPIKey();
   const { toast } = useToast();
 
@@ -64,6 +71,10 @@ export default function CreateApiKeyDialog() {
   useEffect(() => {
     open && form.reset();
   }, [form, open]);
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -115,12 +126,12 @@ export default function CreateApiKeyDialog() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
-                        {projectList.map((item) => (
+                        {projectList?.data?.items?.map((item: APIKey) => (
                           <SelectItem
                             className="text-[14px]"
-                            key={item}
-                            value={item}>
-                            {item}
+                            key={item.id}
+                            value={item.id}>
+                            {item.displayName}
                           </SelectItem>
                         ))}
                       </SelectContent>

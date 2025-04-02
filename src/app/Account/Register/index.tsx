@@ -22,13 +22,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z.string().min(1, "name must be at least 1 character long"),
   email: z.string().email({
     message: "please enter a valid email address.",
   }),
   password: z
     .string()
-    .min(8, "password must be at least 8 characters long")
+    .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
       "password must contain at least one non-alphanumeric character",

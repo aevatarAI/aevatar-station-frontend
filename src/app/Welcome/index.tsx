@@ -13,12 +13,14 @@ import type React from "react";
 import { useState } from "react";
 import { navigate } from "wouter/use-browser-location";
 import Loading from "@/components/Loading";
+import { useGetProjects } from "@/hooks/useGetProjects";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
   const [selectValue, setSelectValue] = useState("");
   const { data: organisations } = useGetOrganizations();
   const { data: invitations, isLoading } = useGetOrganisationInvites();
+  const { data: projects } = useGetProjects();
   const { mutate, isPending } = useUpdateJoinNotifications();
 
   // [TODO] Remove after backend sorts
@@ -32,6 +34,11 @@ const WelcomePage: React.FC = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (organisations?.data.items.length > 0 && projects?.data.items.length > 0) {
+    navigate("/dashboard");
+    return
   }
 
   if (organisations?.data.items.length > 0) {
@@ -117,6 +124,7 @@ const WelcomePage: React.FC = () => {
               the organisation owner
             </p>
             <div className="w-full h-[1px] bg-black-light my-4" />
+            <span className="text-gray-light font-syne text-[12px] font-semibold leading-normal lowercase mb-2.5 ">your email address</span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
               <span className="text-[12px] font-source-code">{email}</span>
               <Copy

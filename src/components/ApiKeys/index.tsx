@@ -9,13 +9,13 @@ import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
 import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
 import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
 import { useAtom } from "jotai";
-import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import Loading from "@/components/Loading";
 
 export default function ApiKeys() {
-  const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const { data, isLoading, isError } = useGetAPIKeys(
-    currentOrganisationId || ""
+    currentProjectId || ""
   );
   const { mutate: mutationUpdate } = useUpdateAPIKey();
   const { mutate } = useDeleteAPIKey();

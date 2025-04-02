@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { useLogin } from "@/hooks/useLogin";
-import { login, register, sendRegisterCode } from "@/services/auth";
+import { register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -36,7 +36,6 @@ const Verification = () => {
   });
   const { loginUser } = useLogin();
 
-  // [TODO] - Test with QA
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
@@ -47,30 +46,23 @@ const Verification = () => {
           code: values.verificationCode,
         });
 
-        if (response.code === "20000") {
-          toast({
-            description: response.message || "Registration successful!",
-          });
-
-          const isLoggedIn = await loginUser(name, password);
-
-          if (isLoggedIn) {
-            navigate("/welcome");
-          }
-
-          // if (loginResponse.code === "20000") {
-          //   navigate("/welcome");
-          // } else {
-          //   toast({
-          //     description: "Unable to login.",
-          //   });
-          // }
-        } else {
-          toast({
-            description:
-              response.message || "Registration failed. Please try again.",
-          });
+        if (!["20000", "20001"].includes(response.code)) {
+          form.setError("verificationCode", {
+            message: response.message || "invalid verification code. please check and try again."
+          })
+          return
         }
+
+        toast({ description: "verification successful."})
+
+        const isLoggedIn = await loginUser(name, password);
+
+        if (!isLoggedIn) {
+          toast({ description: "log in failed."})
+          return
+        }
+
+        navigate("/welcome");
       } catch (error) {
         console.error(error, "register error");
         toast({

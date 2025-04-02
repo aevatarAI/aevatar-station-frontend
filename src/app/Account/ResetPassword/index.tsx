@@ -24,7 +24,7 @@ const formSchema = z
   .object({
     password: z
       .string()
-      .min(8, "password must be at least 8 characters long")
+      .min(6, "password must be at least 6 characters long")
       .regex(
         /[^a-zA-Z0-9]/,
         "password must contain at least one non-alphanumeric character",

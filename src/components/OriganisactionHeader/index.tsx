@@ -12,6 +12,7 @@ import {
   itemSelectClassName,
 } from "@/constants/cls";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
+import { useGetProjects } from "@/hooks/useGetProjects";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -20,6 +21,14 @@ import {
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
+
+export interface Project {
+  id: string;
+  displayName: string;
+  domainName: string;
+  memberCount: number;
+  creationTime: number;
+}
 
 export interface IOriganisactionHeaderProps {
   className?: string;
@@ -31,20 +40,19 @@ export default function OriganisactionHeader({
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
   const { data: organisationList, refetch } = useGetOrganizations();
+  const { data: projectList } = useGetProjects();
+
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
     CURRENT_ORGANIZATION_ATOM
   );
-
-  const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentOrganisation = useMemo(
     () => organisationList?.data?.items.find((item: any) => item.id === currentOrganisationId),
     [organisationList?.data?.items, currentOrganisationId]
   );
-  
-  const currentProject = useMemo(
-    () => projectList.find((item) => item.id === currentProjectId),
-    [projectList, currentProjectId]
+
+  const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const currentProject = useMemo(() => projectList?.data?.items.find((project: Project) => project.id === currentProjectId),
+  [projectList?.data?.items, currentProjectId]
   );
 
   useEffect(() => {
@@ -105,7 +113,7 @@ export default function OriganisactionHeader({
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
             <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[0] max-h-[300px] scrollbar-hide overflow-auto">
-              {projectList.map((item) => (
+              {projectList?.data?.items?.map((item: Project) => (
                 <div
                   className={clsx(
                     itemClassName,
@@ -113,7 +121,7 @@ export default function OriganisactionHeader({
                     currentProject?.id === item.id && itemSelectClassName
                   )}
                   onClick={() => {
-                    setCurrentProjectId(item.id);
+                    setCurrentProjectId(() => item.id);
                     setPjtOpen(false);
                   }}
                   key={item.id}>

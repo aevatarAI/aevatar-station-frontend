@@ -33,13 +33,14 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
 const establishSignalR = async (token: string) => {
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/api/notifications", {
+        .withUrl("https://station-developer-staging.aevatar.ai/developer-client/api/notifications", {
           withCredentials: false,
           accessTokenFactory: () => {
             return token.replace(/^Bearer\s+/, '');
           }
         })
         .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect()
         .build();
 
       await connection.start();
@@ -55,6 +56,6 @@ export const useSignalR = () => {
   return useQuery({
     queryKey: ['signalR', { token }],
     queryFn: () => establishSignalR(token),
-    staleTime: Infinity
+    // staleTime: Infinity
   })
 }

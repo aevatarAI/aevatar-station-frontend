@@ -36,6 +36,7 @@ const establishSignalR = async (token: string) => {
         .withUrl("/api/notifications", {
           withCredentials: false,
           accessTokenFactory: () => {
+            console.log('token', token)
             return token.replace(/^Bearer\s+/, '');
           }
         })

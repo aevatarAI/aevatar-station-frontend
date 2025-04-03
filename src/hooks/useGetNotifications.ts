@@ -36,9 +36,9 @@ const establishSignalR = async (token: string) => {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(url, {
           withCredentials: false,
-          accessTokenFactory: () => {
-            return token.replace(/^Bearer\s+/, '');
-          }
+          // accessTokenFactory: () => {
+          //   return token.replace(/^Bearer\s+/, '');
+          // }
         })
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect()

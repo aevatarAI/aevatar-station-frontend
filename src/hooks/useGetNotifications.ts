@@ -8,7 +8,7 @@ export interface Notification {
   content: string;
   status: number;
   creatorId: string;
-  createTime: string;
+  creationTime: string;
   receiver: string;
 }
 
@@ -25,12 +25,13 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
   return useQuery({
     queryKey: ['notifications', { pageIndex, pageSize }],
     queryFn: () => fetchNotifications({ pageIndex, pageSize }),
-    refetchInterval: 5000,
+    refetchInterval: 1000 * 30,
     enabled: Number(pageIndex) >= 0 && Number(pageSize) >= 0
   })
 }
 
 const establishSignalR = async (token: string) => {
+  const url = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
     try {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl("/api/notifications", {
@@ -40,6 +41,7 @@ const establishSignalR = async (token: string) => {
           }
         })
         .configureLogging(signalR.LogLevel.Information)
+        .withAutomaticReconnect()
         .build();
 
       await connection.start();
@@ -55,6 +57,5 @@ export const useSignalR = () => {
   return useQuery({
     queryKey: ['signalR', { token }],
     queryFn: () => establishSignalR(token),
-    staleTime: Infinity
   })
 }

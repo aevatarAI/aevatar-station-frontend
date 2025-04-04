@@ -98,7 +98,7 @@ const FormLabel = React.forwardRef<
       ref={ref}
       htmlFor={formItemId}
       {...props}
-      className={clsx(props.className, error && "text-[#FF2E2E]")}
+      className={props.className}
     />
   );
 });

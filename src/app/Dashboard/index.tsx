@@ -8,7 +8,6 @@ import {
   Legend,
   LineChart,
   Line,
-  Label,
   ResponsiveContainer,
 } from "recharts";
 import ApiKeys from "@/components/ApiKeys";
@@ -17,13 +16,7 @@ import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import clsx from "clsx";
 import { textGradient } from "@/constants/cls";
-import {
-  Form,
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -32,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
+import { useGetAPIRequests } from "@/hooks/useGetAPIRequests";
 
 const data = [
   {
@@ -73,49 +67,32 @@ const data = [
 
 const requests = [
   {
-    name: "01/03",
+    time: "01/03",
     api: 2400,
-    amt: 2400,
   },
   {
-    name: "01/03",
+    time: "02/03",
     api: 1398,
-    amt: 2210,
   },
   {
-    name: "01/03",
+    time: "03/03",
     api: 9800,
-    amt: 2290,
   },
   {
-    name: "01/03",
+    time: "04/03",
     api: 3908,
-    amt: 2000,
-  },
-  {
-    name: "01/03",
-    api: 4800,
-    amt: 2181,
-  },
-  {
-    name: "01/03",
-    api: 3800,
-    amt: 2500,
-  },
-  {
-    name: "01/03",
-    api: 4300,
-    amt: 2100,
   },
 ];
 
 export function Usage() {
   const form = useForm();
+  const { data: apiRequests, isPending } = useGetAPIRequests();
+
   return (
     <div>
       <div className="flex justify-between">
         <span className={clsx(textGradient)}>api keys</span>
-        <span>02/12/2025 - 03/12/2025</span>
+        <span>01/03/2025 - 04/03/2025</span>
       </div>
       <div className="py-[16px]" />
       <span className="text-gray-light">llms model</span>
@@ -173,16 +150,20 @@ export function Usage() {
         <strong className="underline text-white">1.1m</strong> api request
       </span>
       <div className="py-[10px]" />
-      <ResponsiveContainer width="100%" height={302}>
-        <LineChart width={1040} height={302} data={requests}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="api" stroke="#ffffff" />
-        </LineChart>
-      </ResponsiveContainer>
+      {!isPending ? (
+        <ResponsiveContainer width="100%" height={302}>
+          <LineChart width={1040} height={302} data={requests}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="time" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="api" stroke="#ffffff" />
+          </LineChart>
+        </ResponsiveContainer>
+      ) : (
+        <div>loading...</div>
+      )}
     </div>
   );
 }

@@ -36,7 +36,6 @@ const establishSignalR = async (token: string) => {
     try {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(URL, {
-          skipNegotiation: true, 
           withCredentials: true,
           accessTokenFactory: () => {
             if (!token) {

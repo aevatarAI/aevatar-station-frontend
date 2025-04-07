@@ -59,7 +59,7 @@ export const useSignalR = () => {
   const token = useAccessTokenAtom();
 
   return useQuery({
-    queryKey: ['signalR', token],
+    queryKey: ['signalR', { token }],
     queryFn: () => establishSignalR(token),
   })
 }

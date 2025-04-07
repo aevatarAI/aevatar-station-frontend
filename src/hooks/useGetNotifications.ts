@@ -34,7 +34,7 @@ const establishSignalR = async (token: string) => {
     const URL = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/api/notifications", {
+        .withUrl(URL, {
           withCredentials: true,
           transport: signalR.HttpTransportType.WebSockets,
           accessTokenFactory: () => {

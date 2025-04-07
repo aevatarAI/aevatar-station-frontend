@@ -31,14 +31,18 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
 }
 
 const establishSignalR = async (token: string) => {
-  const url = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
+  const URL = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
+  
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl(url, {
+        .withUrl(URL, {
+          headers: {
+            "Authorization": token
+          },
           withCredentials: false,
-          accessTokenFactory: () => {
-            return token.replace(/^Bearer\s+/, '');
-          }
+          // accessTokenFactory: () => {
+          //   return token.replace(/^Bearer\s+/, '');
+          // }
         })
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect()

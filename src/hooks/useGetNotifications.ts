@@ -41,6 +41,7 @@ const establishSignalR = async (token: string) => {
             if (!token) {
               throw new Error("No access token available")
             }
+            console.log('in accessTokenFactory: ', token.slice(0, 40))
             return token.replace(/^Bearer\s+/, '');
           }
         })
@@ -49,6 +50,11 @@ const establishSignalR = async (token: string) => {
         .build();
 
       await connection.start();
+
+      connection.onclose((error) => {
+        console.log('**onclose error: ', error);
+      })
+
       return true;
     } catch (e) {
       throw new Error("Unable to establish SignalR connection")

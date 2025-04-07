@@ -35,10 +35,13 @@ const establishSignalR = async (token: string) => {
     try {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(url, {
+          headers: {
+            "Authorization": token
+          },
           withCredentials: false,
-          accessTokenFactory: () => {
-            return token.replace(/^Bearer\s+/, '');
-          }
+          // accessTokenFactory: () => {
+          //   return token.replace(/^Bearer\s+/, '');
+          // }
         })
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect()

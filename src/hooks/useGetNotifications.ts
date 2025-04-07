@@ -35,7 +35,7 @@ const establishSignalR = async (token: string) => {
     console.log('token:', token)
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/api/notifications", {
+        .withUrl(URL, {
           skipNegotiation: true, 
           withCredentials: true,
           transport: signalR.HttpTransportType.WebSockets,

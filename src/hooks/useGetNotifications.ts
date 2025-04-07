@@ -32,23 +32,19 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
 
 const establishSignalR = async (token: string) => {
     const URL = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
-    console.log('token:', token)
+    console.log('token:', token.slice(0, 20))
     try {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(URL, {
           skipNegotiation: true, 
           withCredentials: true,
-          transport: signalR.HttpTransportType.WebSockets,
-          headers: {
-            "Authorization": token
-          },
-          // accessTokenFactory: () => {
-          //   if (!token) {
-          //     throw new Error("No access token available")
-          //   }
-          //   console.log('in accessTokenFactory: ', token.slice(0, 40))
-          //   return token.replace(/^Bearer\s+/, '');
-          // }
+          accessTokenFactory: () => {
+            if (!token) {
+              throw new Error("No access token available")
+            }
+            console.log('in accessTokenFactory: ', token.slice(0, 40))
+            return token.replace(/^Bearer\s+/, '');
+          }
         })
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect()

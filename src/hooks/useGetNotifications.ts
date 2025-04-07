@@ -39,9 +39,9 @@ const establishSignalR = async (token: string) => {
             "Authorization": token
           },
           withCredentials: false,
-          accessTokenFactory: () => {
-            return token.replace(/^Bearer\s+/, '');
-          }
+          // accessTokenFactory: () => {
+          //   return token.replace(/^Bearer\s+/, '');
+          // }
         })
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect()

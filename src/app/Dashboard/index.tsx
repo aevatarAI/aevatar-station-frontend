@@ -1,20 +1,25 @@
 import ApiKeys from "@/components/ApiKeys";
 import { SideBar } from "@/components/SideBar";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function Dashboard() {
   const [, selectTab] = useSideBarParams();
+  const { ref, handleClose } = useCloseDialog();
   // TODO
   useUpdateOrganisations();
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-60px)] bg-[#000]">
-      <div className="hidden lg:block w-[200px]  bg-[#191919] min-w-[200px]">
-        <SideBar />
-      </div>
+    <Sheet>
+      <SheetContent className="hidden lg:block w-[200px]  bg-[#191919] min-w-[200px]">
+        <DialogClose className="hidden" ref={ref}/>
+        <SideBar onClose={handleClose}/>
+      </SheetContent>
       <div className="pt-[31px] px-[20px] flex-1 overflow-auto">
         {selectTab === "apikeys" && <ApiKeys />}
       </div>
-    </div>
+    </Sheet>
   );
 }

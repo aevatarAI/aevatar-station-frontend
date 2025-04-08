@@ -26,12 +26,12 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useMemo } from "react";
 import { useLocation, useParams } from "wouter";
-
 export interface ISideBarProps {
+  onClose?: () => void;
   className?: string;
 }
 
-export function SideBar({ className }: ISideBarProps) {
+export function SideBar({ className, onClose }: ISideBarProps) {
   const [pathname] = useLocation();
   const params = useParams<{ tab?: string; menu?: string }>();
   const navigate = useNavigate();
@@ -145,7 +145,10 @@ export function SideBar({ className }: ISideBarProps) {
     return (
       <div>
         <div
-          onClick={() => navigate("/dashboard/apikeys")}
+          onClick={() => {
+            navigate("/dashboard/apikeys")
+            onClose?.()
+          }}
           className={clsx(
             menuItemClx,
             selectTab === "apikeys" && menuItemSelectedClx,
@@ -185,6 +188,7 @@ export function SideBar({ className }: ISideBarProps) {
                       setNotificationClicked(true);
                     }
                     navigate(tab.url);
+                    onClose?.();
                   }}
                   className={clsx(
                     menuItemClx,

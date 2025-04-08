@@ -2,7 +2,6 @@ import Plus from "@/assets/+.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -36,6 +35,8 @@ import clsx from "clsx";
 import { useToast } from "@/hooks/use-toast";
 import { useCreateAPIKey } from "@/hooks/useCreateAPIKey";
 import { useGetProjects } from "@/hooks/useGetProjects";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
 interface APIKey {
   id: string;
   displayName: string;
@@ -51,6 +52,7 @@ export default function CreateApiKeyDialog() {
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
   const { data: projectList, isLoading } = useGetProjects();
+  const [currentProject] = useAtom(CURRENT_PROJECT_ATOM)
   const { mutate } = useCreateAPIKey();
   const { toast } = useToast();
 
@@ -100,14 +102,14 @@ export default function CreateApiKeyDialog() {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
-                    <FormControl>
-                      <Input placeholder="name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                    <FormItem aria-labelledby="nameLabel" className="w-full">
+                      <FormLabel id="nameLabel">name of the key</FormLabel>
+                      <FormControl>
+                        <Input placeholder="name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
               />
               <FormField
                 key="projectId"
@@ -118,11 +120,12 @@ export default function CreateApiKeyDialog() {
                     <FormLabel id="project">project</FormLabel>
                     <Select
                       value={field?.value}
+                      defaultValue={currentProject || ""}
                       disabled={field?.disabled}
                       onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger aria-disabled={field?.disabled}>
-                          <SelectValue placeholder="Select" />
+                          <SelectValue placeholder="Select"/>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">

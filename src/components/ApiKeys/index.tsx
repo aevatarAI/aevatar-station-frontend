@@ -34,6 +34,7 @@ export default function ApiKeys() {
       operation: (
         <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
           <EditApiKeyDialog
+            name={item.appName}
             onYes={async (name: string) =>
               mutationUpdate({ id: item.id, name, projectId: item.projectId })
             }

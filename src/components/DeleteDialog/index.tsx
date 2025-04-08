@@ -11,7 +11,8 @@ import TipIcon from "@/assets/tip_icon.svg?react";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { useToast } from "@/hooks/use-toast";
 import { useCallback, useState } from "react";
-
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 interface IDeleteDialogProps {
   title: string;
   description: string;
@@ -42,6 +43,10 @@ export default function DeleteDialog({
         aria-describedby="edit api key"
         className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[#303030]"
       >
+        <VisuallyHidden>
+          <DialogTitle />
+          <DialogDescription />
+        </VisuallyHidden>
         <DialogHeader />
         <div className="text-center">
           <div className="flex flex-col items-center gap-[16px]">

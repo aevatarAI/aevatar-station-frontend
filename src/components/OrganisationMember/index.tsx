@@ -133,7 +133,7 @@ export default function OrganisationMember() {
               </Select>
             ) : (
               <div className="text-[12px] font-syne font-semibold">
-                invite pending
+                pending
               </div>
             )}
           </>

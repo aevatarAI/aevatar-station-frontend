@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as signalR from '@microsoft/signalr';
 import { request } from "@/api";
 import { useAccessTokenAtom } from '@/hooks/useAccessToken';
+import { SIGNAL_R_URL } from '@/config';
 export interface Notification {
   id: string;
   type: number;
@@ -11,7 +12,6 @@ export interface Notification {
   creationTime: string;
   receiver: string;
 }
-
 export interface QueryProps {
   pageIndex: number;
   pageSize: number;
@@ -31,10 +31,9 @@ export const useGetNotifications = ({ pageIndex, pageSize }: QueryProps) => {
 }
 
 const establishSignalR = async (token: string) => {
-  const url = "https://station-developer-staging.aevatar.ai/developer-client/api/notifications"
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/api/notifications", {
+        .withUrl(SIGNAL_R_URL, {
           withCredentials: false,
           accessTokenFactory: () => {
             return token.replace(/^Bearer\s+/, '');
@@ -45,7 +44,7 @@ const establishSignalR = async (token: string) => {
         .build();
 
       await connection.start();
-      return true;
+
     } catch (e) {
       throw new Error("Unable to establish SignalR connection")
     }

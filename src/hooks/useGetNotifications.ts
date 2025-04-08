@@ -45,6 +45,8 @@ const establishSignalR = async (token: string) => {
 
       await connection.start();
 
+      return true;
+
     } catch (e) {
       throw new Error("Unable to establish SignalR connection")
     }

@@ -27,10 +27,11 @@ import clsx from "clsx";
 import Loading from "@/assets/loading.svg?react";
 import { useToast } from "@/hooks/use-toast";
 interface EditApiKeyDialogProps {
+  name: string;
   onYes: (name: string) => Promise<void>;
 };
 
-export default function EditApiKeyDialog({ onYes }: EditApiKeyDialogProps) {
+export default function EditApiKeyDialog({ name, onYes }: EditApiKeyDialogProps) {
   const form = useForm<TEditApiKeyForm>({
     resolver: zodResolver(editKeyApiForm),
   });
@@ -76,11 +77,11 @@ export default function EditApiKeyDialog({ onYes }: EditApiKeyDialogProps) {
                 key={"name"}
                 control={form.control}
                 name={"name"}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">name of the key</FormLabel>
                     <FormControl>
-                      <Input placeholder="name" {...field} />
+                      <Input placeholder="name" {...field} defaultValue={name}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

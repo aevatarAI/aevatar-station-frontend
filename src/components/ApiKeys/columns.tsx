@@ -38,7 +38,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
         <span>{row.original.appId}</span>
         <Copy
           description="client id copied"
-          toCopy={row.original.appSecret}
+          toCopy={row.original.appId}
           className="text-[#606060] hover:text-white"
         />
       </div>

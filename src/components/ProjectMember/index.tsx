@@ -138,7 +138,7 @@ export default function ProjectMember() {
         role:
           !item.roleId || !projectPermissions.projectsMembersManage ? (
             <span className="text-[12px] font-syne font-semibold lowercase">
-              {item.roleId ? getRoleName(item.roleId) : "invite pending"}
+              {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
           ) : (
             <Select

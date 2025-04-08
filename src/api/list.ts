@@ -41,6 +41,14 @@ const API_REQUESTS_API_LIST = {
     target: "/api/api-requests",
     baseConfig: { method: "GET" },
   },
+  getSystemLLM: {
+    target: "/api/token-usage/system-llm",
+    baseConfig: { method: "GET" },
+  },
+  getLLMTokenUsage: {
+    target: "/api/token-usage",
+    baseConfig: { method: "POST" },
+  },
 };
 
 const ORGANIZATIONS_API_LIST = {

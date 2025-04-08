@@ -27,3 +27,21 @@ export const useGetAPIRequests = (
     },
   });
 };
+
+export const useGetSystemLLM = () => {
+  return useQuery({
+    queryKey: ["system-llm"],
+    queryFn: () => {
+      return request.apiRequests.getSystemLLM();
+    },
+  });
+};
+
+export const useGetLLMTokens = () => {
+  return useQuery({
+    queryKey: ["llm-tokens-usage"],
+    queryFn: () => {
+      return request.apiRequests.getLLMTokenUsage({});
+    },
+  });
+};

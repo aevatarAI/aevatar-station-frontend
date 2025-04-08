@@ -2,10 +2,13 @@
 
 import Menu from "@/assets/menu.svg?react";
 import { SideBar } from "@/components/SideBar";
-import { DialogTitle } from "@/components/ui/dialog";
+import { DialogClose, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useCloseDialog } from "@/hooks/useCloseDialog";
 
 export function SheetSideBar() {
+  const { ref, handleClose } = useCloseDialog();
+
   return (
     <Sheet key={"left"}>
       <SheetTrigger asChild>
@@ -17,7 +20,8 @@ export function SheetSideBar() {
         className="w-[200px] pt-[35px] p-0"
       >
         <DialogTitle className="hidden" />
-        <SideBar />
+        <DialogClose className="hidden" ref={ref}/>
+        <SideBar onClose={handleClose} />
       </SheetContent>
     </Sheet>
   );

@@ -100,7 +100,7 @@ export default function ProjectEditDialog({
         {type === "create" ? (
           <Button className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}>
             <Plus />
-            <span>create {fullWidth && "projects"}</span>
+            <span>create {fullWidth && "project"}</span>
           </Button>
         ) : (
           <Edit className="cursor-pointer" />

@@ -28,10 +28,11 @@ import Loading from "@/assets/loading.svg?react";
 import { useToast } from "@/hooks/use-toast";
 interface EditApiKeyDialogProps {
   name: string;
+  disabled?: boolean;
   onYes: (name: string) => Promise<void>;
 };
 
-export default function EditApiKeyDialog({ name, onYes }: EditApiKeyDialogProps) {
+export default function EditApiKeyDialog({ name, disabled, onYes }: EditApiKeyDialogProps) {
   const form = useForm<TEditApiKeyForm>({
     resolver: zodResolver(editKeyApiForm),
   });
@@ -59,9 +60,10 @@ export default function EditApiKeyDialog({ name, onYes }: EditApiKeyDialogProps)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {disabled ? <Edit className="cursor-pointer" /> :
       <DialogTrigger asChild>
         <Edit className="cursor-pointer" />
-      </DialogTrigger>
+      </DialogTrigger>}
       <DialogContent
         aria-describedby="edit api key"
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
@@ -77,7 +79,7 @@ export default function EditApiKeyDialog({ name, onYes }: EditApiKeyDialogProps)
                 key={"name"}
                 control={form.control}
                 name={"name"}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">name of the key</FormLabel>
                     <FormControl>

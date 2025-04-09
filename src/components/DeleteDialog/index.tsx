@@ -16,12 +16,14 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 interface IDeleteDialogProps {
   title: string;
   description: string;
+  disabled?: boolean;
   onYes?: () => Promise<void>;
 }
 export default function DeleteDialog({
-  onYes,
   title,
   description,
+  disabled,
+  onYes,
 }: IDeleteDialogProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
@@ -36,9 +38,10 @@ export default function DeleteDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {disabled ? <Delete className="cursor-pointer" role="img" /> :
       <DialogTrigger asChild>
         <Delete className="cursor-pointer" role="img" />
-      </DialogTrigger>
+      </DialogTrigger>}
       <DialogContent
         aria-describedby="edit api key"
         className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[#303030]"

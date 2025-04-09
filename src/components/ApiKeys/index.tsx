@@ -11,12 +11,14 @@ import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
 import { useAtom } from "jotai";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import Loading from "@/components/Loading";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 
 export default function ApiKeys() {
   const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const { data, isLoading, isError } = useGetAPIKeys(
     currentProjectId || ""
   );
+  const permissions = useProjectPermissions();
   const { mutate: mutationUpdate } = useUpdateAPIKey();
   const { mutate } = useDeleteAPIKey();
 
@@ -35,17 +37,17 @@ export default function ApiKeys() {
         <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
           <EditApiKeyDialog
             name={item.appName}
+            disabled={!permissions.apiKeysEdit}
             onYes={async (name: string) =>
               mutationUpdate({ id: item.id, name, projectId: item.projectId })
             }
           />
           <DeleteDialog
             title="Are you sure you want to delete the API key?"
+            description="*Once deleted, the existing API key will become invalid."
+            disabled={!permissions.apiKeysDelete}
             onYes={async () =>
               mutate({ projectId: item.projectId, id: item.id })
-            }
-            description={
-              "*Once deleted, the existing API key will become invalid."
             }
           />
         </div>
@@ -57,7 +59,7 @@ export default function ApiKeys() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>api keys</div>
-        <CreateApiKeyDialog />
+        <CreateApiKeyDialog disabled={!permissions.apiKeysCreate || data?.data.length > 1} />
       </div>
       {data && (
         <DataTable

@@ -45,7 +45,7 @@ interface APIKey {
   memberCount: number;
 }
 
-export default function CreateApiKeyDialog() {
+export default function CreateApiKeyDialog({ disabled }: { disabled: boolean }) {
   const form = useForm<TCreateApiKeyForm>({
     resolver: zodResolver(createApiKeyForm),
   });
@@ -81,7 +81,7 @@ export default function CreateApiKeyDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]" disabled={disabled}>
           <Plus />
           <span>create</span>
         </Button>

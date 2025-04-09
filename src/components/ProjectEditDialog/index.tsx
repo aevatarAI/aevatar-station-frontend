@@ -29,11 +29,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 
 interface IProjectEditDialogProps {
   type: "edit" | "create";
   name?: string;
   domainName?: string;
+  fullWidth?: boolean;
   onSubmit?: (values: TProjectEditForm) => Promise<void>;
 }
 
@@ -41,6 +43,7 @@ export default function ProjectEditDialog({
   type,
   name,
   domainName,
+  fullWidth,
   onSubmit: onFinish,
 }: IProjectEditDialogProps) {
   const form = useForm<TProjectEditForm>({
@@ -52,7 +55,6 @@ export default function ProjectEditDialog({
   });
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
-
   const { toast } = useToast();
 
   const onSubmit = useCallback(
@@ -67,13 +69,11 @@ export default function ProjectEditDialog({
           description: `successfully ${
             type === "create" ? "created" : "saved"
           }`,
-          // duration: 30000000,
         });
       } catch (error) {
         toast({
           title: "error",
           description: handleErrorMessage(error, "something error"),
-          // duration: 30000000,
         });
         setBtnLoading(false);
       }
@@ -98,9 +98,9 @@ export default function ProjectEditDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {type === "create" ? (
-          <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+          <Button className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}>
             <Plus />
-            <span>create</span>
+            <span>create {fullWidth && "projects"}</span>
           </Button>
         ) : (
           <Edit className="cursor-pointer" />

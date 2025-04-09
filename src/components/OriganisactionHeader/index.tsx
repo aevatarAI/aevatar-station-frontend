@@ -1,5 +1,6 @@
 import Add from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
+import ProjectEditDialog from "@/components/ProjectEditDialog";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,12 +12,14 @@ import {
   itemHoverClassName,
   itemSelectClassName,
 } from "@/constants/cls";
+import { useNavigate } from "@/hooks/navigate";
+import { useToast } from "@/hooks/use-toast";
+import { useCreateProject } from "@/hooks/useCreateProject";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useGetProjects } from "@/hooks/useGetProjects";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
-  PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -37,10 +40,13 @@ export interface IOriganisactionHeaderProps {
 export default function OriganisactionHeader({
   className,
 }: IOriganisactionHeaderProps) {
+  const navigate = useNavigate();
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
   const { data: organisationList, refetch } = useGetOrganizations();
   const { data: projectList } = useGetProjects();
+  const { mutate } = useCreateProject();
+  const { toast } = useToast();
 
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
     CURRENT_ORGANIZATION_ATOM
@@ -90,12 +96,15 @@ export default function OriganisactionHeader({
               ))}
             </div>
 
-            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] ">
-            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
-              <Add />
-              create organisation
-            </Button>
-          </div> */}
+            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
+              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+                navigate("/profile/organisation/general")
+                setOrgOpen(false)
+              }}>
+                <Add />
+                create organisation
+              </Button>
+            </div> */}
           </PopoverContent>
         </Popover>
       ) : (
@@ -130,14 +139,26 @@ export default function OriganisactionHeader({
               ))}
             </div>
 
-            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] hidden">
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
+            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
+              <ProjectEditDialog type="create" fullWidth={true} onSubmit={async ({name, domainName}) => {
+                mutate({ 
+                  organizationId: currentOrganisationId as string, 
+                  displayName: name, 
+                  domainName
+                }, {
+                  onError: () => {
+                    toast({ description: "unable to create project"})
+                  }
+                })
+                navigate("/profile/organisation/project")
+                setPjtOpen(false)
+              }} />
+              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+                navigate("/profile/projects/general")
+                setPjtOpen(false)
+              }}>
                 <Add />
-                create organisation
-              </Button>
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
-                <Add />
-                create project
+                manage projects
               </Button>
             </div>
           </PopoverContent>

@@ -23,7 +23,7 @@ export const AccessTokenUpdater = () => {
           service.defaults.headers.Authorization = accessToken;
 
           setAccessToken(accessToken);
-          setRefreshToken(`${data.token_type} ${data.refresh_token}`);
+          setRefreshToken(data.refresh_token);
           myEvents.AuthorizationUpdated.emit({
             token: accessToken,
             error: null,

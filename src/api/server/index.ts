@@ -1,5 +1,6 @@
 import { MAX_REQUEST } from "@/api/constants";
 import myEvents from "@/utils/myEvent";
+import { sleep } from "@etransfer/utils";
 import { isDeniedRequest, service, spliceUrl } from "../axios";
 import { DEFAULT_METHOD } from "../list";
 import type { BaseConfig, UrlObj, requestConfig } from "../types";
@@ -48,7 +49,6 @@ myServer.prototype.send = async function (
   } catch (error: any) {
     if (isDeniedRequest(error)) {
       const _count = count + 1;
-
       if (_count > 3) {
         myEvents.AuthorizationExpired.emit(MAX_REQUEST);
         return;
@@ -57,6 +57,8 @@ myServer.prototype.send = async function (
         this.tokenPending = true;
         myEvents.AuthorizationExpired.emit();
       }
+      await sleep(1000);
+
       const token: string = await new Promise((resolve) => {
         const { remove } = myEvents.AuthorizationUpdated.addListener(
           (data: { error?: any; token?: string }) => {

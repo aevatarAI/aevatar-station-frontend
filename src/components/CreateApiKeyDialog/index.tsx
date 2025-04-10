@@ -46,14 +46,18 @@ interface APIKey {
 }
 
 export default function CreateApiKeyDialog({ disabled }: { disabled: boolean }) {
-  const form = useForm<TCreateApiKeyForm>({
-    resolver: zodResolver(createApiKeyForm),
-  });
-  const [open, setOpen] = useState(false);
-  const [btnLoading, setBtnLoading] = useState<boolean>();
   const { data: projectList, isLoading } = useGetProjects();
   const [currentProject] = useAtom(CURRENT_PROJECT_ATOM)
   const { mutate } = useCreateAPIKey();
+  const form = useForm<TCreateApiKeyForm>({
+    resolver: zodResolver(createApiKeyForm),
+    values: {
+      name: "",
+      projectId: currentProject || ""
+    }
+  });
+  const [open, setOpen] = useState(false);
+  const [btnLoading, setBtnLoading] = useState<boolean>();
   const { toast } = useToast();
 
   const onSubmit = useCallback(
@@ -120,7 +124,6 @@ export default function CreateApiKeyDialog({ disabled }: { disabled: boolean }) 
                     <FormLabel id="project">project</FormLabel>
                     <Select
                       value={field?.value}
-                      defaultValue={currentProject || ""}
                       disabled={field?.disabled}
                       onValueChange={field.onChange}>
                       <FormControl>
@@ -131,7 +134,7 @@ export default function CreateApiKeyDialog({ disabled }: { disabled: boolean }) 
                       <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
                         {projectList?.data?.items?.map((item: APIKey) => (
                           <SelectItem
-                            className="text-[14px]"
+                            className="text-[14px] normal-case"
                             key={item.id}
                             value={item.id}>
                             {item.displayName}

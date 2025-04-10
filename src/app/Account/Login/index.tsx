@@ -72,7 +72,7 @@ const Login = () => {
         service.defaults.headers.Authorization = accessToken;
 
         setAccessToken(accessToken);
-        setRefreshToken(`${data.token_type} ${data.refresh_token}`);
+        setRefreshToken(data.refresh_token);
         getUserProfile();
         navigate("/welcome");
       } catch (err) {

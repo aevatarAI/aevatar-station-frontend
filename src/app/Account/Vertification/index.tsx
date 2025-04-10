@@ -76,11 +76,16 @@ const Verification = () => {
   const sendVerificationCode = useCallback(async () => {
     try {
       const response = await sendRegisterCode(email);
-      toast({
-        description: response.message || "Send Register Code successful!",
-      });
+      if (response.code !== "20001") {
+        toast({
+          description: response.message,
+        });
+      } else {
+        toast({
+          description: "Send Register Code successful!",
+        });
+      }
     } catch (error) {
-      console.error(error, "Send Register Code error");
       toast({
         description: "Send Register Code failed. Please try again.",
       });

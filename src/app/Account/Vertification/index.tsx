@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 const Verification = () => {
   const [email] = useAtom(emailAtom);
-  const [password] = useAtom(passwordAtom);
+  const [password] = useAtom(passwordAtom)
   const [name] = useAtom(usernameAtom);
   const { toast } = useToast();
   const navigate = useNavigate();

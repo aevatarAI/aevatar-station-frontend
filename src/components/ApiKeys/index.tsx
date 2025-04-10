@@ -59,7 +59,7 @@ export default function ApiKeys() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>api keys</div>
-        <CreateApiKeyDialog disabled={!permissions.apiKeysCreate || data?.data.length > 1} />
+        <CreateApiKeyDialog disabled={!permissions.apiKeysCreate || data?.data.length > 0} />
       </div>
       {data && (
         <DataTable

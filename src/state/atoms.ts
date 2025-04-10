@@ -13,6 +13,10 @@ export const accessTokenAtom = atomWithStorage<string | null>(
   { getOnInit: true }
 );
 // register
+export const usernameAtom = atom("");
 export const emailAtom = atom("");
 export const passwordAtom = atom("");
-export const usernameAtom = atom("");
+
+
+
+

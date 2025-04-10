@@ -12,14 +12,16 @@ export default function Dashboard() {
   // TODO
   useUpdateOrganisations();
   return (
+    <>
     <Sheet>
-      <SheetContent className="hidden lg:block w-[200px]  bg-[#191919] min-w-[200px]">
+      <SheetContent className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px]">
         <DialogClose className="hidden" ref={ref}/>
         <SideBar onClose={handleClose}/>
       </SheetContent>
+    </Sheet>
       <div className="pt-[31px] px-[20px] flex-1 overflow-auto">
         {selectTab === "apikeys" && <ApiKeys />}
       </div>
-    </Sheet>
+    </>
   );
 }

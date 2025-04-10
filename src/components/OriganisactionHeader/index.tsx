@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCreateProject } from "@/hooks/useCreateProject";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useGetProjects } from "@/hooks/useGetProjects";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -46,6 +47,7 @@ export default function OriganisactionHeader({
   const { data: organisationList, refetch } = useGetOrganizations();
   const { data: projectList } = useGetProjects();
   const { mutate } = useCreateProject();
+  const isAdmin = useIsAdmin();
   const { toast } = useToast();
 
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
@@ -60,6 +62,7 @@ export default function OriganisactionHeader({
   const currentProject = useMemo(() => projectList?.data?.items.find((project: Project) => project.id === currentProjectId),
   [projectList?.data?.items, currentProjectId]
   );
+
 
   useEffect(() => {
     refetch();
@@ -139,7 +142,7 @@ export default function OriganisactionHeader({
               ))}
             </div>
 
-            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
+            {isAdmin ? <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
               <ProjectEditDialog type="create" fullWidth={true} onSubmit={async ({name, domainName}) => {
                 mutate({ 
                   organizationId: currentOrganisationId as string, 
@@ -153,14 +156,15 @@ export default function OriganisactionHeader({
                 navigate("/profile/organisation/project")
                 setPjtOpen(false)
               }} />
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
-                navigate("/profile/projects/general")
-                setPjtOpen(false)
-              }}>
+              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" 
+                onClick={() => {
+                  navigate("/profile/organisation/project")
+                  setPjtOpen(false)
+                }}>
                 <Add />
                 manage projects
               </Button>
-            </div>
+            </div> : null}
           </PopoverContent>
         </Popover>
       ) : (

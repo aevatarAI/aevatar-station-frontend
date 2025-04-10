@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
+import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,6 +41,7 @@ const ForgotPasswordDialog = () => {
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
+      await sleep(1000);
       try {
         const result = await sendResetPasswordEmail(values.email);
         if (result.code === "20001") {
@@ -90,7 +92,8 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-white text-black-light text-[12px] px-[16px] py-[8px]"
+                className={`bg-white text-black-light text-[12px] px-[16px] py-[8px] ${loading ? "opacity-50" : "opacity-100"}`}
+                onClick={form.handleSubmit(onSubmit)}
               >
                 resend password
               </Button>

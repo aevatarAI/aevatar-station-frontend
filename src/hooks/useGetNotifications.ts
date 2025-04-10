@@ -9,6 +9,7 @@ export interface Notification {
   content: string;
   status: number;
   creatorId: string;
+  creatorName: string;
   creationTime: string;
   receiver: string;
 }

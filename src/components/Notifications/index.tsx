@@ -56,7 +56,7 @@ export const Notifications = ({
                 {dayjs(item.creationTime).format("DD/MM/YYYY HH:mm")}
               </div>
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
-                <span className="text-white">{`${item.creatorId} `}</span>
+                <span className="text-white">{`${item.creatorName} `}</span>
                 <span>has invited you to join</span>
                 <span className="text-white">{` ${truncate(
                   item.content,

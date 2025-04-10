@@ -127,8 +127,8 @@ export default function CreateApiKeyDialog({ disabled }: { disabled: boolean }) 
                       disabled={field?.disabled}
                       onValueChange={field.onChange}>
                       <FormControl>
-                        <SelectTrigger aria-disabled={field?.disabled}>
-                          <SelectValue placeholder="Select"/>
+                        <SelectTrigger aria-disabled={field?.disabled} className="normal-case">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">

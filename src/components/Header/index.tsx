@@ -5,6 +5,7 @@ import OriganisactionHeader from "@/components/OriganisactionHeader";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { SheetSideBar } from "@/components/SheetSideBar";
 import { useNavigate } from "@/hooks/navigate";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
@@ -16,6 +17,7 @@ const selectCls = "underline decoration-solid decoration-slice";
 const ignoreHeaders = ["/", "/login", "/register", "/verification"];
 
 export default function Header() {
+  const isAdmin = useIsAdmin();
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [notificationClicked, setNotificationClicked] =
     useAtom(NOTIFICATION_ATOM);
@@ -61,7 +63,7 @@ export default function Header() {
                 <div
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
-                    !projectList.length && "text-[#606060] cursor-not-allowed",
+                    (!isAdmin || !projectList.length) && "text-[#606060] cursor-not-allowed",
                   )}
                   onClick={() => {
                     if (!projectList.length) return;

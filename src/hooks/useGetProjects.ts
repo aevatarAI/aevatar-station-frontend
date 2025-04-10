@@ -8,7 +8,7 @@ export const useGetProjects = () => {
     const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
     return useQuery({
-        queryKey: ["projects"],
+        queryKey: ["projects", { organizationId }],
         queryFn: () => {
             return request.projects.getUserProject({
                 params: {

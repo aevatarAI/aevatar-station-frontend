@@ -206,6 +206,7 @@ export default function ProjectMember() {
         {projectPermissions.projectsMembersManage ? (
           <AddMembersDialog
             orgMemberList={_orgMemberList}
+            roleList={roleList}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)
             }

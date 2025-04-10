@@ -104,11 +104,11 @@ export default function ProjectMember() {
     async (email: string, join: boolean, roleId: string) => {
       try {
         if (!projectId) return;
-        const result = await request.projects.editProjectMembers({
+        await request.projects.editProjectMembers({
           query: projectId,
           data: {
             email,
-            join: true,
+            join,
             roleId,
           },
         });

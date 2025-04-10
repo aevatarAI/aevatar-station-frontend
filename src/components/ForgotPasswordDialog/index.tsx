@@ -41,7 +41,6 @@ const ForgotPasswordDialog = () => {
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
-      await sleep(1000);
       try {
         const result = await sendResetPasswordEmail(values.email);
         if (result.code === "20001") {
@@ -146,6 +145,7 @@ const ForgotPasswordDialog = () => {
                     </Button>
                   </DialogClose>
                   <Button
+                    formNoValidate
                     type="submit"
                     className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
                     disabled={loading}

@@ -49,9 +49,7 @@ const WelcomePage: React.FC = () => {
   return (
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon
-        width={50}
-        height={50}
-        className="mb-[45px] mt-[57px] lg:mt-[85px]"
+        className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]"
       />
       <div className="text-center mb-[72px]">
         <h1 className="text-gradient text-[36px] lg:text-[54px] font-semibold leading-none mb-[11px]">

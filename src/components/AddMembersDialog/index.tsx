@@ -36,6 +36,7 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateEffect } from "react-use";
 
 interface IInviteMembersDialogProps {
   defaultRoleId?: string;
@@ -59,6 +60,15 @@ export default function AddMembersDialog({
       email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
+
+  useUpdateEffect(() => {
+    form.setValue("role", roleList[0]?.id);
+  }, [roleList]);
+
+  useUpdateEffect(() => {
+    form.setValue("email", orgMemberList[0]?.email);
+  }, [orgMemberList]);
+
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 

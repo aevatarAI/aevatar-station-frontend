@@ -186,10 +186,18 @@ export default function ProjectMember() {
       getRoleName,
     ],
   );
-  const _orgMemberList = useMemo(
-    () => orgMemberList.filter((item) => item.roleId),
-    [orgMemberList],
-  );
+  const _orgMemberList = useMemo(() => {
+    const memberIds = new Set(memberList.map((item) => item.id));
+    const orgMemberIds = new Set(orgMemberList.map((item) => item.id));
+    const onlyMemberIds = memberList.filter(
+      (item) => !orgMemberIds.has(item.id),
+    );
+    const onlyOrgMemberIds = orgMemberList.filter(
+      (item) => !memberIds.has(item.id),
+    );
+    return [...onlyOrgMemberIds, ...onlyMemberIds];
+  }, [orgMemberList, memberList]);
+
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
@@ -197,7 +205,6 @@ export default function ProjectMember() {
 
         {projectPermissions.projectsMembersManage ? (
           <AddMembersDialog
-            defaultRoleId={roleList[0]?.id}
             orgMemberList={_orgMemberList}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)

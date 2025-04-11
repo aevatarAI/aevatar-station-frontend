@@ -117,10 +117,9 @@ export default function OriganisactionHeader({
       )}
       <div>/</div>
 
-      {currentProject ? (
-        <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
+      <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
           <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
-            {currentProject?.displayName ?? "--"}
+            {currentProject ? currentProject.displayName : <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">No project</div>}
             <StepSelect />
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
@@ -141,37 +140,32 @@ export default function OriganisactionHeader({
                 </div>
               ))}
             </div>
-
-            {isAdmin ? <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
-              <ProjectEditDialog type="create" fullWidth={true} onSubmit={async ({name, domainName}) => {
-                mutate({ 
-                  organizationId: currentOrganisationId as string, 
-                  displayName: name, 
-                  domainName
-                }, {
-                  onError: () => {
-                    toast({ description: "unable to create project"})
-                  }
-                })
-                navigate("/profile/organisation/project")
-                setPjtOpen(false)
-              }} />
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" 
-                onClick={() => {
-                  navigate("/profile/organisation/project")
-                  setPjtOpen(false)
-                }}>
-                <Add />
-                manage projects
-              </Button>
-            </div> : null}
+            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
+            <ProjectEditDialog type="create" disabled={!isAdmin} fullWidth={true} onSubmit={async ({name, domainName}) => {
+              mutate({ 
+                organizationId: currentOrganisationId as string, 
+                displayName: name, 
+                domainName
+              }, {
+            onError: () => {
+              toast({ description: "unable to create project"})
+            }
+          })
+            navigate("/profile/organisation/project")
+            setPjtOpen(false)
+        }} />
+          <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" 
+            disabled={!isAdmin}
+            onClick={() => {
+              navigate("/profile/organisation/project")
+              setPjtOpen(false)
+            }}>
+            <Add />
+            manage projects
+        </Button>
+      </div>
           </PopoverContent>
         </Popover>
-      ) : (
-        <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
-          No project
-        </div>
-      )}
     </div>
   );
 }

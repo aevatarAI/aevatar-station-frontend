@@ -7,10 +7,9 @@ import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function Dashboard() {
+  useUpdateOrganisations();
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
-  // TODO
-  useUpdateOrganisations();
   return (
     <>
     <Sheet>

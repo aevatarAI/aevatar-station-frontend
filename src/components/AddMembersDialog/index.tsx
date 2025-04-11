@@ -24,13 +24,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import type { IMemberItem } from "@/api/utils/organization";
+import type { IMemberItem, IRoleItem } from "@/api/utils/organization";
 import Loading from "@/assets/loading.svg?react";
 import {
   type TInviteMembersKeyForm,
   inviteMembersForm,
 } from "@/constants/form/inviteMembers";
 import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
+import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -42,6 +43,7 @@ interface IInviteMembersDialogProps {
   defaultRoleId?: string;
   defaulteEmail?: string;
   orgMemberList: IMemberItem[];
+  roleList: IRoleItem[];
   onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
 }
 
@@ -49,10 +51,9 @@ export default function AddMembersDialog({
   defaultRoleId,
   defaulteEmail,
   orgMemberList,
+  roleList,
   onAddMember,
 }: IInviteMembersDialogProps) {
-  const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
-
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
@@ -62,11 +63,15 @@ export default function AddMembersDialog({
   });
 
   useUpdateEffect(() => {
-    form.setValue("role", roleList[0]?.id);
+    sleep(500).then(() => {
+      form.setValue("role", roleList[0]?.id);
+    });
   }, [roleList]);
 
   useUpdateEffect(() => {
-    form.setValue("email", orgMemberList[0]?.email);
+    sleep(500).then(() => {
+      form.setValue("email", orgMemberList[0]?.email);
+    });
   }, [orgMemberList]);
 
   const [open, setOpen] = useState(false);

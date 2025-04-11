@@ -4,6 +4,14 @@ import { useQuery } from "@tanstack/react-query"
 import { useAtom } from "jotai"
 
 
+export const getProjects = (organizationId: string) => {
+    return request.projects.getUserProject({
+        params: {
+            organizationId
+        }
+    })
+}
+
 export const useGetProjects = () => {
     const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 

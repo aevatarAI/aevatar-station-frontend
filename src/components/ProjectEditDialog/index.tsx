@@ -34,6 +34,7 @@ import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 interface IProjectEditDialogProps {
   type: "edit" | "create";
   name?: string;
+  disabled?: boolean;
   domainName?: string;
   fullWidth?: boolean;
   onSubmit?: (values: TProjectEditForm) => Promise<void>;
@@ -42,6 +43,7 @@ interface IProjectEditDialogProps {
 export default function ProjectEditDialog({
   type,
   name,
+  disabled,
   domainName,
   fullWidth,
   onSubmit: onFinish,
@@ -98,7 +100,7 @@ export default function ProjectEditDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {type === "create" ? (
-          <Button className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}>
+          <Button disabled={disabled} className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}>
             <Plus />
             <span>create {fullWidth && "project"}</span>
           </Button>

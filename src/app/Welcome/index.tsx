@@ -6,27 +6,51 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ACCEPTED } from "@/constants";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
-import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { Invite, useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navigate } from "wouter/use-browser-location";
 import Loading from "@/components/Loading";
 import { useGetProjects } from "@/hooks/useGetProjects";
+import { Checkbox as Checkboxer } from "@/components/ui/checkbox";
+
+// [TODO]
+export const CheckboxGroup= ({ data }: { data: Invite[] }) => {
+  // default checked all
+
+  // user can uncheck
+
+  // user can check
+  return data?.map((datum) => (<div className="flex flex-center gap-[10px] mb-[16px]">
+    <Checkboxer defaultChecked onCheckedChange={(e) => {
+    }}>
+    <label className="text-[11px] text-gray-light font-source-code" htmlFor="c1">
+      {datum.organizationName}
+    </label>
+    </Checkboxer>
+  </div>))
+}
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
-  const [selectValue, setSelectValue] = useState("");
   const { data: organisations } = useGetOrganizations();
   const { data: invitations, isLoading } = useGetOrganisationInvites();
   const { data: projects } = useGetProjects();
   const { mutate, isPending } = useUpdateJoinNotifications();
+  const [selectValue, setSelectValue] = useState("");
 
   // [TODO] Remove after backend sorts
   const reversed = reverse(invitations?.data);
   const invites = deduplicate(reversed, "organizationId");
   const hasInvites = invites.length > 0;
+  const [, setSelectedCheckboxValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    const orgIds = invites?.map(invite => invite.organizationId);
+    setSelectedCheckboxValues(orgIds)
+  }, [isLoading])
 
   const onRadioChange = (value: string) => {
     setSelectValue(value);
@@ -80,7 +104,6 @@ const WelcomePage: React.FC = () => {
                 pending invitations for your approval
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
-
               <RadioGroup
                 defaultValue=""
                 className="space-y-[18px]"
@@ -101,6 +124,7 @@ const WelcomePage: React.FC = () => {
                   </div>
                 ))}
               </RadioGroup>
+              {/* <CheckboxGroup data={invites} /> */}
             </div>
             <Button
               disabled={isPending || !selectValue}

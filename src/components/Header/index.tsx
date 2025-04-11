@@ -60,7 +60,8 @@ export default function Header() {
           >
             {pathname !== "/welcome" && (
               <>
-                <div
+                <button
+                  disabled={!isAdmin}
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
                     (!isAdmin || !projectList.length) && "text-[#606060] cursor-not-allowed",
@@ -71,16 +72,16 @@ export default function Header() {
                   }}
                 >
                   dashboard
-                </div>
-                <div
+                </button>
+                <button
                   className={clsx(pathname.startsWith("/profile") && selectCls)}
                   onClick={() => {
                     navigate("/profile");
                   }}
                 >
                   settings
-                </div>
-                <div
+                </button>
+                <button
                   onClick={() => {
                     setNotificationClicked(true);
                     navigate("/profile/profile/notifications");
@@ -91,7 +92,7 @@ export default function Header() {
                   ) : (
                     <Notication />
                   )}
-                </div>
+                </button>
               </>
             )}
 

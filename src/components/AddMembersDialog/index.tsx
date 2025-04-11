@@ -62,18 +62,6 @@ export default function AddMembersDialog({
     },
   });
 
-  useUpdateEffect(() => {
-    sleep(500).then(() => {
-      form.setValue("role", roleList[0]?.id);
-    });
-  }, [roleList]);
-
-  useUpdateEffect(() => {
-    sleep(500).then(() => {
-      form.setValue("email", orgMemberList[0]?.email);
-    });
-  }, [orgMemberList]);
-
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
@@ -87,9 +75,15 @@ export default function AddMembersDialog({
     [onAddMember],
   );
 
-  useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
+  useUpdateEffect(() => {
+    console.log(open, roleList, orgMemberList, "open==roleList");
+    if (open) {
+      form.setValue("role", roleList[0]?.id);
+      form.setValue("email", orgMemberList[0]?.email);
+    } else {
+      form.reset();
+    }
+  }, [form, open, roleList, orgMemberList]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

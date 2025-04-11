@@ -63,13 +63,13 @@ export default function AddMembersDialog({
   });
 
   useUpdateEffect(() => {
-    sleep(300).then(() => {
+    sleep(500).then(() => {
       form.setValue("role", roleList[0]?.id);
     });
   }, [roleList]);
 
   useUpdateEffect(() => {
-    sleep(300).then(() => {
+    sleep(500).then(() => {
       form.setValue("email", orgMemberList[0]?.email);
     });
   }, [orgMemberList]);

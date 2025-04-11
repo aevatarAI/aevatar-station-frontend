@@ -123,22 +123,6 @@ const Login = () => {
         //     navigate("/profile");
         //   }
         // }
-        const decodedToken = decodeJwt(data.access_token);
-        const userRole = getUserRole(decodedToken);
-
-        if (userRole === NEW) {
-          navigate("/welcome");
-        } else {
-          const { organizationId } = getOrgId(decodedToken);
-          const projects = await getProjects(organizationId);
-          queryClient.setQueryData(["projects", { organizationId }], projects);
-
-          if (projects?.data.items.length > 0) {
-            navigate("/dashboard");
-          } else {
-            navigate("/profile");
-          }
-        }
       } catch (err) {
         console.error(err, "err");
         toast({

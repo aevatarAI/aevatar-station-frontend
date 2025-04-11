@@ -139,7 +139,6 @@ const Login = () => {
             navigate("/profile");
           }
         }
->>>>>>> develop
       } catch (err) {
         console.error(err, "err");
         toast({

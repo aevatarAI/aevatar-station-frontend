@@ -38,7 +38,7 @@ export default function DeleteDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {disabled ? <Delete className="cursor-pointer" role="img" /> :
+      {disabled ? <Delete className="opacity-50" role="img" /> :
       <DialogTrigger asChild>
         <Delete className="cursor-pointer" role="img" />
       </DialogTrigger>}

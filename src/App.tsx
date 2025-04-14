@@ -5,13 +5,18 @@ import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import LayoutDefault from "@/layouts/LayoutDefault";
-import { type PropsWithChildren, Suspense, lazy } from "react";
+import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
 import { Route, Switch, Redirect } from "wouter";
 import ReactLoading from "react-loading";
 import { accessTokenAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
 import { service } from "@/api/axios";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
+import { useNavigate } from "@/hooks/navigate";
+import { getProjects } from "@/hooks/useGetProjects";
+import { useJWTDecode } from "@/hooks/useEmail";
+import { getUserRole, NEW } from "@/utils/helpers";
 
 const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
@@ -43,6 +48,46 @@ const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
     {children}
   </Suspense>
 );
+
+
+const Redirection = () => {
+  const navigate = useNavigate();
+  const { decodeJwt } = useJWTDecode();
+  const [accessToken] = useAtom(accessTokenAtom);
+  const { data, isLoading } = useGetOrganizations();
+
+  useEffect(() => {
+    if (isLoading || !data) return;
+
+    const fetchProjectsThenRedirect = async () => {
+      const decodedToken = decodeJwt(accessToken as string);
+      const userRole = getUserRole(decodedToken);
+      const organizationIds = data.data.items.map((datum: any) => datum.id);
+      const results = organizationIds.map((id: string) => getProjects(id));
+
+      if (userRole === NEW) {
+        navigate("/welcome");
+        return;
+      }
+
+      try {
+        const responses = await Promise.all(results);
+        const hasProjects = responses.some(
+          (response) => response.code === "20000" && response.data.items.length > 0);
+
+        navigate(hasProjects ? "/dashboard" : "/profile");
+
+      } catch (e) {
+        navigate("/profile")
+      }
+    }
+
+    fetchProjectsThenRedirect();
+
+  }, [data, isLoading, navigate])
+
+  return isLoading ? <Loading /> : null;
+}
 
 const PrivateRoute = ({
   path,
@@ -136,6 +181,10 @@ const App = () => (
         <WithLazyLoading>
           <Dashboard />
         </WithLazyLoading>
+      </PrivateRoute>
+
+      <PrivateRoute path="/redirect">
+        <Redirection />
       </PrivateRoute>
 
       <Route>

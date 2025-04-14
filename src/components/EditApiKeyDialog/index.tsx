@@ -60,7 +60,7 @@ export default function EditApiKeyDialog({ name, disabled, onYes }: EditApiKeyDi
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {disabled ? <Edit className="cursor-pointer" /> :
+      {disabled ? <Edit className="opacity-50" /> :
       <DialogTrigger asChild>
         <Edit className="cursor-pointer" />
       </DialogTrigger>}

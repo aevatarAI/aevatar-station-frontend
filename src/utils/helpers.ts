@@ -42,3 +42,24 @@ export const reverse = (data: any[]) => {
   }
   return results
 }
+
+export const NEW = "new";
+export const OWNER = "owner"
+export const READER = "reader"
+
+export const getUserRole = (decodedAccessToken: any) => {
+  if (!decodedAccessToken) return "";
+  const roles = decodedAccessToken.role
+  let roleType = NEW
+
+  if (Array.isArray(roles)) {
+    roles.forEach((role) => {
+      if (role?.toLowerCase().includes(READER)) {
+        roleType = READER
+      } else {
+        roleType = OWNER
+      }
+    })
+  }
+  return roleType
+}

@@ -76,7 +76,6 @@ export default function AddMembersDialog({
   );
 
   useUpdateEffect(() => {
-    console.log(open, roleList, orgMemberList, "open==roleList");
     if (open) {
       form.setValue("role", roleList[0]?.id);
       form.setValue("email", orgMemberList[0]?.email);

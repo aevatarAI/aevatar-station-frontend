@@ -17,21 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { useJWTDecode } from "@/hooks/useEmail";
-import { getProjects } from "@/hooks/useGetProjects";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-
-const NEW = "new";
-const OWNER = "owner"
-const READER = "reader"
 
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
@@ -55,47 +48,17 @@ const formSchema = z.object({
     ),
 });
 
-export const getUserRole = (decodedAccessToken: any) => {
-    if (!decodedAccessToken) return "";
-    const roles = decodedAccessToken.role
-    let roleType = NEW
-
-    if (Array.isArray(roles)) {
-      roles.forEach((role) => {
-        if (role?.toLowerCase().includes(READER)) {
-          roleType = READER
-        } else {
-          roleType = OWNER
-        }
-      })
-    }
-    return roleType
-}
-
-export const getOrgId = (decodedAccessToken: any) => {
-  const role = decodedAccessToken.role
-  if (!role || !Array.isArray(role)) return {};
-
-  const fullRoleType = role[role.length - 1];
-  const [organizationId, roleType] = fullRoleType.split("_");
-
-  return { organizationId, roleType };
-}
-
 const Login = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [_, setAccessToken] = useAtom(accessTokenAtom);
   const [loading, setLoading] = useState(false);
-  const { decodeJwt } = useJWTDecode();
-  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   const getUserProfile = useUpdateProfile();
-
-  const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
@@ -106,25 +69,8 @@ const Login = () => {
         service.defaults.headers.Authorization = accessToken;
         setAccessToken(accessToken);
         getUserProfile();
-        navigate("/welcome");
-        // const decodedToken = decodeJwt(data.access_token);
-        // const userRole = getUserRole(decodedToken);
-
-        // if (userRole === NEW) {
-        //   navigate("/welcome");
-        // } else {
-        //   const { organizationId } = getOrgId(decodedToken);
-        //   const projects = await getProjects(organizationId);
-        //   queryClient.setQueryData(["projects", { organizationId }], projects);
-
-        //   if (projects?.data.items.length > 0) {
-        //     navigate("/dashboard");
-        //   } else {
-        //     navigate("/profile");
-        //   }
-        // }
+        navigate("/redirect");
       } catch (err) {
-        console.error(err, "err");
         toast({
           description: "Login failed. Please check your username and password.",
         });

@@ -2,7 +2,6 @@ import Copy from "@/components/Copy";
 import LogoIcon from "@/assets/logo.svg?react";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ACCEPTED } from "@/constants";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
@@ -10,26 +9,31 @@ import { Invite, useGetOrganisationInvites } from "@/hooks/useGetOrganisationInv
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { navigate } from "wouter/use-browser-location";
 import Loading from "@/components/Loading";
 import { useGetProjects } from "@/hooks/useGetProjects";
 import { Checkbox as Checkboxer } from "@/components/ui/checkbox";
 
-// [TODO]
-export const CheckboxGroup= ({ data }: { data: Invite[] }) => {
-  // default checked all
-
-  // user can uncheck
-
-  // user can check
-  return data?.map((datum) => (<div className="flex flex-center gap-[10px] mb-[16px]">
-    <Checkboxer defaultChecked onCheckedChange={(e) => {
-    }}>
-    <label className="text-[11px] text-gray-light font-source-code" htmlFor="c1">
-      {datum.organizationName}
-    </label>
-    </Checkboxer>
+export const CheckboxGroup= ({ data, values, onChange }: { data: Invite[], values: string[], onChange: any}) => {
+  return data?.map((datum) => (<div key={datum.id} className="flex flex-center gap-[10px] mb-[16px]">
+    <Checkboxer
+      defaultChecked
+      id={datum.id}
+      name={datum.organizationName}
+      onCheckedChange={(checked: boolean) => {
+        if (!checked) {
+          const filtered = values.filter(value => value !== datum.id);
+          onChange(filtered);
+        } else {
+          const isPresent = values.includes(datum.id);
+          if (!isPresent) {
+            const transformed = [...values, datum.id];
+            onChange(transformed)
+          }
+        }
+      }}
+    />
   </div>))
 }
 
@@ -38,23 +42,22 @@ const WelcomePage: React.FC = () => {
   const { data: organisations } = useGetOrganizations();
   const { data: invitations, isLoading } = useGetOrganisationInvites();
   const { data: projects } = useGetProjects();
-  const { mutate, isPending } = useUpdateJoinNotifications();
-  const [selectValue, setSelectValue] = useState("");
+  const { mutateAsync, isPending } = useUpdateJoinNotifications();
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  // [TODO] Remove after backend sorts
-  const reversed = reverse(invitations?.data);
-  const invites = deduplicate(reversed, "organizationId");
+  // [TODO] Remove after backend sorts  
+  const invites = useMemo(() => {
+    const reversed = reverse(invitations?.data || []);
+    return deduplicate(reversed, "organizationId");
+  }, [invitations?.data]);
   const hasInvites = invites.length > 0;
-  const [, setSelectedCheckboxValues] = useState<string[]>([]);
 
   useEffect(() => {
-    const orgIds = invites?.map(invite => invite.organizationId);
-    setSelectedCheckboxValues(orgIds)
-  }, [isLoading])
-
-  const onRadioChange = (value: string) => {
-    setSelectValue(value);
-  };
+    if (invites) {
+      const ids = invites.map(invite => invite.id);
+      setSelectedValues(ids);
+    }
+  }, [invites])
 
   if (isLoading) {
     return <Loading />;
@@ -104,33 +107,24 @@ const WelcomePage: React.FC = () => {
                 pending invitations for your approval
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
-              <RadioGroup
-                defaultValue=""
-                className="space-y-[18px]"
-                onValueChange={onRadioChange}
-              >
-                {invites?.map((org: any) => (
-                  <div
-                    key={org.id}
-                    className="flex items-center space-x-[10px]"
-                  >
-                    <RadioGroupItem value={org.id} id={org.id} />
-                    <label
-                      htmlFor={org.id}
-                      className="text-[11px] text-gray-light font-source-code"
-                    >
-                      {org.organizationName}
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
-              {/* <CheckboxGroup data={invites} /> */}
+              <CheckboxGroup 
+                data={invites}
+                values={selectedValues}
+                onChange={setSelectedValues}
+              />
             </div>
             <Button
-              disabled={isPending || !selectValue}
+              disabled={isPending || selectedValues.length === 0}
               className="mx-auto bottom-0 w-[226px]"
-              onClick={() => {
-                mutate({ id: selectValue, status: ACCEPTED });
+              onClick={async () => {
+                const mutations = selectedValues.map(id => {
+                  return mutateAsync({ id, status: ACCEPTED })
+                })
+                try {
+                  await Promise.all(mutations)
+                } catch (error) {
+                  console.error("An error has occurred:", error)
+                }
               }}
             >
               {isPending ? "joining..." : "join"}

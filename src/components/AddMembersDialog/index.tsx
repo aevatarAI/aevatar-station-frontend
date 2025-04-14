@@ -2,7 +2,6 @@ import Plus from "@/assets/+.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -30,12 +29,9 @@ import {
   type TInviteMembersKeyForm,
   inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useAtom } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUpdateEffect } from "react-use";
 

@@ -17,6 +17,7 @@ import { useNavigate } from "@/hooks/navigate";
 import { getProjects } from "@/hooks/useGetProjects";
 import { useJWTDecode } from "@/hooks/useEmail";
 import { getUserRole, NEW } from "@/utils/helpers";
+import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 
 const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
@@ -55,6 +56,7 @@ const Redirection = () => {
   const { decodeJwt } = useJWTDecode();
   const [accessToken] = useAtom(accessTokenAtom);
   const { data, isLoading } = useGetOrganizations();
+  const [,setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
   useEffect(() => {
     if (isLoading || !data) return;
@@ -66,14 +68,21 @@ const Redirection = () => {
       const results = organizationIds.map((id: string) => getProjects(id));
 
       if (userRole === NEW) {
-        navigate("/welcome");
-        return;
+        return navigate("/welcome");
       }
 
       try {
         const responses = await Promise.all(results);
-        const hasProjects = responses.some(
-          (response) => response.code === "20000" && response.data.items.length > 0);
+        let hasProjects = false;
+
+        for (let index in responses) {
+          const response = responses[index];
+          if (response.code === "20000" && response.data.items.length > 0) {
+            hasProjects = true;
+            setCurrentOrganisationId(organizationIds[index])
+            break;
+          }
+        }
 
         navigate(hasProjects ? "/dashboard" : "/profile");
 

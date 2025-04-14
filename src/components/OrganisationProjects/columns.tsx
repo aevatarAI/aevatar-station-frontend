@@ -1,8 +1,7 @@
 import type { IProjectItem } from "@/api/utils/organization";
 import Copy from "@/components/Copy";
-import { shortenString } from "@/utils/helpers";
 import type { ColumnDef } from "@tanstack/react-table";
-import dayjs from "dayjs";
+import dayjs from "@/api/dayjs";
 
 export interface IProjectTable extends IProjectItem {
   operation?: JSX.Element;
@@ -46,7 +45,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "created",
     cell: ({ row }) => (
       <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
-        {dayjs(row.original.creationTime).format("DD/MM/YYYY HH:mm")}
+        {dayjs.utc(row.original.creationTime).local().format("DD.MM.YYYY HH:mm")}
       </div>
     ),
   },

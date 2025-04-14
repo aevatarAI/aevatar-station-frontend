@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from "@/api/dayjs";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { Button } from "@/components/ui/button";
 import { ACCEPTED, DECLINED, DEFAULT, INVITED } from '@/constants';
@@ -53,7 +53,7 @@ export const Notifications = ({
           >
             <div className="mb-[15px] lg:mb-0">
               <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase mb-[10px]">
-                {dayjs(item.creationTime).format("DD/MM/YYYY HH:mm")}
+                {dayjs.utc(item.creationTime).local().format("DD.MM.YYYY HH:mm")}
               </div>
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
                 <span className="text-white">{`${item.creatorName} `}</span>

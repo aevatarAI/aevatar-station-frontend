@@ -8,12 +8,13 @@ import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import type React from "react";
 import Loading from "@/components/Loading";
-import { toast } from "@/hooks/use-toast";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { CheckboxGroup } from "@/components/ui/checkbox-group";
+import { useNavigate } from "@/hooks/navigate";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
+  const navigate = useNavigate();
   const { data, isLoading } = useGetOrganisationInvites();
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } = useGetInvitations(data);
@@ -67,11 +68,9 @@ const WelcomePage: React.FC = () => {
               className="mx-auto bottom-0 w-[226px]"
               onClick={async () => {
                 for (let id of selectedValues) {
-                  await mutateAsync({ id, status: ACCEPTED }, { onError: (error) => {
-                    console.error(error);
-                    toast({ description: `unable to join organization ${id}`});
-                  }})
+                  await mutateAsync({ id, status: ACCEPTED })
                 }
+                navigate("/profile");
               }}
             >
               {isPending ? "joining..." : "join"}

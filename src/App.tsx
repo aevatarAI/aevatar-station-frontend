@@ -56,7 +56,7 @@ const Redirection = () => {
   const { decodeJwt } = useJWTDecode();
   const [accessToken] = useAtom(accessTokenAtom);
   const { data, isLoading } = useGetOrganizations();
-  const [,setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
   useEffect(() => {
     if (isLoading || !data) return;

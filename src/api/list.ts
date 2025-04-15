@@ -3,18 +3,26 @@ import type { API_REQ_FUNCTION } from "./types";
 export const DEFAULT_METHOD = "GET";
 
 const NOTIFICATIONS_API_LIST = {
-  getNotifications: {
-    target: "/api/notification",
-    baseConfig: { method: "GET" },
-  },
   getInvites: {
     target: "/api/notification/organization",
     baseConfig: { method: "GET" },
   },
+  getUnreadNotifications: {
+    target: "/api/notification/unread-count",
+    baseConfig: { method: "GET" }
+  },
+  getNotifications: {
+    target: "/api/notification",
+    baseConfig: { method: "GET" },
+  },
+  postReadNotifications: {
+    target: "/api/notification/read",
+    baseConfig: { method: "POST" }
+  },
   updateNotification: {
     target: "/api/notification/response",
     baseConfig: { method: "POST" }
-  }
+  },
 }
 
 const API_KEYS_API_LIST = {

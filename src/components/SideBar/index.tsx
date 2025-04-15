@@ -14,10 +14,12 @@ import {
 } from "@/constants/cls";
 import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
+import { useGetUnreadNotifications } from "@/hooks/useGetUnreadNotifications";
 import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
-import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
+import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
@@ -32,14 +34,14 @@ export interface ISideBarProps {
 }
 
 export function SideBar({ className, onClose }: ISideBarProps) {
+  useGetUnreadNotifications();
+  const { mutate } = usePostReadNotifications();
+  const navigate = useNavigate();
   const [pathname] = useLocation();
   const params = useParams<{ tab?: string; menu?: string }>();
-  const navigate = useNavigate();
-
+  const [unreadNotifications] = useAtom(UNREAD_NOTIFICATION_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [notificationClicked, setNotificationClicked] =
-    useAtom(NOTIFICATION_ATOM);
   const userPermissions = useOrgPermissions();
   const userProjectPermissions = useProjectPermissions();
 
@@ -121,12 +123,12 @@ export function SideBar({ className, onClose }: ISideBarProps) {
         url: "/profile/profile/general",
       },
       {
-        icon: notificationClicked ? <NoticationEmpty /> : <Notication />,
+        icon: unreadNotifications ? <Notication /> : <NoticationEmpty />,
         text: "notifications",
         url: "/profile/profile/notifications",
       },
     ];
-  }, [notificationClicked]);
+  }, [unreadNotifications]);
 
   const profileMenuMap = useMemo(() => {
     const menu: {
@@ -185,7 +187,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
                   key={tab.text}
                   onClick={() => {
                     if (tab.url.includes("notifications")) {
-                      setNotificationClicked(true);
+                      mutate();
                     }
                     navigate(tab.url);
                     onClose?.();
@@ -206,7 +208,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
         ))}
       </div>
     ),
-    [profileMenuMap, selectTab, selectMenu, navigate, setNotificationClicked],
+    [profileMenuMap, selectTab, selectMenu, navigate],
   );
 
   return (

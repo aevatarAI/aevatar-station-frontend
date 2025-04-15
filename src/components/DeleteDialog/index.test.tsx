@@ -74,7 +74,7 @@ describe("DeleteDialog Component", () => {
     });
   });
 
-  it("should call onYes and close dialog when Yes button is clicked", async () => {
+  it("should call onYes and close dialog when yes button is clicked", async () => {
     render(
       <DeleteDialog
         title="Confirm Deletion"
@@ -90,8 +90,8 @@ describe("DeleteDialog Component", () => {
     // 验证对话框内容已渲染
     expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    // 点击 yes 按钮
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
     // 确认 onYes 被调用
@@ -106,7 +106,7 @@ describe("DeleteDialog Component", () => {
 
     // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 
@@ -124,8 +124,8 @@ describe("DeleteDialog Component", () => {
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    // 点击 yes 按钮
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
     // 等待 asyncOnYes 完成
@@ -135,7 +135,7 @@ describe("DeleteDialog Component", () => {
 
     // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 
@@ -151,8 +151,8 @@ describe("DeleteDialog Component", () => {
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    // 点击 yes 按钮
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
     // 确认 onYes 不被调用
@@ -162,7 +162,7 @@ describe("DeleteDialog Component", () => {
 
     // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 });

@@ -51,29 +51,36 @@ export default function OriganisactionHeader({
   const { toast } = useToast();
 
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
-    CURRENT_ORGANIZATION_ATOM
+    CURRENT_ORGANIZATION_ATOM,
   );
   const currentOrganisation = useMemo(
-    () => organisationList?.data?.items.find((item: any) => item.id === currentOrganisationId),
-    [organisationList?.data?.items, currentOrganisationId]
+    () =>
+      organisationList?.data?.items.find(
+        (item: any) => item.id === currentOrganisationId,
+      ),
+    [organisationList?.data?.items, currentOrganisationId],
   );
 
   const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
-  const currentProject = useMemo(() => projectList?.data?.items.find((project: Project) => project.id === currentProjectId),
-  [projectList?.data?.items, currentProjectId]
+  const currentProject = useMemo(
+    () =>
+      projectList?.data?.items.find(
+        (project: Project) => project.id === currentProjectId,
+      ),
+    [projectList?.data?.items, currentProjectId],
   );
-
 
   useEffect(() => {
     refetch();
-  }, [])
+  }, [refetch]);
 
   return (
     <div
       className={clsx(
         "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
-        className
-      )}>
+        className,
+      )}
+    >
       {currentOrganisation ? (
         <Popover open={orgOpen} onOpenChange={setOrgOpen}>
           <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
@@ -81,19 +88,20 @@ export default function OriganisactionHeader({
             <StepSelect />
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
-            <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[10px] max-h-[300px] scrollbar-hide overflow-auto">
+            <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
               {organisationList?.data?.items.map((item: any) => (
                 <div
                   className={clsx(
                     itemClassName,
                     itemHoverClassName,
-                    currentOrganisationId === item.id && itemSelectClassName
+                    currentOrganisationId === item.id && itemSelectClassName,
                   )}
                   onClick={() => {
                     setCurrentOrganisationId(item.id);
                     setOrgOpen(false);
                   }}
-                  key={item.id}>
+                  key={item.id}
+                >
                   {item.displayName}
                 </div>
               ))}
@@ -118,54 +126,71 @@ export default function OriganisactionHeader({
       <div>/</div>
 
       <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
-          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
-            {currentProject ? currentProject.displayName : <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">No project</div>}
-            <StepSelect />
-          </PopoverTrigger>
-          <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
-            <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[0] max-h-[300px] scrollbar-hide overflow-auto">
-              {projectList?.data?.items?.map((item: Project) => (
-                <div
-                  className={clsx(
-                    itemClassName,
-                    itemHoverClassName,
-                    currentProject?.id === item.id && itemSelectClassName
-                  )}
-                  onClick={() => {
-                    setCurrentProjectId(() => item.id);
-                    setPjtOpen(false);
-                  }}
-                  key={item.id}>
-                  {item?.displayName ?? "--"}
-                </div>
-              ))}
+        <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
+          {currentProject ? (
+            currentProject.displayName
+          ) : (
+            <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
+              No project
             </div>
-            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030]">
-            <ProjectEditDialog type="create" disabled={!isAdmin} fullWidth={true} onSubmit={async ({name, domainName}) => {
-              mutate({ 
-                organizationId: currentOrganisationId as string, 
-                displayName: name, 
-                domainName
-              }, {
-            onError: () => {
-              toast({ description: "unable to create project"})
-            }
-          })
-            navigate("/profile/organisation/project")
-            setPjtOpen(false)
-        }} />
-          <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" 
-            disabled={!isAdmin}
-            onClick={() => {
-              navigate("/profile/organisation/project")
-              setPjtOpen(false)
-            }}>
-            <Add />
-            manage projects
-        </Button>
-      </div>
-          </PopoverContent>
-        </Popover>
+          )}
+          <StepSelect />
+        </PopoverTrigger>
+        <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
+          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[0] max-h-[300px] scrollbar-hide overflow-auto">
+            {projectList?.data?.items?.map((item: Project) => (
+              <div
+                className={clsx(
+                  itemClassName,
+                  itemHoverClassName,
+                  currentProject?.id === item.id && itemSelectClassName,
+                )}
+                onClick={() => {
+                  setCurrentProjectId(() => item.id);
+                  setPjtOpen(false);
+                }}
+                key={item.id}
+              >
+                {item?.displayName ?? "--"}
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-[#303030]">
+            <ProjectEditDialog
+              type="create"
+              disabled={!isAdmin}
+              fullWidth={true}
+              onSubmit={async ({ name, domainName }) => {
+                mutate(
+                  {
+                    organizationId: currentOrganisationId as string,
+                    displayName: name,
+                    domainName,
+                  },
+                  {
+                    onError: () => {
+                      toast({ description: "unable to create project" });
+                    },
+                  },
+                );
+                navigate("/profile/organisation/project");
+                setPjtOpen(false);
+              }}
+            />
+            <Button
+              className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase"
+              disabled={!isAdmin}
+              onClick={() => {
+                navigate("/profile/organisation/project");
+                setPjtOpen(false);
+              }}
+            >
+              <Add />
+              manage projects
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

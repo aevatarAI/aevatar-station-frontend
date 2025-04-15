@@ -10,9 +10,9 @@ import {
 import TipIcon from "@/assets/tip_icon.svg?react";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { useToast } from "@/hooks/use-toast";
-import { useCallback, useState } from "react";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useCallback, useState } from "react";
 interface IDeleteDialogProps {
   title: string;
   description: string;
@@ -31,17 +31,20 @@ export default function DeleteDialog({
   const onYesHandler = useCallback(async () => {
     await onYes?.();
     toast({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
     setOpen(false);
   }, [toast, onYes]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {disabled ? <Delete className="opacity-50" role="img" /> :
-      <DialogTrigger asChild>
-        <Delete className="cursor-pointer" role="img" />
-      </DialogTrigger>}
+      {disabled ? (
+        <Delete className="opacity-50" role="img" />
+      ) : (
+        <DialogTrigger asChild>
+          <Delete className="cursor-pointer" role="img" />
+        </DialogTrigger>
+      )}
       <DialogContent
         aria-describedby="edit api key"
         className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[#303030]"
@@ -75,7 +78,7 @@ export default function DeleteDialog({
               className="text-[12px] bg-white text-[#303030] flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
             >
-              Yes
+              yes
             </LoadingButton>
           </div>
         </div>

@@ -4,73 +4,22 @@ import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import { ACCEPTED } from "@/constants";
 import { useEmail } from "@/hooks/useEmail";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
-import { Invite, useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
-import { deduplicate, reverse } from "@/utils/helpers";
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
-import { navigate } from "wouter/use-browser-location";
 import Loading from "@/components/Loading";
-import { useGetProjects } from "@/hooks/useGetProjects";
-import { Checkbox as Checkboxer } from "@/components/ui/checkbox";
-
-export const CheckboxGroup= ({ data, values, onChange }: { data: Invite[], values: string[], onChange: any}) => {
-  return data?.map((datum) => (<div key={datum.id} className="flex flex-center gap-[10px] mb-[16px]">
-    <Checkboxer
-      defaultChecked
-      id={datum.id}
-      name={datum.organizationName}
-      onCheckedChange={(checked: boolean) => {
-        if (!checked) {
-          const filtered = values.filter(value => value !== datum.id);
-          onChange(filtered);
-        } else {
-          const isPresent = values.includes(datum.id);
-          if (!isPresent) {
-            const transformed = [...values, datum.id];
-            onChange(transformed)
-          }
-        }
-      }}
-    />
-  </div>))
-}
+import { toast } from "@/hooks/use-toast";
+import { useGetInvitations } from "@/hooks/useGetInvitations";
+import { CheckboxGroup } from "@/components/ui/checkbox-group";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
-  const { data: organisations } = useGetOrganizations();
-  const { data: invitations, isLoading } = useGetOrganisationInvites();
-  const { data: projects } = useGetProjects();
+  const { data, isLoading } = useGetOrganisationInvites();
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
-  // [TODO] Remove after backend sorts  
-  const invites = useMemo(() => {
-    const reversed = reverse(invitations?.data || []);
-    return deduplicate(reversed, "organizationId");
-  }, [invitations?.data]);
-  const hasInvites = invites.length > 0;
-
-  useEffect(() => {
-    if (invites) {
-      const ids = invites.map(invite => invite.id);
-      setSelectedValues(ids);
-    }
-  }, [invites])
+  const { invites, hasInvites, selectedValues, setSelectedValues } = useGetInvitations(data);
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (organisations?.data.items.length > 0 && projects?.data.items.length > 0) {
-    navigate("/dashboard");
-    return
-  }
-
-  if (organisations?.data.items.length > 0) {
-    navigate("/profile");
-    return;
   }
 
   return (
@@ -117,13 +66,11 @@ const WelcomePage: React.FC = () => {
               disabled={isPending || selectedValues.length === 0}
               className="mx-auto bottom-0 w-[226px]"
               onClick={async () => {
-                const mutations = selectedValues.map(id => {
-                  return mutateAsync({ id, status: ACCEPTED })
-                })
-                try {
-                  await Promise.all(mutations)
-                } catch (error) {
-                  console.error("An error has occurred:", error)
+                for (let id of selectedValues) {
+                  await mutateAsync({ id, status: ACCEPTED }, { onError: (error) => {
+                    console.error(error);
+                    toast({ description: `unable to join organization ${id}`});
+                  }})
                 }
               }}
             >

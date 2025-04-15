@@ -51,19 +51,17 @@ export const SYSTEM_PROMPT_GROUP = "systempromptgroup"
 export const getUserRole = (decodedAccessToken: any) => {
   if (!decodedAccessToken) return "";
   const roles = decodedAccessToken.role
-  let roleType = NEW
   
   if (Array.isArray(roles)) {
-    const isNewUser = roles.some(role => role.toLowerCase() === SYSTEM_PROMPT_GROUP)
-    if (isNewUser) return roleType;
+    const isOwner = roles.some(role => role.toLowerCase().includes(OWNER));
+    if (isOwner) return OWNER;
 
-    roles.forEach((role) => {
-      if (role.toLowerCase().includes(READER)) {
-        roleType = READER
-      } else {
-        roleType = OWNER
-      }
-    })
+    const isReader = roles.some(role => role.toLowerCase().includes(READER));
+    if (isReader) return READER;
+
+    const isNewUser = roles.some(role => role.toLowerCase() === SYSTEM_PROMPT_GROUP);
+    if (isNewUser) return NEW;
   }
-  return roleType
+
+  return NEW;
 }

@@ -60,9 +60,6 @@ export const useUpdateJoinNotifications = () => {
     return useMutation({
         mutationKey: ['join'],
         mutationFn: updateNotification,
-        onSettled: () => {
-            navigate('/profile')
-        },
         onError: () => {
             console.error("There was an issue updating join notifications")
         }

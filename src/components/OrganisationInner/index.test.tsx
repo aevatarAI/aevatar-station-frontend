@@ -149,7 +149,7 @@ describe("OrganisationInner Component", () => {
   //     // Verify success toast
   //     await waitFor(() => {
   //       expect(mockToast).toHaveBeenCalledWith({
-  //         description: "Successfully",
+  //         description: "successfully saved",
   //       });
   //     });
 

@@ -68,7 +68,7 @@ export default function OrganisationMember() {
           },
         });
         toast({
-          description: "Successfully",
+          description: "successfully saved",
         });
         getMembers();
       } catch (error) {
@@ -84,7 +84,7 @@ export default function OrganisationMember() {
     async (email: string, join: boolean, roleId: string) => {
       try {
         if (!organizationId) return;
-        const result = await request.organizations.editOrganizationMembers({
+        await request.organizations.editOrganizationMembers({
           query: organizationId,
           data: {
             email,
@@ -132,9 +132,7 @@ export default function OrganisationMember() {
                 </SelectContent>
               </Select>
             ) : (
-              <div className="text-[12px] font-syne font-semibold">
-                pending
-              </div>
+              <div className="text-[12px] font-syne font-semibold">pending</div>
             )}
           </>
         ),

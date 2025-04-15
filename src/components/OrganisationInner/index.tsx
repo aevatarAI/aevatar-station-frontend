@@ -35,7 +35,7 @@ export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
           },
         });
         toast({
-          description: "Successfully",
+          description: "successfully saved",
         });
         updateOrganizationList();
       } catch (error) {

@@ -87,7 +87,7 @@ export default function ProjectMember() {
           },
         });
         toast({
-          description: "Successfully",
+          description: "successfully saved",
         });
 
         getMembers();

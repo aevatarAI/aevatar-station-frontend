@@ -12,12 +12,15 @@ import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@etransfer/utils";
 import { useAtom } from "jotai";
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 interface IProfileInnerProps {
   tab: (typeof TAB_LIST)[number];
 }
 export default function ProfileInner({ tab }: IProfileInnerProps) {
-  const [query, setQuery] = useState<QueryProps>({ pageIndex: 0, pageSize: 10 });
+  const [query, setQuery] = useState<QueryProps>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const { data, isLoading, isError } = useGetNotifications(query);
   useSignalR();
 
@@ -39,7 +42,7 @@ export default function ProfileInner({ tab }: IProfileInnerProps) {
           },
         });
         toast({
-          description: "Successfully",
+          description: "successfully saved",
         });
         getUserProfile();
       } catch (error) {

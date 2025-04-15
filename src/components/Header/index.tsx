@@ -5,7 +5,8 @@ import OriganisactionHeader from "@/components/OriganisactionHeader";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { SheetSideBar } from "@/components/SheetSideBar";
 import { useNavigate } from "@/hooks/navigate";
-import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
+import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
+import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -17,8 +18,8 @@ const ignoreHeaders = ["/", "/login", "/register", "/verification"];
 
 export default function Header() {
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  const [notificationClicked, setNotificationClicked] =
-    useAtom(NOTIFICATION_ATOM);
+  const [unreadNotifications] = useAtom(UNREAD_NOTIFICATION_ATOM);
+  const { mutate } = usePostReadNotifications();
   const [pathname] = useLocation();
   const navigate = useNavigate();
 
@@ -81,14 +82,14 @@ export default function Header() {
                 </button>
                 <button
                   onClick={() => {
-                    setNotificationClicked(true);
+                    mutate();
                     navigate("/profile/profile/notifications");
                   }}
                 >
-                  {notificationClicked ? (
-                    <NoticationEmpty className="text-white" />
-                  ) : (
+                  {unreadNotifications ? (
                     <Notication />
+                  ) : (
+                    <NoticationEmpty className="text-white" />
                   )}
                 </button>
               </>

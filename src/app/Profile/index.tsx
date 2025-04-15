@@ -5,6 +5,7 @@ import OrganisationInner from "@/components/OrganisationInner";
 import ProfileInner from "@/components/ProfileInner";
 import ProjectsInner from "@/components/ProjectsInner";
 import { SideBar } from "@/components/SideBar";
+import { useLongPollUnreadNotifications } from "@/hooks/useLongPollUnreadNotifications";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import {
@@ -18,9 +19,8 @@ import { useCallback, useEffect } from "react";
 
 export default function Profile() {
   const [selectMenu, selectTab] = useSideBarParams();
-
   useUpdateOrganisations();
-
+  useLongPollUnreadNotifications()
   const [, setOrganisationRoles] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const getOrganisationRoleList = useCallback(async () => {

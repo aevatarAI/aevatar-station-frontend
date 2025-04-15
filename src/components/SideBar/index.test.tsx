@@ -1,8 +1,6 @@
 import { SideBar } from "@/components/SideBar";
 import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
-import { useOrgPermissions } from "@/hooks/useOrgPermissions";
-import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
@@ -77,9 +75,6 @@ describe("SideBar Component", () => {
       if (atom === ORGANIZATIONS_LIST_ATOM) {
         return [[{ id: "organization-1" }]];
       }
-      if (atom === NOTIFICATION_ATOM) {
-        return [false, vi.fn()];
-      }
       return [null];
     });
   });
@@ -105,13 +100,6 @@ describe("SideBar Component", () => {
   });
 
   it("should show notification empty icon when NOTIFICATION_ATOM is true", () => {
-    vi.mocked(useAtom).mockImplementation((atom) => {
-      if (atom === NOTIFICATION_ATOM) {
-        return [true, vi.fn()] as any;
-      }
-      return [[]];
-    });
-
     render(<SideBar />);
     // 验证 NotificationEmpty 图标被正确渲染
     expect(screen.getByTestId("notification-empty-icon")).toBeInTheDocument();

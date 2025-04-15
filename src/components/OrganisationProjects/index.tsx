@@ -5,7 +5,10 @@ import { columns } from "@/components/OrganisationProjects/columns";
 import ProjectEditDialog from "@/components/ProjectEditDialog";
 import { textGradient } from "@/constants/cls";
 import type { TProjectEditForm } from "@/constants/form/project";
-import { useToast } from "@/hooks/use-toast";
+import { useCreateProject } from "@/hooks/useCreateProject";
+import { useDeleteProject } from "@/hooks/useDeleteProject";
+import { useEditProject } from "@/hooks/useEditProject";
+import { useGetProjects } from "@/hooks/useGetProjects";
 import { useOrgPermissions } from "@/hooks/useOrgPermissions";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
@@ -15,121 +18,56 @@ import {
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationProjects() {
-  const [loading, setLoading] = useState<boolean>();
-  const { toast } = useToast();
-  const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
-
   const userPermissions = useOrgPermissions();
-  const updateProjectListHandler = useUpdateProjectHandler();
+  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const { data: projectList, isLoading } = useGetProjects();
+  const { mutate: mutateCreate } = useCreateProject();
+  const { mutate: mutateDelete } = useDeleteProject();
+  const { mutate: mutateEdit } = useEditProject();
 
-  const updateProjectList = useCallback(async () => {
-    if (!organizationId) return;
+  const onEdit = async ({ domainName, name }: TProjectEditForm, id: string) => {
+    mutateEdit({ id, organizationId: organizationId || "", domainName, displayName: name})
+  }
 
-    setLoading(true);
+  const onCreate = async ({ domainName, name }: TProjectEditForm) => {
+    mutateCreate({organizationId: organizationId || "", domainName, displayName: name })
+  }
 
-    await updateProjectListHandler(organizationId);
-    setLoading(false);
-  }, [organizationId, updateProjectListHandler]);
+  const onDeleteYes = async (id: string) => {
+    mutateDelete(id)
+  }
 
-  useEffect(() => {
-    updateProjectList();
-  }, [updateProjectList]);
+  const tableData = projectList?.data?.items?.map((item: any) => ({
+      ...item,
+      operation: (
+        <div className="flex items-center gap-[7px] pl-[20px]">
+          {userPermissions?.organizationsEdit ? (
+            <ProjectEditDialog
+              type="edit"
+              name={item.displayName}
+              domainName={item.domainName}
+              onSubmit={(v) => onEdit(v, item.id)}
+            />
+          ) : (
+            <span />
+          )}
+          {userPermissions?.organizationsDelete ? (
+            <DeleteDialog
+              onYes={() => onDeleteYes(item.id)}
+              title={"Are you sure you want to delete the project?"}
+              description={
+                "*Once deleted, the existing project will become invalid."
+              }
+            />
+          ) : (
+            <span />
+          )}
+        </div>
+      ),
+    }))
 
-  const onEdit = useCallback(
-    async ({ name, domainName }: TProjectEditForm, id: string) => {
-      try {
-        await request.projects.editProject({
-          query: id,
-          data: {
-            displayName: name,
-            domainName,
-          },
-        });
-
-        updateProjectList();
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
-    },
-    [updateProjectList, toast],
-  );
-
-  const onCreate = useCallback(
-    async ({ domainName, name }: TProjectEditForm) => {
-      try {
-        if (!organizationId) return;
-        await request.projects.addProject({
-          data: {
-            organizationId,
-            displayName: name,
-            domainName,
-          },
-        });
-
-        updateProjectList();
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
-    },
-    [organizationId, toast, updateProjectList],
-  );
-
-  const onDeleteYes = useCallback(
-    async (id: string) => {
-      try {
-        const result = await request.projects.deleteProject({
-          query: id,
-        });
-        updateProjectList();
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
-    },
-    [toast, updateProjectList],
-  );
-
-  const tableData = useMemo(
-    () =>
-      projectList.map((item) => ({
-        ...item,
-        operation: (
-          <div className="flex items-center gap-[7px] pl-[20px]">
-            {userPermissions?.organizationsEdit ? (
-              <ProjectEditDialog
-                type="edit"
-                name={item.displayName}
-                domainName={item.domainName}
-                onSubmit={(v) => onEdit(v, item.id)}
-              />
-            ) : (
-              <span />
-            )}
-            {userPermissions?.organizationsDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete the project?"}
-                description={
-                  "*Once deleted, the existing project will become invalid."
-                }
-              />
-            ) : (
-              <span />
-            )}
-          </div>
-        ),
-      })),
-    [projectList, userPermissions, onEdit, onDeleteYes],
-  );
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
@@ -141,10 +79,10 @@ export default function OrganisationProjects() {
         )}
       </div>
       <DataTable
-        className={clsx(!loading && projectList.length && "min-w-[600px]")}
+        className={clsx(!isLoading && projectList?.data?.items.length && "min-w-[600px]")}
         tableHeadClassName={"first:pl-[15px]"}
         columns={columns}
-        loading={loading}
+        loading={isLoading}
         data={tableData}
       />
     </div>

@@ -94,7 +94,7 @@ const General = forwardRef(
             <Input
               className="max-w-[498px]"
               placeholder={inputPlaceholder}
-              value={inputText}
+              defaultValue={defaultValue}
               onChange={(e) => setInputText(e.target.value)}
             />
           </div>

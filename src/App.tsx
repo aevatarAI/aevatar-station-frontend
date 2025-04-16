@@ -51,6 +51,12 @@ const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
 );
 
 
+const SocialLogin = () => {
+  console.log('social login', import.meta.env.GITHUB_CLIENT_ID);
+  return <div>Callback was successful</div>
+}
+
+
 const Redirection = () => {
   const navigate = useNavigate();
   const { decodeJwt } = useJWTDecode();
@@ -123,6 +129,10 @@ const App = () => (
         <WithLazyLoading>
           <Login />
         </WithLazyLoading>
+      </Route>
+
+      <Route path="/callback/github">
+        <SocialLogin />
       </Route>
 
       <PrivateRoute path="/welcome">

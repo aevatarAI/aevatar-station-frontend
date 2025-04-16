@@ -4,6 +4,8 @@ import robotImg1 from "@/assets/overview/robot1.png";
 import robotImg2 from "@/assets/overview/robot2.png";
 import robotImg3 from "@/assets/overview/robot3.png";
 import robotImg4 from "@/assets/overview/robot4.png";
+import GoogleIcon from "@/assets/google.svg?react";
+import GithubIcon from "@/assets/github.svg?react";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -81,6 +83,11 @@ const Login = () => {
     [toast, setAccessToken, navigate, getUserProfile]
   );
 
+  const handleGithubLogin = () => {
+    // 1. 
+    return;
+  }
+
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
@@ -153,7 +160,7 @@ const Login = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
                 disabled={loading}>
                 {loading ? "logging in" : "log in"}
               </Button>
@@ -163,10 +170,31 @@ const Login = () => {
         <div className="text-right">
           <ForgotPasswordDialog />
         </div>
+        <div className="flex flex-col gap-[10px] mt-[30px]">
+          <span className="text-gray-light font-normal font-semibold text-[12px]">or sign in with</span>
+          <div className="flex flex-between gap-[20px]">
+          <Button
+            type="button"
+            className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+            >
+            <GoogleIcon />
+            <span>google</span>
+          </Button>
+          <Button
+            type="button"
+            className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+            onClick={handleGithubLogin}
+            >
+            <GithubIcon />
+            <span>github</span>
+          </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],

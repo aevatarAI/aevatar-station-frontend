@@ -17,7 +17,6 @@ vi.mock("@/api/utils/organization", () => ({
   getOrganizationRolesPermission: vi.fn(),
 }));
 
-// Mock子组件
 vi.mock("@/components/PermissionManagerInnerDialog", () => ({
   __esModule: true,
   default: ({ permissionOrigin }: { permissionOrigin: any[] }) => (

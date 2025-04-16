@@ -1,23 +1,25 @@
-import Copy from "@/components/Copy";
 import LogoIcon from "@/assets/logo.svg?react";
+import Copy from "@/components/Copy";
+import Loading from "@/components/Loading";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
+import { CheckboxGroup } from "@/components/ui/checkbox-group";
 import { ACCEPTED } from "@/constants";
+import { useNavigate } from "@/hooks/navigate";
 import { useEmail } from "@/hooks/useEmail";
+import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import type React from "react";
-import Loading from "@/components/Loading";
-import { useGetInvitations } from "@/hooks/useGetInvitations";
-import { CheckboxGroup } from "@/components/ui/checkbox-group";
-import { useNavigate } from "@/hooks/navigate";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
   const navigate = useNavigate();
   const { data, isLoading } = useGetOrganisationInvites();
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
-  const { invites, hasInvites, selectedValues, setSelectedValues } = useGetInvitations(data);
+  const { invites, hasInvites, selectedValues, setSelectedValues } =
+    useGetInvitations(data);
 
   if (isLoading) {
     return <Loading />;
@@ -25,9 +27,7 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
-      <LogoIcon
-        className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]"
-      />
+      <LogoIcon className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]" />
       <div className="text-center mb-[72px]">
         <h1 className="text-gradient text-[36px] lg:text-[54px] font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
@@ -57,7 +57,7 @@ const WelcomePage: React.FC = () => {
                 pending invitations for your approval
               </p>
               <div className="w-full h-[1px] bg-black-light my-4" />
-              <CheckboxGroup 
+              <CheckboxGroup
                 data={invites}
                 values={selectedValues}
                 onChange={setSelectedValues}
@@ -67,8 +67,8 @@ const WelcomePage: React.FC = () => {
               disabled={isPending || selectedValues.length === 0}
               className="mx-auto bottom-0 w-[226px]"
               onClick={async () => {
-                for (let id of selectedValues) {
-                  await mutateAsync({ id, status: ACCEPTED })
+                for (const id of selectedValues) {
+                  await mutateAsync({ id, status: ACCEPTED });
                 }
                 navigate("/profile");
               }}
@@ -82,11 +82,13 @@ const WelcomePage: React.FC = () => {
               join an existing organisation
             </h2>
             <p className="text-[12px] text-gray-light font-source-code">
-              you haven’t received an invitation yet. Share your address with
+              you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
             <div className="w-full h-[1px] bg-black-light my-4" />
-            <span className="text-gray-light font-syne text-[12px] font-semibold leading-normal lowercase mb-2.5 ">your email address</span>
+            <span className="text-gray-light font-syne text-[12px] font-semibold leading-normal lowercase mb-2.5 ">
+              your email address
+            </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
               <span className="text-[12px] font-source-code">{email}</span>
               <Copy
@@ -99,7 +101,7 @@ const WelcomePage: React.FC = () => {
         )}
       </div>
       {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around"
+        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",
       )}
     </div>
   );

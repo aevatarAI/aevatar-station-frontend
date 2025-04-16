@@ -1,5 +1,6 @@
-import DescHome from "@/components/DescHome";
 import LogoIcon from "@/assets/logo.svg?react";
+import { CustomButton } from "@/components/CustomButton";
+import DescHome from "@/components/DescHome";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { CustomButton } from "@/components/CustomButton";
 
 const formSchema = z
   .object({
@@ -174,7 +174,7 @@ const ResetPasswordPage = () => {
     <div className="flex flex-col h-screen pt-10 px-10">
       <CustomButton path="/">
         <LogoIcon />
-      </CustomButton>  
+      </CustomButton>
       <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
         <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
           <DescHome className="items-start lg:items-center" />

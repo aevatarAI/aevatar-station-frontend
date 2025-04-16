@@ -1,6 +1,10 @@
 import type { TDataResponse } from "@/api/types/index";
+import type {
+  IPermissionsItem,
+  IRoleItem,
+  IRolePermission,
+} from "@/api/utils/organization";
 import { request } from "..";
-import type { IPermissionsItem, IRoleItem } from "@/api/utils/organization";
 
 export const getProjectPermissions = async (projectId: string) => {
   const result: TDataResponse<{ items: IPermissionsItem[] }> =
@@ -20,7 +24,7 @@ export interface IMemberItem {
 }
 
 export const getProjectMembers = async (
-  projectId: string
+  projectId: string,
 ): Promise<IMemberItem[]> => {
   const result: TDataResponse<{ items: IMemberItem[] }> =
     await request.projects.getProjectMembers({
@@ -30,11 +34,24 @@ export const getProjectMembers = async (
 };
 
 export const getProjectRoles = async (
-  projectId: string
+  projectId: string,
 ): Promise<IRoleItem[]> => {
   const result: TDataResponse<{ items: IRoleItem[] }> =
     await request.projects.getProjectRoles({
       query: projectId,
     });
   return result.data.items;
+};
+
+export const getProjectRolesPermission = async (
+  projectId: string,
+  params: { providerName: string; providerKey: string },
+): Promise<IRolePermission> => {
+  const result: TDataResponse<IRolePermission> =
+    await request.projects.getProjectRolePermissions({
+      query: projectId,
+      params,
+    });
+
+  return result.data;
 };

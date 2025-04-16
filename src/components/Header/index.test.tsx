@@ -80,9 +80,8 @@ describe("Header Component", () => {
     render(<Header />);
     // Organization Header and Sidebar should render correctly
     const headers = screen.getAllByTestId("organization-header");
-    expect(headers[0]).toHaveClass("hidden lg:flex"); // 验证类名
+    expect(headers[0]).toHaveClass("hidden lg:flex");
 
-    // 验证 Sidebar 存在
     expect(screen.getByTestId("sheet-sidebar")).toBeInTheDocument();
   });
 

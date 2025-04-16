@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 const Verification = () => {
   const [email] = useAtom(emailAtom);
-  const [password] = useAtom(passwordAtom)
+  const [password] = useAtom(passwordAtom);
   const [name] = useAtom(usernameAtom);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -48,18 +48,20 @@ const Verification = () => {
 
         if (!["20000", "20001"].includes(response.code)) {
           form.setError("verificationCode", {
-            message: response.message || "invalid verification code. please check and try again."
-          })
-          return
+            message:
+              response.message ||
+              "invalid verification code. please check and try again.",
+          });
+          return;
         }
 
-        toast({ description: "verification successful."})
+        toast({ description: "verification successful." });
 
         const isLoggedIn = await loginUser(name, password);
 
         if (!isLoggedIn) {
-          toast({ description: "log in failed."})
-          return
+          toast({ description: "log in failed." });
+          return;
         }
 
         navigate("/welcome");
@@ -70,7 +72,7 @@ const Verification = () => {
         });
       }
     },
-    [toast, navigate, name, email, password]
+    [toast, navigate, name, email, password, form, loginUser],
   );
 
   const sendVerificationCode = useCallback(async () => {
@@ -85,7 +87,7 @@ const Verification = () => {
           description: "Send Register Code successful!",
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         description: "Send Register Code failed. Please try again.",
       });

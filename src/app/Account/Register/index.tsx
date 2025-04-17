@@ -59,7 +59,7 @@ const Register = () => {
       setLoading(true);
       const { name, email, password } = values;
       try {
-        const result = await sendRegisterCode(email);
+        const result = await sendRegisterCode(name, email);
         setName(name);
         setEmail(email);
         setPassword(password);

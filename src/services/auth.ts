@@ -53,12 +53,13 @@ export const refreshTokenLogin = async (
   });
 };
 
-export const sendRegisterCode = async (email: string) => {
+export const sendRegisterCode = async (userName: string, email: string) => {
   return fetcher(
     SEND_REGISTER_CODE_URL,
     {
       method: "POST",
       body: {
+        userName,
         email,
         appName: SCOPE,
       },

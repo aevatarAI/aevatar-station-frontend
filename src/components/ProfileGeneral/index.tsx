@@ -28,7 +28,7 @@ export default function ProfileGeneral() {
         },
       });
       toast({
-        description: "Successfully",
+        description: "successfully saved",
       });
       getUserProfile();
     } catch (error) {

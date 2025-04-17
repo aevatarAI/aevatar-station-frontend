@@ -165,14 +165,8 @@ const Login = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-<<<<<<< HEAD
                 className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
                 disabled={loading}>
-=======
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
-                disabled={loading}
-              >
->>>>>>> develop
                 {loading ? "logging in" : "log in"}
               </Button>
             </div>

@@ -1,5 +1,5 @@
 import { service } from "@/api/axios";
-import Login from "@/app/Account/Login";
+import Login, { SocialLogin } from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";

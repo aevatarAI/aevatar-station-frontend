@@ -211,4 +211,10 @@ const LoginPage = () => {
     </Layout>
   );
 };
+
+
+export const SocialLogin = () => {
+  return <div>callback successful</div>
+}
+
 export default LoginPage;

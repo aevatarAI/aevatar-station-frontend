@@ -26,15 +26,12 @@ export default function DeleteDialog({
   onYes,
 }: IDeleteDialogProps) {
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
 
   const onYesHandler = useCallback(async () => {
     await onYes?.();
-    toast({
-      description: "successfully deleted",
-    });
+
     setOpen(false);
-  }, [toast, onYes]);
+  }, [onYes]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

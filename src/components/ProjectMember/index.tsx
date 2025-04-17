@@ -21,6 +21,7 @@ import {
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
+import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -33,6 +34,7 @@ export default function ProjectMember() {
   const { toast } = useToast();
   const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const [profile] = useAtom(USER_PROFILE_ATOM);
 
   const projectPermissions = useProjectPermissions();
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
@@ -136,7 +138,9 @@ export default function ProjectMember() {
       memberList.map((item) => ({
         ...item,
         role:
-          !item.roleId || !projectPermissions.memberManage ? (
+          !item.roleId ||
+          !projectPermissions.memberManage ||
+          item.email === profile?.email ? (
             <span className="text-[12px] font-syne font-semibold lowercase">
               {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
@@ -163,7 +167,8 @@ export default function ProjectMember() {
           ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {projectPermissions.memberManage ? (
+            {projectPermissions.memberManage &&
+            item.email !== profile?.email ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -180,6 +185,7 @@ export default function ProjectMember() {
     [
       memberList,
       roleList,
+      profile,
       projectPermissions,
       onSetMember,
       onChangeRole,

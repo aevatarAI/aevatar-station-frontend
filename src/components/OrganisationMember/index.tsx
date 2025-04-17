@@ -23,6 +23,7 @@ import {
   CURRENT_ORGANIZATION_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
+import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -35,6 +36,7 @@ export default function OrganisationMember() {
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const [roleList] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const userPermissions = useOrgPermissions();
+  const [profile] = useAtom(USER_PROFILE_ATOM);
 
   const getMembers = useCallback(async () => {
     try {
@@ -93,6 +95,7 @@ export default function OrganisationMember() {
             roleId,
           },
         });
+
         toast({
           description: `successfully ${join ? "invited" : "removed"}`,
         });
@@ -106,13 +109,29 @@ export default function OrganisationMember() {
     [organizationId, toast, getMembers],
   );
 
+  const getRoleName = useCallback(
+    (roleId: string) =>
+      roleList
+        .find((roleItem) => roleItem.id === roleId)
+        ?.name?.split("_")[1] ?? "--",
+    [roleList],
+  );
+
   const tableData = useMemo(
     () =>
       memberList.map((item) => ({
         ...item,
         role: (
           <>
-            {item.status === IMemberStatus.joined ? (
+            {!userPermissions?.organizationMembersManage ||
+            item.email === profile?.email ||
+            item.status !== IMemberStatus.joined ? (
+              <div className="text-[12px] font-syne font-semibold lowercase">
+                {item.roleId && getRoleName(item.roleId)}
+                {item.status === IMemberStatus.refused && "rejected"}
+                {item.status === IMemberStatus.pending && "invite pending"}
+              </div>
+            ) : (
               <Select
                 value={item.roleId ?? ""}
                 onValueChange={(v) => onChangeRole(item.id, v)}
@@ -132,14 +151,13 @@ export default function OrganisationMember() {
                   ))}
                 </SelectContent>
               </Select>
-            ) : (
-              <div className="text-[12px] font-syne font-semibold">pending</div>
             )}
           </>
         ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.organizationMembersManage ? (
+            {userPermissions.organizationMembersManage &&
+            item.email !== profile?.email ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -153,7 +171,15 @@ export default function OrganisationMember() {
           </div>
         ),
       })),
-    [memberList, userPermissions, roleList, onSetMember, onChangeRole],
+    [
+      memberList,
+      userPermissions,
+      roleList,
+      profile,
+      getRoleName,
+      onSetMember,
+      onChangeRole,
+    ],
   );
 
   return (

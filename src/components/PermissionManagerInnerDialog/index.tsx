@@ -254,8 +254,6 @@ export default function PermissionManagerInnerDialog({
     setPermissionMap(map);
   }, [permission]);
 
-  console.log(permissionMap, "permissionMap==");
-
   const titles = useMemo(
     () => permission?.map((item) => item.permission) ?? [],
     [permission],
@@ -353,7 +351,6 @@ export default function PermissionManagerInnerDialog({
     if (!permissionMap) return false;
     return Object.entries(permissionMap).every((item) => isAllChecked(item[1]));
   }, [permissionMap, isAllChecked]);
-  console.log(isOwner, "isOwner==");
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

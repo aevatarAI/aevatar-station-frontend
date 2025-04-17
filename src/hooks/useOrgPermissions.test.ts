@@ -103,7 +103,6 @@ describe("useOrgPermissions Hook", () => {
       return [null];
     });
     const { result } = renderHook(() => useOrgPermissions());
-    console.log(result, "result=====");
     await act(async () => {});
 
     expect(result.current).toEqual({});

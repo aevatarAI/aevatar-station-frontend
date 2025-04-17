@@ -17,9 +17,7 @@ export const getProjectPermissions = async (projectId: string) => {
 export interface IMemberItem {
   id: string;
   userName: string;
-
   email: string;
-
   roleId: string | null;
 }
 

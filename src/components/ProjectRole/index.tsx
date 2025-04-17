@@ -122,7 +122,6 @@ export default function ProjectRole() {
 
   const onCreate = useCallback(
     async (values: TCreateRoleForm) => {
-      console.log(values, "values===");
       try {
         if (!projectId) return;
         await request.projects.addProjectRoles({

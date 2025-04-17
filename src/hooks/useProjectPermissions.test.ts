@@ -72,7 +72,6 @@ describe("useProjectPermissions Hook", () => {
     expect(getProjectPermissions).toHaveBeenCalledWith(mockProjectId);
 
     expect(mockSetPermissions).toHaveBeenCalledWith(mockPermissions);
-    console.log(result.current, "result.current==");
     expect(result.current).toEqual({
       projects: true,
       projectsCreate: false,

@@ -41,7 +41,8 @@ export default function ProfileGeneral() {
   const onResetPassword = useCallback(async () => {
     try {
       if (!profile?.email) throw `email: ${profile?.email}`;
-      await sendResetPasswordEmail(profile?.email);
+      const result = await sendResetPasswordEmail(profile?.email);
+      if (!((result?.code ?? "") as string).startsWith("2")) throw result;
       toast({ description: "Reset password email sent successfully!" });
     } catch (error) {
       toast({

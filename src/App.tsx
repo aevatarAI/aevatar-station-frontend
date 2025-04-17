@@ -8,13 +8,11 @@ import Header from "@/components/Header";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 import { useNavigate } from "@/hooks/navigate";
-import { useJWTDecode } from "@/hooks/useEmail";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { getProjects } from "@/hooks/useGetProjects";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { accessTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
-import { NEW, getUserRole } from "@/utils/helpers";
 import { useAtom } from "jotai";
 import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
 import ReactLoading from "react-loading";
@@ -51,8 +49,6 @@ const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
 
 const Redirection = () => {
   const navigate = useNavigate();
-  const { decodeJwt } = useJWTDecode();
-  const [accessToken] = useAtom(accessTokenAtom);
   const { data, isLoading } = useGetOrganizations();
   const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
@@ -60,18 +56,16 @@ const Redirection = () => {
     if (isLoading || !data) return;
 
     const fetchProjectsThenRedirect = async () => {
-      const decodedToken = decodeJwt(accessToken as string);
-      const userRole = getUserRole(decodedToken);
       const organizationIds = data.data.items.map((datum: any) => datum.id);
-      const results = organizationIds.map((id: string) => getProjects(id));
+      const projectsPromises = organizationIds.map((id: string) => getProjects(id));
 
-      if (userRole === NEW) {
+      if (organizationIds.length === 0) {
         return navigate("/welcome");
       }
 
       try {
-        const responses = await Promise.all(results);
         let hasProjects = false;
+        const responses = await Promise.all(projectsPromises);
 
         for (const index in responses) {
           const response = responses[index];
@@ -81,7 +75,6 @@ const Redirection = () => {
             break;
           }
         }
-
         navigate(hasProjects ? "/dashboard" : "/profile");
       } catch (_e) {
         navigate("/profile");
@@ -92,9 +85,7 @@ const Redirection = () => {
   }, [
     data,
     isLoading,
-    accessToken,
     setCurrentOrganisationId,
-    decodeJwt,
     navigate,
   ]);
 

@@ -42,31 +42,3 @@ export const reverse = (data: any[]) => {
   }
   return results;
 };
-
-export const NEW = "new";
-export const ADMIN = "admin";
-export const OWNER = "owner";
-export const READER = "reader";
-export const SYSTEM_PROMPT_GROUP = "systempromptgroup";
-
-export const getUserRole = (decodedAccessToken: any) => {
-  if (!decodedAccessToken) return "";
-  const roles = decodedAccessToken.role;
-
-  if (Array.isArray(roles)) {
-    const isOwner = roles.some((role) => role.toLowerCase().includes(OWNER));
-    if (isOwner) return OWNER;
-
-    const isReader = roles.some((role) => role.toLowerCase().includes(READER));
-    if (isReader) return READER;
-
-    const isNewUser = roles.some(
-      (role) => role.toLowerCase() === SYSTEM_PROMPT_GROUP,
-    );
-    if (isNewUser) return NEW;
-  }
-
-  if (roles === ADMIN) return OWNER;
-
-  return NEW;
-};

@@ -2,24 +2,24 @@ import { request } from "@/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface CreateAPIPayload {
-    projectId: string;
-    name: string;
-  }
-  
-const createAPIKey = (data: CreateAPIPayload) => {
-    return request.apiKeys.createAPIKey({ data })
+  projectId: string;
+  name: string;
 }
-  
+
+const createAPIKey = (data: CreateAPIPayload) => {
+  return request.apiKeys.createAPIKey({ data });
+};
+
 export const useCreateAPIKey = () => {
-    const queryClient = useQueryClient();
-  
-    return useMutation({
-      mutationKey: ['createAPIKey'],
-      mutationFn: createAPIKey,
-      onSettled: (_, __, data) => {      
-        return queryClient.refetchQueries({
-          queryKey: ['apikeys', { projectId: data.projectId }],
-        });
-      }
-    })
-  }
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["createAPIKey"],
+    mutationFn: createAPIKey,
+    onSettled: (_, __, data) => {
+      return queryClient.refetchQueries({
+        queryKey: ["apikeys", { projectId: data.projectId }],
+      });
+    },
+  });
+};

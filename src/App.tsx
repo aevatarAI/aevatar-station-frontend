@@ -1,23 +1,24 @@
+import { service } from "@/api/axios";
 import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
-import LayoutDefault from "@/layouts/LayoutDefault";
-import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
-import { Route, Switch, Redirect } from "wouter";
-import ReactLoading from "react-loading";
-import { accessTokenAtom } from "@/state/atoms";
-import { useAtom } from "jotai";
-import { service } from "@/api/axios";
+import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useNavigate } from "@/hooks/navigate";
-import { getProjects } from "@/hooks/useGetProjects";
 import { useJWTDecode } from "@/hooks/useEmail";
-import { getUserRole, NEW } from "@/utils/helpers";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
+import { getProjects } from "@/hooks/useGetProjects";
+import LayoutDefault from "@/layouts/LayoutDefault";
+import { accessTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
+import { NEW, getUserRole } from "@/utils/helpers";
+import { useAtom } from "jotai";
+import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
+import ReactLoading from "react-loading";
+import { Redirect, Route, Switch } from "wouter";
 
 const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
@@ -45,11 +46,8 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
 );
 
 const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
-  <Suspense fallback={<Loading />}>
-    {children}
-  </Suspense>
+  <Suspense fallback={<Loading />}>{children}</Suspense>
 );
-
 
 const Redirection = () => {
   const navigate = useNavigate();
@@ -75,28 +73,33 @@ const Redirection = () => {
         const responses = await Promise.all(results);
         let hasProjects = false;
 
-        for (let index in responses) {
+        for (const index in responses) {
           const response = responses[index];
           if (response.code === "20000" && response.data.items.length > 0) {
             hasProjects = true;
-            setCurrentOrganisationId(organizationIds[index])
+            setCurrentOrganisationId(organizationIds[index]);
             break;
           }
         }
 
         navigate(hasProjects ? "/dashboard" : "/profile");
-
-      } catch (e) {
-        navigate("/profile")
+      } catch (_e) {
+        navigate("/profile");
       }
-    }
+    };
 
     fetchProjectsThenRedirect();
-
-  }, [data, isLoading, navigate])
+  }, [
+    data,
+    isLoading,
+    accessToken,
+    setCurrentOrganisationId,
+    decodeJwt,
+    navigate,
+  ]);
 
   return isLoading ? <Loading /> : null;
-}
+};
 
 const PrivateRoute = ({
   path,
@@ -113,7 +116,13 @@ const PrivateRoute = ({
   }
   if (!service.defaults.headers.Authorization)
     service.defaults.headers.Authorization = authenticated;
-  return <Route path={path}>{children}</Route>;
+  return (
+    <Route path={path}>
+      <AccessTokenUpdater />
+
+      {children}
+    </Route>
+  );
 };
 
 const App = () => (
@@ -197,8 +206,8 @@ const App = () => (
       </PrivateRoute>
 
       <Route>
-          <div className="text-white text-center">404: No such page!</div>
-        </Route>
+        <div className="text-white text-center">404: No such page!</div>
+      </Route>
     </Switch>
   </LayoutDefault>
 );

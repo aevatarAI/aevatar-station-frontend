@@ -1,9 +1,12 @@
-import { service, spliceUrl } from "../axios";
+import { MAX_REQUEST } from "@/api/constants";
+import myEvents from "@/utils/myEvent";
+import { sleep } from "@etransfer/utils";
+import { isDeniedRequest, service, spliceUrl } from "../axios";
 import { DEFAULT_METHOD } from "../list";
-import type { BaseConfig, requestConfig, UrlObj } from "../types";
+import type { BaseConfig, UrlObj, requestConfig } from "../types";
 
 const myServer = new Function();
-
+myServer.prototype.tokenPending = false;
 /**
  * @method parseRouter
  * @param  {string} name
@@ -23,20 +26,53 @@ myServer.prototype.parseRouter = function (name: string, urlObj: UrlObj) {
  * @param  {object} config
  * @return {Promise<any>}
  */
-myServer.prototype.send = (base: BaseConfig, config: requestConfig) => {
+myServer.prototype.send = async function (
+  base: BaseConfig,
+  config: requestConfig,
+  count = 0,
+) {
   const {
     method = DEFAULT_METHOD,
     query = "",
     url,
     ...axiosConfig
   } = getRequestConfig(base, config) || {};
+  try {
+    const result = await service({
+      ...axiosConfig,
+      // baseURL: BASE_URL,
+      url:
+        url || spliceUrl(typeof base === "string" ? base : base.target, query),
+      method,
+    });
+    return result;
+  } catch (error: any) {
+    if (isDeniedRequest(error)) {
+      const _count = count + 1;
+      if (_count > 3) {
+        myEvents.AuthorizationExpired.emit(MAX_REQUEST);
+        return;
+      }
+      if (!this.tokenPending) {
+        this.tokenPending = true;
+        myEvents.AuthorizationExpired.emit();
+      }
+      await sleep(1000);
 
-  return service({
-    ...axiosConfig,
-    // baseURL: BASE_URL,
-    url: url || spliceUrl(typeof base === "string" ? base : base.target, query),
-    method,
-  });
+      const token: string = await new Promise((resolve) => {
+        const { remove } = myEvents.AuthorizationUpdated.addListener(
+          (data: { error?: any; token?: string }) => {
+            if (data.token) resolve(data.token);
+            remove();
+          },
+        );
+      });
+      this.tokenPending = false;
+      service.defaults.headers.Authorization = token;
+      return this.send(base, config, _count);
+    }
+    throw error;
+  }
 };
 
 export default myServer.prototype;

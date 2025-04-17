@@ -33,7 +33,6 @@ describe("useOrgPermissions Hook", () => {
     { displayName: "Permission:Organizations.Edit", isGranted: true },
   ];
   beforeEach(() => {
-    // 清空 Mock 的调用记录
     vi.clearAllMocks();
 
     vi.mocked(useAtom).mockImplementation((atom) => {
@@ -54,7 +53,6 @@ describe("useOrgPermissions Hook", () => {
   });
 
   afterEach(() => {
-    // 清除 Mock 数据
     vi.resetAllMocks();
   });
 
@@ -63,19 +61,14 @@ describe("useOrgPermissions Hook", () => {
       mockPermissions as any,
     );
 
-    // 调用 Hook
     const { result } = renderHook(() => useOrgPermissions());
 
-    // 等待 Hook 内部 effect 逻辑执行完成
     await act(async () => {});
 
-    // 验证 API 调用是否传递 organizationId
     expect(getOrganizationPermissions).toHaveBeenCalledWith(mockOrganizationId);
 
-    // 验证权限被正确设置
     expect(mockSetPermissions).toHaveBeenCalledWith(mockPermissions);
 
-    // 验证返回的权限 Mapping 结果
     expect(result.current).toEqual({
       organizations: true,
       organizationsCreate: false,
@@ -84,22 +77,17 @@ describe("useOrgPermissions Hook", () => {
   });
 
   it("should handle errors by showing toast", async () => {
-    // 模拟 API 抛出错误
     const mockError = new Error("Failed to fetch permissions");
     vi.mocked(getOrganizationPermissions).mockRejectedValue(mockError);
 
-    // 调用 Hook
     renderHook(() => useOrgPermissions());
 
-    // 等待 Hook 内部 effect 逻辑执行完成
     await act(async () => {});
 
-    // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
       description: "Failed to fetch permissions",
     });
 
-    // 验证没有设置权限
     expect(mockSetPermissions).not.toHaveBeenCalled();
   });
 
@@ -114,19 +102,17 @@ describe("useOrgPermissions Hook", () => {
       }
       return [null];
     });
-    // 调用 Hook
     const { result } = renderHook(() => useOrgPermissions());
-    // 等待初始化完成
+    console.log(result, "result=====");
     await act(async () => {});
 
-    // 验证返回的权限 Mapping 为空对象
     expect(result.current).toEqual({});
   });
 
   it("should not fetch permissions if organizationId is null", async () => {
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === CURRENT_ORGANIZATION_ATOM) {
-        return [null] as any; // 模拟 organizationId 为 null
+        return [null] as any;
       }
       if (atom === ORGANIZATION_PERMISSION_ATOM) {
         return [null, mockSetPermissions];
@@ -134,10 +120,8 @@ describe("useOrgPermissions Hook", () => {
       return [null];
     });
 
-    // 调用 Hook
     renderHook(() => useOrgPermissions());
 
-    // 验证 API 不被调用
     expect(getOrganizationPermissions).not.toHaveBeenCalled();
     expect(mockSetPermissions).not.toHaveBeenCalled();
   });
@@ -147,7 +131,6 @@ describe("useOrgPermissions Hook", () => {
 
     const mockNewOrganizationId = "organization-456";
 
-    // 模拟更新 organizationId
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === CURRENT_ORGANIZATION_ATOM) {
         return [mockNewOrganizationId] as any;
@@ -160,10 +143,8 @@ describe("useOrgPermissions Hook", () => {
 
     rerender();
 
-    // 等待 Hook 逻辑执行
     await act(async () => {});
 
-    // 验证 API 被调用
     expect(getOrganizationPermissions).toHaveBeenCalledWith(
       mockNewOrganizationId,
     );

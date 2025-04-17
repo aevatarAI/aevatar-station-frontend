@@ -1,41 +1,43 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  type IRolePermissionsItem,
-  getOrganizationRolesPermission,
-} from "@/api/utils/organization";
+import type { IRolePermissionsItem } from "@/api/utils/organization";
 
+import { getProjectRolesPermission } from "@/api/utils/project";
 import PermissionManagerInnerDialog, {
   type TFlatPermission,
 } from "@/components/PermissionManagerInnerDialog";
-import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
+import {
+  CURRENT_ORGANIZATION_ATOM,
+  CURRENT_PROJECT_ATOM,
+} from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
 
-export interface IPermissionManagerDialogProps {
+export interface IProjectRoleManagerDialogProps {
   roleName: string;
   isOwner?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
-export default function PermissionManagerDialog({
+export default function ProjectRoleManagerDialog({
   roleName,
   isOwner,
   onSave,
-}: IPermissionManagerDialogProps) {
-  const [curOrgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+}: IProjectRoleManagerDialogProps) {
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+
   const [permissionOrigin, setPermissionOrigin] = useState<
     IRolePermissionsItem[]
   >([]);
 
   const getRolePermissions = useCallback(async () => {
-    if (!curOrgId) return;
-    const result = await getOrganizationRolesPermission(curOrgId, {
+    if (!projectId) return;
+    const result = await getProjectRolesPermission(projectId, {
       providerName: "R",
       providerKey: roleName,
     });
-
+    if (!result) return;
     const list = result?.groups[0].permissions;
     setPermissionOrigin(list);
-  }, [curOrgId, roleName]);
+  }, [projectId, roleName]);
 
   useEffect(() => {
     getRolePermissions();

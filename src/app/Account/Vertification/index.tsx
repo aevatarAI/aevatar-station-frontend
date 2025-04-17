@@ -77,7 +77,7 @@ const Verification = () => {
 
   const sendVerificationCode = useCallback(async () => {
     try {
-      const response = await sendRegisterCode(email);
+      const response = await sendRegisterCode(name, email);
       if (response.code !== "20001") {
         toast({
           description: response.message,

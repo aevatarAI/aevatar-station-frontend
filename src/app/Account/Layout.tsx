@@ -12,7 +12,9 @@ export default function Layout({
 }) {
   return (
     <div className="flex flex-col h-screen lg:flex-row relative min-h-[600px]">
-      <CustomButton path="/"><LogoIcon className="absolute top-10 left-10 hidden lg:block" /></CustomButton>
+      <CustomButton path="/">
+        <LogoIcon className="absolute top-10 left-10 hidden lg:block" />
+      </CustomButton>
       <div className=" flex flex-col gap-[30px] lg:gap-[36px] basis-1/2 items-start lg:justify-center lg:items-center py-9 px-[47px] relative">
         <DescHome className="w-full lg:w-[408px]" />
         <div className="h-[1px] w-full lg:w-[408px] bg-black-light hidden lg:block" />

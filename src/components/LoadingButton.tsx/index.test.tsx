@@ -12,6 +12,7 @@ vi.mock("@/assets/loading.svg?react", () => ({
 }));
 
 describe("LoadingButton Component", () => {
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const mockOnClick = vi.fn();
   const mockOnLoadingChange = vi.fn();
 
@@ -24,9 +25,8 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 验证按钮渲染
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("Click Me"); // 确认内容
+    expect(button).toHaveTextContent("Click Me");
   });
 
   it("should apply custom className to the button", () => {
@@ -34,7 +34,6 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 验证 className
     expect(button).toHaveClass("custom-class");
   });
 
@@ -51,27 +50,21 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 点击按钮
     fireEvent.click(button);
 
-    // 验证加载状态
     expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
 
-    // 验证 onLoadingChange 回调
-    expect(mockOnLoadingChange).toHaveBeenCalledWith(true); // 加载中被触发
+    expect(mockOnLoadingChange).toHaveBeenCalledWith(true);
 
-    // 等待异步操作完成
     await waitFor(() => {
       expect(mockAsync).toHaveBeenCalled();
     });
 
-    // 验证加载状态被移除
     await waitFor(() => {
       expect(screen.queryByTestId("loading-icon")).not.toBeInTheDocument();
     });
 
-    // 验证 onLoadingChange 回调
-    expect(mockOnLoadingChange).toHaveBeenCalledWith(false); // 加载结束被触发
+    expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
   });
 
   it("should handle onClick and stop loading after async operation", async () => {
@@ -86,18 +79,14 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 点击按钮
     fireEvent.click(button);
 
-    // 验证 onClick 被调用
     await waitFor(() => {
       expect(mockAsync).toHaveBeenCalledTimes(1);
     });
 
-    // 验证加载状态
     expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
 
-    // 等待异步函数完成
     await waitFor(() => {
       expect(screen.queryByTestId("loading-icon")).not.toBeInTheDocument();
     });
@@ -108,15 +97,12 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 点击按钮
     fireEvent.click(button);
 
-    // 验证不会抛出错误
     await waitFor(() => {
       expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
-    // 验证没有 loading 图标
     expect(screen.queryByTestId("loading-icon")).not.toBeInTheDocument();
   });
 
@@ -129,7 +115,6 @@ describe("LoadingButton Component", () => {
 
     const button = screen.getByRole("button");
 
-    // 验证额外属性传递
     expect(button).toHaveAttribute("type", "submit");
     expect(button).toHaveAttribute("form", "test-form");
   });

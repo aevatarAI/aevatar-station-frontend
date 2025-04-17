@@ -1,23 +1,21 @@
-import { columns, type IApiKeysList } from "@/components/ApiKeys/columns";
+import { type IApiKeysList, columns } from "@/components/ApiKeys/columns";
 import CreateApiKeyDialog from "@/components/CreateApiKeyDialog";
 import DataTable from "@/components/DataTable";
-import { textGradient } from "@/constants/cls";
-import clsx from "clsx";
-import EditApiKeyDialog from "@/components/EditApiKeyDialog";
 import DeleteDialog from "@/components/DeleteDialog";
-import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
-import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
-import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
-import { useAtom } from "jotai";
-import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import EditApiKeyDialog from "@/components/EditApiKeyDialog";
 import Loading from "@/components/Loading";
+import { textGradient } from "@/constants/cls";
+import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
+import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import clsx from "clsx";
+import { useAtom } from "jotai";
 
 export default function ApiKeys() {
   const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
-  const { data, isLoading, isError } = useGetAPIKeys(
-    currentProjectId || ""
-  );
+  const { data, isLoading, isError } = useGetAPIKeys(currentProjectId || "");
   const permissions = useProjectPermissions();
   const { mutate: mutationUpdate } = useUpdateAPIKey();
   const { mutate } = useDeleteAPIKey();
@@ -59,7 +57,9 @@ export default function ApiKeys() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>api keys</div>
-        <CreateApiKeyDialog disabled={!permissions.apiKeysCreate || data?.data.length > 0} />
+        <CreateApiKeyDialog
+          disabled={!permissions.apiKeysCreate || data?.data.length > 0}
+        />
       </div>
       {data && (
         <DataTable

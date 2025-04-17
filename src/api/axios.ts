@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
       myEvents.AuthorizationExpired.emit();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const service = axiosInstance;

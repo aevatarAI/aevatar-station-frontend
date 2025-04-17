@@ -5,30 +5,31 @@ import { getWalletUserInfo } from "../utils/walletUserInfo";
 import { useIsConnected } from "./useIsConnected";
 
 export const useGetWalletUserInfo = () => {
-	const { walletType, walletInfo } = useConnectWallet();
-	const isConnect = useIsConnected();
+  const { walletType, walletInfo } = useConnectWallet();
+  const isConnect = useIsConnected();
 
-	return useCallback(async () => {
-		if (!walletInfo) throw new Error("Failed to obtain wallet information.");
-		if (!isConnect) throw new Error("You are not logged in.");
+  return useCallback(async () => {
+    if (!walletInfo) throw new Error("Failed to obtain wallet information.");
+    if (!isConnect) throw new Error("You are not logged in.");
 
-		try {
-			const { caHash, originChainId } = await getWalletUserInfo(
-				walletInfo,
-				walletType,
-			);
-			const managerAddress = await getManagerAddressByWallet(
-				walletInfo as any,
-				walletType,
-			);
+    try {
+      const { caHash, originChainId } = await getWalletUserInfo(
+        walletInfo,
+        walletType,
+      );
+      const managerAddress = await getManagerAddressByWallet(
+        walletInfo as any,
+        walletType,
+      );
 
-			return {
-				caHash,
-				originChainId,
-				managerAddress: managerAddress,
-			};
-		} catch (error) {
-			throw new Error("Failed to obtain user information");
-		}
-	}, [isConnect, walletInfo, walletType]);
+      return {
+        caHash,
+        originChainId,
+        managerAddress: managerAddress,
+      };
+      // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    } catch (error) {
+      throw new Error("Failed to obtain user information");
+    }
+  }, [isConnect, walletInfo, walletType]);
 };

@@ -17,16 +17,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import Loading from "@/assets/loading.svg?react";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
-import { useToast } from "@/hooks/use-toast";
 
 import {
-  createRoleForm,
   type TCreateRoleForm,
+  createRoleForm,
 } from "@/constants/form/createRole";
 
 export interface ICreateRoleDialogProps {
@@ -53,7 +53,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
         description: "successfully created",
       });
     },
-    [toast, onCreate]
+    [toast, onCreate],
   );
 
   useEffect(() => {
@@ -70,7 +70,8 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+      >
         <DialogHeader>
           <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
             create role
@@ -100,19 +101,21 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
                   className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "inviting" : "invite"}</span>
+                  <span>{btnLoading ? "creating" : "create"}</span>
                 </Button>
               </div>
             </div>

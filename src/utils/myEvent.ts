@@ -9,7 +9,7 @@ const eventsServer = new Function();
 
 eventsServer.prototype.parseEvent = function (
   name: string,
-  eventMap: string[]
+  eventMap: string[],
 ) {
   // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   const obj: any = (this[name] = {});
@@ -28,7 +28,7 @@ eventsServer.prototype.emit = (eventType: string, ...params: any[]) => {
 };
 eventsServer.prototype.addListener = (
   eventType: string,
-  listener: (data: any) => void
+  listener: (data: any) => void,
 ) => {
   const cListener = eventBus.addListener(eventType, listener);
   return {

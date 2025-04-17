@@ -15,7 +15,7 @@ export default function LoginButton() {
 
   const doLogin = useCallback(async () => {
     try {
-      const result = await connectWallet();
+      await connectWallet();
 
       navigate("/auth/atomic");
     } catch (e) {

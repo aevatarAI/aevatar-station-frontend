@@ -28,58 +28,69 @@ export default function OrganisationProjects() {
   const { mutate: mutateEdit } = useEditProject();
 
   const onEdit = async ({ domainName, name }: TProjectEditForm, id: string) => {
-    mutateEdit({ id, organizationId: organizationId || "", domainName, displayName: name})
-  }
+    mutateEdit({
+      id,
+      organizationId: organizationId || "",
+      domainName,
+      displayName: name,
+    });
+  };
 
   const onCreate = async ({ domainName, name }: TProjectEditForm) => {
-    mutateCreate({organizationId: organizationId || "", domainName, displayName: name })
-  }
+    mutateCreate({
+      organizationId: organizationId || "",
+      domainName,
+      displayName: name,
+    });
+  };
 
   const onDeleteYes = async (id: string) => {
-    mutateDelete(id)
-  }
+    mutateDelete(id);
+  };
 
   const tableData = projectList?.data?.items?.map((item: any) => ({
-      ...item,
-      operation: (
-        <div className="flex items-center gap-[7px] pl-[20px]">
-          {userPermissions?.organizationsEdit ? (
-            <ProjectEditDialog
-              type="edit"
-              name={item.displayName}
-              domainName={item.domainName}
-              onSubmit={(v) => onEdit(v, item.id)}
-            />
-          ) : (
-            <span />
-          )}
-          {userPermissions?.organizationsDelete ? (
-            <DeleteDialog
-              onYes={() => onDeleteYes(item.id)}
-              title={"Are you sure you want to delete the project?"}
-              description={
-                "*Once deleted, the existing project will become invalid."
-              }
-            />
-          ) : (
-            <span />
-          )}
-        </div>
-      ),
-    }))
+    ...item,
+    operation: (
+      <div className="flex items-center gap-[7px] pl-[20px]">
+        {userPermissions?.organizationsEdit ? (
+          <ProjectEditDialog
+            type="edit"
+            name={item.displayName}
+            domainName={item.domainName}
+            onSubmit={(v) => onEdit(v, item.id)}
+          />
+        ) : (
+          <span />
+        )}
+        {userPermissions?.organizationsDelete ? (
+          <DeleteDialog
+            onYes={() => onDeleteYes(item.id)}
+            title={"Are you sure you want to delete the project?"}
+            description={
+              "*Once deleted, the existing project will become invalid."
+            }
+          />
+        ) : (
+          <span />
+        )}
+      </div>
+    ),
+  }));
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
-        {userPermissions?.organizationsCreate ? (
+        {userPermissions?.projectsEdit ? (
           <ProjectEditDialog type="create" onSubmit={onCreate} />
         ) : (
           <span />
         )}
       </div>
       <DataTable
-        className={clsx(!isLoading && projectList?.data?.items.length && "min-w-[600px]")}
+        className={clsx(
+          !isLoading && projectList?.data?.items.length && "min-w-[600px]",
+        )}
         tableHeadClassName={"first:pl-[15px]"}
         columns={columns}
         loading={isLoading}

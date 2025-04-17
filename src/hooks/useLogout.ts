@@ -1,11 +1,11 @@
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
-  CURRENT_PROJECT_ROLE_ATOM,
   CURRENT_PROJECT_ATOM,
-  ORGANIZATION_MEMBER_ATOM,
+  CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATIONS_LIST_ATOM,
+  ORGANIZATION_MEMBER_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import {
@@ -23,6 +23,8 @@ export const useLogout = () => {
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const [, setCurrentProject] = useAtom(CURRENT_PROJECT_ATOM);
   const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [, setRefreshToken] = useAtom(refreshTokenAtom);
+
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setPermission] = useAtom(PROJECT_PERMISSION_ATOM);
   const [, setOrgPermission] = useAtom(ORGANIZATION_PERMISSION_ATOM);
@@ -37,6 +39,7 @@ export const useLogout = () => {
     setCurrentOrganization(RESET);
     setCurrentProject(RESET);
     setAccessToken(RESET);
+    setRefreshToken(RESET);
     setOrgMember(RESET);
 
     setPermission(RESET);
@@ -50,6 +53,7 @@ export const useLogout = () => {
     setCurrentOrganization,
     setCurrentProject,
     setAccessToken,
+    setRefreshToken,
     setProfile,
     setOrgRole,
     setOrgMember,

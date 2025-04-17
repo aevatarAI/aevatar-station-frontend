@@ -5,7 +5,7 @@ import { imagetools } from "vite-imagetools";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
-export default defineConfig((config) => ({
+export default defineConfig((_config) => ({
   plugins: [nodePolyfills(), react({}), svgr(), imagetools()],
 
   resolve: {
@@ -30,6 +30,7 @@ export default defineConfig((config) => ({
       },
       "/api": {
         target: "https://station-developer-staging.aevatar.ai/developer-client",
+        ws: true,
         changeOrigin: true,
         secure: false,
         rewriteWsOrigin: true,

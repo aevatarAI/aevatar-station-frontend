@@ -48,18 +48,20 @@ const Verification = () => {
 
         if (!["20000", "20001"].includes(response.code)) {
           form.setError("verificationCode", {
-            message: response.message || "invalid verification code. please check and try again."
-          })
-          return
+            message:
+              response.message ||
+              "invalid verification code. please check and try again.",
+          });
+          return;
         }
 
-        toast({ description: "verification successful."})
+        toast({ description: "verification successful." });
 
         const isLoggedIn = await loginUser(name, password);
 
         if (!isLoggedIn) {
-          toast({ description: "log in failed."})
-          return
+          toast({ description: "log in failed." });
+          return;
         }
 
         navigate("/welcome");
@@ -70,17 +72,22 @@ const Verification = () => {
         });
       }
     },
-    [toast, navigate, name, email, password]
+    [toast, navigate, name, email, password, form, loginUser],
   );
 
   const sendVerificationCode = useCallback(async () => {
     try {
-      const response = await sendRegisterCode(email);
-      toast({
-        description: response.message || "Send Register Code successful!",
-      });
-    } catch (error) {
-      console.error(error, "Send Register Code error");
+      const response = await sendRegisterCode(name, email);
+      if (response.code !== "20001") {
+        toast({
+          description: response.message,
+        });
+      } else {
+        toast({
+          description: "Send Register Code successful!",
+        });
+      }
+    } catch (_error) {
       toast({
         description: "Send Register Code failed. Please try again.",
       });

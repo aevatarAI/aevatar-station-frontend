@@ -29,16 +29,13 @@ describe("DeleteDialog Component", () => {
       />,
     );
 
-    // 验证 Delete 图标存在
     expect(screen.getByRole("img")).toBeInTheDocument();
 
-    // 验证对话框内容未渲染
     expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
     expect(
       screen.queryByText("Are you sure you want to delete?"),
     ).not.toBeInTheDocument();
 
-    // 点击 Delete 图标后，验证对话框出现
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
@@ -57,24 +54,20 @@ describe("DeleteDialog Component", () => {
       />,
     );
 
-    // 打开对话框
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 验证对话框内容已渲染
     expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
 
-    // 点击 Cancel 按钮
     const cancelButton = screen.getByText("cancel");
     fireEvent.click(cancelButton);
 
-    // 确认对话框已关闭
     await waitFor(() => {
       expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
     });
   });
 
-  it("should call onYes and close dialog when Yes button is clicked", async () => {
+  it("should call onYes and close dialog when yes button is clicked", async () => {
     render(
       <DeleteDialog
         title="Confirm Deletion"
@@ -83,30 +76,24 @@ describe("DeleteDialog Component", () => {
       />,
     );
 
-    // 打开对话框
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 验证对话框内容已渲染
     expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
-    // 确认 onYes 被调用
     await waitFor(() => {
       expect(mockOnYes).toHaveBeenCalledTimes(1);
     });
 
-    // 确认对话框已关闭
     await waitFor(() => {
       expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
     });
 
-    // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 
@@ -120,22 +107,18 @@ describe("DeleteDialog Component", () => {
       />,
     );
 
-    // 打开对话框
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
-    // 等待 asyncOnYes 完成
     await waitFor(() => {
       expect(asyncOnYes).toHaveBeenCalled();
     });
 
-    // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 
@@ -147,22 +130,18 @@ describe("DeleteDialog Component", () => {
       />,
     );
 
-    // 打开对话框
     const openDialogTrigger = screen.getByRole("img");
     fireEvent.click(openDialogTrigger);
 
-    // 点击 Yes 按钮
-    const yesButton = screen.getByText("Yes");
+    const yesButton = screen.getByText("yes");
     fireEvent.click(yesButton);
 
-    // 确认 onYes 不被调用
     await waitFor(() => {
       expect(mockOnYes).not.toHaveBeenCalled();
     });
 
-    // 验证 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully delete",
+      description: "successfully deleted",
     });
   });
 });

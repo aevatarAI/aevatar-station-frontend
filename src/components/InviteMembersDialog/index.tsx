@@ -25,18 +25,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import Loading from "@/assets/loading.svg?react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
 
 import {
-  inviteMembersForm,
   type TInviteMembersKeyForm,
+  inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { useAtom } from "jotai";
 import { CURRENT_ORGANIZATION_ROLE_ATOM } from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
 
 export default function InviteMembersDialog({
   defaultRole,
@@ -63,7 +63,7 @@ export default function InviteMembersDialog({
       setBtnLoading(false);
       setOpen(false);
     },
-    [onAddMember]
+    [onAddMember],
   );
 
   useEffect(() => {
@@ -80,7 +80,8 @@ export default function InviteMembersDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             invite team members
@@ -112,7 +113,8 @@ export default function InviteMembersDialog({
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
-                      onValueChange={field.onChange}>
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger aria-disabled={field?.disabled}>
                           <SelectValue placeholder="Select" />
@@ -123,7 +125,8 @@ export default function InviteMembersDialog({
                           <SelectItem
                             className="text-[14px]"
                             key={item.id}
-                            value={item.id}>
+                            value={item.id}
+                          >
                             {item.name.split("_")[1]}
                           </SelectItem>
                         ))}
@@ -159,12 +162,14 @@ export default function InviteMembersDialog({
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
                   className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}

@@ -28,20 +28,19 @@ describe("useProjectPermissions Hook", () => {
   const mockSetPermissions = vi.fn();
   const mockToast = vi.fn();
   const mockPermissions = [
-    { displayName: "Permission:Organizations", isGranted: true },
-    { displayName: "Permission:Organizations.Create", isGranted: false },
+    { displayName: "Permission:Projects", isGranted: true },
+    { displayName: "Permission:Projects.Create", isGranted: false },
   ];
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock `useAtom` 状态
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === CURRENT_PROJECT_ATOM) {
-        return [mockProjectId] as any; // 模拟 `projectId`
+        return [mockProjectId] as any;
       }
       if (atom === PROJECT_PERMISSION_ATOM) {
-        return [mockPermissions, mockSetPermissions]; // 模拟 `permissions` 和 `setPermissions`
+        return [mockPermissions, mockSetPermissions];
       }
       return [null];
     });
@@ -60,25 +59,19 @@ describe("useProjectPermissions Hook", () => {
 
   it("should fetch and set project permissions correctly", async () => {
     const mockPermissions = [
-      { displayName: "Permission:Organizations", isGranted: true },
-      { displayName: "Permission:Organizations.Create", isGranted: false },
+      { displayName: "Permission:Projects", isGranted: true },
+      { displayName: "Permission:Projects.Create", isGranted: false },
     ];
 
-    // Mock API 返回值
     vi.mocked(getProjectPermissions).mockResolvedValue(mockPermissions as any);
 
     const { result } = renderHook(() => useProjectPermissions());
 
-    // 等待 Hook 中异步调用完成
     await act(async () => {});
 
-    // 验证 API 调用
     expect(getProjectPermissions).toHaveBeenCalledWith(mockProjectId);
 
-    // 验证权限数据是否正确存储
     expect(mockSetPermissions).toHaveBeenCalledWith(mockPermissions);
-
-    // 验证返回权限映射
     expect(result.current).toEqual({
       projects: true,
       projectsCreate: false,
@@ -88,48 +81,42 @@ describe("useProjectPermissions Hook", () => {
   it("should handle API error and show toast message", async () => {
     const mockError = new Error("Failed to fetch permissions");
 
-    // Mock API 抛出异常
     vi.mocked(getProjectPermissions).mockRejectedValue(mockError);
 
     renderHook(() => useProjectPermissions());
 
-    // 等待 Hook 中异步调用完成
     await act(async () => {});
 
-    // 验证错误 toast 被调用
     expect(mockToast).toHaveBeenCalledWith({
       description: "Failed to fetch permissions",
     });
 
-    // 验证 `setPermissions` 未被调用
     expect(mockSetPermissions).not.toHaveBeenCalled();
   });
 
   it("should return empty permissions object when permissions are null", () => {
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === PROJECT_PERMISSION_ATOM) {
-        return [null, mockSetPermissions] as any; // 模拟 `permissions` 为 null
+        return [null, mockSetPermissions] as any;
       }
       return [null];
     });
 
     const { result } = renderHook(() => useProjectPermissions());
 
-    // 验证返回的权限对象为空
     expect(result.current).toEqual({});
   });
 
   it("should return empty permissions object when permissions are empty array", () => {
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === PROJECT_PERMISSION_ATOM) {
-        return [[], mockSetPermissions] as any; // 模拟 `permissions` 为空数组
+        return [[], mockSetPermissions] as any;
       }
       return [null];
     });
 
     const { result } = renderHook(() => useProjectPermissions());
 
-    // 验证返回的权限对象为空
     expect(result.current).toEqual({});
   });
 
@@ -138,7 +125,6 @@ describe("useProjectPermissions Hook", () => {
 
     const { rerender } = renderHook(() => useProjectPermissions());
 
-    // 模拟更新 Atom 中的 `projectId`
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === CURRENT_PROJECT_ATOM) {
         return [mockNewProjectId] as any;
@@ -149,20 +135,17 @@ describe("useProjectPermissions Hook", () => {
       return [null];
     });
 
-    // 重新渲染 Hook，触发 `useEffect`
     rerender();
 
-    // 等待 Hook 内异步操作完成
     await act(async () => {});
 
-    // 验证新项目权限 API 被调用
     expect(getProjectPermissions).toHaveBeenCalledWith(mockNewProjectId);
   });
 
   it("should not call API if projectId is null", async () => {
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === CURRENT_PROJECT_ATOM) {
-        return [null] as any; // 模拟 `projectId` 为 null
+        return [null] as any;
       }
       if (atom === PROJECT_PERMISSION_ATOM) {
         return [null, mockSetPermissions];
@@ -172,7 +155,6 @@ describe("useProjectPermissions Hook", () => {
 
     renderHook(() => useProjectPermissions());
 
-    // 验证 API 不应被调用
     expect(getProjectPermissions).not.toHaveBeenCalled();
   });
 });

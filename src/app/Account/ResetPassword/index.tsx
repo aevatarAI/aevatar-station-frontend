@@ -1,5 +1,6 @@
-import DescHome from "@/components/DescHome";
 import LogoIcon from "@/assets/logo.svg?react";
+import { CustomButton } from "@/components/CustomButton";
+import DescHome from "@/components/DescHome";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { CustomButton } from "@/components/CustomButton";
 
 const formSchema = z
   .object({
@@ -111,7 +111,7 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[12px] font-semibold">
-                      password*
+                      new password*
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -171,17 +171,19 @@ const ResetPassword = () => {
 
 const ResetPasswordPage = () => {
   return (
-    <div className="flex flex-col pt-10 px-10">
-      <CustomButton path="/"><LogoIcon /></CustomButton>  
-      <div className="relative flex px-[47px] max-h-[832px] h-screen flex-col items-center justify-between pt-[113px]">
-        <div className="flex flex-col gap-[30px]">
+    <div className="flex flex-col h-screen pt-10 px-10">
+      <CustomButton path="/">
+        <LogoIcon />
+      </CustomButton>
+      <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
+        <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
           <DescHome className="items-start lg:items-center" />
           <div className="h-[1px] w-full bg-black-light" />
           <ResetPassword />
         </div>
-        {socialMediaReander(
-          "relative w-full lg:w-[408px] px-[47px] lg:px-0 lg:mb-[40px]",
-        )}
+        <div className="w-full lg:w-[408px]">
+          {socialMediaReander("relative w-full")}
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-import dayjs from "dayjs";
+import Loading from "@/components/Loading";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { Button } from "@/components/ui/button";
-import { ACCEPTED, DECLINED, DEFAULT, INVITED } from '@/constants';
+import { ACCEPTED, DECLINED, DEFAULT, INVITED } from "@/constants";
+import type { Notification, QueryProps } from "@/hooks/useGetNotifications";
 import { useUpdateNotification } from "@/hooks/useUpdateNotifications";
-import { QueryProps, Notification } from '@/hooks/useGetNotifications';
 import { truncate } from "@/utils/helpers";
-import Loading from "@/components/Loading";
+import dayjs from "dayjs";
 interface NotificationsProps {
   data?: { data: Notification[] };
   isLoading: boolean;
@@ -53,14 +53,17 @@ export const Notifications = ({
           >
             <div className="mb-[15px] lg:mb-0">
               <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase mb-[10px]">
-                {dayjs(item.creationTime).format("DD/MM/YYYY HH:mm")}
+                {dayjs
+                  .utc(item.creationTime)
+                  .local()
+                  .format("DD.MM.YYYY HH:mm")}
               </div>
               <div className="text-[#B9B9B9] font-syne text-[15px] font-semibold leading-normal">
-                <span className="text-white">{`${item.creatorId} `}</span>
+                <span className="text-white">{`${item.creatorName} `}</span>
                 <span>has invited you to join</span>
                 <span className="text-white">{` ${truncate(
                   item.content,
-                  "has invited you to join"
+                  "has invited you to join",
                 )}`}</span>
               </div>
             </div>

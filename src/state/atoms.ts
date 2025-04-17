@@ -10,9 +10,37 @@ export const accessTokenAtom = atomWithStorage<string | null>(
   "access_token",
   null,
   undefined,
-  { getOnInit: true }
+  { getOnInit: true },
+);
+export const refreshTokenAtom = atomWithStorage<string | null>(
+  "refresh_token",
+  null,
+  undefined,
+  { getOnInit: true },
 );
 // register
-export const emailAtom = atom("");
-export const passwordAtom = atom("");
-export const usernameAtom = atom("");
+const getSessionValue = (type: string) => {
+  const stored = sessionStorage.getItem(type);
+  return stored ? stored : "";
+};
+export const usernameAtom = atom(
+  getSessionValue("username"),
+  (_, set, username: string) => {
+    sessionStorage.setItem("username", username);
+    set(usernameAtom, username);
+  },
+);
+export const emailAtom = atom(
+  getSessionValue("email"),
+  (_, set, email: string) => {
+    sessionStorage.setItem("email", email);
+    set(emailAtom, email);
+  },
+);
+export const passwordAtom = atom(
+  getSessionValue("password"),
+  (_, set, password: string) => {
+    sessionStorage.setItem("password", password);
+    set(passwordAtom, password);
+  },
+);

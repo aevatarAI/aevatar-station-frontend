@@ -2,7 +2,6 @@ import Plus from "@/assets/+.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -24,23 +23,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import type { IMemberItem } from "@/api/utils/organization";
+import type { IMemberItem, IRoleItem } from "@/api/utils/organization";
 import Loading from "@/assets/loading.svg?react";
 import {
   type TInviteMembersKeyForm,
   inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useAtom } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateEffect } from "react-use";
 
 interface IInviteMembersDialogProps {
   defaultRoleId?: string;
   defaulteEmail?: string;
   orgMemberList: IMemberItem[];
+  roleList: IRoleItem[];
   onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
 }
 
@@ -48,10 +47,9 @@ export default function AddMembersDialog({
   defaultRoleId,
   defaulteEmail,
   orgMemberList,
+  roleList,
   onAddMember,
 }: IInviteMembersDialogProps) {
-  const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
-
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
@@ -59,6 +57,7 @@ export default function AddMembersDialog({
       email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
+
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
@@ -72,9 +71,14 @@ export default function AddMembersDialog({
     [onAddMember],
   );
 
-  useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
+  useUpdateEffect(() => {
+    if (open) {
+      form.setValue("role", roleList[0]?.id);
+      form.setValue("email", orgMemberList[0]?.email);
+    } else {
+      form.reset();
+    }
+  }, [form, open, roleList, orgMemberList]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

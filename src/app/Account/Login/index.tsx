@@ -19,7 +19,7 @@ import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useState } from "react";
@@ -36,21 +36,24 @@ const formSchema = z.object({
     .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character"
+      "password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')"
+      "password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')"
+      "password must contain at least one uppercase letter ('A'-'Z')",
     ),
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [_, setAccessToken] = useAtom(accessTokenAtom);
+  const [__, setRefreshToken] = useAtom(refreshTokenAtom);
+
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,8 +61,6 @@ const Login = () => {
   });
 
   const getUserProfile = useUpdateProfile();
-
-  const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
@@ -68,12 +69,11 @@ const Login = () => {
         const data = await login(username, password);
         const accessToken = `${data.token_type} ${data.access_token}`;
         service.defaults.headers.Authorization = accessToken;
-
         setAccessToken(accessToken);
+        setRefreshToken(data.refresh_token);
         getUserProfile();
-        navigate("/welcome");
-      } catch (err) {
-        console.error(err, "err");
+        navigate("/redirect");
+      } catch (_err) {
         toast({
           description: "Login failed. Please check your username and password.",
         });
@@ -81,7 +81,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile]
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
   );
 
   return (
@@ -94,7 +94,8 @@ const Login = () => {
             className="font-normal text-white cursor-pointer font-source-code text-white hover:text-gray-light"
             onClick={() => {
               navigate("/register");
-            }}>
+            }}
+          >
             register
           </span>
         </p>
@@ -104,7 +105,8 @@ const Login = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="gap-5 flex flex-col">
+            className="gap-5 flex flex-col"
+          >
             <div className="flex flex-col gap-5">
               <FormField
                 control={form.control}
@@ -157,7 +159,8 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full flex justify-center border border-transparent bg-white text-black-light"
-                disabled={loading}>
+                disabled={loading}
+              >
                 {loading ? "logging in" : "log in"}
               </Button>
             </div>
@@ -173,7 +176,7 @@ const Login = () => {
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    []
+    [],
   );
   return (
     <Layout backgroundImage={randomImage}>

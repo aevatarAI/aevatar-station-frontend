@@ -1,14 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import * as signalR from "@microsoft/signalr";
 import { request } from "@/api";
-import { useAccessTokenAtom } from "@/hooks/useAccessToken";
 import { SIGNAL_R_URL } from "@/config";
+import { useAccessTokenAtom } from "@/hooks/useAccessToken";
+import * as signalR from "@microsoft/signalr";
+import { useQuery } from "@tanstack/react-query";
 export interface Notification {
   id: string;
   type: number;
   content: string;
   status: number;
   creatorId: string;
+  creatorName: string;
   creationTime: string;
   receiver: string;
 }
@@ -46,7 +47,7 @@ const establishSignalR = async (token: string) => {
     await connection.start();
 
     return true;
-  } catch (e) {
+  } catch (_e: any) {
     throw new Error("Unable to establish SignalR connection");
   }
 };

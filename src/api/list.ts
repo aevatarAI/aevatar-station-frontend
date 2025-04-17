@@ -3,38 +3,46 @@ import type { API_REQ_FUNCTION } from "./types";
 export const DEFAULT_METHOD = "GET";
 
 const NOTIFICATIONS_API_LIST = {
-  getNotifications: {
-    target: "/api/notification",
-    baseConfig: { method: "GET" },
-  },
   getInvites: {
     target: "/api/notification/organization",
     baseConfig: { method: "GET" },
   },
+  getUnreadNotifications: {
+    target: "/api/notification/unread-count",
+    baseConfig: { method: "GET" },
+  },
+  getNotifications: {
+    target: "/api/notification",
+    baseConfig: { method: "GET" },
+  },
+  postReadNotifications: {
+    target: "/api/notification/read",
+    baseConfig: { method: "POST" },
+  },
   updateNotification: {
     target: "/api/notification/response",
-    baseConfig: { method: "POST" }
-  }
-}
+    baseConfig: { method: "POST" },
+  },
+};
 
 const API_KEYS_API_LIST = {
   getAPIKeys: {
     target: "/api/appId",
-    baseConfig: { method: "GET" }
+    baseConfig: { method: "GET" },
   },
   createAPIKey: {
     target: "/api/appId",
-    baseConfig: { method: "POST" }
+    baseConfig: { method: "POST" },
   },
   updateAPIKey: {
     target: "/api/appId",
-    baseConfig: { method: "PUT" }
+    baseConfig: { method: "PUT" },
   },
   deleteAPIKey: {
     target: "/api/appId",
-    baseConfig: { method: "DELETE" }
-  }
-}
+    baseConfig: { method: "DELETE" },
+  },
+};
 
 const API_REQUESTS_API_LIST = {
   getAPIRequest: {
@@ -81,6 +89,16 @@ const ORGANIZATIONS_API_LIST = {
     extendUrlSuffix: "/roles",
     baseConfig: { method: "GET" },
   },
+  addOrganizationRoles: {
+    target: "/api/organizations",
+    extendUrlSuffix: "/roles",
+    baseConfig: { method: "POST" },
+  },
+  deleteOrganizationRoles: {
+    target: "/api/organizations",
+    // extendUrlSuffix: "/roles",
+    baseConfig: { method: "DELETE" },
+  },
   editOrganizationRoles: {
     target: "/api/organizations",
     extendUrlSuffix: "/member-roles",
@@ -90,6 +108,14 @@ const ORGANIZATIONS_API_LIST = {
     target: "/api/organizations",
     extendUrlSuffix: "/permissions",
     baseConfig: { method: "GET" },
+  },
+  getOrganizationRolePermissions: {
+    target: "/api/organization-permissions",
+    baseConfig: { method: "GET" },
+  },
+  setOrganizationRolePermissions: {
+    target: "/api/organization-permissions",
+    baseConfig: { method: "PUT" },
   },
 };
 
@@ -132,6 +158,23 @@ const PROJECT_API_LIST = {
     target: "/api/projects",
     extendUrlSuffix: "/permissions",
     baseConfig: { method: "GET" },
+  },
+  deleteProjectRoles: {
+    target: "/api/projects",
+    baseConfig: { method: "DELETE" },
+  },
+  addProjectRoles: {
+    target: "/api/projects",
+    extendUrlSuffix: "/roles",
+    baseConfig: { method: "POST" },
+  },
+  getProjectRolePermissions: {
+    target: "/api/project-permissions",
+    baseConfig: { method: "GET" },
+  },
+  setProjectRolePermissions: {
+    target: "/api/project-permissions",
+    baseConfig: { method: "PUT" },
   },
 };
 

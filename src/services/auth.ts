@@ -4,7 +4,7 @@ import {
   RegisterMockData,
   SendRegisterCodeMockData,
 } from "@/utils/mock-data";
-const SCOPE = "Aevatar";
+const SCOPE = "Aevatar offline_access";
 const CLIENT_ID = "AevatarAuthServer";
 const LOGIN_URL = "/connect/token";
 const REGISTER_URL = "/api/account/register";
@@ -32,12 +32,34 @@ export const login = async (username: string, password: string) => {
   );
 };
 
-export const sendRegisterCode = async (email: string) => {
+export const refreshTokenLogin = async (
+  refreshToken: string,
+): Promise<{
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+}> => {
+  return fetcher(LOGIN_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      client_id: CLIENT_ID,
+      refresh_token: refreshToken,
+    }).toString(),
+  });
+};
+
+export const sendRegisterCode = async (userName: string, email: string) => {
   return fetcher(
     SEND_REGISTER_CODE_URL,
     {
       method: "POST",
       body: {
+        userName,
         email,
         appName: SCOPE,
       },

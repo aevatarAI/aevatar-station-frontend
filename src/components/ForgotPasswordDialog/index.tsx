@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
+import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -90,7 +91,8 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-white text-black-light text-[12px] px-[16px] py-[8px]"
+                className={`bg-white text-black-light text-[12px] px-[16px] py-[8px] ${loading ? "opacity-50" : "opacity-100"}`}
+                onClick={form.handleSubmit(onSubmit)}
               >
                 resend password
               </Button>
@@ -143,6 +145,7 @@ const ForgotPasswordDialog = () => {
                     </Button>
                   </DialogClose>
                   <Button
+                    formNoValidate
                     type="submit"
                     className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
                     disabled={loading}

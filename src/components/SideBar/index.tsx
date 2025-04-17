@@ -15,10 +15,12 @@ import {
 } from "@/constants/cls";
 import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
+import { useGetUnreadNotifications } from "@/hooks/useGetUnreadNotifications";
 import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
-import { NOTIFICATION_ATOM } from "@/state/atoms/notification";
+import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
@@ -27,26 +29,27 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useMemo } from "react";
 import { useLocation, useParams } from "wouter";
-
 export interface ISideBarProps {
+  onClose?: () => void;
   className?: string;
 }
 
-export function SideBar({ className }: ISideBarProps) {
-  const [pathname] = useLocation();
-  const params = useParams<{ tab?: string; menu?: string }>();
+export function SideBar({ className, onClose }: ISideBarProps) {
+  useGetUnreadNotifications();
+  const { mutate } = usePostReadNotifications();
   const navigate = useNavigate();
-
+  const [pathname] = useLocation();
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+  const params = useParams<{ tab?: string; menu?: string }>();
+  const [unreadNotifications] = useAtom(UNREAD_NOTIFICATION_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [notificationClicked, setNotificationClicked] =
-    useAtom(NOTIFICATION_ATOM);
   const userPermissions = useOrgPermissions();
   const userProjectPermissions = useProjectPermissions();
 
   const organisationMenuList = useMemo(() => {
     if (organisationList.length <= 0) return [];
-    if (!userPermissions.organizations) return [];
+    // if (!userPermissions.organizations) return [];
     const menuList = [];
     if (userPermissions.organizationsEdit)
       menuList.push({
@@ -55,9 +58,10 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/general",
       });
     if (
-      userPermissions.organizationsCreate ||
-      userPermissions.organizationsDelete ||
-      userPermissions.organizationsEdit
+      userPermissions.projects ||
+      userPermissions.projectsCreate ||
+      userPermissions.projectsDelete ||
+      userPermissions.projectsEdit
     )
       menuList.push({
         icon: <Project />,
@@ -75,13 +79,19 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/organisation/member",
       });
     }
+    if (
+      userPermissions.role ||
+      userPermissions.roleCreate ||
+      userPermissions.roleDelete ||
+      userPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/organisation/role",
+      });
 
     return menuList;
-    // {
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/organisation/role",
-    // },
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
@@ -96,22 +106,25 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/projects/general",
       });
 
-    if (
-      userProjectPermissions.projectsMembers ||
-      userProjectPermissions.projectsMembersManage
-    )
+    if (userProjectPermissions.member || userProjectPermissions.memberManage)
       menuList.push({
         icon: <Member />,
         text: "member",
         url: "/profile/projects/member",
       });
-    return menuList;
 
-    // {
-    //   icon: <Role />,
-    //   text: "role",
-    //   url: "/profile/projects/role",
-    // },
+    if (
+      userProjectPermissions.role ||
+      userProjectPermissions.roleCreate ||
+      userProjectPermissions.roleDelete ||
+      userProjectPermissions.roleEdit
+    )
+      menuList.push({
+        icon: <Role />,
+        text: "role",
+        url: "/profile/projects/role",
+      });
+    return menuList;
   }, [projectList, userProjectPermissions]);
 
   const profileList = useMemo(() => {
@@ -122,12 +135,12 @@ export function SideBar({ className }: ISideBarProps) {
         url: "/profile/profile/general",
       },
       {
-        icon: notificationClicked ? <NoticationEmpty /> : <Notication />,
+        icon: unreadNotifications ? <Notication /> : <NoticationEmpty />,
         text: "notifications",
         url: "/profile/profile/notifications",
       },
     ];
-  }, [notificationClicked]);
+  }, [unreadNotifications]);
 
   const profileMenuMap = useMemo(() => {
     const menu: {
@@ -146,7 +159,10 @@ export function SideBar({ className }: ISideBarProps) {
     return (
       <div>
         <div
-          onClick={() => navigate("/dashboard/apikeys")}
+          onClick={() => {
+            navigate("/dashboard/apikeys");
+            onClose?.();
+          }}
           className={clsx(
             menuItemClx,
             selectTab === "apikeys" && menuItemSelectedClx,
@@ -167,7 +183,7 @@ export function SideBar({ className }: ISideBarProps) {
         </div>
       </div>
     );
-  }, [selectTab, navigate]);
+  }, [selectTab, onClose, navigate]);
 
   const profileMenu = useMemo(
     () => (
@@ -193,9 +209,10 @@ export function SideBar({ className }: ISideBarProps) {
                   key={tab.text}
                   onClick={() => {
                     if (tab.url.includes("notifications")) {
-                      setNotificationClicked(true);
+                      mutate();
                     }
                     navigate(tab.url);
+                    onClose?.();
                   }}
                   className={clsx(
                     menuItemClx,
@@ -213,7 +230,7 @@ export function SideBar({ className }: ISideBarProps) {
         ))}
       </div>
     ),
-    [profileMenuMap, selectTab, selectMenu, navigate, setNotificationClicked],
+    [profileMenuMap, selectTab, selectMenu, mutate, onClose, navigate],
   );
 
   return (

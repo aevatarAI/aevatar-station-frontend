@@ -1,7 +1,7 @@
 import Copy from "@/components/Copy";
 import { shortenString } from "@/utils/helpers";
 import type { ColumnDef } from "@tanstack/react-table";
-import dayjs from "dayjs";
+import dayjs from "@/api/dayjs";
 
 export interface IApiKeysList {
   id: string;
@@ -63,7 +63,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     header: "created",
     cell: ({ row }) => (
       <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
-        {dayjs(row.original.createTime).format("DD/MM/YYYY HH:mm")}
+        {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
       </div>
     ),
   },

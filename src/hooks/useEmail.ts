@@ -1,18 +1,27 @@
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useAccessTokenAtom } from "@/hooks/useAccessToken";
+import { type JwtPayload, jwtDecode } from "jwt-decode";
 
 interface JwtPayloadExtend extends JwtPayload {
-    email: string;
+  email: string;
+  role?: string;
 }
-
 
 export const useEmail = () => {
-    const accessToken = useAccessTokenAtom();
+  const accessToken = useAccessTokenAtom();
 
-    if (!accessToken) {
-        return ""
-    }
+  if (!accessToken) {
+    return "";
+  }
 
+  const decoded = jwtDecode<JwtPayloadExtend>(accessToken);
+  return decoded?.email ? decoded.email : "";
+};
+
+export const useJWTDecode = () => {
+  const decodeJwt = (accessToken: string) => {
     const decoded = jwtDecode<JwtPayloadExtend>(accessToken);
-    return decoded?.email ? decoded.email : "";
-}
+    return decoded;
+  };
+
+  return { decodeJwt };
+};

@@ -1,9 +1,9 @@
-import CopyIcon from "@/assets/to_copy.svg?react";
 import TickIcon from "@/assets/tick.svg?react";
+import CopyIcon from "@/assets/to_copy.svg?react";
+import { toast } from "@/hooks/use-toast";
 import clsx from "clsx";
 import { useCallback, useState } from "react";
 import { useCopyToClipboard } from "react-use";
-import { toast } from "@/hooks/use-toast";
 
 export default function Copy({
   description,
@@ -24,16 +24,16 @@ export default function Copy({
   const onClick = useCallback(() => {
     setClicked(true);
 
-    toast({description})
+    toast({ description });
 
     const timeoutId = setTimeout(() => {
       setClicked(false);
     }, 2000);
-  
+
     setCopied(toCopy);
 
     return () => clearTimeout(timeoutId);
-  }, [setCopied, toCopy]);
+  }, [setCopied, toCopy, description]);
 
   return (
     <span
@@ -43,9 +43,15 @@ export default function Copy({
           onClick();
         }
       }}
-      className={clsx("flex-row-center cursor-pointer", className)}>
-      {clicked ? <>
-      <TickIcon /></> : <CopyIcon className={iconClassName} />}
+      className={clsx("flex-row-center cursor-pointer", className)}
+    >
+      {clicked ? (
+        <>
+          <TickIcon />
+        </>
+      ) : (
+        <CopyIcon className={iconClassName} />
+      )}
       {children}
     </span>
   );

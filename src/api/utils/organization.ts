@@ -74,11 +74,9 @@ export enum IMemberStatus {
 export interface IMemberItem {
   id: string;
   userName: string;
-
   email: string;
-
   roleId: string | null;
-  status: IMemberStatus; // 0: joined，1：pending
+  status?: IMemberStatus;
 }
 
 export const getOrganizationMembers = async (

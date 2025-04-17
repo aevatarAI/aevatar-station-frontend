@@ -44,6 +44,7 @@ export const reverse = (data: any[]) => {
 };
 
 export const NEW = "new";
+export const ADMIN = "admin";
 export const OWNER = "owner";
 export const READER = "reader";
 export const SYSTEM_PROMPT_GROUP = "systempromptgroup";
@@ -64,6 +65,8 @@ export const getUserRole = (decodedAccessToken: any) => {
     );
     if (isNewUser) return NEW;
   }
+
+  if (roles === ADMIN) return OWNER;
 
   return NEW;
 };

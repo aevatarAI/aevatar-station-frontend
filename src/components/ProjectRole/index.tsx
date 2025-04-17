@@ -57,7 +57,7 @@ export default function ProjectRole() {
           query: `${projectId}/roles/${id}`,
         });
         toast({
-          description: "Successfully delete",
+          description: "Successfully deleted",
         });
         getRoleList();
       } catch (error) {

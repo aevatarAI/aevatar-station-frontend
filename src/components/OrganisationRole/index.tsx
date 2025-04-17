@@ -57,7 +57,7 @@ export default function OrganisationRole() {
           query: `${currentOrganisationId}/roles/${id}`,
         });
         toast({
-          description: "Successfully delete",
+          description: "Successfully deleted",
         });
         getRoleList();
       } catch (error) {

@@ -139,7 +139,7 @@ export default function OrganisationMember() {
                 <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                <SelectContent className="w-[193px] left-0 -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                   {roleList.map((roleItem) => (
                     <SelectItem
                       className="text-[14px]"

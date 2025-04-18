@@ -73,7 +73,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
             create role
           </DialogTitle>
         </DialogHeader>

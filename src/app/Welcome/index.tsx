@@ -38,7 +38,7 @@ const WelcomePage: React.FC = () => {
       </div>
       <div className="w-full lg:w-[793px] flex-col-reverse lg:flex-row flex gap-5  justify-center ">
         <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative cutCornerNoBorder border-0 min-h-[285px]">
-          <div className="absolute inset-0 bg-black bg-opacity-50 z-10 cutCornerNoBorder border-0" />
+          <div className="absolute inset-0 bg-black/50 z-10 cutCornerNoBorder border-0" />
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>

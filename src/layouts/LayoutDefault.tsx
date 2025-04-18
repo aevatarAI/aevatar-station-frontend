@@ -1,8 +1,8 @@
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery
-} from '@tanstack/react-query';
+  useQuery,
+} from "@tanstack/react-query";
 import "@fontsource/source-code-pro";
 import "@fontsource/syne";
 import "@fontsource/syne/600.css";
@@ -29,7 +29,7 @@ export default function LayoutDefault({
     <QueryClientProvider client={queryClient}>
       <ProviderComponent>
         <div>
-          <div className="flex-grow">{children}</div>
+          <div className="grow">{children}</div>
           <Loading />
           <Toaster />
         </div>

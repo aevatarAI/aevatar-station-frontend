@@ -14,12 +14,12 @@ import { useAtom } from "jotai";
 
 export interface IProjectRoleManagerDialogProps {
   roleName: string;
-  isOwner?: boolean;
+  readonly?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 export default function ProjectRoleManagerDialog({
   roleName,
-  isOwner,
+  readonly,
   onSave,
 }: IProjectRoleManagerDialogProps) {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
@@ -54,7 +54,7 @@ export default function ProjectRoleManagerDialog({
   return (
     <PermissionManagerInnerDialog
       permissionOrigin={permissionOrigin}
-      isOwner={isOwner}
+      readonly={readonly}
       onSave={onSaveHandler}
     />
   );

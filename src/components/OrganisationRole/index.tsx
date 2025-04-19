@@ -92,7 +92,7 @@ export default function OrganisationRole() {
         organisationRole:
           item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
             <PermissionManagerDialog
-              isOwner={userPermissions.roleEdit}
+              readonly={!userPermissions?.roleEdit}
               roleName={item.name}
               onSave={(v) => onPermissionSave(item, v)}
             />

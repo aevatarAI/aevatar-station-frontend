@@ -93,7 +93,7 @@ export default function ProjectRole() {
         projectRole:
           item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
             <ProjectRoleManagerDialog
-              isOwner={projectPermissions?.roleEdit}
+              readonly={!projectPermissions?.roleEdit}
               roleName={item.name}
               onSave={(v) => onPermissionSave(item, v)}
             />

@@ -66,9 +66,11 @@ const buildTreeFromPermissions = (
 };
 const TreeNode = ({
   node,
+  disabled,
   onCheckChange,
 }: {
   node: TChildPermission;
+  disabled?: boolean;
   onCheckChange: (checkedNode: TChildPermission, isChecked: boolean) => void;
 }) => {
   const handleCheckChange = (checked: CheckedState) => {
@@ -81,6 +83,7 @@ const TreeNode = ({
         className={checkboxCls}
         wrapperClassName="pb-[18px]"
         checked={node.checked}
+        disabled={disabled}
         onCheckedChange={handleCheckChange}
         text={
           node.permissionList.length > 0
@@ -91,6 +94,7 @@ const TreeNode = ({
       <div className="ml-[26px] flex flex-col gap-[8px]">
         {node.permissionList.map((child) => (
           <TreeNode
+            disabled={disabled}
             key={child.permission}
             node={child}
             onCheckChange={onCheckChange}
@@ -103,9 +107,11 @@ const TreeNode = ({
 
 const TreeCheckbox = ({
   permissions,
+  disabled,
   onPermissionsChanged,
 }: {
   permissions: TChildPermission;
+  disabled?: boolean;
   onPermissionsChanged: (permissions: TChildPermission) => void;
 }) => {
   const updateChildNodes = (node: TChildPermission, checked: boolean) => {
@@ -164,6 +170,7 @@ const TreeCheckbox = ({
     <div key={permissions.permission} className="ml-[26px]">
       {permissions.permissionList.map((node) => (
         <TreeNode
+          disabled={disabled}
           key={node.permission}
           node={node}
           onCheckChange={handleToggle}
@@ -214,13 +221,13 @@ function flattenPermissions(data: {
 
 export interface IPermissionManagerDialogProps {
   permissionOrigin: IRolePermissionsItem[];
-  isOwner?: boolean;
+  readonly?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 
 export default function PermissionManagerInnerDialog({
   permissionOrigin,
-  isOwner,
+  readonly,
   onSave,
 }: IPermissionManagerDialogProps) {
   const [open, setOpen] = useState(false);
@@ -359,7 +366,7 @@ export default function PermissionManagerInnerDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="py-[6px] px-[16px] font-pro text-[12px] font-normal leading-[15px] border-none bg-[#303030]">
-          edit permissions
+          {`${readonly ? "view" : "edit"} permissions`}
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -387,6 +394,7 @@ export default function PermissionManagerInnerDialog({
               <CheckboxLabel
                 wrapperClassName="pb-[18px] pt-0 border-b border-[#303030]"
                 checked={allSelected}
+                disabled={readonly}
                 onCheckedChange={onAllCheckedChange}
                 text="grant all permissions"
               />
@@ -417,6 +425,7 @@ export default function PermissionManagerInnerDialog({
                     </div>
                     {permissionMap?.[permissionTab] && (
                       <TreeCheckbox
+                        disabled={readonly}
                         permissions={permissionMap?.[permissionTab]}
                         onPermissionsChanged={onChildPermissionsChanged}
                       />
@@ -424,7 +433,7 @@ export default function PermissionManagerInnerDialog({
                   </div>
                 </div>
 
-                {!isOwner && (
+                {!readonly && (
                   <div className="flex justify-between items-start self-stretch pt-[28px] mt-auto">
                     <Button
                       className="text-[12px] py-[7px] leading-[14px]"

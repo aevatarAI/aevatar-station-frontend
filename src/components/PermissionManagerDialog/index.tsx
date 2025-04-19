@@ -13,12 +13,12 @@ import { useAtom } from "jotai";
 
 export interface IPermissionManagerDialogProps {
   roleName: string;
-  isOwner?: boolean;
+  readonly?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 export default function PermissionManagerDialog({
   roleName,
-  isOwner,
+  readonly,
   onSave,
 }: IPermissionManagerDialogProps) {
   const [curOrgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
@@ -52,7 +52,7 @@ export default function PermissionManagerDialog({
   return (
     <PermissionManagerInnerDialog
       permissionOrigin={permissionOrigin}
-      isOwner={isOwner}
+      readonly={readonly}
       onSave={onSaveHandler}
     />
   );

@@ -5,6 +5,7 @@ import ProjectRole from "@/components/ProjectRole";
 import { Input } from "@/components/ui/input";
 import type { TAB_LIST } from "@/constants/sideBar";
 import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
@@ -22,6 +23,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
   const { toast } = useToast();
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
+  const userProjectPermissions = useProjectPermissions();
 
   const updateProjectList = useUpdateProjectHandler();
 
@@ -72,14 +74,15 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
           domain name
         </div>
         <Input
-          className="max-w-[498px]"
+          className="max-w-[498px] disabled:opacity-100"
+          disabled={!userProjectPermissions?.projectsEdit}
           placeholder={curProject?.domainName ?? "domain name"}
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
         />
       </div>
     ),
-    [domainName, curProject?.domainName],
+    [domainName, curProject?.domainName, userProjectPermissions],
   );
 
   return (
@@ -89,6 +92,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
           ref={generalRef}
           header="project settings"
           title={"project name"}
+          readonly={!userProjectPermissions?.projectsEdit}
           inputPlaceholder={curProject?.displayName ?? "name"}
           defaultValue={curProject?.displayName}
           buttonProps={{ placement: "bottom-left" }}

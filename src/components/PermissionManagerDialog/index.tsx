@@ -41,11 +41,19 @@ export default function PermissionManagerDialog({
     getRolePermissions();
   }, [getRolePermissions]);
 
+  const onSaveHandler = useCallback(
+    async (value: TFlatPermission[]) => {
+      await onSave(value);
+      getRolePermissions();
+    },
+    [onSave, getRolePermissions],
+  );
+
   return (
     <PermissionManagerInnerDialog
       permissionOrigin={permissionOrigin}
       isOwner={isOwner}
-      onSave={onSave}
+      onSave={onSaveHandler}
     />
   );
 }

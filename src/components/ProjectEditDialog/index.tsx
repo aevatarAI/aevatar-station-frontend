@@ -24,12 +24,12 @@ import {
   type TProjectEditForm,
 } from "@/constants/form/project";
 import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { handleErrorMessage } from "@/utils/error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 
 interface IProjectEditDialogProps {
   type: "edit" | "create";
@@ -100,7 +100,10 @@ export default function ProjectEditDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {type === "create" ? (
-          <Button disabled={disabled} className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}>
+          <Button
+            disabled={disabled}
+            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}
+          >
             <Plus />
             <span>create {fullWidth && "project"}</span>
           </Button>
@@ -150,7 +153,7 @@ export default function ProjectEditDialog({
                   </FormItem>
                 )}
               />
-              <div className="flex justify-between items-start self-stretch">
+              <div className="flex justify-between items-start w-full">
                 <Button
                   className="text-[12px] py-[7px] leading-[14px]"
                   type="reset"

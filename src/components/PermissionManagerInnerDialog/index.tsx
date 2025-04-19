@@ -25,7 +25,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useUpdateEffect } from "react-use";
 
 const checkboxCls =
-  "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#606060] data-[state=checked]:border-[#606060]";
+  "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-100 disabled:bg-[#606060] disabled:border-[#606060] data-[state=checked]:bg-[#606060] data-[state=checked]:border-[#606060]";
 
 type TChildPermission = {
   permission: string;
@@ -365,7 +365,7 @@ export default function PermissionManagerInnerDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] px-[16px] font-pro text-[12px] font-normal leading-[15px] border-none bg-[#303030]">
+        <Button className="py-[6px] px-[16px] font-pro text-[12px] font-normal leading-[15px] border-[#303030]">
           {`${readonly ? "view" : "edit"} permissions`}
         </Button>
       </DialogTrigger>
@@ -395,6 +395,7 @@ export default function PermissionManagerInnerDialog({
                 wrapperClassName="pb-[18px] pt-0 border-b border-[#303030]"
                 checked={allSelected}
                 disabled={readonly}
+                className={checkboxCls}
                 onCheckedChange={onAllCheckedChange}
                 text="grant all permissions"
               />

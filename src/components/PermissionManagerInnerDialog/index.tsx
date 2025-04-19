@@ -82,7 +82,11 @@ const TreeNode = ({
         wrapperClassName="pb-[18px]"
         checked={node.checked}
         onCheckedChange={handleCheckChange}
-        text={node.permission}
+        text={
+          node.permissionList.length > 0
+            ? `${node.permission}.Read`
+            : node.permission
+        }
       />
       <div className="ml-[26px] flex flex-col gap-[8px]">
         {node.permissionList.map((child) => (

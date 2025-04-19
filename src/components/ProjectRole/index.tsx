@@ -93,7 +93,7 @@ export default function ProjectRole() {
         projectRole:
           item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
             <ProjectRoleManagerDialog
-              isOwner={item.name.split("_")[1].toLocaleLowerCase() === "owner"}
+              isOwner={projectPermissions?.roleEdit}
               roleName={item.name}
               onSave={(v) => onPermissionSave(item, v)}
             />
@@ -117,7 +117,7 @@ export default function ProjectRole() {
           </div>
         ),
       })),
-    [roleList, projectPermissions?.projectsEdit, onDeleteYes, onPermissionSave],
+    [roleList, projectPermissions, onDeleteYes, onPermissionSave],
   );
 
   const onCreate = useCallback(
@@ -144,7 +144,11 @@ export default function ProjectRole() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>project name roles</div>
-        <CreateRoleDialog onCreate={onCreate} />
+        {projectPermissions?.roleCreate ? (
+          <CreateRoleDialog onCreate={onCreate} />
+        ) : (
+          <span />
+        )}
       </div>
       <DataTable
         className={clsx(!loading && roleList.length && "min-w-[600px]")}

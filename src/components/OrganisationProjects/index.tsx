@@ -62,7 +62,7 @@ export default function OrganisationProjects() {
         ) : (
           <span />
         )}
-        {userPermissions?.organizationsDelete ? (
+        {userPermissions?.projectsDelete ? (
           <DeleteDialog
             onYes={() => onDeleteYes(item.id)}
             title={"Are you sure you want to delete the project?"}

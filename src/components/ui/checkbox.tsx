@@ -26,7 +26,7 @@ const Checkbox = React.forwardRef<
           "flex items-center justify-center text-current cursor-pointer",
         )}
       >
-        <CheckIcon />
+        <CheckIcon className="w-[14px] h-[14px] ml-[-0.5px]" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
     <label

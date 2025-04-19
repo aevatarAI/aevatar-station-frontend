@@ -1,20 +1,21 @@
+import LoadingButton from "@/components/LoadingButton.tsx";
 import { Input } from "@/components/ui/input";
 import clsx from "clsx";
 import {
+  type ReactNode,
   forwardRef,
   useCallback,
   useImperativeHandle,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
-import LoadingButton from "@/components/LoadingButton.tsx";
 
 export interface IGeneralProps {
   header: ReactNode;
   title: ReactNode;
   defaultValue?: string;
   inputPlaceholder?: string;
+  readonly?: boolean;
   buttonProps?: {
     placement?: "top-right" | "bottom-left";
     text?: string;
@@ -43,13 +44,14 @@ const General = forwardRef(
       inputPlaceholder,
       buttonProps = defalutButtonProps,
       extraInput,
+      readonly,
       onConfirm,
     }: IGeneralProps,
-    ref
+    ref,
   ) => {
     const _buttonProps = useMemo(
       () => ({ ...defalutButtonProps, ...buttonProps }),
-      [buttonProps]
+      [buttonProps],
     );
     const [inputText, setInputText] = useState<string>(defaultValue ?? "");
 
@@ -62,22 +64,23 @@ const General = forwardRef(
       () => ({
         updateInput,
       }),
-      [updateInput]
+      [updateInput],
     );
 
-    const buttonELe = useMemo(
-      () => (
+    const buttonELe = useMemo(() => {
+      if (readonly) return null;
+      return (
         <LoadingButton
           className={clsx(_buttonProps?.className, "font-semibold")}
           onClick={async () => {
             if (!inputText) return;
             await onConfirm?.(inputText);
-          }}>
+          }}
+        >
           {_buttonProps.text}
         </LoadingButton>
-      ),
-      [_buttonProps, inputText, onConfirm]
-    );
+      );
+    }, [_buttonProps, readonly, inputText, onConfirm]);
     return (
       <div>
         <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[#303030]">
@@ -92,10 +95,14 @@ const General = forwardRef(
               {title}
             </div>
             <Input
-              className="max-w-[498px]"
+              className="max-w-[498px] disabled:opacity-100"
               placeholder={inputPlaceholder}
               defaultValue={defaultValue}
-              onChange={(e) => setInputText(e.target.value)}
+              disabled={readonly}
+              onChange={(e) => {
+                if (readonly) return;
+                setInputText(e.target.value);
+              }}
             />
           </div>
           {extraInput}
@@ -105,7 +112,7 @@ const General = forwardRef(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export default General;

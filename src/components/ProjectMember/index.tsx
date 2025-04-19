@@ -42,6 +42,7 @@ export default function ProjectMember() {
 
   const updateOrganizationMembers = useCallback(async () => {
     try {
+      if (!projectPermissions.memberManage) return;
       if (!organizationId) return;
       const result = await getOrganizationMembers(organizationId);
       setOrgMemberList(result);
@@ -50,7 +51,7 @@ export default function ProjectMember() {
         description: handleErrorMessage(error),
       });
     }
-  }, [toast, organizationId, setOrgMemberList]);
+  }, [toast, organizationId, projectPermissions, setOrgMemberList]);
 
   useEffect(() => {
     projectPermissions.member && updateOrganizationMembers();

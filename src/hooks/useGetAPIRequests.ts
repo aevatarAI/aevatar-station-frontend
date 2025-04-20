@@ -16,6 +16,7 @@ export const useGetAPIRequests = (
   return useQuery({
     queryKey: ["api-requests", { projectId, organisationId }],
     queryFn: () => {
+      // Might need to use useEffect here
       return request.apiRequests.getAPIRequest({
         params: {
           OrganizationId: organisationId,
@@ -24,24 +25,6 @@ export const useGetAPIRequests = (
           EndTime: endTime,
         },
       });
-    },
-  });
-};
-
-export const useGetSystemLLM = () => {
-  return useQuery({
-    queryKey: ["system-llm"],
-    queryFn: () => {
-      return request.apiRequests.getSystemLLM();
-    },
-  });
-};
-
-export const useGetLLMTokens = () => {
-  return useQuery({
-    queryKey: ["llm-tokens-usage"],
-    queryFn: () => {
-      return request.apiRequests.getLLMTokenUsage({});
     },
   });
 };

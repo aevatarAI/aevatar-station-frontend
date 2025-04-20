@@ -13,7 +13,7 @@ import { useAtom } from "jotai";
 import { useMemo } from "react";
 import { useLocation } from "wouter";
 
-const selectCls = "underline decoration-solid decoration-slice";
+const selectCls = "underline decoration-solid box-decoration-slice";
 const ignoreHeaders = ["/", "/login", "/register", "/verification"];
 
 export default function Header() {
@@ -59,6 +59,7 @@ export default function Header() {
           >
             {pathname !== "/welcome" && (
               <>
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   disabled={!projectList.length}
                   className={clsx(
@@ -72,6 +73,7 @@ export default function Header() {
                 >
                   dashboard
                 </button>
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   className={clsx(pathname.startsWith("/profile") && selectCls)}
                   onClick={() => {
@@ -80,6 +82,7 @@ export default function Header() {
                 >
                   settings
                 </button>
+                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
                   onClick={() => {
                     mutate();

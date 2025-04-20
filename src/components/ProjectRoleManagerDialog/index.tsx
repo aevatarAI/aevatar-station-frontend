@@ -14,12 +14,12 @@ import { useAtom } from "jotai";
 
 export interface IProjectRoleManagerDialogProps {
   roleName: string;
-  isOwner?: boolean;
+  readonly?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 export default function ProjectRoleManagerDialog({
   roleName,
-  isOwner,
+  readonly,
   onSave,
 }: IProjectRoleManagerDialogProps) {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
@@ -43,11 +43,19 @@ export default function ProjectRoleManagerDialog({
     getRolePermissions();
   }, [getRolePermissions]);
 
+  const onSaveHandler = useCallback(
+    async (value: TFlatPermission[]) => {
+      await onSave(value);
+      getRolePermissions();
+    },
+    [onSave, getRolePermissions],
+  );
+
   return (
     <PermissionManagerInnerDialog
       permissionOrigin={permissionOrigin}
-      isOwner={isOwner}
-      onSave={onSave}
+      readonly={readonly}
+      onSave={onSaveHandler}
     />
   );
 }

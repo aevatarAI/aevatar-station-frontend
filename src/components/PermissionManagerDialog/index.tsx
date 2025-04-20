@@ -13,12 +13,12 @@ import { useAtom } from "jotai";
 
 export interface IPermissionManagerDialogProps {
   roleName: string;
-  isOwner?: boolean;
+  readonly?: boolean;
   onSave: (value: TFlatPermission[]) => Promise<void>;
 }
 export default function PermissionManagerDialog({
   roleName,
-  isOwner,
+  readonly,
   onSave,
 }: IPermissionManagerDialogProps) {
   const [curOrgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
@@ -41,11 +41,19 @@ export default function PermissionManagerDialog({
     getRolePermissions();
   }, [getRolePermissions]);
 
+  const onSaveHandler = useCallback(
+    async (value: TFlatPermission[]) => {
+      await onSave(value);
+      getRolePermissions();
+    },
+    [onSave, getRolePermissions],
+  );
+
   return (
     <PermissionManagerInnerDialog
       permissionOrigin={permissionOrigin}
-      isOwner={isOwner}
-      onSave={onSave}
+      readonly={readonly}
+      onSave={onSaveHandler}
     />
   );
 }

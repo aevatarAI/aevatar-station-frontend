@@ -69,6 +69,7 @@ export interface IRoles {
 export enum IMemberStatus {
   joined = 0,
   pending = 1,
+  refused = 2,
 }
 
 export interface IMemberItem {

@@ -36,9 +36,6 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
-    if (isDeniedRequest(error)) {
-      myEvents.AuthorizationExpired.emit();
-    }
     return Promise.reject(error);
   },
 );

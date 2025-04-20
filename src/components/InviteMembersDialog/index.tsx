@@ -149,7 +149,7 @@ export default function InviteMembersDialog({
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="font-normal mb-0 !mt-0">
+                    <FormLabel className="font-normal mb-0 mt-0!">
                       invite to default project
                     </FormLabel>
                   </FormItem>

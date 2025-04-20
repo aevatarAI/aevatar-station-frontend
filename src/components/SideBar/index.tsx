@@ -51,7 +51,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (organisationList.length <= 0) return [];
     // if (!userPermissions.organizations) return [];
     const menuList = [];
-    if (userPermissions.organizationsEdit)
+    if (userPermissions.organizations)
       menuList.push({
         icon: <General />,
         text: "general",
@@ -99,7 +99,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (!userProjectPermissions.projects) return [];
     const menuList = [];
 
-    if (userProjectPermissions.projectsEdit)
+    if (userProjectPermissions.projects)
       menuList.push({
         icon: <General />,
         text: "general",

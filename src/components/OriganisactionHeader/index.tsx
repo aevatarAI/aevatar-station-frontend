@@ -87,7 +87,7 @@ export default function OriganisactionHeader({
             {currentOrganisation?.displayName ?? "--"}
             <StepSelect />
           </PopoverTrigger>
-          <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
+          <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
             <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
               {organisationList?.data?.items.map((item: any) => (
                 <div
@@ -136,8 +136,8 @@ export default function OriganisactionHeader({
           )}
           <StepSelect />
         </PopoverTrigger>
-        <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
-          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[0] max-h-[300px] scrollbar-hide overflow-auto">
+        <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
+          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-0 max-h-[300px] scrollbar-hide overflow-auto">
             {projectList?.data?.items?.map((item: Project) => (
               <div
                 className={clsx(

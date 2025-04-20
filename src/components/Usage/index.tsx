@@ -113,18 +113,24 @@ export function Usage() {
         </div>
         <Form {...form}>
           <FormItem aria-labelledby="models" className="w-[120px]">
-            <Select defaultValue="all models" disabled={models?.data}>
+            <Select defaultValue="all models">
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
-                {models?.data?.map((item: string) => (
-                  <SelectItem className="text-[14px]" key={item} value={item}>
-                    {item}
+                {models?.data?.length > 0 ? (
+                  models?.data?.map((item: string) => (
+                    <SelectItem className="text-[14px]" key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem className="text-[14px]" value="all models">
+                    all models
                   </SelectItem>
-                ))}
+                )}
               </SelectContent>
             </Select>
             <FormMessage />

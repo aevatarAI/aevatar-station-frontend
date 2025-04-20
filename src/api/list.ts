@@ -44,6 +44,21 @@ const API_KEYS_API_LIST = {
   },
 };
 
+const API_REQUESTS_API_LIST = {
+  getAPIRequest: {
+    target: "/api/api-requests",
+    baseConfig: { method: "GET" },
+  },
+  getSystemLLM: {
+    target: "/api/token-usage/system-llm",
+    baseConfig: { method: "GET" },
+  },
+  getLLMTokenUsage: {
+    target: "/api/token-usage",
+    baseConfig: { method: "POST" },
+  },
+};
+
 const ORGANIZATIONS_API_LIST = {
   getUserOrganizations: "/api/organizations",
   getOrganizationDetail: "/api/organizations",
@@ -173,6 +188,7 @@ const PROFILE_API_LIST = {
 
 export const EXPAND_APIS = {
   apiKeys: API_KEYS_API_LIST,
+  apiRequests: API_REQUESTS_API_LIST,
   notifications: NOTIFICATIONS_API_LIST,
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,

@@ -97,7 +97,7 @@ export function Usage() {
   return (
     <div>
       <div className="flex justify-between">
-        <span className={clsx(textGradient)}>api keys</span>
+        <span className={clsx(textGradient)}>usage</span>
         <DatePickerWithRange date={date} onDateChange={setDate} />
       </div>
       <div className="py-[16px]" />

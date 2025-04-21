@@ -57,7 +57,7 @@ export default function OrganisationRole() {
           query: `${currentOrganisationId}/roles/${id}`,
         });
         toast({
-          description: "Successfully delete",
+          description: "Successfully deleted",
         });
         getRoleList();
       } catch (error) {
@@ -92,7 +92,7 @@ export default function OrganisationRole() {
         organisationRole:
           item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
             <PermissionManagerDialog
-              isOwner={item.name.split("_")[1].toLocaleLowerCase() === "owner"}
+              readonly={!userPermissions?.roleEdit}
               roleName={item.name}
               onSave={(v) => onPermissionSave(item, v)}
             />
@@ -143,7 +143,11 @@ export default function OrganisationRole() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>Organisation name roles</div>
-        <CreateRoleDialog onCreate={onCreate} />
+        {userPermissions?.roleCreate ? (
+          <CreateRoleDialog onCreate={onCreate} />
+        ) : (
+          <span />
+        )}
       </div>
       <DataTable
         className={clsx(!loading && roleList.length && "min-w-[600px]")}

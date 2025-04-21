@@ -86,7 +86,7 @@ export default function AevatarCreateForm() {
                   control={form.control}
                   name="ai"
                   render={({ field }) => (
-                    <FormItem className="flex items-center justify-center flex-grow">
+                    <FormItem className="flex items-center justify-center grow">
                       <FormControl>
                         {field.value ? (
                           <div className="flex flex-col items-center justify-center gap-[26px]">
@@ -135,7 +135,7 @@ export default function AevatarCreateForm() {
                   control={form.control}
                   name="social"
                   render={({ field }) => (
-                    <FormItem className="flex items-center justify-center flex-grow">
+                    <FormItem className="flex items-center justify-center grow">
                       <FormControl>
                         {field.value ? (
                           <div className="flex flex-col items-center justify-center gap-[26px]">

@@ -1,5 +1,8 @@
 import { request } from "@/api";
-import { getOrganizationMembers } from "@/api/utils/organization";
+import {
+  IMemberStatus,
+  getOrganizationMembers,
+} from "@/api/utils/organization";
 import { type IMemberItem, getProjectMembers } from "@/api/utils/project";
 import AddMembersDialog from "@/components/AddMembersDialog";
 import DataTable from "@/components/DataTable";
@@ -21,6 +24,7 @@ import {
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
+import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -33,6 +37,7 @@ export default function ProjectMember() {
   const { toast } = useToast();
   const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const [profile] = useAtom(USER_PROFILE_ATOM);
 
   const projectPermissions = useProjectPermissions();
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
@@ -40,6 +45,7 @@ export default function ProjectMember() {
 
   const updateOrganizationMembers = useCallback(async () => {
     try {
+      if (!projectPermissions.memberManage) return;
       if (!organizationId) return;
       const result = await getOrganizationMembers(organizationId);
       setOrgMemberList(result);
@@ -48,7 +54,7 @@ export default function ProjectMember() {
         description: handleErrorMessage(error),
       });
     }
-  }, [toast, organizationId, setOrgMemberList]);
+  }, [toast, organizationId, projectPermissions, setOrgMemberList]);
 
   useEffect(() => {
     projectPermissions.member && updateOrganizationMembers();
@@ -136,7 +142,9 @@ export default function ProjectMember() {
       memberList.map((item) => ({
         ...item,
         role:
-          !item.roleId || !projectPermissions.memberManage ? (
+          !item.roleId ||
+          !projectPermissions.memberManage ||
+          item.email === profile?.email ? (
             <span className="text-[12px] font-syne font-semibold lowercase">
               {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
@@ -148,7 +156,7 @@ export default function ProjectMember() {
               <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
-              <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+              <SelectContent className="w-[193px] left-0 -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                 {roleList.map((item) => (
                   <SelectItem
                     className="text-[14px]"
@@ -163,7 +171,8 @@ export default function ProjectMember() {
           ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {projectPermissions.memberManage ? (
+            {projectPermissions.memberManage &&
+            item.email !== profile?.email ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -180,6 +189,7 @@ export default function ProjectMember() {
     [
       memberList,
       roleList,
+      profile,
       projectPermissions,
       onSetMember,
       onChangeRole,
@@ -195,7 +205,9 @@ export default function ProjectMember() {
     const onlyOrgMemberIds = orgMemberList.filter(
       (item) => !memberIds.has(item.id),
     );
-    return [...onlyOrgMemberIds, ...onlyMemberIds];
+    return [...onlyOrgMemberIds, ...onlyMemberIds].filter(
+      (item) => item.status === IMemberStatus.joined,
+    );
   }, [orgMemberList, memberList]);
 
   return (

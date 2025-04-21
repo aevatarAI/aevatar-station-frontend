@@ -1,6 +1,7 @@
 "use client";
 
 import ApikeysIcon from "@/assets/api_keys.svg?react";
+import ChartIcon from "@/assets/chart.svg?react";
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
 import Notication from "@/assets/notication.svg?react";
@@ -50,7 +51,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (organisationList.length <= 0) return [];
     // if (!userPermissions.organizations) return [];
     const menuList = [];
-    if (userPermissions.organizationsEdit)
+    if (userPermissions.organizations)
       menuList.push({
         icon: <General />,
         text: "general",
@@ -98,7 +99,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (!userProjectPermissions.projects) return [];
     const menuList = [];
 
-    if (userProjectPermissions.projectsEdit)
+    if (userProjectPermissions.projects)
       menuList.push({
         icon: <General />,
         text: "general",
@@ -169,6 +170,16 @@ export function SideBar({ className, onClose }: ISideBarProps) {
         >
           <ApikeysIcon />
           <span className={clsx(menuItemTextClx)}>api keys</span>
+        </div>
+        <div
+          onClick={() => navigate("/dashboard/usage")}
+          className={clsx(
+            menuItemClx,
+            selectTab === "usage" && menuItemSelectedClx,
+          )}
+        >
+          <ChartIcon />
+          <span className={clsx(menuItemTextClx)}>usage</span>
         </div>
       </div>
     );

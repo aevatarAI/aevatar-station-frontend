@@ -1,6 +1,7 @@
 import ApiKeys from "@/components/ApiKeys";
 import { SideBar } from "@/components/SideBar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Usage } from "@/components/Usage";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
@@ -11,16 +12,27 @@ export default function Dashboard() {
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
   return (
-    <>
-    <Sheet>
-      <SheetContent className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px]">
-        <DialogClose className="hidden" ref={ref}/>
-        <SideBar onClose={handleClose}/>
-      </SheetContent>
-    </Sheet>
-      <div className="pt-[31px] px-[20px] flex-1 overflow-auto">
-        {selectTab === "apikeys" && <ApiKeys />}
+    <div className="flex h-screen overflow-hidden">
+      {/* Fixed sidebar for desktop - full viewport height */}
+      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-screen sticky top-0">
+        <SideBar onClose={handleClose} />
       </div>
-    </>
+
+      {/* Mobile drawer/sheet */}
+      <Sheet>
+        <SheetContent className="lg:hidden w-[200px] bg-[#191919]">
+          <DialogClose ref={ref} />
+          <SideBar onClose={handleClose} />
+        </SheetContent>
+      </Sheet>
+
+      {/* Scrollable main content */}
+      <div className="flex-1 overflow-auto h-screen">
+        <div className="pt-[31px] px-[20px]">
+          {selectTab === "apikeys" && <ApiKeys />}
+          {selectTab === "usage" && <Usage />}
+        </div>
+      </div>
+    </div>
   );
 }

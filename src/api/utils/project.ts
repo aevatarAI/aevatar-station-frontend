@@ -1,5 +1,6 @@
 import type { TDataResponse } from "@/api/types/index";
 import type {
+  IMemberStatus,
   IPermissionsItem,
   IRoleItem,
   IRolePermission,
@@ -19,6 +20,7 @@ export interface IMemberItem {
   userName: string;
   email: string;
   roleId: string | null;
+  status?: IMemberStatus;
 }
 
 export const getProjectMembers = async (

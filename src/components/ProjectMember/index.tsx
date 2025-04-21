@@ -1,5 +1,8 @@
 import { request } from "@/api";
-import { getOrganizationMembers } from "@/api/utils/organization";
+import {
+  IMemberStatus,
+  getOrganizationMembers,
+} from "@/api/utils/organization";
 import { type IMemberItem, getProjectMembers } from "@/api/utils/project";
 import AddMembersDialog from "@/components/AddMembersDialog";
 import DataTable from "@/components/DataTable";
@@ -202,7 +205,9 @@ export default function ProjectMember() {
     const onlyOrgMemberIds = orgMemberList.filter(
       (item) => !memberIds.has(item.id),
     );
-    return [...onlyOrgMemberIds, ...onlyMemberIds];
+    return [...onlyOrgMemberIds, ...onlyMemberIds].filter(
+      (item) => item.status === IMemberStatus.joined,
+    );
   }, [orgMemberList, memberList]);
 
   return (

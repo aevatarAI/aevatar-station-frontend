@@ -83,7 +83,11 @@ export default function ProfileGeneral() {
         <div className="text-[#B9B9B9] font-syne text-[12px] font-semibold leading-normal pb-[10px]">
           email address
         </div>
-        <Input className="max-w-[498px] flex-1" value={profile?.email} />
+        <Input
+          className="max-w-[498px] flex-1 disabled:opacity-100"
+          disabled
+          value={profile?.email}
+        />
       </div>
       <div className="pt-[30px]">
         <div className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal pb-[10px]">

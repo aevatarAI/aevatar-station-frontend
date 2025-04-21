@@ -28,6 +28,8 @@ import { useEffect, useState } from "react";
 import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useGetLLMTokens } from "@/hooks/useGetLLMTokenUsage";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
+import { DateRange } from "react-day-picker";
+import { addDays } from "date-fns";
 
 const UNCHANGED_DATA = [
   {
@@ -69,10 +71,14 @@ const UNCHANGED_DATA = [
 
 export function Usage() {
   const form = useForm();
-  const { data, isLoading } = useGetAPIRequests();
+  const [apiRequests, setAPIRequests] = useState([]);
+  const [date, setDate] = useState({
+    from: dayjs.utc("2025-04-01").valueOf(),
+    to: dayjs.utc("2025-04-01").add(30, "day").valueOf(),
+  });
+  const { data, isLoading } = useGetAPIRequests(date);
   const { data: models } = useGetSystemModels();
   const { data: tokens } = useGetLLMTokens();
-  const [apiRequests, setAPIRequests] = useState([]);
 
   useEffect(() => {
     if (data) {
@@ -92,7 +98,7 @@ export function Usage() {
     <div>
       <div className="flex justify-between">
         <span className={clsx(textGradient)}>api keys</span>
-        <DatePickerWithRange />
+        <DatePickerWithRange date={date} onDateChange={setDate} />
       </div>
       <div className="py-[16px]" />
       <span className="text-gray-light">llms model</span>
@@ -100,14 +106,14 @@ export function Usage() {
       <div className="flex justify-between">
         <div className="flex gap-10">
           <span className="text-gray-light">
-            <strong className="underline text-white">$0.00</strong> total cost
+            <strong className="underline text-white">?</strong> total cost
           </span>
           <span className="text-gray-light">
-            <strong className="underline text-white">1.1m</strong> total input
+            <strong className="underline text-white">?</strong> total input
             tokens
           </span>
           <span className="text-gray-light">
-            <strong className="underline text-white">1.1m</strong> total output
+            <strong className="underline text-white">?</strong> total output
             tokens
           </span>
         </div>
@@ -153,7 +159,10 @@ export function Usage() {
       <span className="text-gray-light">api request</span>
       <div className="py-[10px]" />
       <span className="text-gray-light">
-        <strong className="underline text-white">1.1m</strong> api request
+        <strong className="underline text-white">
+          {data?.data?.totalRequests}
+        </strong>{" "}
+        api request
       </span>
       <div className="py-[10px]" />
       <ResponsiveContainer width="100%" height={302}>

@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import UpDownIcon from "@/assets/updown.svg?react";
-import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -12,15 +11,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import dayjs from "@/api/dayjs";
+import { DateRange } from "react-day-picker";
+
+interface DatePickerWithRangeProps {
+  date: any;
+  onDateChange: (date: any) => void;
+  className?: React.HTMLAttributes<HTMLDivElement>;
+}
 
 export function DatePickerWithRange({
+  date,
+  onDateChange,
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2025, 0, 20),
-    to: addDays(new Date(2025, 0, 20), 90),
-  });
-
+}: DatePickerWithRangeProps) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -56,7 +60,12 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={(date?: DateRange) => {
+              const dayFrom = dayjs.utc(date?.from).valueOf();
+              const dayTo = dayjs.utc(date?.to).valueOf();
+
+              onDateChange({ from: dayFrom, to: dayTo });
+            }}
             numberOfMonths={2}
           />
         </PopoverContent>

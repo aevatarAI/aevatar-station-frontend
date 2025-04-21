@@ -1,8 +1,10 @@
 import { service } from "@/api/axios";
-import Login, { SocialLogin } from "@/app/Account/Login";
+import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
+import { GithubLogin } from "@/app/SocialLogin/github";
+import { GoogleLogin } from "@/app/SocialLogin/google";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
@@ -57,7 +59,9 @@ const Redirection = () => {
 
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
-      const projectsPromises = organizationIds.map((id: string) => getProjects(id));
+      const projectsPromises = organizationIds.map((id: string) =>
+        getProjects(id)
+      );
 
       if (organizationIds.length === 0) {
         return navigate("/welcome");
@@ -82,12 +86,7 @@ const Redirection = () => {
     };
 
     fetchProjectsThenRedirect();
-  }, [
-    data,
-    isLoading,
-    setCurrentOrganisationId,
-    navigate,
-  ]);
+  }, [data, isLoading, setCurrentOrganisationId, navigate]);
 
   return isLoading ? <Loading /> : null;
 };
@@ -126,7 +125,11 @@ const App = () => (
       </Route>
 
       <Route path="/callback/github">
-        <SocialLogin />
+        <GithubLogin />
+      </Route>
+
+      <Route path="/callback/google">
+        <GoogleLogin />
       </Route>
 
       <PrivateRoute path="/welcome">

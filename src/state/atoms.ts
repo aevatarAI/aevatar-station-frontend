@@ -18,6 +18,13 @@ export const refreshTokenAtom = atomWithStorage<string | null>(
   undefined,
   { getOnInit: true },
 );
+
+export const socialMediaLoginAtom = atomWithStorage<boolean | null>(
+  "social_media_login",
+  false,
+  undefined,
+  { getOnInit: true }
+);
 // register
 const getSessionValue = (type: string) => {
   const stored = sessionStorage.getItem(type);

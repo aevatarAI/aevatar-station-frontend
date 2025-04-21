@@ -1,4 +1,8 @@
-import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import {
+  accessTokenAtom,
+  refreshTokenAtom,
+  socialMediaLoginAtom,
+} from "@/state/atoms";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
@@ -24,6 +28,7 @@ export const useLogout = () => {
   const [, setCurrentProject] = useAtom(CURRENT_PROJECT_ATOM);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setRefreshToken] = useAtom(refreshTokenAtom);
+  const [, setSocialMediaLogin] = useAtom(socialMediaLoginAtom);
 
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setPermission] = useAtom(PROJECT_PERMISSION_ATOM);
@@ -47,6 +52,7 @@ export const useLogout = () => {
     setOrgRole(RESET);
     setProfile(RESET);
     setOrgPermission(RESET);
+    setSocialMediaLogin(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
@@ -60,5 +66,6 @@ export const useLogout = () => {
     setPermission,
     setProjectRole,
     setOrgPermission,
+    setSocialMediaLogin,
   ]);
 };

@@ -33,7 +33,7 @@ export function DatePickerWithRange({
             id="date"
             variant="ghost"
             className={cn(
-              "font-source-code font-light text-[14px]",
+              "font-source-code font-light text-[14px] max-[768px]:px-[0px]",
               !date && "text-muted-foreground"
             )}
           >

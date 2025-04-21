@@ -75,6 +75,7 @@ export function Usage() {
     from: dayjs.utc("2025-04-01").valueOf(),
     to: dayjs.utc("2025-04-01").add(30, "day").valueOf(),
   });
+
   const { data, isLoading } = useGetAPIRequests(date);
   const { data: models } = useGetSystemModels();
   const { data: tokens } = useGetLLMTokens();
@@ -94,24 +95,26 @@ export function Usage() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between">
+    <div className="pb-[25px]">
+      <div className="flex justify-between items-center">
         <span className={clsx(textGradient)}>usage</span>
         <DatePickerWithRange date={date} onDateChange={setDate} />
       </div>
-      <div className="py-[16px]" />
-      <span className="text-gray-light">llms model</span>
+      <div className="py-[15px]" />
+      <span className="text-[14px] text-gray-light font-semibold">
+        llms model
+      </span>
       <div className="py-[10px]" />
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <div className="flex gap-10">
-          <span className="text-gray-light">
+          <span className="text-gray-light font-semibold text-[15px]">
             <strong className="underline text-white">?</strong> total cost
           </span>
-          <span className="text-gray-light">
+          <span className="text-gray-light font-semibold text-[15px]">
             <strong className="underline text-white">?</strong> total input
             tokens
           </span>
-          <span className="text-gray-light">
+          <span className="text-gray-light font-semibold text-[15px]">
             <strong className="underline text-white">?</strong> total output
             tokens
           </span>
@@ -143,44 +146,82 @@ export function Usage() {
         </Form>
       </div>
       <div className="py-[10px]" />
-      <ResponsiveContainer width="100%" height={302}>
-        <BarChart data={UNCHANGED_DATA} barSize={36}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="input" stackId="a" fill="#606060" />
-          <Bar dataKey="output" stackId="a" fill="#303030" />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="bg-[#1e1e1f] pt-[9px] pr-[35px] pb-[24px] pl-0">
+        <ResponsiveContainer width="100%" height={302}>
+          <BarChart data={UNCHANGED_DATA} barSize={36} margin={{ top: 40 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis
+              label={{
+                fontSize: 10,
+                fontFamily: "Source code pro",
+                value: "tokens",
+                position: "top",
+                fill: "#ffffff",
+                offset: 20,
+                dx: 46,
+              }}
+            />
+            <Tooltip />
+            <Legend
+              formatter={(value) => (
+                <span className="font-source-code text-white text-[10px]">
+                  {value}
+                </span>
+              )}
+            />
+            <Bar
+              dataKey="input"
+              name="total input tokens"
+              stackId="a"
+              fill="#606060"
+            />
+            <Bar
+              dataKey="output"
+              name="total output tokens"
+              stackId="a"
+              fill="#303030"
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
       <div className="py-[15px]" />
-      <span className="text-gray-light">api request</span>
+      <span className="text-[14px] text-gray-light font-semibold">
+        api request
+      </span>
       <div className="py-[10px]" />
-      <span className="text-gray-light">
+      <span className="text-gray-light font-semibold text-[15px]">
         <strong className="underline text-white">
           {data?.data?.totalRequests}
         </strong>{" "}
         api request
       </span>
       <div className="py-[10px]" />
-      {apiRequests.length > 0 ? (
-        <ResponsiveContainer width="100%" height={302}>
-          <LineChart width={1040} height={302} data={apiRequests}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis />
-            <Tooltip
-              itemStyle={{ color: "#000000" }}
-              labelStyle={{ color: "gray" }}
-            />
-            <Legend />
-            <Line type="monotone" dataKey="count" stroke="#ffffff" />
-          </LineChart>
-        </ResponsiveContainer>
-      ) : (
-        <EmptyAPIRequests from={date.from} />
-      )}
+      <div className="bg-[#1e1e1f] pt-[30px] pr-[35px] pb-[24px] pl-0">
+        {apiRequests.length > 0 ? (
+          <ResponsiveContainer width="100%" height={302}>
+            <LineChart width={1040} height={302} data={apiRequests}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="time" />
+              <YAxis />
+              <Tooltip
+                itemStyle={{ color: "#000000" }}
+                labelStyle={{ color: "gray" }}
+              />
+              <Legend
+                formatter={(value) => (
+                  <span className="font-source-code text-white text-[10px]">
+                    {value}
+                  </span>
+                )}
+              />
+              <Line type="monotone" dataKey="count" stroke="#ffffff" />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <EmptyAPIRequests from={date.from} />
+        )}
+      </div>
     </div>
   );
 }
@@ -202,18 +243,26 @@ export const EmptyAPIRequests = ({ from }: { from: number }) => {
           tickFormatter={(_, index) => (index === 0 ? "0" : "")}
           tickLine={false}
           label={{
+            fontSize: 10,
+            fontFamily: "Source code pro",
             value: "count",
             position: "top",
             fill: "#ffffff",
             offset: 20,
-            dx: 50,
+            dx: 46,
           }}
         />
         <Tooltip
           itemStyle={{ color: "#000000" }}
           labelStyle={{ color: "gray" }}
         />
-        <Legend />
+        <Legend
+          formatter={(value) => (
+            <span className="font-source-code text-white text-[10px]">
+              {value}
+            </span>
+          )}
+        />
         <Line type="monotone" dataKey="count" stroke="#ffffff" />
       </LineChart>
     </ResponsiveContainer>

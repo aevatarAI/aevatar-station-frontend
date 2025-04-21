@@ -6,25 +6,28 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
-export const useGetAPIRequests = (
-  startTime = 1740980355000,
-  endTime = 1743658755000
-) => {
+interface DateRange {
+  from: number;
+  to: number;
+}
+
+export const useGetAPIRequests = (date: DateRange) => {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [organisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
   return useQuery({
-    queryKey: ["api-requests", { projectId, organisationId }],
+    queryKey: ["api-requests", { projectId, organisationId, ...date }],
     queryFn: () => {
       // Might need to use useEffect here
       return request.apiRequests.getAPIRequest({
         params: {
           OrganizationId: organisationId,
           ProjectId: projectId,
-          StartTime: startTime,
-          EndTime: endTime,
+          StartTime: date.from,
+          EndTime: date.to,
         },
       });
     },
+    enabled: !!(date.from && date.to),
   });
 };

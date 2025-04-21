@@ -28,8 +28,7 @@ import { useEffect, useState } from "react";
 import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useGetLLMTokens } from "@/hooks/useGetLLMTokenUsage";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
-import { DateRange } from "react-day-picker";
-import { addDays } from "date-fns";
+import { generateLast7Days } from "@/utils/helpers";
 
 const UNCHANGED_DATA = [
   {
@@ -165,19 +164,58 @@ export function Usage() {
         api request
       </span>
       <div className="py-[10px]" />
-      <ResponsiveContainer width="100%" height={302}>
-        <LineChart width={1040} height={302} data={apiRequests}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="time" />
-          <YAxis />
-          <Tooltip
-            itemStyle={{ color: "#000000" }}
-            labelStyle={{ color: "gray" }}
-          />
-          <Legend />
-          <Line type="monotone" dataKey="count" stroke="#ffffff" />
-        </LineChart>
-      </ResponsiveContainer>
+      {apiRequests.length > 0 ? (
+        <ResponsiveContainer width="100%" height={302}>
+          <LineChart width={1040} height={302} data={apiRequests}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="time" />
+            <YAxis />
+            <Tooltip
+              itemStyle={{ color: "#000000" }}
+              labelStyle={{ color: "gray" }}
+            />
+            <Legend />
+            <Line type="monotone" dataKey="count" stroke="#ffffff" />
+          </LineChart>
+        </ResponsiveContainer>
+      ) : (
+        <EmptyAPIRequests from={date.from} />
+      )}
     </div>
   );
 }
+
+export const EmptyAPIRequests = ({ from }: { from: number }) => {
+  const last7Days = generateLast7Days(from);
+
+  return (
+    <ResponsiveContainer width="100%" height={302}>
+      <LineChart width={1040} height={302} data={[]} margin={{ top: 40 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="time"
+          domain={last7Days}
+          tickFormatter={(value, index) => (index === 0 ? "" : value)}
+        />
+        <YAxis
+          domain={[0, 4]}
+          tickFormatter={(_, index) => (index === 0 ? "0" : "")}
+          tickLine={false}
+          label={{
+            value: "count",
+            position: "top",
+            fill: "#ffffff",
+            offset: 20,
+            dx: 50,
+          }}
+        />
+        <Tooltip
+          itemStyle={{ color: "#000000" }}
+          labelStyle={{ color: "gray" }}
+        />
+        <Legend />
+        <Line type="monotone" dataKey="count" stroke="#ffffff" />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};

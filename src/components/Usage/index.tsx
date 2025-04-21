@@ -29,6 +29,7 @@ import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useGetLLMTokens } from "@/hooks/useGetLLMTokenUsage";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
 import { generateLast7Days } from "@/utils/helpers";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const UNCHANGED_DATA = [
   {
@@ -67,23 +68,6 @@ const UNCHANGED_DATA = [
     output: 3,
   },
 ];
-
-export const useIsMobile = () => {
-  const [width, setWidth] = useState<number>(window.innerWidth);
-
-  const handleWindowSizeChange = () => {
-    setWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleWindowSizeChange);
-    return () => {
-      window.removeEventListener("resize", handleWindowSizeChange);
-    };
-  }, []);
-
-  return { isMobile: width <= 768 };
-};
 
 export function Usage() {
   const form = useForm();

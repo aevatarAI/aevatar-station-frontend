@@ -61,9 +61,8 @@ export function DatePickerWithRange({
             defaultMonth={date?.from}
             selected={date}
             onSelect={(date?: DateRange) => {
-              const dayFrom = dayjs.utc(date?.from).valueOf();
-              const dayTo = dayjs.utc(date?.to).valueOf();
-
+              const dayFrom = dayjs(date?.from).startOf("day").valueOf();
+              const dayTo = dayjs(date?.to).endOf("day").valueOf();
               onDateChange({ from: dayFrom, to: dayTo });
             }}
             numberOfMonths={2}

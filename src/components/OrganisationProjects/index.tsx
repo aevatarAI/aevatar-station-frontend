@@ -33,6 +33,7 @@ export default function OrganisationProjects() {
 
     await updateProjectListHandler(organizationId);
     setLoading(false);
+    window.scrollTo(0, 0);
   }, [organizationId, updateProjectListHandler]);
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export default function OrganisationProjects() {
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
-        {userPermissions?.projectsEdit ? (
+        {userPermissions?.projectsCreate ? (
           <ProjectEditDialog type="create" onSubmit={onCreate} />
         ) : (
           <span />

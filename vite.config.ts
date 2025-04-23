@@ -7,6 +7,14 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig((_config) => ({
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true,
+      },
+    },
+  },
   plugins: [nodePolyfills(), react({}), svgr(), imagetools(), tailwindcss()],
 
   resolve: {

@@ -45,12 +45,16 @@ export const reverse = (data: any[]) => {
   return results;
 };
 
-export const generateLast7Days = (timestamp: number) => {
+export const generateDates = (from: number, to: number) => {
   const dates = [];
-  const baseDate = dayjs(timestamp);
+  const baseDate = dayjs(from);
 
-  for (let i = 6; i >= 0; i--) {
-    const date = baseDate.subtract(i, "day");
+  const date1 = dayjs(from);
+  const date2 = dayjs(to);
+  const diff = date2.diff(date1, "day");
+
+  for (let i = 0; i <= diff; i++) {
+    const date = baseDate.add(i, "day");
     dates.push(date.format("DD/MM"));
   }
 

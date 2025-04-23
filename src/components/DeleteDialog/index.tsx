@@ -15,7 +15,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useCallback, useState } from "react";
 interface IDeleteDialogProps {
   title: string;
-  description: string;
+  description?: string;
   disabled?: boolean;
   onYes?: () => Promise<void>;
 }
@@ -57,9 +57,11 @@ export default function DeleteDialog({
             <div className="text-white text-center font-syne text-[18px] font-semibold leading-normal lowercase w-[274px]">
               {title}
             </div>
-            <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase w-[220px]">
-              {description}
-            </div>
+            {description && (
+              <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase w-[220px]">
+                {description}
+              </div>
+            )}
           </div>
 
           <div className="flex justify-between items-start self-stretch pt-[28px] gap-[14px]">

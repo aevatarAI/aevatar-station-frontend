@@ -26,6 +26,10 @@ type TUserPermissions = {
   roleCreate?: boolean;
   roleEdit?: boolean;
   roleDelete?: boolean;
+  dll?: boolean;
+  dllCreate?: boolean;
+  dllEdit?: boolean;
+  dllDelete?: boolean;
 };
 
 export const useProjectPermissions = () => {
@@ -109,6 +113,18 @@ export const useProjectPermissions = () => {
           break;
         case "Permission:Roles.Delete":
           _permissions.roleDelete = item.isGranted;
+          break;
+        case "Permission:Dll":
+          _permissions.dll = item.isGranted;
+          break;
+        case "Permission:Dll.Create":
+          _permissions.dllCreate = item.isGranted;
+          break;
+        case "Permission:Dll.Edit":
+          _permissions.dllEdit = item.isGranted;
+          break;
+        case "Permission:Dll.Delete":
+          _permissions.dllDelete = item.isGranted;
           break;
       }
     });

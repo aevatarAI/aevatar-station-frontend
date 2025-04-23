@@ -2,6 +2,7 @@
 
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
+import Dll from "@/assets/dll_menu.svg?react";
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
 import Notication from "@/assets/notication.svg?react";
@@ -165,7 +166,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
           }}
           className={clsx(
             menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx
+            selectTab === "apikeys" && menuItemSelectedClx,
           )}
         >
           <ApikeysIcon />
@@ -178,11 +179,24 @@ export function SideBar({ className, onClose }: ISideBarProps) {
           }}
           className={clsx(
             menuItemClx,
-            selectTab === "usage" && menuItemSelectedClx
+            selectTab === "usage" && menuItemSelectedClx,
           )}
         >
           <ChartIcon />
           <span className={clsx(menuItemTextClx)}>usage</span>
+        </div>
+        <div
+          onClick={() => {
+            navigate("/dashboard/dll");
+            onClose?.();
+          }}
+          className={clsx(
+            menuItemClx,
+            selectTab === "dll" && menuItemSelectedClx,
+          )}
+        >
+          <Dll />
+          <span className={clsx(menuItemTextClx)}>dll</span>
         </div>
       </div>
     );

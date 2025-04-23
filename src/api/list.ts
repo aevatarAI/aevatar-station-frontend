@@ -185,7 +185,12 @@ const PROFILE_API_LIST = {
   },
   getProfile: "/api/account/my-profile",
 };
-
+const PLUGINS_API_LIST = {
+  getPlugins: "/api/plugins",
+  addPlugins: { target: "/api/plugins", baseConfig: { method: "POST" } },
+  updatePlugins: { target: "/api/plugins", baseConfig: { method: "PUT" } },
+  deletePlugins: { target: "/api/plugins", baseConfig: { method: "DELETE" } },
+};
 export const EXPAND_APIS = {
   apiKeys: API_KEYS_API_LIST,
   apiRequests: API_REQUESTS_API_LIST,
@@ -193,6 +198,7 @@ export const EXPAND_APIS = {
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,
   profile: PROFILE_API_LIST,
+  plugins: PLUGINS_API_LIST,
 };
 
 export type EXPAND_REQ_TYPES = {

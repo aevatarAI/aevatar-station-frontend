@@ -124,7 +124,7 @@ export default function DllPage() {
         <div className={clsx(textGradient)}>dll</div>
 
         <DllEditDialog
-          // disabled={!projectPermissions?.dllCreate}
+          disabled={!projectPermissions?.dllCreate || dllList?.length > 0}
           type="create"
           onSubmit={onCreate}
         />

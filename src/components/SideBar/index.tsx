@@ -2,6 +2,7 @@
 
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
+import Dll from "@/assets/dll_menu.svg?react";
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
 import Notication from "@/assets/notication.svg?react";
@@ -169,6 +170,13 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       text: "usage",
       url: "/dashboard/usage",
     });
+
+    menuList.push({
+      icon: <Dll />,
+      text: "dll",
+      url: "/dashboard/dll",
+    });
+
     return menuList;
   }, [userPermissions]);
 

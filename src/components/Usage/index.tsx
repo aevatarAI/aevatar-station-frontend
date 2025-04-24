@@ -226,7 +226,10 @@ export function Usage() {
                 dx: 46,
               }}
             />
-            <Tooltip content={(props) => <CustomTooltip {...props} />} />
+            <Tooltip
+              content={(props) => <CustomTooltip {...props} />}
+              cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+            />
             <Legend
               wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
               formatter={(value) => (
@@ -269,7 +272,10 @@ export function Usage() {
               <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
               <XAxis dataKey="time" />
               <YAxis />
-              <Tooltip content={(props) => <CustomTooltip {...props} />} />
+              <Tooltip
+                content={(props) => <CustomTooltip {...props} />}
+                cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+              />
               <Legend
                 wrapperStyle={{
                   paddingLeft: isMobile ? 44 : 0,
@@ -321,7 +327,10 @@ export const EmptyAPIRequests = ({
             dx: 46,
           }}
         />
-        <Tooltip content={(props) => <CustomTooltip {...props} />} />
+        <Tooltip
+          content={(props) => <CustomTooltip {...props} />}
+          cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+        />
         <Legend
           wrapperStyle={{
             paddingLeft: isMobile ? 44 : 0,

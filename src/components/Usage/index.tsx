@@ -33,37 +33,37 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 
 const UNCHANGED_DATA = [
   {
-    name: "01/03",
+    name: "24/04",
     input: 8,
     output: 3,
   },
   {
-    name: "02/03",
+    name: "25/04",
     input: 4,
     output: 4,
   },
   {
-    name: "03/03",
+    name: "26/04",
     input: 12,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "27/04",
     input: 12,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "28/04",
     input: 9,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "29/04",
     input: 9,
     output: 2,
   },
   {
-    name: "05/03",
+    name: "30/04",
     input: 3,
     output: 3,
   },
@@ -93,12 +93,43 @@ const processRequestData = (data: any): Results[] => {
   }));
 };
 
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: any;
+  label?: string;
+}) => {
+  if (!active || !payload || !payload.length) return null;
+
+  return (
+    <div className="custom-tooltip bg-black p-1.5 border-[#303030]">
+      <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
+        {label}
+      </p>
+      {payload.map((entry: any, index: number) => {
+        return (
+          <p
+            className="font-['source_code_pro'] text-[10px] my-[2px]"
+            key={`item-${index}`}
+          >
+            <span style={{ color: entry.color }}>{entry.name}: </span>
+            <span className="font-color-white">{entry.value}</span>
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
 export function Usage() {
   const form = useForm();
   const [apiRequests, setAPIRequests] = useState<Results[]>([]);
   const [date, setDate] = useState({
-    from: dayjs("2025-04-01").startOf("day").valueOf(),
-    to: dayjs("2025-04-01").add(30, "day").endOf("day").valueOf(),
+    from: dayjs().startOf("day").valueOf(),
+    to: dayjs().add(6, "day").endOf("day").valueOf(),
   });
 
   const { data, isLoading } = useGetAPIRequests(date);
@@ -195,7 +226,7 @@ export function Usage() {
                 dx: 46,
               }}
             />
-            <Tooltip />
+            <Tooltip content={(props) => <CustomTooltip {...props} />} />
             <Legend
               wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
               formatter={(value) => (
@@ -205,16 +236,16 @@ export function Usage() {
               )}
             />
             <Bar
-              dataKey="input"
-              name="total input tokens"
-              stackId="a"
-              fill="#606060"
-            />
-            <Bar
               dataKey="output"
               name="total output tokens"
               stackId="a"
               fill="#303030"
+            />
+            <Bar
+              dataKey="input"
+              name="total input tokens"
+              stackId="a"
+              fill="#606060"
             />
           </BarChart>
         </ResponsiveContainer>
@@ -238,10 +269,7 @@ export function Usage() {
               <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
               <XAxis dataKey="time" />
               <YAxis />
-              <Tooltip
-                itemStyle={{ color: "#000000" }}
-                labelStyle={{ color: "gray" }}
-              />
+              <Tooltip content={(props) => <CustomTooltip {...props} />} />
               <Legend
                 wrapperStyle={{
                   paddingLeft: isMobile ? 44 : 0,
@@ -293,10 +321,7 @@ export const EmptyAPIRequests = ({
             dx: 46,
           }}
         />
-        <Tooltip
-          itemStyle={{ color: "#000000" }}
-          labelStyle={{ color: "gray" }}
-        />
+        <Tooltip content={(props) => <CustomTooltip {...props} />} />
         <Legend
           wrapperStyle={{
             paddingLeft: isMobile ? 44 : 0,

@@ -399,9 +399,9 @@ export default function PermissionManagerInnerDialog({
                 onCheckedChange={onAllCheckedChange}
                 text="grant all permissions"
               />
-              <div className="h-[387px] lg:h-[260px] overflow-auto flex flex-col">
-                <div className="flex flex-col lg:flex-row gap-[8px] pt-[20px]">
-                  <div className="flex flex-row lg:flex-col gap-[10px] overflow-auto pb-[20px] ">
+              <div className="h-[387px] lg:h-[260px] flex flex-col">
+                <div className="flex flex-col flex-1 overflow-auto lg:flex-row lg:gap-[28px] gap-[8px] pt-[20px]">
+                  <div className="flex flex-row lg:flex-col gap-[10px] overflow-auto lg:overflow-visible pb-[20px] ">
                     {titles.map((title) => (
                       <div
                         key={title}

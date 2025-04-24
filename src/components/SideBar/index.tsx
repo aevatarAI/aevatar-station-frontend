@@ -156,51 +156,55 @@ export function SideBar({ className, onClose }: ISideBarProps) {
 
   const [selectMenu, selectTab] = useSideBarParams();
 
+  const dashboardMenuMap = useMemo(() => {
+    const menuList = [];
+    if (userPermissions.apiKeys) {
+      menuList.push({
+        icon: <ApikeysIcon />,
+        text: "api keys",
+        url: "/dashboard/apikeys",
+      });
+    }
+    menuList.push({
+      icon: <ChartIcon />,
+      text: "usage",
+      url: "/dashboard/usage",
+    });
+
+    menuList.push({
+      icon: <Dll />,
+      text: "dll",
+      url: "/dashboard/dll",
+    });
+
+    return menuList;
+  }, [userPermissions]);
+
   const dashboardMenu = useMemo(() => {
     return (
       <div>
-        <div
-          onClick={() => {
-            navigate("/dashboard/apikeys");
-            onClose?.();
-          }}
-          className={clsx(
-            menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx,
-          )}
-        >
-          <ApikeysIcon />
-          <span className={clsx(menuItemTextClx)}>api keys</span>
-        </div>
-        <div
-          onClick={() => {
-            navigate("/dashboard/usage");
-            onClose?.();
-          }}
-          className={clsx(
-            menuItemClx,
-            selectTab === "usage" && menuItemSelectedClx,
-          )}
-        >
-          <ChartIcon />
-          <span className={clsx(menuItemTextClx)}>usage</span>
-        </div>
-        <div
-          onClick={() => {
-            navigate("/dashboard/dll");
-            onClose?.();
-          }}
-          className={clsx(
-            menuItemClx,
-            selectTab === "dll" && menuItemSelectedClx,
-          )}
-        >
-          <Dll />
-          <span className={clsx(menuItemTextClx)}>dll</span>
+        <div className="flex flex-col gap-[10px]">
+          {dashboardMenuMap.map((tab) => (
+            <div
+              key={tab.text}
+              onClick={() => {
+                navigate(tab.url);
+                onClose?.();
+              }}
+              className={clsx(
+                menuItemClx,
+                selectTab === tab.text.replaceAll(" ", "") &&
+                  menuItemSelectedClx,
+              )}
+            >
+              {tab.icon}
+              <span className={clsx(menuItemTextClx)}>{tab.text}</span>
+            </div>
+          ))}
         </div>
       </div>
     );
-  }, [selectTab, onClose, navigate]);
+  }, [selectTab, dashboardMenuMap, onClose, navigate]);
 
   const profileMenu = useMemo(
     () => (

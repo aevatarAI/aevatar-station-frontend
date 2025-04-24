@@ -1,17 +1,6 @@
-import {
-  Bar,
-  BarChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  LineChart,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
-import clsx from "clsx";
-import { textGradient } from "@/constants/cls";
+import dayjs from "@/api/dayjs";
+import { DatePickerWithRange } from "@/components/DatePickerWithRange";
+import Loading from "@/components/Loading";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import {
   Select,
@@ -20,50 +9,61 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
+import { textGradient } from "@/constants/cls";
 import { useGetAPIRequests } from "@/hooks/useGetAPIRequests";
-import Loading from "@/components/Loading";
-import dayjs from "@/api/dayjs";
-import { useEffect, useState } from "react";
-import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useGetLLMTokens } from "@/hooks/useGetLLMTokenUsage";
-import { DatePickerWithRange } from "@/components/DatePickerWithRange";
-import { generateDates } from "@/utils/helpers";
+import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { generateDates } from "@/utils/helpers";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const UNCHANGED_DATA = [
   {
-    name: "01/03",
+    name: "18/04",
     input: 8,
     output: 3,
   },
   {
-    name: "02/03",
+    name: "19/04",
     input: 4,
     output: 4,
   },
   {
-    name: "03/03",
+    name: "20/04",
     input: 12,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "21/04",
     input: 12,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "22/04",
     input: 9,
     output: 3,
   },
   {
-    name: "04/03",
+    name: "23/04",
     input: 9,
     output: 2,
   },
   {
-    name: "05/03",
+    name: "24/04",
     input: 3,
     output: 3,
   },
@@ -93,12 +93,46 @@ const processRequestData = (data: any): Results[] => {
   }));
 };
 
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: any;
+  label?: string;
+}) => {
+  if (!active || !payload || !payload.length) return null;
+
+  return (
+    <div className="custom-tooltip bg-black p-1.5 border-[#303030]">
+      <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
+        {label}
+      </p>
+      {payload.map((entry: any, index: number) => {
+        return (
+          <p
+            className="font-['source_code_pro'] text-[10px] my-[2px]"
+            key={`item-${
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              index
+            }`}
+          >
+            <span style={{ color: entry.color }}>{entry.name}: </span>
+            <span className="font-color-white">{entry.value}</span>
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
 export function Usage() {
   const form = useForm();
   const [apiRequests, setAPIRequests] = useState<Results[]>([]);
   const [date, setDate] = useState({
-    from: dayjs("2025-04-01").startOf("day").valueOf(),
-    to: dayjs("2025-04-01").add(30, "day").endOf("day").valueOf(),
+    from: dayjs().subtract(6, "day").startOf("day").valueOf(),
+    to: dayjs().endOf("day").valueOf(),
   });
 
   const { data, isLoading } = useGetAPIRequests(date);
@@ -195,7 +229,10 @@ export function Usage() {
                 dx: 46,
               }}
             />
-            <Tooltip />
+            <Tooltip
+              content={(props) => <CustomTooltip {...props} />}
+              cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+            />
             <Legend
               wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
               formatter={(value) => (
@@ -205,16 +242,16 @@ export function Usage() {
               )}
             />
             <Bar
-              dataKey="input"
-              name="total input tokens"
-              stackId="a"
-              fill="#606060"
-            />
-            <Bar
               dataKey="output"
               name="total output tokens"
               stackId="a"
               fill="#303030"
+            />
+            <Bar
+              dataKey="input"
+              name="total input tokens"
+              stackId="a"
+              fill="#606060"
             />
           </BarChart>
         </ResponsiveContainer>
@@ -239,8 +276,8 @@ export function Usage() {
               <XAxis dataKey="time" />
               <YAxis />
               <Tooltip
-                itemStyle={{ color: "#000000" }}
-                labelStyle={{ color: "gray" }}
+                content={(props) => <CustomTooltip {...props} />}
+                cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
               />
               <Legend
                 wrapperStyle={{
@@ -294,8 +331,8 @@ export const EmptyAPIRequests = ({
           }}
         />
         <Tooltip
-          itemStyle={{ color: "#000000" }}
-          labelStyle={{ color: "gray" }}
+          content={(props) => <CustomTooltip {...props} />}
+          cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
         />
         <Legend
           wrapperStyle={{

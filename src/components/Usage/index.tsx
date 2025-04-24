@@ -33,37 +33,37 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 
 const UNCHANGED_DATA = [
   {
-    name: "24/04",
+    name: "18/04",
     input: 8,
     output: 3,
   },
   {
-    name: "25/04",
+    name: "19/04",
     input: 4,
     output: 4,
   },
   {
-    name: "26/04",
+    name: "20/04",
     input: 12,
     output: 3,
   },
   {
-    name: "27/04",
+    name: "21/04",
     input: 12,
     output: 3,
   },
   {
-    name: "28/04",
+    name: "22/04",
     input: 9,
     output: 3,
   },
   {
-    name: "29/04",
+    name: "23/04",
     input: 9,
     output: 2,
   },
   {
-    name: "30/04",
+    name: "24/04",
     input: 3,
     output: 3,
   },
@@ -128,8 +128,8 @@ export function Usage() {
   const form = useForm();
   const [apiRequests, setAPIRequests] = useState<Results[]>([]);
   const [date, setDate] = useState({
-    from: dayjs().startOf("day").valueOf(),
-    to: dayjs().add(6, "day").endOf("day").valueOf(),
+    from: dayjs().subtract(6, "day").startOf("day").valueOf(),
+    to: dayjs().endOf("day").valueOf(),
   });
 
   const { data, isLoading } = useGetAPIRequests(date);

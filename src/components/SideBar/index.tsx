@@ -165,17 +165,20 @@ export function SideBar({ className, onClose }: ISideBarProps) {
           }}
           className={clsx(
             menuItemClx,
-            selectTab === "apikeys" && menuItemSelectedClx,
+            selectTab === "apikeys" && menuItemSelectedClx
           )}
         >
           <ApikeysIcon />
           <span className={clsx(menuItemTextClx)}>api keys</span>
         </div>
         <div
-          onClick={() => navigate("/dashboard/usage")}
+          onClick={() => {
+            navigate("/dashboard/usage");
+            onClose?.();
+          }}
           className={clsx(
             menuItemClx,
-            selectTab === "usage" && menuItemSelectedClx,
+            selectTab === "usage" && menuItemSelectedClx
           )}
         >
           <ChartIcon />

@@ -27,7 +27,7 @@ export default function Dashboard() {
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-screen">
+      <div className="flex-1 overflow-auto h-screen bg-black">
         <div className="pt-[31px] px-[20px]">
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}

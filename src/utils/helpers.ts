@@ -1,3 +1,5 @@
+import dayjs from "@/api/dayjs";
+
 export const truncate = (original: string, sentenceToRemove: string) => {
   return original.replace(sentenceToRemove, "");
 };
@@ -5,7 +7,7 @@ export const truncate = (original: string, sentenceToRemove: string) => {
 export function shortenString(
   str?: string,
   prefixLength = 5,
-  suffixLength = 5,
+  suffixLength = 5
 ) {
   if (!str || typeof str !== "string") return "";
 
@@ -41,4 +43,20 @@ export const reverse = (data: any[]) => {
     results.push(item);
   }
   return results;
+};
+
+export const generateDates = (from: number, to: number) => {
+  const dates = [];
+  const baseDate = dayjs(from);
+
+  const date1 = dayjs(from);
+  const date2 = dayjs(to);
+  const diff = date2.diff(date1, "day");
+
+  for (let i = 0; i <= diff; i++) {
+    const date = baseDate.add(i, "day");
+    dates.push(date.format("DD/MM"));
+  }
+
+  return dates;
 };

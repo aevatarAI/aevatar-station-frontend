@@ -16,6 +16,8 @@ export const AccessTokenUpdater = () => {
 
   const expiredHandler = useCallback(
     async (_text?: string) => {
+      // console.log("autherror===  myEvents.AuthorizationExpired.addListener();");
+
       if (refreshToken) {
         try {
           const data = await refreshTokenLogin(refreshToken);
@@ -30,6 +32,8 @@ export const AccessTokenUpdater = () => {
           });
           return;
         } catch (error) {
+          // console.log("autherror===refreshToken==error", error);
+
           myEvents.AuthorizationUpdated.emit({ token: undefined, error });
         }
       }

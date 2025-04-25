@@ -48,8 +48,6 @@ myServer.prototype.send = async function (
     return result;
   } catch (error: any) {
     if (isDeniedRequest(error) && localStorage.getItem("refresh_token")) {
-      // console.log("autherror===error1", error, this.tokenPending, url);
-
       const _count = count + 1;
       if (_count > 3) {
         myEvents.AuthorizationExpired.emit(MAX_REQUEST);
@@ -57,17 +55,14 @@ myServer.prototype.send = async function (
       }
       if (!this.tokenPending) {
         this.tokenPending = true;
-        // console.log("autherror===  myEvents.AuthorizationExpired.emit();");
         myEvents.AuthorizationExpired.emit();
       }
-      // console.log("autherror===error", this.tokenPending, url);
-
       const token: string = await new Promise((resolve) => {
         const { remove } = myEvents.AuthorizationUpdated.addListener(
           (data: { error?: any; token?: string }) => {
             if (data.token) resolve(data.token);
             remove();
-          },
+          }
         );
       });
       this.tokenPending = false;

@@ -3,6 +3,8 @@ import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
+import { GithubLoginCallback } from "@/app/SocialLogin/github";
+import { GoogleLoginCallback } from "@/app/SocialLogin/google";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
@@ -57,7 +59,9 @@ const Redirection = () => {
 
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
-      const projectsPromises = organizationIds.map((id: string) => getProjects(id));
+      const projectsPromises = organizationIds.map((id: string) =>
+        getProjects(id)
+      );
 
       if (organizationIds.length === 0) {
         return navigate("/welcome");
@@ -82,12 +86,7 @@ const Redirection = () => {
     };
 
     fetchProjectsThenRedirect();
-  }, [
-    data,
-    isLoading,
-    setCurrentOrganisationId,
-    navigate,
-  ]);
+  }, [data, isLoading, setCurrentOrganisationId, navigate]);
 
   return isLoading ? <Loading /> : null;
 };
@@ -123,6 +122,14 @@ const App = () => (
         <WithLazyLoading>
           <Login />
         </WithLazyLoading>
+      </Route>
+
+      <Route path="/auth/github/callback">
+        <GithubLoginCallback />
+      </Route>
+
+      <Route path="/auth/google/callback">
+        <GoogleLoginCallback />
       </Route>
 
       <PrivateRoute path="/welcome">

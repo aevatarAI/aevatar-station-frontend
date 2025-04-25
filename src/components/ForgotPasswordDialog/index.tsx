@@ -19,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";

@@ -4,6 +4,8 @@ import robotImg1 from "@/assets/overview/robot1.png";
 import robotImg2 from "@/assets/overview/robot2.png";
 import robotImg3 from "@/assets/overview/robot3.png";
 import robotImg4 from "@/assets/overview/robot4.png";
+import GoogleIcon from "@/assets/google.svg?react";
+import GithubIcon from "@/assets/github.svg?react";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,8 +25,9 @@ import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { generateRandomString } from "@/utils/helpers";
 
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
@@ -36,15 +39,15 @@ const formSchema = z.object({
     .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "password must contain at least one non-alphanumeric character"
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "password must contain at least one lowercase letter ('a'-'z')"
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "password must contain at least one uppercase letter ('A'-'Z')"
     ),
 });
 
@@ -53,7 +56,6 @@ const Login = () => {
   const { toast } = useToast();
   const [_, setAccessToken] = useAtom(accessTokenAtom);
   const [__, setRefreshToken] = useAtom(refreshTokenAtom);
-
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -81,8 +83,31 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken]
   );
+
+  const handleGithubLogin = () => {
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+    const redirectURI = import.meta.env.VITE_GITHUB_REDIRECT_URI;
+    const scope = import.meta.env.VITE_GITHUB_SCOPE;
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scope}`;
+
+    window.location.href = authUrl;
+  };
+
+  const handleGoogleLogin = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const redirectUri = encodeURIComponent(
+      `${window.location.origin}/auth/google/callback`
+    );
+    const scope = encodeURIComponent("openid email profile");
+    const responseType = "id_token token";
+    const nonce = generateRandomString(16);
+
+    sessionStorage.setItem("oauth_nonce", nonce);
+
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&nonce=${nonce}`;
+  };
 
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
@@ -158,7 +183,7 @@ const Login = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
                 disabled={loading}
               >
                 {loading ? "logging in" : "log in"}
@@ -169,10 +194,34 @@ const Login = () => {
         <div className="text-right">
           <ForgotPasswordDialog />
         </div>
+        <div className="flex flex-col gap-[10px] mt-[30px]">
+          <span className="text-gray-light font-normal font-semibold text-[12px]">
+            or sign in with
+          </span>
+          <div className="flex flex-between gap-[20px]">
+            <Button
+              type="button"
+              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              onClick={handleGoogleLogin}
+            >
+              <GoogleIcon />
+              <span>google</span>
+            </Button>
+            <Button
+              type="button"
+              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              onClick={handleGithubLogin}
+            >
+              <GithubIcon />
+              <span>github</span>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
@@ -184,4 +233,6 @@ const LoginPage = () => {
     </Layout>
   );
 };
+
+
 export default LoginPage;

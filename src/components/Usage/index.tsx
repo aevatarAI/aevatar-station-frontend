@@ -109,11 +109,11 @@ const CustomTooltip = ({
       <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
         {label}
       </p>
-      {payload.map((entry: any, index: number) => {
+      {payload.map((entry: any) => {
         return (
           <p
             className="font-['source_code_pro'] text-[10px] my-[2px]"
-            key={`item-${index}`}
+            key={`item-${entry.name}`}
           >
             <span style={{ color: entry.color }}>{entry.name}: </span>
             <span className="font-color-white">{entry.value}</span>

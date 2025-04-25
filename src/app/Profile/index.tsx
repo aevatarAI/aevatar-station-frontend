@@ -8,6 +8,7 @@ import { SideBar } from "@/components/SideBar";
 import { useLongPollUnreadNotifications } from "@/hooks/useLongPollUnreadNotifications";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
+import { usernameAtom } from "@/state/atoms";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,

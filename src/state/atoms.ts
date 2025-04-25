@@ -16,7 +16,7 @@ export const refreshTokenAtom = atomWithStorage<string | null>(
   "refresh_token",
   null,
   undefined,
-  { getOnInit: true },
+  { getOnInit: true }
 );
 // register
 const getSessionValue = (type: string) => {

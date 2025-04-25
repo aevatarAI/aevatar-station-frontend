@@ -36,7 +36,7 @@ const useGetAuthServerAccessToken = () => {
     mutationFn: async (id_token: string) => {
       try {
         const response = await axios.post(
-          "https://aevatar-station-ui-staging.aevatar.ai/pre-auth/connect/token",
+          "/connect/token",
           {
             grant_type: "google",
             scope: "Aevatar offline_access",

@@ -9,7 +9,6 @@ import { useNavigate } from "@/hooks/navigate";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import type React from "react";
 
@@ -90,7 +89,9 @@ const WelcomePage: React.FC = () => {
               your email address
             </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[12px] font-source-code">{email}</span>
+              <span className="text-[12px] font-source-code truncate overflow-hidden block max-w-[200px]">
+                {email}
+              </span>
               <Copy
                 description="email address copied"
                 toCopy={email}
@@ -101,7 +102,7 @@ const WelcomePage: React.FC = () => {
         )}
       </div>
       {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",
+        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around"
       )}
     </div>
   );

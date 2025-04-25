@@ -3,8 +3,8 @@ import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
-import { GithubLogin } from "@/app/SocialLogin/github";
-import { GoogleLogin } from "@/app/SocialLogin/google";
+import { GithubLoginCallback } from "@/app/SocialLogin/github";
+import { GoogleLoginCallback } from "@/app/SocialLogin/google";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
@@ -124,12 +124,12 @@ const App = () => (
         </WithLazyLoading>
       </Route>
 
-      <Route path="/callback/github">
-        <GithubLogin />
+      <Route path="/auth/github/callback">
+        <GithubLoginCallback />
       </Route>
 
-      <Route path="/callback/google">
-        <GoogleLogin />
+      <Route path="/auth/google/callback">
+        <GoogleLoginCallback />
       </Route>
 
       <PrivateRoute path="/welcome">

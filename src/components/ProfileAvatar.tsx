@@ -28,11 +28,12 @@ export default function ProfileAvatar() {
           <img src={profileImg} alt="profile" className="object-cover" />
         </PopoverTrigger>
         <PopoverContent>
-          {profile?.userName && (
-            <div className={clsx(itemClassName, "font-semibold font-syne")}>
-              <span>{profile?.userName}</span>
-            </div>
-          )}
+          {profile?.userName ||
+            (profile?.name && (
+              <div className={clsx(itemClassName, "font-semibold font-syne")}>
+                <span>{profile?.userName || profile?.name}</span>
+              </div>
+            ))}
           <div className={itemClassName}>
             <span
               style={{

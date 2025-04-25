@@ -2,17 +2,6 @@ import type { API_REQ_FUNCTION } from "./types";
 
 export const DEFAULT_METHOD = "GET";
 
-const SOCIAL_LOGIN_LIST = {
-  postGithub: {
-    target: "/",
-    baseConfig: { method: "POST" },
-  },
-  postGoogle: {
-    target: "/",
-    baseConfig: { method: "POST" },
-  },
-};
-
 const NOTIFICATIONS_API_LIST = {
   getInvites: {
     target: "/api/notification/organization",
@@ -200,7 +189,6 @@ const PROFILE_API_LIST = {
 export const EXPAND_APIS = {
   apiKeys: API_KEYS_API_LIST,
   apiRequests: API_REQUESTS_API_LIST,
-  socialMediaLogin: SOCIAL_LOGIN_LIST,
   notifications: NOTIFICATIONS_API_LIST,
   organizations: ORGANIZATIONS_API_LIST,
   projects: PROJECT_API_LIST,

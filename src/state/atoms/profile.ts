@@ -18,3 +18,15 @@ export const USER_PROFILE_ATOM = atomWithStorage<IUserProfile | null>(
   undefined,
   { getOnInit: true }
 );
+
+export enum IUserLoginType {
+  SOCIAL_MEDIA = "SOCIAL_MEDIA",
+  STANDARD = "STANDARD",
+}
+
+export const USER_LOGIN_TYPE = atomWithStorage<IUserLoginType | null>(
+  "login_type",
+  null,
+  undefined,
+  { getOnInit: true }
+);

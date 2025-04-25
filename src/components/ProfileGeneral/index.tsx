@@ -5,16 +5,23 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { sendResetPasswordEmail } from "@/services/auth";
-import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import {
+  IUserLoginType,
+  USER_LOGIN_TYPE,
+  USER_PROFILE_ATOM,
+} from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function ProfileGeneral() {
   const { toast } = useToast();
   const [profile] = useAtom(USER_PROFILE_ATOM);
+  const [userLoginType] = useAtom(USER_LOGIN_TYPE);
   const getUserProfile = useUpdateProfile();
-  const [name, setName] = useState<string>(profile?.userName ?? "");
+  const [name, setName] = useState<string>(
+    (profile?.userName || profile?.name) ?? ""
+  );
   const onNameSave = useCallback(async () => {
     try {
       await request.profile.editProfile({
@@ -66,11 +73,12 @@ export default function ProfileGeneral() {
           <div className="flex gap-[10px]">
             <Input
               className="max-w-[498px] flex-1"
-              placeholder={profile?.userName}
+              placeholder={profile?.userName || profile?.name}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <LoadingButton
+              disabled={userLoginType === IUserLoginType.SOCIAL_MEDIA}
               className="font-semibold py-[7px] px-[17px] border-input"
               onClick={onNameSave}
             >
@@ -89,22 +97,25 @@ export default function ProfileGeneral() {
           value={profile?.email}
         />
       </div>
-      <div className="pt-[30px]">
-        <div className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal pb-[10px]">
-          reset password
+      {userLoginType !== IUserLoginType.SOCIAL_MEDIA && (
+        <div className="pt-[30px]">
+          <div className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal pb-[10px]">
+            reset password
+          </div>
+          <div className="text-[#B9B9B9] font-pro text-[13px] font-normal leading-normal lowercase">
+            A password reset link will be sent to your email to reset your
+            password.
+            <br /> if you don't get an email within a few minutes. please
+            re-try.
+          </div>
+          <Button
+            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-[#303030] text-[12px] leading-[14px]"
+            onClick={onResetPassword}
+          >
+            reset password
+          </Button>
         </div>
-        <div className="text-[#B9B9B9] font-pro text-[13px] font-normal leading-normal lowercase">
-          A password reset link will be sent to your email to reset your
-          password.
-          <br /> if you don't get an email within a few minutes. please re-try.
-        </div>
-        <Button
-          className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-[#303030] text-[12px] leading-[14px]"
-          onClick={onResetPassword}
-        >
-          reset password
-        </Button>
-      </div>
+      )}
     </div>
   );
 }

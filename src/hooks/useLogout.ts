@@ -1,8 +1,4 @@
-import {
-  accessTokenAtom,
-  refreshTokenAtom,
-  socialMediaLoginAtom,
-} from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
@@ -16,7 +12,7 @@ import {
   ORGANIZATION_PERMISSION_ATOM,
   PROJECT_PERMISSION_ATOM,
 } from "@/state/atoms/permissions";
-import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import { USER_LOGIN_TYPE, USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 import { useCallback } from "react";
@@ -28,7 +24,6 @@ export const useLogout = () => {
   const [, setCurrentProject] = useAtom(CURRENT_PROJECT_ATOM);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setRefreshToken] = useAtom(refreshTokenAtom);
-  const [, setSocialMediaLogin] = useAtom(socialMediaLoginAtom);
 
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setPermission] = useAtom(PROJECT_PERMISSION_ATOM);
@@ -37,6 +32,7 @@ export const useLogout = () => {
   const [, setProjectRole] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
   const [, setOrgRole] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const [, setOrgMember] = useAtom(ORGANIZATION_MEMBER_ATOM);
+  const [, setUserLoginType] = useAtom(USER_LOGIN_TYPE);
 
   return useCallback(() => {
     setOrganizationsList(RESET);
@@ -52,7 +48,7 @@ export const useLogout = () => {
     setOrgRole(RESET);
     setProfile(RESET);
     setOrgPermission(RESET);
-    setSocialMediaLogin(RESET);
+    setUserLoginType(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
@@ -66,6 +62,6 @@ export const useLogout = () => {
     setPermission,
     setProjectRole,
     setOrgPermission,
-    setSocialMediaLogin,
+    setUserLoginType,
   ]);
 };

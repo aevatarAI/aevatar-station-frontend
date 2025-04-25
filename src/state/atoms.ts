@@ -16,13 +16,6 @@ export const refreshTokenAtom = atomWithStorage<string | null>(
   "refresh_token",
   null,
   undefined,
-  { getOnInit: true },
-);
-
-export const socialMediaLoginAtom = atomWithStorage<boolean | null>(
-  "social_media_login",
-  false,
-  undefined,
   { getOnInit: true }
 );
 // register

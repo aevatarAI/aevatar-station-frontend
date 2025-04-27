@@ -50,28 +50,24 @@ export const GithubLoginCallback = () => {
   const { code } = useGetCallbackCode();
 
   useEffect(() => {
-    console.log("code: ", code);
-  }, [code]);
+    const githubLogin = async () => {
+      await mutateAsync(code, {
+        onSettled(data) {
+          if (!data?.access_token) {
+            throw new Error("unable to obtain access_token");
+          }
+          setLoginType(IUserLoginType.SOCIAL_MEDIA);
+          setAccessToken(`Bearer ${data.access_token}`);
+          navigate("/redirect");
+        },
+        onError: () => {
+          navigate("/error");
+        },
+      });
+    };
 
-  // useEffect(() => {
-  //   const githubLogin = async () => {
-  //     await mutateAsync(code, {
-  //       onSettled(data) {
-  //         if (!data?.access_token) {
-  //           throw new Error("unable to obtain access_token");
-  //         }
-  //         setLoginType(IUserLoginType.SOCIAL_MEDIA);
-  //         setAccessToken(`Bearer ${data.access_token}`);
-  //         navigate("/redirect");
-  //       },
-  //       onError: () => {
-  //         navigate("/error");
-  //       },
-  //     });
-  //   };
-
-  //   githubLogin();
-  // }, [code, mutateAsync, navigate, setAccessToken, setLoginType]);
+    githubLogin();
+  }, [code, mutateAsync, navigate, setAccessToken, setLoginType]);
 
   return null;
 };

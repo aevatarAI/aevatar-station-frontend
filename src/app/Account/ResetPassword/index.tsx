@@ -57,6 +57,10 @@ const ResetPassword = () => {
   }, []);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
   });
   const navigate = useNavigate();
   const onSubmit = useCallback(

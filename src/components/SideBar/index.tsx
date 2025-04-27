@@ -49,7 +49,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
   const userProjectPermissions = useProjectPermissions();
 
   const organisationMenuList = useMemo(() => {
-    if (organisationList.length <= 0) return [];
+    if (organisationList?.length <= 0) return [];
     // if (!userPermissions.organizations) return [];
     const menuList = [];
     if (userPermissions.organizations)
@@ -96,7 +96,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
-    if (projectList.length <= 0) return [];
+    if (projectList?.length <= 0) return [];
     if (!userProjectPermissions.projects) return [];
     const menuList = [];
 

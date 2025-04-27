@@ -1,6 +1,8 @@
 import { getOrganizationRoles } from "@/api/utils/organization";
 import { getProjectRoles } from "@/api/utils/project";
+import { useLongPollUnreadNotifications } from "@/hooks/useLongPollUnreadNotifications";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
+import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
@@ -12,9 +14,13 @@ import { useAtom } from "jotai";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Profile from "../Profile"; // Ensure correct file path
 
-vi.mock("jotai", () => ({
-  useAtom: vi.fn(),
-}));
+vi.mock("jotai", async () => {
+  const actual = await vi.importActual("jotai");
+  return {
+    ...actual,
+    useAtom: vi.fn(),
+  };
+});
 
 vi.mock("@/hooks/useSideBarParams", () => ({
   useSideBarParams: vi.fn(),
@@ -49,6 +55,14 @@ vi.mock("@/components/ProjectsInner", () => ({
   default: ({ tab }: { tab: string }) => <div>ProjectsInner Tab: {tab}</div>,
 }));
 
+vi.mock("@/hooks/useLongPollUnreadNotifications", () => ({
+  useLongPollUnreadNotifications: vi.fn(),
+}));
+
+vi.mock("@/hooks/useUpdateOrganisations", () => ({
+  useUpdateOrganisations: vi.fn(),
+}));
+
 describe("Profile Component", () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -57,6 +71,14 @@ describe("Profile Component", () => {
   it("should render sidebar and default layout", () => {
     const mockSideBarParams = vi.fn().mockReturnValue(["profile", "settings"]);
     vi.mocked(useSideBarParams).mockImplementation(mockSideBarParams);
+    vi.mocked(useAtom).mockImplementation((atom) => {
+      if (atom === CURRENT_ORGANIZATION_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_ORGANIZATION_ROLE_ATOM)
+        return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) return [null, vi.fn()] as any;
+      return [null, vi.fn()] as any;
+    });
 
     render(<Profile />);
 
@@ -73,8 +95,10 @@ describe("Profile Component", () => {
       if (atom === CURRENT_ORGANIZATION_ATOM)
         return ["org-id-123", vi.fn()] as any;
       if (atom === CURRENT_ORGANIZATION_ROLE_ATOM)
-        return [null, mockSetOrganisationRoles];
-      return [null, vi.fn()];
+        return [null, mockSetOrganisationRoles] as any;
+      if (atom === CURRENT_PROJECT_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) return [null, vi.fn()] as any;
+      return [null, vi.fn()] as any;
     });
 
     render(<Profile />);
@@ -93,8 +117,11 @@ describe("Profile Component", () => {
       if (atom === CURRENT_PROJECT_ATOM)
         return ["project-id-456", vi.fn()] as any;
       if (atom === CURRENT_PROJECT_ROLE_ATOM)
-        return [null, mockSetProjectRoles];
-      return [null, vi.fn()];
+        return [null, mockSetProjectRoles] as any;
+      if (atom === CURRENT_ORGANIZATION_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_ORGANIZATION_ROLE_ATOM)
+        return [null, vi.fn()] as any;
+      return [null, vi.fn()] as any;
     });
 
     render(<Profile />);
@@ -110,6 +137,14 @@ describe("Profile Component", () => {
   it("should render OrganisationInner when `selectMenu` is 'organisation'", () => {
     const mockSideBarParams = vi.fn().mockReturnValue(["organisation", "tab1"]);
     vi.mocked(useSideBarParams).mockImplementation(mockSideBarParams);
+    vi.mocked(useAtom).mockImplementation((atom) => {
+      if (atom === CURRENT_ORGANIZATION_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_ORGANIZATION_ROLE_ATOM)
+        return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) return [null, vi.fn()] as any;
+      return [null, vi.fn()] as any;
+    });
 
     render(<Profile />);
 
@@ -119,6 +154,14 @@ describe("Profile Component", () => {
   it("should render ProjectsInner when `selectMenu` is 'projects'", () => {
     const mockSideBarParams = vi.fn().mockReturnValue(["projects", "tab2"]);
     vi.mocked(useSideBarParams).mockImplementation(mockSideBarParams);
+    vi.mocked(useAtom).mockImplementation((atom) => {
+      if (atom === CURRENT_ORGANIZATION_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_ORGANIZATION_ROLE_ATOM)
+        return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ATOM) return [null, vi.fn()] as any;
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) return [null, vi.fn()] as any;
+      return [null, vi.fn()] as any;
+    });
 
     render(<Profile />);
 

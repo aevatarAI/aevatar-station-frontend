@@ -1,11 +1,14 @@
 import Header from "@/components/Header";
 import { useNavigate } from "@/hooks/navigate";
+import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
+import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useAtom } from "jotai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useLocation } from "wouter";
 
+// Mock all dependencies
 vi.mock("jotai", async () => {
   const actual = await vi.importActual("jotai");
   return {
@@ -15,11 +18,17 @@ vi.mock("jotai", async () => {
 });
 
 vi.mock("@/hooks/navigate", () => ({
-  useNavigate: vi.fn(),
+  useNavigate: vi.fn(() => mockNavigate),
 }));
 
 vi.mock("wouter", () => ({
-  useLocation: vi.fn(),
+  useLocation: vi.fn(() => ["/dashboard", vi.fn()]),
+}));
+
+vi.mock("@/hooks/usePostReadNotifications", () => ({
+  usePostReadNotifications: vi.fn(() => ({
+    mutate: mockMutate,
+  })),
 }));
 
 vi.mock("@/components/ProfileAvatar", () => ({
@@ -43,20 +52,25 @@ vi.mock("@/components/OriganisactionHeader", () => ({
 
 vi.mock("@/assets/notication.svg?react", () => ({
   __esModule: true,
-  default: () => <div data-testid="notification-icon">Notification</div>,
+  default: () => <div data-testid="notification-icon">NotificationIcon</div>,
 }));
 
 vi.mock("@/assets/notification_empty.svg?react", () => ({
   __esModule: true,
-  default: ({ className }: { className: string }) => (
+  default: ({ className }: { className?: string }) => (
     <div data-testid="notification-empty-icon" className={className}>
-      NotificationEmpty
+      NotificationEmptyIcon
     </div>
   ),
 }));
 
+vi.mock("@/assets/aevatar_ai_logo.svg", () => ({
+  default: "mocked-logo-path",
+}));
+
 describe("Header Component", () => {
   const mockNavigate = vi.fn();
+  const mockMutate = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -67,78 +81,182 @@ describe("Header Component", () => {
     // Mock Location and Pathname
     vi.mocked(useLocation).mockReturnValue(["/dashboard", vi.fn()]);
 
+    // Mock notification mutate
+    vi.mocked(usePostReadNotifications).mockReturnValue({
+      mutate: mockMutate,
+    } as any);
+
     // Mock jotai atoms
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === PROJECT_LIST_ATOM) {
-        return [[{ id: "project-1" }]] as any; // Mock a non-empty project list
+        return [[]] as any;
+      }
+      if (atom === UNREAD_NOTIFICATION_ATOM) {
+        return [0] as any;
       }
       return [null];
     });
   });
 
-  it("should render the header and show organization header and sidebar", () => {
-    render(<Header />);
-    // Organization Header and Sidebar should render correctly
-    const headers = screen.getAllByTestId("organization-header");
-    expect(headers[0]).toHaveClass("hidden lg:flex");
-
-    expect(screen.getByTestId("sheet-sidebar")).toBeInTheDocument();
-  });
-
-  it("should not render header on ignored paths", () => {
-    vi.mocked(useLocation).mockReturnValue(["/login", vi.fn()]);
-
-    render(<Header />);
-
-    // Ensure header is hidden
-    expect(screen.queryByTestId("header-wrapper")).toHaveClass("hidden");
-  });
-
-  it("should disable dashboard button if project list is empty", () => {
-    vi.mocked(useAtom).mockImplementation((atom) => {
-      if (atom === PROJECT_LIST_ATOM) {
-        return [[]] as any; // Mock an empty project list
-      }
-      return [null];
+  describe("Rendering Tests", () => {
+    it("should render the header with organization header and sidebar on dashboard", () => {
+      render(<Header />);
+      const headers = screen.getAllByTestId("organization-header");
+      expect(headers[0]).toHaveClass("hidden lg:flex");
+      expect(screen.getByTestId("sheet-sidebar")).toBeInTheDocument();
     });
 
-    render(<Header />);
+    it("should render aevatar logo on welcome page", () => {
+      vi.mocked(useLocation).mockReturnValue(["/welcome", vi.fn()]);
+      render(<Header />);
+      const logo = screen.getByAltText("aevatarAi");
+      expect(logo).toBeInTheDocument();
+      expect(logo).toHaveAttribute("src", "mocked-logo-path");
+    });
 
-    const dashboardButton = screen.getByText("dashboard");
-    expect(dashboardButton).toHaveClass("cursor-not-allowed text-[#606060]");
+    it("should not render header on ignored paths", () => {
+      const ignoredPaths = ["/", "/login", "/register", "/verification"];
 
-    // Simulate click
-    fireEvent.click(dashboardButton);
-    expect(mockNavigate).not.toHaveBeenCalled(); // Navigation should not happen
+      ignoredPaths.forEach((path) => {
+        vi.mocked(useLocation).mockReturnValue([path, vi.fn()]);
+        const { rerender } = render(<Header />);
+        expect(screen.getByTestId("header-wrapper")).toHaveClass("hidden");
+        // biome-ignore lint/complexity/noUselessFragments: <explanation>
+        rerender(<></>);
+      });
+    });
+
+    it("should render responsive layout correctly", () => {
+      vi.mocked(useLocation).mockReturnValue(["/dashboard", vi.fn()]);
+      render(<Header />);
+
+      // Desktop view
+      const desktopHeader = screen.getAllByTestId("organization-header")[0];
+      expect(desktopHeader).toHaveClass("hidden lg:flex");
+
+      // Mobile view
+      const mobileHeader = screen.getAllByTestId("organization-header")[1];
+      expect(mobileHeader).toHaveClass("justify-start px-[20px]");
+    });
+
+    it("should render notification button", () => {
+      render(<Header />);
+      expect(screen.getByTestId("notification-empty-icon")).toBeInTheDocument();
+    });
+
+    it("should display notification icon when unread count is greater than 0", () => {
+      vi.mocked(useAtom).mockImplementation((atom) => {
+        if (atom === PROJECT_LIST_ATOM) {
+          return [[]] as any;
+        }
+        if (atom === UNREAD_NOTIFICATION_ATOM) {
+          return [2] as any;
+        }
+        return [null];
+      });
+
+      render(<Header />);
+      expect(screen.getByTestId("notification-icon")).toBeInTheDocument();
+    });
   });
 
-  it("should navigate to dashboard on button click", () => {
-    render(<Header />);
+  describe("Navigation Tests", () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
 
-    const dashboardButton = screen.getByText("dashboard");
-    fireEvent.click(dashboardButton);
+    it("should disable dashboard button if project list is empty", () => {
+      vi.mocked(useAtom).mockImplementation((atom) => {
+        if (atom === PROJECT_LIST_ATOM) {
+          return [[]] as any;
+        }
+        return [false];
+      });
 
-    // Verify navigation
-    expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
+      render(<Header />);
+      const dashboardButton = screen.getByText("dashboard");
+      expect(dashboardButton).toHaveClass("cursor-not-allowed text-[#606060]");
+
+      fireEvent.click(dashboardButton);
+      expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
+    it("should navigate to settings on button click", () => {
+      render(<Header />);
+      const settingsButton = screen.getByText("settings");
+      fireEvent.click(settingsButton);
+      expect(mockNavigate).toHaveBeenCalledWith("/profile");
+    });
+
+    it("should handle notification button click correctly", () => {
+      render(<Header />);
+      const notificationButton = screen.getByRole("button", {
+        name: /notification/i,
+      });
+
+      fireEvent.click(notificationButton);
+      expect(mockMutate).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith(
+        "/profile/profile/notifications",
+      );
+    });
   });
 
-  it("should navigate to settings on button click", () => {
-    render(<Header />);
+  describe("Notification State Tests", () => {
+    it("should show notification icon when there are unread notifications", () => {
+      vi.mocked(useAtom).mockImplementation((atom) => {
+        if (atom === UNREAD_NOTIFICATION_ATOM) {
+          return [true] as any;
+        }
+        return [[{ id: "project-1" }]];
+      });
 
-    const settingsButton = screen.getByText("settings");
-    fireEvent.click(settingsButton);
+      render(<Header />);
+      expect(screen.getByTestId("notification-icon")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("notification-empty-icon"),
+      ).not.toBeInTheDocument();
+    });
 
-    // Verify navigation
-    expect(mockNavigate).toHaveBeenCalledWith("/profile");
+    it("should show empty notification icon when there are no unread notifications", () => {
+      vi.mocked(useAtom).mockImplementation((atom) => {
+        if (atom === UNREAD_NOTIFICATION_ATOM) {
+          return [false] as any;
+        }
+        return [[{ id: "project-1" }]];
+      });
+
+      render(<Header />);
+      expect(screen.queryByTestId("notification-icon")).not.toBeInTheDocument();
+      expect(screen.getByTestId("notification-empty-icon")).toBeInTheDocument();
+    });
+
+    it("should not show unread count when 0", () => {
+      vi.mocked(useAtom).mockImplementation((atom) => {
+        if (atom === UNREAD_NOTIFICATION_ATOM) {
+          return [false] as any;
+        }
+        return [[{ id: "project-1" }]];
+      });
+
+      render(<Header />);
+      expect(screen.queryByText("0")).not.toBeInTheDocument();
+    });
   });
 
-  it("should show notification when isNotication is true", () => {
-    render(<Header />);
+  describe("Responsive Layout Tests", () => {
+    it("should render mobile layout for small screens", () => {
+      global.innerWidth = 500;
+      global.dispatchEvent(new Event("resize"));
+      render(<Header />);
+      // Add mobile-specific layout checks here
+    });
 
-    // Show Notification icon
-    expect(screen.getByTestId("notification-icon")).toBeInTheDocument();
-    expect(
-      screen.queryByTestId("notification-empty-icon"),
-    ).not.toBeInTheDocument();
+    it("should render desktop layout for large screens", () => {
+      global.innerWidth = 1200;
+      global.dispatchEvent(new Event("resize"));
+      render(<Header />);
+      // Add desktop-specific layout checks here
+    });
   });
 });

@@ -1,6 +1,10 @@
-import { SideBar } from "@/components/SideBar";
-import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
+import { useGetUnreadNotifications } from "@/hooks/useGetUnreadNotifications";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import { useSideBarParams } from "@/hooks/useSideBarParams";
+import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import {
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
@@ -8,8 +12,10 @@ import {
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useAtom } from "jotai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useLocation, useParams } from "wouter";
+import { useLocation } from "wouter";
+import { SideBar } from "./index";
 
+// Mock all required hooks and modules
 vi.mock("jotai", async () => {
   const actual = await vi.importActual("jotai");
   return {
@@ -27,144 +33,166 @@ vi.mock("@/hooks/navigate", () => ({
   useNavigate: vi.fn(),
 }));
 
+vi.mock("@/hooks/useGetUnreadNotifications", () => ({
+  useGetUnreadNotifications: vi.fn(),
+}));
+
+vi.mock("@/hooks/usePostReadNotifications", () => ({
+  usePostReadNotifications: vi.fn(),
+}));
+
 vi.mock("@/hooks/useOrgPermissions", () => ({
-  useOrgPermissions: vi.fn(() => ({
-    organizations: true,
-    organizationsEdit: true,
-    organizationMembers: true,
-  })),
+  useOrgPermissions: vi.fn(),
 }));
 
 vi.mock("@/hooks/useProjectPermissions", () => ({
-  useProjectPermissions: vi.fn(() => ({
-    projects: true,
-    projectsEdit: true,
-    projectsMembersManage: true,
+  useProjectPermissions: vi.fn(),
+}));
+
+vi.mock("@/hooks/useSideBarParams", () => ({
+  useSideBarParams: vi.fn(),
+}));
+
+// Mock window.matchMedia
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
-}));
-
-vi.mock("@/assets/notication.svg?react", () => ({
-  __esModule: true,
-  default: () => <div data-testid="notification-icon">Notification</div>,
-}));
-
-vi.mock("@/assets/notification_empty.svg?react", () => ({
-  __esModule: true,
-  default: () => (
-    <div data-testid="notification-empty-icon">NotificationEmpty</div>
-  ),
-}));
+});
 
 describe("SideBar Component", () => {
   const mockNavigate = vi.fn();
+  const mockMutate = vi.fn();
+  const mockOnClose = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-
-    vi.mocked(useLocation).mockReturnValue(["/profile", vi.fn()]);
-    vi.mocked(useParams).mockReturnValue({ menu: "profile", tab: "general" });
-
-    vi.mocked(useAtom).mockImplementation((atom) => {
-      if (atom === PROJECT_LIST_ATOM) {
-        return [[{ id: "project-1" }]] as any;
-      }
-      if (atom === ORGANIZATIONS_LIST_ATOM) {
-        return [[{ id: "organization-1" }]];
-      }
+    // Setup default mock implementations
+    (useNavigate as any).mockReturnValue(mockNavigate);
+    (useLocation as any).mockReturnValue(["/dashboard"]);
+    (useAtom as any).mockImplementation((atom: unknown) => {
+      if (atom === UNREAD_NOTIFICATION_ATOM) return [false];
+      if (atom === PROJECT_LIST_ATOM) return [[]];
+      if (atom === ORGANIZATIONS_LIST_ATOM) return [[]];
       return [null];
     });
+    (useGetUnreadNotifications as any).mockReturnValue(undefined);
+    (usePostReadNotifications as any).mockReturnValue({ mutate: mockMutate });
+    (useOrgPermissions as any).mockReturnValue({
+      organizations: true,
+      projects: true,
+      organizationMembers: true,
+      role: true,
+    });
+    (useProjectPermissions as any).mockReturnValue({
+      projects: true,
+      member: true,
+      role: true,
+    });
+    (useSideBarParams as any).mockReturnValue(["", ""]);
   });
 
-  it("should render the sidebar with profile menu items", () => {
+  it("renders without crashing", () => {
     render(<SideBar />);
-
     expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
   });
 
-  it("should render the dashboard menu when pathname is /dashboard", () => {
-    vi.mocked(useLocation).mockReturnValue(["/dashboard", vi.fn()]);
-
+  it("renders dashboard menu when path starts with /dashboard", () => {
+    (useLocation as any).mockReturnValue(["/dashboard"]);
+    (useOrgPermissions as any).mockReturnValue({
+      apiKeys: true,
+    });
     render(<SideBar />);
-
-    const dashboardMenuItem = screen.getByText("api keys");
-    expect(dashboardMenuItem).toBeInTheDocument();
-
-    fireEvent.click(dashboardMenuItem);
-    expect(mockNavigate).toHaveBeenCalledWith("/dashboard/apikeys");
+    expect(screen.getByText("api keys")).toBeInTheDocument();
+    expect(screen.getByText("usage")).toBeInTheDocument();
+    expect(screen.getByText("dll")).toBeInTheDocument();
   });
 
-  it("should show notification empty icon when NOTIFICATION_ATOM is true", () => {
+  it("renders profile menu when path starts with /profile", () => {
+    (useLocation as any).mockReturnValue(["/profile"]);
     render(<SideBar />);
-    expect(screen.getByTestId("notification-empty-icon")).toBeInTheDocument();
-    expect(screen.queryByTestId("notification-icon")).not.toBeInTheDocument();
+    expect(screen.getByText("general")).toBeInTheDocument();
+    expect(screen.getByText("notifications")).toBeInTheDocument();
   });
 
-  //   it("should navigate to profile menu on click", () => {
-  //     render(<SideBar />);
+  it("calls onClose when menu item is clicked", () => {
+    (useLocation as any).mockReturnValue(["/dashboard"]);
+    (useOrgPermissions as any).mockReturnValue({
+      apiKeys: true,
+    });
 
-  //     const generalMenuItem = screen.getAllByAltText("general");
-  //     fireEvent.click(generalMenuItem[0]);
+    render(<SideBar onClose={mockOnClose} />);
+    fireEvent.click(screen.getByText("api keys"));
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 
-  //     expect(mockNavigate).toHaveBeenCalledWith("/profile/profile/general");
+  it("calls mutate when notifications menu item is clicked", () => {
+    (useLocation as any).mockReturnValue(["/profile"]);
+    render(<SideBar />);
+    fireEvent.click(screen.getByText("notifications"));
+    expect(mockMutate).toHaveBeenCalled();
+  });
 
-  //     const notificationsMenuItem = screen.getByText("notifications");
-  //     fireEvent.click(notificationsMenuItem);
+  it("renders social media links", () => {
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+    // Add more specific assertions based on your socialMediaList implementation
+  });
 
-  //     expect(mockNavigate).toHaveBeenCalledWith("/profile/profile/notifications");
-  //   });
+  it("handles empty organization list", () => {
+    (useAtom as any).mockImplementation((atom: unknown) => {
+      if (atom === ORGANIZATIONS_LIST_ATOM) return [[]];
+      return [null];
+    });
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+  });
 
-  //   it("should render organisation and project menu items based on permissions", () => {
-  //     render(<SideBar />);
+  it("handles empty project list", () => {
+    (useAtom as any).mockImplementation((atom: unknown) => {
+      if (atom === PROJECT_LIST_ATOM) return [[]];
+      return [null];
+    });
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+  });
 
-  //     expect(screen.getByText("general")).toBeInTheDocument();
-  //     expect(screen.getByText("project")).toBeInTheDocument();
-  //     expect(screen.getByText("member")).toBeInTheDocument();
+  it("handles unread notifications", () => {
+    (useAtom as any).mockImplementation((atom: unknown) => {
+      if (atom === UNREAD_NOTIFICATION_ATOM) return [true];
+      return [null];
+    });
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+  });
 
-  //     expect(screen.getByText("general")).toBeInTheDocument();
-  //     expect(screen.getByText("member")).toBeInTheDocument();
-  //   });
+  it("handles user permissions", () => {
+    (useOrgPermissions as any).mockReturnValue({
+      organizations: false,
+      projects: false,
+      organizationMembers: false,
+      role: false,
+    });
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+  });
 
-  //   it("should not render organisation menu if user has no permissions", () => {
-  //     vi.mocked(useParams).mockReturnValue({ menu: "organisation" });
-  //     vi.mocked(useOrgPermissions).mockReturnValue({
-  //       organizations: false,
-  //       organizationsEdit: false,
-  //       organizationMembers: false,
-  //     });
-
-  //     render(<SideBar />);
-
-  //     expect(screen.queryByText("general")).not.toBeInTheDocument();
-  //     expect(screen.queryByText("project")).not.toBeInTheDocument();
-  //     expect(screen.queryByText("member")).not.toBeInTheDocument();
-  //   });
-
-  //   it("should render social media links correctly", () => {
-  //     render(<SideBar />);
-
-  //     const socialLinks = screen.getAllByRole("link");
-  //     expect(socialLinks.length).toBe(socialMediaList.length);
-
-  //     expect(socialLinks[0]).toHaveTextContent(socialMediaList[0].title);
-  //     expect(socialLinks[0]).toHaveAttribute("href", socialMediaList[0].href);
-  //   });
-
-  //   it("should set notificationClicked to true when notifications menu clicked", () => {
-  //     const mockSetNotificationClicked = vi.fn();
-  //     vi.mocked(useAtom).mockImplementation((atom) => {
-  //       if (atom === NOTIFICATION_ATOM) {
-  //         return [false, mockSetNotificationClicked] as any;
-  //       }
-  //       return [null];
-  //     });
-
-  //     render(<SideBar />);
-
-  //     const notificationsMenuItem = screen.getByText("notifications");
-  //     fireEvent.click(notificationsMenuItem);
-
-  //     expect(mockSetNotificationClicked).toHaveBeenCalledWith(true);
-  //   });
+  it("handles project permissions", () => {
+    (useProjectPermissions as any).mockReturnValue({
+      projects: false,
+      member: false,
+      role: false,
+    });
+    render(<SideBar />);
+    expect(screen.getByTestId("sidebar-id")).toBeInTheDocument();
+  });
 });

@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { useGetAPIRequests } from "@/hooks/useGetAPIRequests";
-import Loading from "@/components/Loading";
 import dayjs from "@/api/dayjs";
 import { useEffect, useState } from "react";
 import { useGetSystemModels } from "@/hooks/useGetSystemModels";
@@ -140,28 +139,20 @@ export const useDisplayGraphs = () => {
       apiRequests: false,
     };
 
-    if (
-      orgPermissions.dashboards === true ||
-      projectPermissions.dashboards === true
-    ) {
-      newDisplayState.llmsModels = true;
-      newDisplayState.apiRequests = true;
-    } else {
-      if (orgPermissions.llmsModels === true) {
-        newDisplayState.llmsModels = true;
-      }
+    if (projectPermissions.llmsModels !== undefined) {
+      newDisplayState.llmsModels = projectPermissions.llmsModels;
+    }
 
-      if (orgPermissions.apiRequests === true) {
-        newDisplayState.apiRequests = true;
-      }
+    if (projectPermissions.apiRequests !== undefined) {
+      newDisplayState.apiRequests = projectPermissions.apiRequests;
+    }
 
-      if (projectPermissions.llmsModels === true) {
-        newDisplayState.llmsModels = true;
-      }
+    if (orgPermissions.llmsModels !== undefined) {
+      newDisplayState.llmsModels = orgPermissions.llmsModels;
+    }
 
-      if (projectPermissions.apiRequests === true) {
-        newDisplayState.apiRequests = true;
-      }
+    if (orgPermissions.apiRequests !== undefined) {
+      newDisplayState.apiRequests = orgPermissions.apiRequests;
     }
 
     setDisplayGraph(newDisplayState);
@@ -178,19 +169,15 @@ export function Usage() {
     to: dayjs().endOf("day").valueOf(),
   });
   const { displayGraphs } = useDisplayGraphs();
-  const { data, isLoading } = useGetAPIRequests(date);
   const { data: models } = useGetSystemModels();
-  const { data: tokens } = useGetLLMTokens();
+  const { data: _ } = useGetLLMTokens(date, displayGraphs.llmsModels);
+  const { data } = useGetAPIRequests(date, displayGraphs.apiRequests);
   const { isMobile } = useIsMobile();
 
   useEffect(() => {
     const results = processRequestData(data);
     setAPIRequests(results);
   }, [data]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <div className="pb-[25px]">

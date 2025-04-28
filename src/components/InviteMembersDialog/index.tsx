@@ -67,8 +67,13 @@ export default function InviteMembersDialog({
   );
 
   useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
+    if (open) {
+      form.reset({
+        email: "",
+        role: defaultRole,
+      });
+    }
+  }, [form, open, defaultRole]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -123,9 +128,9 @@ export default function InviteMembersDialog({
                       <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                         {roleList.map((item) => (
                           <SelectItem
-                            className="text-[14px]"
                             key={item.id}
                             value={item.id}
+                            className="text-[#B9B9B9] text-center font-syne lowercase py-[7px] select-item-wrapper text-[14px]"
                           >
                             {item.name.split("_")[1]}
                           </SelectItem>

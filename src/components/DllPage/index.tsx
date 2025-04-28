@@ -5,14 +5,13 @@ import DllEditDialog from "@/components/DllEditDialog";
 import { columns } from "@/components/DllPage/columns";
 import { textGradient } from "@/constants/cls";
 import type { TDllEditForm } from "@/constants/form/dll";
-import type { TProjectEditForm } from "@/constants/form/project";
 import { useToast } from "@/hooks/use-toast";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
 import { DLL_LIST_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import { delay } from "@/utils/common";
 import { handleErrorMessage } from "@/utils/error";
-import { sleep } from "@etransfer/utils";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -59,7 +58,7 @@ export default function DllPage() {
     async ({ file }: TDllEditForm) => {
       console.log(file, "file==onCreate");
       if (!projectId) return;
-      await sleep(100000);
+      await delay(100000);
       await request.plugins.addPlugins({
         data: {
           projectId,
@@ -96,12 +95,16 @@ export default function DllPage() {
 
   const tableData = useMemo(
     () =>
-      dllList.map((item) => ({
+      (dllList || []).map((item) => ({
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
             {projectPermissions?.dllEdit ? (
-              <DllEditDialog type="edit" onSubmit={(v) => onEdit(v, item.id)} />
+              <DllEditDialog
+                type="edit"
+                onSubmit={(v) => onEdit(v, item.id)}
+                data-testid={`edit-dll-${item.id}`}
+              />
             ) : (
               <span />
             )}
@@ -109,6 +112,7 @@ export default function DllPage() {
               <DeleteDialog
                 onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete this dll?"}
+                data-testid={`delete-dll-${item.id}`}
               />
             ) : (
               <span />
@@ -124,18 +128,26 @@ export default function DllPage() {
         <div className={clsx(textGradient)}>dll</div>
 
         <DllEditDialog
-          disabled={!projectPermissions?.dllCreate || dllList?.length > 0}
+          disabled={
+            !projectPermissions?.dllCreate || (dllList?.length || 0) > 0
+          }
           type="create"
           onSubmit={onCreate}
+          data-testid="create-dll-button"
         />
       </div>
       <DataTable
-        className={clsx(!loading && dllList.length && "min-w-[600px]")}
+        className={clsx(!loading && (dllList?.length || 0) && "min-w-[600px]")}
         tableHeadClassName={"first:pl-[15px]"}
         columns={columns}
         loading={loading}
         data={tableData}
-        emptyNode={<div className="lowercase">No DLLs uploaded yet</div>}
+        emptyNode={
+          <div className="lowercase" data-testid="empty-dll-message">
+            No DLLs uploaded yet
+          </div>
+        }
+        data-testid="dll-table"
       />
     </div>
   );

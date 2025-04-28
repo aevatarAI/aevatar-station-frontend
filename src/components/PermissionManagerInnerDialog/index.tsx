@@ -226,7 +226,7 @@ export interface IPermissionManagerDialogProps {
 }
 
 export default function PermissionManagerInnerDialog({
-  permissionOrigin,
+  permissionOrigin = [],
   readonly,
   onSave,
 }: IPermissionManagerDialogProps) {

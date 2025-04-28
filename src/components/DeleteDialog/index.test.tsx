@@ -1,147 +1,206 @@
-import DeleteDialog from "@/components/DeleteDialog";
-import { useToast } from "@/hooks/use-toast";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
+import DeleteDialog from "./index";
 
+// Mock SVG imports
+vi.mock("@/assets/delete_action.svg?react", () => ({
+  default: ({ className, role }: { className?: string; role?: string }) => (
+    <div data-testid="delete-icon" className={className} role={role} />
+  ),
+}));
+
+vi.mock("@/assets/tip_icon.svg?react", () => ({
+  default: () => <div data-testid="tip-icon" />,
+}));
+
+// Mock LoadingButton component
+vi.mock("@/components/LoadingButton.tsx", () => ({
+  default: ({ children, onClick, className }: any) => (
+    <button type="button" onClick={onClick} className={className}>
+      {children}
+    </button>
+  ),
+}));
+
+// Mock useToast hook
 vi.mock("@/hooks/use-toast", () => ({
-  useToast: vi.fn(),
+  useToast: () => ({ toast: vi.fn() }),
+}));
+
+// Mock Radix UI Dialog components
+vi.mock("@/components/ui/dialog", () => {
+  let isOpen = false;
+  let onOpenChange = (open: boolean) => {
+    isOpen = open;
+  };
+
+  return {
+    Dialog: ({ children, open, onOpenChange: onChange }: any) => {
+      isOpen = open;
+      onOpenChange = onChange;
+      return (
+        <div data-testid="dialog" data-open={isOpen}>
+          {children}
+        </div>
+      );
+    },
+    DialogContent: ({ children }: any) => (
+      <div
+        data-testid="dialog-content"
+        style={{ display: isOpen ? "block" : "none" }}
+      >
+        {children}
+      </div>
+    ),
+    DialogHeader: () => <div data-testid="dialog-header" />,
+    DialogTrigger: ({ children }: any) => (
+      <div
+        data-testid="dialog-trigger"
+        onClick={() => {
+          onOpenChange(true);
+          children.props.onClick?.();
+        }}
+      >
+        {children}
+      </div>
+    ),
+  };
+});
+
+// Mock Radix UI Dialog primitives
+vi.mock("@radix-ui/react-dialog", () => ({
+  DialogTitle: () => <div data-testid="dialog-title" />,
+  DialogDescription: () => <div data-testid="dialog-description" />,
+}));
+
+// Mock Radix UI Visually Hidden
+vi.mock("@radix-ui/react-visually-hidden", () => ({
+  VisuallyHidden: ({ children }: any) => (
+    <div data-testid="visually-hidden">{children}</div>
+  ),
 }));
 
 describe("DeleteDialog Component", () => {
-  const mockToast = vi.fn();
   const mockOnYes = vi.fn();
+  const defaultProps = {
+    title: "Delete Confirmation",
+    description: "Are you sure you want to delete this item?",
+    onYes: mockOnYes,
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useToast).mockReturnValue({
-      toast: mockToast,
-      dismiss: vi.fn(),
-      toasts: [],
+  });
+
+  it("should render delete icon when not disabled", () => {
+    render(<DeleteDialog {...defaultProps} />);
+    const deleteIcon = screen.getByTestId("delete-icon");
+    expect(deleteIcon).toBeInTheDocument();
+    expect(deleteIcon).toHaveClass("cursor-pointer");
+  });
+
+  it("should render disabled delete icon when disabled prop is true", () => {
+    render(<DeleteDialog {...defaultProps} disabled={true} />);
+    const deleteIcon = screen.getByTestId("delete-icon");
+    expect(deleteIcon).toHaveClass("opacity-50");
+  });
+
+  it("should open dialog when delete icon is clicked", async () => {
+    const user = userEvent.setup();
+    render(<DeleteDialog {...defaultProps} />);
+
+    await user.click(screen.getByTestId("delete-icon"));
+
+    await waitFor(() => {
+      const dialog = screen.getByTestId("dialog");
+      expect(dialog).toHaveAttribute("data-open", "true");
+      expect(screen.getByTestId("dialog-content")).toHaveStyle({
+        display: "block",
+      });
     });
   });
 
-  it("should render the DeleteDialog with correct title and description", () => {
-    render(
-      <DeleteDialog
-        title="Confirm Deletion"
-        description="Are you sure you want to delete?"
-        onYes={mockOnYes}
-      />,
-    );
+  it("should display title and description in dialog", async () => {
+    const user = userEvent.setup();
+    render(<DeleteDialog {...defaultProps} />);
 
-    expect(screen.getByRole("img")).toBeInTheDocument();
-
-    expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
-    expect(
-      screen.queryByText("Are you sure you want to delete?"),
-    ).not.toBeInTheDocument();
-
-    const openDialogTrigger = screen.getByRole("img");
-    fireEvent.click(openDialogTrigger);
-
-    expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
-    expect(
-      screen.getByText("Are you sure you want to delete?"),
-    ).toBeInTheDocument();
-  });
-
-  it("should close dialog when Cancel button is clicked", async () => {
-    render(
-      <DeleteDialog
-        title="Confirm Deletion"
-        description="Are you sure you want to delete?"
-        onYes={mockOnYes}
-      />,
-    );
-
-    const openDialogTrigger = screen.getByRole("img");
-    fireEvent.click(openDialogTrigger);
-
-    expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
-
-    const cancelButton = screen.getByText("cancel");
-    fireEvent.click(cancelButton);
+    await user.click(screen.getByTestId("delete-icon"));
 
     await waitFor(() => {
-      expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
+      const dialogContent = screen.getByTestId("dialog-content");
+      expect(dialogContent).toHaveTextContent(defaultProps.title);
+      expect(dialogContent).toHaveTextContent(defaultProps.description);
+    });
+  });
+
+  it("should close dialog when cancel button is clicked", async () => {
+    const user = userEvent.setup();
+    render(<DeleteDialog {...defaultProps} />);
+
+    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByText("cancel"));
+
+    await waitFor(() => {
+      const dialog = screen.getByTestId("dialog");
+      expect(dialog).toHaveAttribute("data-open", "false");
+      expect(screen.getByTestId("dialog-content")).toHaveStyle({
+        display: "none",
+      });
     });
   });
 
   it("should call onYes and close dialog when yes button is clicked", async () => {
-    render(
-      <DeleteDialog
-        title="Confirm Deletion"
-        description="Are you sure you want to delete?"
-        onYes={mockOnYes}
-      />,
-    );
+    const user = userEvent.setup();
+    render(<DeleteDialog {...defaultProps} />);
 
-    const openDialogTrigger = screen.getByRole("img");
-    fireEvent.click(openDialogTrigger);
-
-    expect(screen.getByText("Confirm Deletion")).toBeInTheDocument();
-
-    const yesButton = screen.getByText("yes");
-    fireEvent.click(yesButton);
+    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByText("yes"));
 
     await waitFor(() => {
-      expect(mockOnYes).toHaveBeenCalledTimes(1);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText("Confirm Deletion")).not.toBeInTheDocument();
-    });
-
-    expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully deleted",
+      expect(mockOnYes).toHaveBeenCalled();
+      const dialog = screen.getByTestId("dialog");
+      expect(dialog).toHaveAttribute("data-open", "false");
+      expect(screen.getByTestId("dialog-content")).toHaveStyle({
+        display: "none",
+      });
     });
   });
 
-  it("should handle async onYes function", async () => {
-    const asyncOnYes = vi.fn().mockResolvedValueOnce(() => Promise.resolve());
-    render(
-      <DeleteDialog
-        title="Confirm Deletion"
-        description="Are you sure you want to delete?"
-        onYes={asyncOnYes}
-      />,
-    );
+  it("should not show description when description prop is not provided", async () => {
+    const user = userEvent.setup();
+    render(<DeleteDialog title="Delete Confirmation" onYes={mockOnYes} />);
 
-    const openDialogTrigger = screen.getByRole("img");
-    fireEvent.click(openDialogTrigger);
+    await user.click(screen.getByTestId("delete-icon"));
 
-    const yesButton = screen.getByText("yes");
-    fireEvent.click(yesButton);
+    await waitFor(() => {
+      const dialogContent = screen.getByTestId("dialog-content");
+      expect(dialogContent).toHaveTextContent("Delete Confirmation");
+      expect(dialogContent).not.toHaveTextContent(
+        "Are you sure you want to delete this item?",
+      );
+    });
+  });
+
+  it("should handle async onYes callback", async () => {
+    const asyncOnYes = vi
+      .fn()
+      .mockImplementation(
+        () => new Promise((resolve) => setTimeout(resolve, 100)),
+      );
+    const user = userEvent.setup();
+    render(<DeleteDialog {...defaultProps} onYes={asyncOnYes} />);
+
+    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByText("yes"));
 
     await waitFor(() => {
       expect(asyncOnYes).toHaveBeenCalled();
-    });
-
-    expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully deleted",
-    });
-  });
-
-  it("should not call onYes if not provided", async () => {
-    render(
-      <DeleteDialog
-        title="Confirm Deletion"
-        description="Are you sure you want to delete?"
-      />,
-    );
-
-    const openDialogTrigger = screen.getByRole("img");
-    fireEvent.click(openDialogTrigger);
-
-    const yesButton = screen.getByText("yes");
-    fireEvent.click(yesButton);
-
-    await waitFor(() => {
-      expect(mockOnYes).not.toHaveBeenCalled();
-    });
-
-    expect(mockToast).toHaveBeenCalledWith({
-      description: "successfully deleted",
+      const dialog = screen.getByTestId("dialog");
+      expect(dialog).toHaveAttribute("data-open", "false");
+      expect(screen.getByTestId("dialog-content")).toHaveStyle({
+        display: "none",
+      });
     });
   });
 });

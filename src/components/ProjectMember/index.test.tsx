@@ -1,17 +1,22 @@
 import { request } from "@/api";
 import { getOrganizationMembers } from "@/api/utils/organization";
 import { getProjectMembers } from "@/api/utils/project";
+import Copy from "@/components/Copy";
 import ProjectMember from "@/components/ProjectMember";
 import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
   CURRENT_PROJECT_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
+import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useAtom } from "jotai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { columns } from "./columns";
+import type { IMemberTable } from "./columns";
 
 vi.mock("jotai", async () => {
   const actual = await vi.importActual("jotai");
@@ -31,6 +36,10 @@ vi.mock("@/api/utils/project", () => ({
 
 vi.mock("@/api/utils/organization", () => ({
   getOrganizationMembers: vi.fn(),
+  IMemberStatus: {
+    joined: 0,
+    pending: 1,
+  },
 }));
 
 vi.mock("@/api", () => ({
@@ -44,7 +53,8 @@ vi.mock("@/api", () => ({
 
 vi.mock("@/hooks/useProjectPermissions", () => ({
   useProjectPermissions: vi.fn(() => ({
-    projectsMembersManage: true,
+    memberManage: true,
+    member: true,
   })),
 }));
 
@@ -109,6 +119,9 @@ describe("ProjectMember Component", () => {
           mockSetOrgMemberList,
         ];
       }
+      if (atom === USER_PROFILE_ATOM) {
+        return [{ email: "test@example.com" }];
+      }
       return [null];
     });
 
@@ -143,10 +156,9 @@ describe("ProjectMember Component", () => {
 
   it("should render DataTable with project members data", async () => {
     render(<ProjectMember />);
-    // Verify table rows
-
-    // // Verify Invite Member button
-    expect(screen.getByText("projects members")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("projects members")).toBeInTheDocument();
+    });
   });
 
   it("should call getProjectMembers API on mount", async () => {
@@ -156,98 +168,279 @@ describe("ProjectMember Component", () => {
       expect(getProjectMembers).toHaveBeenCalledWith("project-1");
     });
 
-    expect(screen.getByText("Admin")).toBeInTheDocument(); // Member role
+    await waitFor(() => {
+      expect(screen.getByText("Admin")).toBeInTheDocument();
+    });
   });
 
-  //   it("should call editProjectRoles API when role is updated", async () => {
-  //     render(<ProjectMember />);
+  it("should call editProjectRoles API when role is updated", async () => {
+    render(<ProjectMember />);
 
-  //     // Trigger role change
-  //     const roleSelect = screen.getByText("Admin");
-  //     fireEvent.change(roleSelect, { target: { value: "role-2" } });
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText("Admin")).toBeInTheDocument();
+    });
 
-  //     await waitFor(() => {
-  //       expect(request.projects.editProjectRoles).toHaveBeenCalledWith({
-  //         query: "project-1",
-  //         data: { userId: "member-1", roleId: "role-2" },
-  //       });
-  //     });
-  //     screen.debug();
+    // Trigger role change
+    const roleSelect = screen.getByText("Admin");
+    fireEvent.click(roleSelect);
 
-  //     expect(mockToast).toHaveBeenCalledWith({ description: "Successfully" });
-  //   });
+    const userOption = screen.getByText("User");
+    fireEvent.click(userOption);
 
-  //   it("should call editProjectMembers API on delete member", async () => {
-  //     render(<ProjectMember />);
+    await waitFor(() => {
+      expect(request.projects.editProjectRoles).toHaveBeenCalledWith({
+        query: "project-1",
+        data: { userId: "member-1", roleId: "role-2" },
+      });
+    });
 
-  //     // Trigger delete
-  //     const deleteButton = screen.getByText("Delete Member");
-  //     fireEvent.click(deleteButton);
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "successfully saved",
+    });
+  });
 
-  //     await waitFor(() => {
-  //       expect(request.projects.editProjectMembers).toHaveBeenCalledWith({
-  //         query: "project-1",
-  //         data: { email: "member1@example.com", join: false, roleId: "role-1" },
-  //       });
-  //     });
+  it("should call editProjectMembers API on delete member", async () => {
+    render(<ProjectMember />);
 
-  //     expect(mockToast).toHaveBeenCalledWith({
-  //       description: "successfully removed",
-  //     });
-  //   });
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText("Delete Member")).toBeInTheDocument();
+    });
 
-  //   it("should call editProjectMembers API on invite member", async () => {
-  //     render(<ProjectMember />);
+    // Trigger delete
+    const deleteButton = screen.getByText("Delete Member");
+    fireEvent.click(deleteButton);
 
-  //     // Trigger invite member
-  //     const inviteButton = screen.getByText("Invite Member");
-  //     fireEvent.click(inviteButton);
+    await waitFor(() => {
+      expect(request.projects.editProjectMembers).toHaveBeenCalledWith({
+        query: "project-1",
+        data: { email: "member1@example.com", join: false, roleId: "role-1" },
+      });
+    });
 
-  //     await waitFor(() => {
-  //       expect(request.projects.editProjectMembers).toHaveBeenCalledWith({
-  //         query: "project-1",
-  //         data: { email: "test@example.com", join: true, roleId: "role-1" },
-  //       });
-  //     });
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "successfully removed",
+    });
+  });
 
-  //     expect(mockToast).toHaveBeenCalledWith({
-  //       description: "successfully invited",
-  //     });
-  //   });
+  it("should call editProjectMembers API on invite member", async () => {
+    render(<ProjectMember />);
 
-  //   it("should show error toast when editProjectRoles API fails", async () => {
-  //     vi.mocked(request.projects.editProjectRoles).mockRejectedValue(
-  //       new Error("Role Update Failed")
-  //     );
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText("Invite Member")).toBeInTheDocument();
+    });
 
-  //     render(<ProjectMember />);
+    // Trigger invite member
+    const inviteButton = screen.getByText("Invite Member");
+    fireEvent.click(inviteButton);
 
-  //     // Trigger role change
-  //     const roleSelect = screen.getByText("Role_Admin");
-  //     fireEvent.change(roleSelect, { target: { value: "role-2" } });
+    await waitFor(() => {
+      expect(request.projects.editProjectMembers).toHaveBeenCalledWith({
+        query: "project-1",
+        data: { email: "test@example.com", join: true, roleId: "role-1" },
+      });
+    });
 
-  //     await waitFor(() => {
-  //       expect(mockToast).toHaveBeenCalledWith({
-  //         description: "Role Update Failed",
-  //       });
-  //     });
-  //   });
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "successfully invited",
+    });
+  });
 
-  //   it("should show error toast when editProjectMembers API fails", async () => {
-  //     vi.mocked(request.projects.editProjectMembers).mockRejectedValue(
-  //       new Error("Edit Member Failed")
-  //     );
+  it("should show error toast when editProjectRoles API fails", async () => {
+    const errorMessage = "Role Update Failed";
+    vi.mocked(request.projects.editProjectRoles).mockRejectedValue(
+      new Error(errorMessage),
+    );
 
-  //     render(<ProjectMember />);
+    render(<ProjectMember />);
 
-  //     // Trigger delete
-  //     const deleteButton = screen.getByText("Delete Member");
-  //     fireEvent.click(deleteButton);
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText("Admin")).toBeInTheDocument();
+    });
 
-  //     await waitFor(() => {
-  //       expect(mockToast).toHaveBeenCalledWith({
-  //         description: "Edit Member Failed",
-  //       });
-  //     });
-  //   });
+    // Trigger role change
+    const roleSelect = screen.getByText("Admin");
+    fireEvent.click(roleSelect);
+
+    const userOption = screen.getByText("User");
+    fireEvent.click(userOption);
+
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        description: errorMessage,
+      });
+    });
+  });
+
+  it("should show error toast when editProjectMembers API fails", async () => {
+    const errorMessage = "Edit Member Failed";
+    vi.mocked(request.projects.editProjectMembers).mockRejectedValue(
+      new Error(errorMessage),
+    );
+
+    render(<ProjectMember />);
+
+    // Wait for initial render
+    await waitFor(() => {
+      expect(screen.getByText("Delete Member")).toBeInTheDocument();
+    });
+
+    // Trigger delete
+    const deleteButton = screen.getByText("Delete Member");
+    fireEvent.click(deleteButton);
+
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        description: errorMessage,
+      });
+    });
+  });
+
+  it("should handle member without role", async () => {
+    vi.mocked(getProjectMembers).mockResolvedValue([
+      {
+        id: "member-1",
+        email: "member1@example.com",
+        roleId: "",
+        userName: "",
+      },
+    ]);
+
+    render(<ProjectMember />);
+
+    await waitFor(() => {
+      expect(screen.getByText("pending")).toBeInTheDocument();
+    });
+  });
+
+  it("should handle current user member", async () => {
+    vi.mocked(useAtom).mockImplementation((atom) => {
+      if (atom === USER_PROFILE_ATOM) {
+        return [{ email: "member1@example.com" }];
+      }
+      if (atom === ORGANIZATION_MEMBER_ATOM) {
+        return [[], mockSetOrgMemberList];
+      }
+      if (atom === CURRENT_PROJECT_ATOM) return ["project-1"] as any;
+      if (atom === CURRENT_ORGANIZATION_ATOM) return ["org-1"];
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) {
+        return [
+          [
+            { id: "role-1", name: "Role_Admin" },
+            { id: "role-2", name: "Role_User" },
+          ],
+        ];
+      }
+      return [null];
+    });
+
+    render(<ProjectMember />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Admin")).toBeInTheDocument();
+    });
+  });
+
+  it("should handle member without permissions", async () => {
+    vi.mocked(useProjectPermissions).mockReturnValue({
+      memberManage: false,
+      member: true,
+    } as any);
+
+    render(<ProjectMember />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Admin")).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText("Delete Member")).not.toBeInTheDocument();
+  });
+
+  it("should handle empty member list", async () => {
+    vi.mocked(getProjectMembers).mockResolvedValue([]);
+
+    render(<ProjectMember />);
+
+    await waitFor(() => {
+      expect(screen.getByText("projects members")).toBeInTheDocument();
+    });
+  });
+
+  it("should handle API error", async () => {
+    const errorMessage = "Failed to fetch members";
+    vi.mocked(getProjectMembers).mockRejectedValue(new Error(errorMessage));
+
+    render(<ProjectMember />);
+
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        description: errorMessage,
+      });
+    });
+  });
+});
+
+describe("ProjectMember Columns", () => {
+  it("should render name column correctly", () => {
+    const data: IMemberTable = {
+      id: "1",
+      userName: "Test User",
+      email: "test@example.com",
+      roleId: "role-1",
+    };
+
+    const nameColumn = columns.find((col) => col.accessorKey === "name");
+    const cell = nameColumn?.cell?.({ row: { original: data } });
+
+    expect(cell?.props.children).toBe("Test User");
+  });
+
+  it("should render email column correctly", () => {
+    const data: IMemberTable = {
+      id: "1",
+      userName: "Test User",
+      email: "test@example.com",
+      roleId: "role-1",
+    };
+
+    const emailColumn = columns.find((col) => col.id === "email");
+    const cell = emailColumn?.cell?.({ row: { original: data } });
+
+    expect(cell?.props.children).toHaveLength(2);
+    expect(cell?.props.children[0].props.children).toBe("test@example.com");
+    expect(cell?.props.children[1].type).toBe(Copy);
+  });
+
+  it("should render role column correctly", () => {
+    const data: IMemberTable = {
+      id: "1",
+      userName: "Test User",
+      email: "test@example.com",
+      roleId: "role-1",
+      role: <div>Admin Role</div>,
+    };
+
+    const roleColumn = columns.find((col) => col.accessorKey === "role");
+    const cell = roleColumn?.cell?.({ row: { original: data } });
+
+    expect(cell).toBe(data.role);
+  });
+
+  it("should render operation column correctly", () => {
+    const data: IMemberTable = {
+      id: "1",
+      userName: "Test User",
+      email: "test@example.com",
+      roleId: "role-1",
+      operation: <div>Delete</div>,
+    };
+
+    const operationColumn = columns.find((col) => col.id === "operation");
+    const cell = operationColumn?.cell?.({ row: { original: data } });
+
+    expect(cell).toBe(data.operation);
+  });
 });

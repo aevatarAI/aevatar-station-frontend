@@ -113,6 +113,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                     <Loading
                       className={clsx("aevatarai-loading-icon")}
                       style={{ width: 14, height: 14 }}
+                      data-testid="loading-icon"
                     />
                   )}
                   <span>{btnLoading ? "creating" : "create"}</span>

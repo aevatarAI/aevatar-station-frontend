@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import type * as React from "react";
 import { format } from "date-fns";
 import UpDownIcon from "@/assets/updown.svg?react";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import dayjs from "@/api/dayjs";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 
 interface DatePickerWithRangeProps {
   date: any;

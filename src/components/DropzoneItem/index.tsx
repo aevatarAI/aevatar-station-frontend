@@ -76,7 +76,7 @@ export default function DropzoneItem({
               "data-testid": "dropzone-id",
             })}
           >
-            <input {...getInputProps()} />
+            <input {...getInputProps()} aria-label={uploadText} />
             <p className="font-pro text-[10px] text-[#B9B9B9] flex flex-col gap-[4px] items-center">
               <UploadIcon />
               <div>{uploadText}</div>

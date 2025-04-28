@@ -14,7 +14,7 @@ import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
-import { sleep } from "@etransfer/utils";
+import { delay } from "@/utils/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
 import React, { useCallback, useState } from "react";
@@ -67,7 +67,7 @@ const Register = () => {
           toast({
             description: "Send Register Code successful!",
           });
-          await sleep(2000);
+          await delay(2000);
           setLoading(false);
           navigate("/verification");
         } else {
@@ -77,7 +77,7 @@ const Register = () => {
           });
           setLoading(false);
         }
-      } catch (error) {
+      } catch (_error) {
         toast({
           description: "Send Register Code failed. Please try again.",
         });

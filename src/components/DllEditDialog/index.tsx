@@ -115,12 +115,13 @@ export default function DllEditDialog({
                   <FormItem className="w-full">
                     <FormControl>
                       <DropzoneItem
-                        hiddenLabel
+                        hiddenLabel={false}
                         form={form as any}
                         name={"file"}
                         multiple={false}
                         uploadText="click to select file (dll)"
                         accept={{ "application/octet-stream": [".dll"] }}
+                        aria-label="DLL file input"
                       />
                     </FormControl>
                   </FormItem>

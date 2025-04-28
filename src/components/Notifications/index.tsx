@@ -31,15 +31,19 @@ export const Notifications = ({
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading data-testid="loading-spinner" />;
   }
 
   if (isError) {
-    return <div>error...</div>;
+    return <div data-testid="error-message">error...</div>;
+  }
+
+  if (!data?.data?.length) {
+    return <div data-testid="empty-notifications">No notifications</div>;
   }
 
   return (
-    <div>
+    <div data-testid="notifications-container">
       <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[#303030]">
         <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
           Notifications
@@ -50,6 +54,7 @@ export const Notifications = ({
           <div
             className="flex flex-col lg:flex-row lg:justify-between mb-[40px]"
             key={item.id}
+            data-testid={`notification-item-${item.id}`}
           >
             <div className="mb-[15px] lg:mb-0">
               <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase mb-[10px]">
@@ -71,12 +76,14 @@ export const Notifications = ({
               {item.type === INVITED && item.status === DEFAULT && (
                 <>
                   <LoadingButton
+                    data-testid="join-button"
                     className="py-[7px] px-[17px] leading-[14px] text-[12px]"
                     onClick={() => onJoin(item.id, ACCEPTED)}
                   >
                     join
                   </LoadingButton>
                   <LoadingButton
+                    data-testid="decline-button"
                     className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
                     onClick={() => onDecline(item.id, DECLINED)}
                   >
@@ -86,6 +93,7 @@ export const Notifications = ({
               )}
               {item.type === INVITED && item.status === ACCEPTED && (
                 <Button
+                  data-testid="joined-button"
                   className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
                   disabled
                 >
@@ -94,6 +102,7 @@ export const Notifications = ({
               )}
               {item.type === INVITED && item.status === DECLINED && (
                 <Button
+                  data-testid="rejected-button"
                   className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
                   disabled
                 >

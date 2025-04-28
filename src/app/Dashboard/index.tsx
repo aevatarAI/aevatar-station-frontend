@@ -2,13 +2,23 @@ import ApiKeys from "@/components/ApiKeys";
 import { SideBar } from "@/components/SideBar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Usage } from "@/components/Usage";
+import { useNavigate } from "@/hooks/navigate";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
+import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useEffect } from "react";
 
 export default function Dashboard() {
   useUpdateOrganisations();
+  const navigate = useNavigate();
+  const { to } = usePermissionNavigate();
+
+  useEffect(() => {
+    if (to) navigate(to);
+  }, [navigate, to]);
+
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
   return (

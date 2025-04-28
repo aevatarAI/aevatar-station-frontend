@@ -157,7 +157,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
 
   const dashboardMenuMap = useMemo(() => {
     const menuList = [];
-    if (userPermissions.apiKeys) {
+    if (userPermissions.apiKeys || userProjectPermissions.apiKeys) {
       menuList.push({
         icon: <ApikeysIcon />,
         text: "api keys",
@@ -170,7 +170,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       url: "/dashboard/usage",
     });
     return menuList;
-  }, [userPermissions]);
+  }, [userPermissions, userProjectPermissions]);
 
   const dashboardMenu = useMemo(() => {
     return (

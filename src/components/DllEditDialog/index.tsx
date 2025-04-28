@@ -115,7 +115,7 @@ export default function DllEditDialog({
                   <FormItem className="w-full">
                     <FormControl>
                       <DropzoneItem
-                        hiddenLabel={false}
+                        hiddenLabel={true}
                         form={form as any}
                         name={"file"}
                         multiple={false}

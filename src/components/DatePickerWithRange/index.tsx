@@ -62,7 +62,13 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={(date?: DateRange) => {
               const dayFrom = dayjs(date?.from).startOf("day").valueOf();
-              const dayTo = dayjs(date?.to).endOf("day").valueOf();
+
+              let dayTo: number;
+              if (dayjs(date?.to).isBefore(date?.from)) {
+                dayTo = dayjs(date?.from).endOf("day").valueOf();
+              } else {
+                dayTo = dayjs(date?.to).endOf("day").valueOf();
+              }
               onDateChange({ from: dayFrom, to: dayTo });
             }}
             numberOfMonths={2}

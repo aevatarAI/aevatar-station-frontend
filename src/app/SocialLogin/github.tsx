@@ -1,6 +1,6 @@
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "@/hooks/navigate";
 import { useAtom } from "jotai";
@@ -39,11 +39,13 @@ const useGetAuthServerAccessToken = () => {
         throw new Error("unable to fetch access token from auth server");
       }
     },
+    retry: false,
   });
 };
 
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
+  const loginAttemptedRef = useRef(false);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
@@ -51,22 +53,30 @@ export const GithubLoginCallback = () => {
 
   useEffect(() => {
     const githubLogin = async () => {
-      await mutateAsync(code, {
-        onSettled(data) {
-          if (!data?.access_token) {
-            throw new Error("unable to obtain access_token");
-          }
-          setLoginType(IUserLoginType.SOCIAL_MEDIA);
-          setAccessToken(`Bearer ${data.access_token}`);
-          navigate("/redirect");
-        },
-        onError: () => {
-          navigate("/error");
-        },
-      });
+      if (loginAttemptedRef.current) {
+        return;
+      }
+
+      loginAttemptedRef.current = true;
+
+      try {
+        const data = await mutateAsync(code);
+
+        if (!data?.access_token) {
+          throw new Error("unable to obtain access_token");
+        }
+
+        setLoginType(IUserLoginType.SOCIAL_MEDIA);
+        setAccessToken(`Bearer ${data.access_token}`);
+        navigate("/redirect");
+      } catch (_) {
+        navigate("/error");
+      }
     };
 
-    githubLogin();
+    if (code && !loginAttemptedRef.current) {
+      githubLogin();
+    }
   }, [code, mutateAsync, navigate, setAccessToken, setLoginType]);
 
   return null;

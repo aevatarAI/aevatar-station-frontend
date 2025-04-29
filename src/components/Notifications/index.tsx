@@ -1,7 +1,7 @@
 import Loading from "@/components/Loading";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { Button } from "@/components/ui/button";
-import { ACCEPTED, DECLINED, DEFAULT, INVITED } from "@/constants";
+import { ACCEPTED, DECLINED, DEFAULT, EXPIRED, INVITED } from "@/constants";
 import type { Notification, QueryProps } from "@/hooks/useGetNotifications";
 import { useUpdateNotification } from "@/hooks/useUpdateNotifications";
 import { truncate } from "@/utils/helpers";
@@ -68,7 +68,7 @@ export const Notifications = ({
                 <span>has invited you to join</span>
                 <span className="text-white">{` ${truncate(
                   item.content,
-                  "has invited you to join",
+                  "has invited you to join"
                 )}`}</span>
               </div>
             </div>
@@ -90,6 +90,15 @@ export const Notifications = ({
                     decline
                   </LoadingButton>
                 </>
+              )}
+              {item.type === INVITED && item.status === EXPIRED && (
+                <Button
+                  data-testid="expired-button"
+                  className="py-[7px] px-[17px] leading-[14px] text-[12px]"
+                  disabled
+                >
+                  expired
+                </Button>
               )}
               {item.type === INVITED && item.status === ACCEPTED && (
                 <Button

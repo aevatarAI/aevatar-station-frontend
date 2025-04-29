@@ -92,7 +92,7 @@ const Verification = () => {
         description: "Send Register Code failed. Please try again.",
       });
     }
-  }, [toast, email]);
+  }, [toast, name, email]);
   return (
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">

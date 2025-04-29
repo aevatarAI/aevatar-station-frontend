@@ -14,23 +14,19 @@ const RESET_TOEKN_URL = "/api/account/verify-password-reset-token";
 const SEND_PASSWORD_REST_CODE_URL = "/api/account/send-password-reset-code";
 const RESET_PASSWORD_URL = "/api/account/reset-password";
 export const login = async (username: string, password: string) => {
-  return fetcher(
-    LOGIN_URL,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "password",
-        scope: SCOPE,
-        username,
-        password,
-        client_id: CLIENT_ID,
-      }).toString(),
+  return fetcher(LOGIN_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    // LoginMockData,
-  );
+    body: new URLSearchParams({
+      grant_type: "password",
+      scope: SCOPE,
+      username,
+      password,
+      client_id: CLIENT_ID,
+    }).toString(),
+  });
 };
 
 export const refreshTokenLogin = async (

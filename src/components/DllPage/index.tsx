@@ -40,7 +40,6 @@ export default function DllPage() {
     async ({ file }: TDllEditForm, id: string) => {
       const formData = new FormData();
       formData.append("code", file[0].content);
-      console.log(file, formData.get("code"), "file==onEdit");
       await request.plugins.updatePlugins({
         query: id,
         data: { code: formData.get("code") },

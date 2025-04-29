@@ -194,11 +194,11 @@ const Login = () => {
         <div className="text-right">
           <ForgotPasswordDialog />
         </div>
-        <div className="flex flex-col gap-[10px] mt-[30px]">
+        <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
           <span className="text-gray-light font-normal font-semibold text-[12px]">
             or sign in with
           </span>
-          <div className="flex flex-between gap-[20px]">
+          <div className="flex flex-between gap-[20px] max-[431px]:flex-col">
             <Button
               type="button"
               className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"

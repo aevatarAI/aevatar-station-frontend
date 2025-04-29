@@ -12,17 +12,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { register, sendRegisterCode } from "@/services/auth";
+import { sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
 import { delay } from "@/utils/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(1, "name must be at least 1 character long"),
+  name: z
+    .string()
+    .min(1, "name must be at least 1 character long")
+    .regex(
+      /^[a-zA-Z0-9]+$/,
+      "Username is invalid, can only contain letters or digits."
+    ),
   email: z.string().email({
     message: "please enter a valid email address.",
   }),
@@ -31,15 +37,15 @@ const formSchema = z.object({
     .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "password must contain at least one non-alphanumeric character"
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "password must contain at least one lowercase letter ('a'-'z')"
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "password must contain at least one uppercase letter ('A'-'Z')"
     ),
 });
 

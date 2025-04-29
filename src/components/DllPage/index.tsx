@@ -10,7 +10,6 @@ import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
 import { DLL_LIST_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
-import { delay } from "@/utils/common";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -39,11 +38,12 @@ export default function DllPage() {
 
   const onEdit = useCallback(
     async ({ file }: TDllEditForm, id: string) => {
+      const formData = new FormData();
+      formData.append("code", file[0].content);
+      console.log(file, formData.get("code"), "file==onEdit");
       await request.plugins.updatePlugins({
         query: id,
-        data: {
-          code: file,
-        },
+        data: { code: formData.get("code") },
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -56,13 +56,16 @@ export default function DllPage() {
 
   const onCreate = useCallback(
     async ({ file }: TDllEditForm) => {
-      console.log(file, "file==onCreate");
       if (!projectId) return;
-      await delay(100000);
+
+      const formData = new FormData();
+      formData.append("code", file[0].content);
+      formData.append("projectId", projectId);
+
       await request.plugins.addPlugins({
         data: {
           projectId,
-          code: file,
+          code: formData.get("code"),
         },
         headers: {
           "Content-Type": "multipart/form-data",
@@ -99,28 +102,28 @@ export default function DllPage() {
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
-            {projectPermissions?.dllEdit ? (
-              <DllEditDialog
-                type="edit"
-                onSubmit={(v) => onEdit(v, item.id)}
-                data-testid={`edit-dll-${item.id}`}
-              />
-            ) : (
+            {/* {projectPermissions?.dllEdit ? ( */}
+            <DllEditDialog
+              type="edit"
+              onSubmit={(v) => onEdit(v, item.id)}
+              data-testid={`edit-dll-${item.id}`}
+            />
+            {/* ) : (
               <span />
-            )}
-            {projectPermissions?.dllDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete this dll?"}
-                data-testid={`delete-dll-${item.id}`}
-              />
-            ) : (
+            )} */}
+            {/* {projectPermissions?.dllDelete ? ( */}
+            <DeleteDialog
+              onYes={() => onDeleteYes(item.id)}
+              title={"Are you sure you want to delete this dll?"}
+              data-testid={`delete-dll-${item.id}`}
+            />
+            {/* ) : (
               <span />
-            )}
+            )} */}
           </div>
         ),
       })),
-    [dllList, projectPermissions, onEdit, onDeleteYes],
+    [dllList, onEdit, onDeleteYes],
   );
   return (
     <div>
@@ -129,7 +132,8 @@ export default function DllPage() {
 
         <DllEditDialog
           disabled={
-            !projectPermissions?.dllCreate || (dllList?.length || 0) > 0
+            // !projectPermissions?.dllCreate ||
+            (dllList?.length || 0) > 0
           }
           type="create"
           onSubmit={onCreate}

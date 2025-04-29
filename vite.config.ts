@@ -33,7 +33,7 @@ export default defineConfig((_config) => ({
     allowedHosts: true,
     proxy: {
       "/connect": {
-        target: "https://auth-station-staging.aevatar.ai",
+        target: "https://aevatar-station-ui-staging.aevatar.ai/pre-auth",
         changeOrigin: true,
         secure: false,
       },

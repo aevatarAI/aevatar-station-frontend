@@ -1,11 +1,12 @@
 import { service } from "@/api/axios";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
 
 export const useLogin = () => {
   const [_, setAccessToken] = useAtom(accessTokenAtom);
+  const [__, setRefreshToken] = useAtom(refreshTokenAtom);
   const getUserProfile = useUpdateProfile();
 
   const loginUser = async (username: string, password: string) => {
@@ -14,9 +15,10 @@ export const useLogin = () => {
       const accessToken = `${data.token_type} ${data.access_token}`;
       service.defaults.headers.Authorization = accessToken;
       setAccessToken(accessToken);
+      setRefreshToken(data.refresh_token);
       getUserProfile();
       return true;
-    } catch (e) {
+    } catch (_) {
       return false;
     }
   };

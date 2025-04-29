@@ -1,9 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { format } from "date-fns";
+import dayjs from "@/api/dayjs";
 import UpDownIcon from "@/assets/updown.svg?react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -11,8 +9,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import dayjs from "@/api/dayjs";
-import { DateRange } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import type * as React from "react";
+import type { DateRange } from "react-day-picker";
 
 interface DatePickerWithRangeProps {
   date: any;
@@ -34,7 +34,7 @@ export function DatePickerWithRange({
             variant="ghost"
             className={cn(
               "font-source-code font-light text-[14px] max-[768px]:px-[0px]",
-              !date && "text-muted-foreground"
+              !date && "text-muted-foreground",
             )}
           >
             <div className="flex justify-end items-center gap-2 w-full">
@@ -62,7 +62,13 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={(date?: DateRange) => {
               const dayFrom = dayjs(date?.from).startOf("day").valueOf();
-              const dayTo = dayjs(date?.to).endOf("day").valueOf();
+
+              let dayTo: number;
+              if (dayjs(date?.to).isBefore(date?.from)) {
+                dayTo = dayjs(date?.from).endOf("day").valueOf();
+              } else {
+                dayTo = dayjs(date?.to).endOf("day").valueOf();
+              }
               onDateChange({ from: dayFrom, to: dayTo });
             }}
             numberOfMonths={2}

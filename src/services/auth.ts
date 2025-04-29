@@ -4,9 +4,10 @@ import {
   RegisterMockData,
   SendRegisterCodeMockData,
 } from "@/utils/mock-data";
-const SCOPE = "Aevatar offline_access";
-const CLIENT_ID = "AevatarAuthServer";
-const LOGIN_URL = "/connect/token";
+export const GITHUB = "github";
+export const SCOPE = "Aevatar offline_access";
+export const CLIENT_ID = "AevatarAuthServer";
+export const LOGIN_URL = "/connect/token";
 const REGISTER_URL = "/api/account/register";
 const SEND_REGISTER_CODE_URL = "/api/account/send-register-code";
 const RESET_TOEKN_URL = "/api/account/verify-password-reset-token";

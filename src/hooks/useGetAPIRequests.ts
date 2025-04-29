@@ -11,7 +11,7 @@ interface DateRange {
   to: number;
 }
 
-export const useGetAPIRequests = (date: DateRange) => {
+export const useGetAPIRequests = (date: DateRange, hasPermission: boolean) => {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [organisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
 
@@ -28,6 +28,6 @@ export const useGetAPIRequests = (date: DateRange) => {
         },
       });
     },
-    enabled: !!(date.from && date.to),
+    enabled: !!(date.from && date.to) && hasPermission,
   });
 };

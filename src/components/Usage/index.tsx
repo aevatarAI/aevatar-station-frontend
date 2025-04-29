@@ -1,6 +1,5 @@
 import dayjs from "@/api/dayjs";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
-import Loading from "@/components/Loading";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import {
   Select,
@@ -14,6 +13,8 @@ import { useGetAPIRequests } from "@/hooks/useGetAPIRequests";
 import { useGetLLMTokens } from "@/hooks/useGetLLMTokenUsage";
 import { useGetSystemModels } from "@/hooks/useGetSystemModels";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { generateDates } from "@/utils/helpers";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -109,14 +110,11 @@ const CustomTooltip = ({
       <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
         {label}
       </p>
-      {payload.map((entry: any, index: number) => {
+      {payload.map((entry: any) => {
         return (
           <p
             className="font-['source_code_pro'] text-[10px] my-[2px]"
-            key={`item-${
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              index
-            }`}
+            key={`item-${entry.name}`}
           >
             <span style={{ color: entry.color }}>{entry.name}: </span>
             <span className="font-color-white">{entry.value}</span>
@@ -127,6 +125,42 @@ const CustomTooltip = ({
   );
 };
 
+export const useDisplayGraphs = () => {
+  const orgPermissions = useOrgPermissions();
+  const projectPermissions = useProjectPermissions();
+  const [displayGraphs, setDisplayGraph] = useState({
+    llmsModels: false,
+    apiRequests: false,
+  });
+
+  useEffect(() => {
+    const newDisplayState = {
+      llmsModels: false,
+      apiRequests: false,
+    };
+
+    if (projectPermissions.llmsModels !== undefined) {
+      newDisplayState.llmsModels = projectPermissions.llmsModels;
+    }
+
+    if (projectPermissions.apiRequests !== undefined) {
+      newDisplayState.apiRequests = projectPermissions.apiRequests;
+    }
+
+    if (orgPermissions.llmsModels !== undefined) {
+      newDisplayState.llmsModels = orgPermissions.llmsModels;
+    }
+
+    if (orgPermissions.apiRequests !== undefined) {
+      newDisplayState.apiRequests = orgPermissions.apiRequests;
+    }
+
+    setDisplayGraph(newDisplayState);
+  }, [orgPermissions, projectPermissions]);
+
+  return { displayGraphs };
+};
+
 export function Usage() {
   const form = useForm();
   const [apiRequests, setAPIRequests] = useState<Results[]>([]);
@@ -134,10 +168,10 @@ export function Usage() {
     from: dayjs().subtract(6, "day").startOf("day").valueOf(),
     to: dayjs().endOf("day").valueOf(),
   });
-
-  const { data, isLoading } = useGetAPIRequests(date);
+  const { displayGraphs } = useDisplayGraphs();
   const { data: models } = useGetSystemModels();
-  const { data: tokens } = useGetLLMTokens();
+  const { data: _ } = useGetLLMTokens(date, displayGraphs.llmsModels);
+  const { data } = useGetAPIRequests(date, displayGraphs.apiRequests);
   const { isMobile } = useIsMobile();
 
   useEffect(() => {
@@ -145,157 +179,165 @@ export function Usage() {
     setAPIRequests(results);
   }, [data]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <div className="pb-[25px]">
       <div className="flex max-[768px]:flex-col max-[768px]:items-start justify-between items-center">
         <span className={clsx(textGradient)}>usage</span>
         <DatePickerWithRange date={date} onDateChange={setDate} />
       </div>
-      <div className="max-[768px]:h-[1px] max-[768px]:my-[30px] max-[768px]:bg-[#303030] min-[769px]:py-[15px]" />
-      <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
-        llms model
-      </span>
-      <div className="py-[10px]" />
-      <div className="flex justify-between items-center max-[768px]:grid max-[768px]:justify-normal max-[768px]:items-start">
-        <div className="flex max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-[5px] gap-[10px]">
-          <span className="text-gray-light font-semibold text-[15px]">
-            <strong className="underline text-white">?</strong>{" "}
-            <span>total cost</span>
+      {displayGraphs?.llmsModels && (
+        <>
+          <div className="max-[768px]:h-[1px] max-[768px]:my-[30px] max-[768px]:bg-[#303030] min-[769px]:py-[15px]" />
+          <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
+            llms model
           </span>
-          <span className="text-gray-light font-semibold text-[15px]">
-            <strong className="underline text-white">?</strong>{" "}
-            <span>total input tokens</span>
-          </span>
-          <span className="text-gray-light font-semibold text-[15px]">
-            <strong className="underline text-white">?</strong>{" "}
-            <span>total output tokens</span>
-          </span>
-        </div>
-        <div className="max-[768px]:py-[10px]" />
-        <div className="justify-self-end self-end">
-          <Form {...form}>
-            <FormItem aria-labelledby="models" className="w-[120px]">
-              <Select defaultValue="all models">
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
-                  {models?.data?.length > 0 ? (
-                    models?.data?.map((item: string) => (
-                      <SelectItem
-                        className="text-[14px]"
-                        key={item}
-                        value={item}
-                      >
-                        {item}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem className="text-[14px]" value="all models">
-                      all models
-                    </SelectItem>
+          <div className="py-[10px]" />
+          <div className="flex justify-between items-center max-[768px]:grid max-[768px]:justify-normal max-[768px]:items-start">
+            <div className="flex max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-[5px] gap-[10px]">
+              <span className="text-gray-light font-semibold text-[15px]">
+                <strong className="underline text-white">?</strong>{" "}
+                <span>total cost</span>
+              </span>
+              <span className="text-gray-light font-semibold text-[15px]">
+                <strong className="underline text-white">?</strong>{" "}
+                <span>total input tokens</span>
+              </span>
+              <span className="text-gray-light font-semibold text-[15px]">
+                <strong className="underline text-white">?</strong>{" "}
+                <span>total output tokens</span>
+              </span>
+            </div>
+            <div className="max-[768px]:py-[10px]" />
+            <div className="justify-self-end self-end">
+              <Form {...form}>
+                <FormItem aria-labelledby="models" className="w-[120px]">
+                  <Select defaultValue="all models">
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
+                      {models?.data?.length > 0 ? (
+                        models?.data?.map((item: string) => (
+                          <SelectItem
+                            className="text-[14px]"
+                            key={item}
+                            value={item}
+                          >
+                            {item}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem className="text-[14px]" value="all models">
+                          all models
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              </Form>
+            </div>
+          </div>
+          <div className="py-[10px]" />
+          <div className="bg-[#141415] pt-[9px] pr-[35px] pb-[24px] pl-0">
+            <ResponsiveContainer width="100%" height={302}>
+              <BarChart
+                data={UNCHANGED_DATA}
+                barSize={isMobile ? 19 : 36}
+                margin={{ top: 40 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
+                <XAxis dataKey="name" />
+                <YAxis
+                  label={{
+                    fontSize: 10,
+                    fontFamily: "Source code pro",
+                    value: "tokens",
+                    position: "top",
+                    fill: "#ffffff",
+                    offset: 20,
+                    dx: 46,
+                  }}
+                />
+                <Tooltip
+                  content={(props) => <CustomTooltip {...props} />}
+                  cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+                />
+                <Legend
+                  wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
+                  formatter={(value) => (
+                    <span className="font-source-code text-white text-[10px]">
+                      {value}
+                    </span>
                   )}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          </Form>
-        </div>
-      </div>
-      <div className="py-[10px]" />
-      <div className="bg-[#141415] pt-[9px] pr-[35px] pb-[24px] pl-0">
-        <ResponsiveContainer width="100%" height={302}>
-          <BarChart
-            data={UNCHANGED_DATA}
-            barSize={isMobile ? 19 : 36}
-            margin={{ top: 40 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
-            <XAxis dataKey="name" />
-            <YAxis
-              label={{
-                fontSize: 10,
-                fontFamily: "Source code pro",
-                value: "tokens",
-                position: "top",
-                fill: "#ffffff",
-                offset: 20,
-                dx: 46,
-              }}
-            />
-            <Tooltip
-              content={(props) => <CustomTooltip {...props} />}
-              cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
-            />
-            <Legend
-              wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
-              formatter={(value) => (
-                <span className="font-source-code text-white text-[10px]">
-                  {value}
-                </span>
-              )}
-            />
-            <Bar
-              dataKey="output"
-              name="total output tokens"
-              stackId="a"
-              fill="#303030"
-            />
-            <Bar
-              dataKey="input"
-              name="total input tokens"
-              stackId="a"
-              fill="#606060"
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="py-[15px]" />
-      <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
-        api request
-      </span>
-      <div className="py-[10px]" />
-      <span className="text-gray-light font-semibold text-[15px]">
-        <strong className="underline text-white">
-          {data?.data?.totalRequests}
-        </strong>{" "}
-        api request
-      </span>
-      <div className="py-[10px]" />
-      <div className="bg-[#141415] pt-[30px] pr-[35px] pb-[24px] pl-0">
-        {apiRequests.length > 0 ? (
-          <ResponsiveContainer width="100%" height={302}>
-            <LineChart width={1040} height={302} data={apiRequests}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
-              <XAxis dataKey="time" />
-              <YAxis />
-              <Tooltip
-                content={(props) => <CustomTooltip {...props} />}
-                cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+                />
+                <Bar
+                  dataKey="output"
+                  name="total output tokens"
+                  stackId="a"
+                  fill="#303030"
+                />
+                <Bar
+                  dataKey="input"
+                  name="total input tokens"
+                  stackId="a"
+                  fill="#606060"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </>
+      )}
+      {displayGraphs?.apiRequests && (
+        <>
+          <div className="py-[15px]" />
+          <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
+            api request
+          </span>
+          <div className="py-[10px]" />
+          <span className="text-gray-light font-semibold text-[15px]">
+            <strong className="underline text-white">
+              {data?.data?.totalRequests}
+            </strong>{" "}
+            api request
+          </span>
+          <div className="py-[10px]" />
+          <div className="bg-[#141415] pt-[30px] pr-[35px] pb-[24px] pl-0">
+            {apiRequests.length > 0 ? (
+              <ResponsiveContainer width="100%" height={302}>
+                <LineChart width={1040} height={302} data={apiRequests}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#303030" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip
+                    content={(props) => <CustomTooltip {...props} />}
+                    cursor={{ fill: "#FFFFFF", opacity: 0.05 }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingLeft: isMobile ? 44 : 0,
+                    }}
+                    formatter={(value) => (
+                      <span className="font-source-code text-white text-[10px]">
+                        {value}
+                      </span>
+                    )}
+                  />
+                  <Line type="monotone" dataKey="count" stroke="#ffffff" />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <EmptyAPIRequests
+                from={date.from}
+                to={date.to}
+                isMobile={isMobile}
               />
-              <Legend
-                wrapperStyle={{
-                  paddingLeft: isMobile ? 44 : 0,
-                }}
-                formatter={(value) => (
-                  <span className="font-source-code text-white text-[10px]">
-                    {value}
-                  </span>
-                )}
-              />
-              <Line type="monotone" dataKey="count" stroke="#ffffff" />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <EmptyAPIRequests from={date.from} to={date.to} isMobile={isMobile} />
-        )}
-      </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

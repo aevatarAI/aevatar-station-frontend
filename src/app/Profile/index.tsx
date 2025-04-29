@@ -1,4 +1,3 @@
-import { request } from "@/api";
 import { getOrganizationRoles } from "@/api/utils/organization";
 import { getProjectRoles } from "@/api/utils/project";
 import OrganisationInner from "@/components/OrganisationInner";
@@ -20,7 +19,7 @@ import { useCallback, useEffect } from "react";
 export default function Profile() {
   const [selectMenu, selectTab] = useSideBarParams();
   useUpdateOrganisations();
-  useLongPollUnreadNotifications()
+  useLongPollUnreadNotifications();
   const [, setOrganisationRoles] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const getOrganisationRoleList = useCallback(async () => {

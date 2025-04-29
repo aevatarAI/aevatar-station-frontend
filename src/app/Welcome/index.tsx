@@ -9,7 +9,6 @@ import { useNavigate } from "@/hooks/navigate";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import type React from "react";
 
@@ -37,8 +36,8 @@ const WelcomePage: React.FC = () => {
         </p>
       </div>
       <div className="w-full lg:w-[793px] flex-col-reverse lg:flex-row flex gap-5  justify-center ">
-        <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative cutCornerNoBorder border-0 min-h-[285px]">
-          <div className="absolute inset-0 bg-black/50 z-10 cutCornerNoBorder border-0" />
+        <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative border-0 min-h-[285px]">
+          <div className="absolute inset-0 bg-black/50 z-10  border-0" />
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
@@ -48,7 +47,7 @@ const WelcomePage: React.FC = () => {
         </div>
 
         {hasInvites ? (
-          <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col justify-between cutCornerNoBorder border-0 min-h-[285px]">
+          <div className="flex flex-col  justify-between w-full lg:w-[346px] px-5 py-5 bg-black border-0 min-h-[285px]">
             <div>
               <h2 className="font-semibold text-[18px] mb-3 text-white">
                 join an existing organisation
@@ -65,7 +64,7 @@ const WelcomePage: React.FC = () => {
             </div>
             <Button
               disabled={isPending || selectedValues.length === 0}
-              className="mx-auto bottom-0 w-[226px]"
+              className="mx-auto bottom-0 w-[226px] cursor-pointer"
               onClick={async () => {
                 for (const id of selectedValues) {
                   await mutateAsync({ id, status: ACCEPTED });
@@ -90,7 +89,9 @@ const WelcomePage: React.FC = () => {
               your email address
             </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[12px] font-source-code">{email}</span>
+              <span className="text-[12px] font-source-code truncate overflow-hidden block max-w-[200px]">
+                {email}
+              </span>
               <Copy
                 description="email address copied"
                 toCopy={email}

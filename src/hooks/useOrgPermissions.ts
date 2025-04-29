@@ -25,6 +25,9 @@ type TUserPermissions = {
   roleCreate?: boolean;
   roleEdit?: boolean;
   roleDelete?: boolean;
+  dashboards?: boolean;
+  llmsModels?: boolean;
+  apiRequests?: boolean;
 };
 
 export const useOrgPermissions = () => {
@@ -110,6 +113,15 @@ export const useOrgPermissions = () => {
           break;
         case "Permission:Roles.Delete":
           _permissions.roleDelete = item.isGranted;
+          break;
+        case "Permission:Dashboards":
+          _permissions.dashboards = item.isGranted;
+          break;
+        case "Permission:LLMSModels":
+          _permissions.llmsModels = item.isGranted;
+          break;
+        case "Permission:ApiRequests":
+          _permissions.apiRequests = item.isGranted;
           break;
       }
     });

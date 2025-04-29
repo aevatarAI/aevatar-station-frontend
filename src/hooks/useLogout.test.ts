@@ -2,7 +2,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { renderHook } from "@testing-library/react";
 import * as Jotai from "jotai";
 import { RESET } from "jotai/utils";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("jotai", async () => {
   const actual = await vi.importActual("jotai");
@@ -13,38 +13,78 @@ vi.mock("jotai", async () => {
 });
 
 describe("useLogout Hook", () => {
+  const atomNames = [
+    "ORGANIZATIONS_LIST_ATOM",
+    "PROJECT_LIST_ATOM",
+    "CURRENT_ORGANIZATION_ATOM",
+    "CURRENT_PROJECT_ATOM",
+    "accessTokenAtom",
+    "refreshTokenAtom",
+    "ORGANIZATION_MEMBER_ATOM",
+    "PROJECT_PERMISSION_ATOM",
+    "CURRENT_PROJECT_ROLE_ATOM",
+    "CURRENT_ORGANIZATION_ROLE_ATOM",
+    "USER_PROFILE_ATOM",
+    "ORGANIZATION_PERMISSION_ATOM",
+    "USER_LOGIN_TYPE",
+  ];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should reset all atoms when logout is called", () => {
     const resetMock = vi.fn();
-
     vi.mocked(Jotai.useAtom).mockReturnValue([null, resetMock] as any);
 
     const { result } = renderHook(() => useLogout());
-
     result.current();
 
-    expect(resetMock).toHaveBeenCalledTimes(12);
-
+    // Verify that resetMock was called exactly once for each atom
+    expect(resetMock).toHaveBeenCalledTimes(atomNames.length);
     expect(resetMock).toHaveBeenCalledWith(RESET);
   });
 
-  it("should include all dependent atom setters in dependencies", () => {
-    const hookDependencies = [
-      "ORGANIZATIONS_LIST_ATOM",
-      "PROJECT_LIST_ATOM",
-      "CURRENT_ORGANIZATION_ATOM",
-      "CURRENT_PROJECT_ATOM",
-      "accessTokenAtom",
-      "refreshTokenAtom",
-      "ORGANIZATION_MEMBER_ATOM",
-      "PROJECT_PERMISSION_ATOM",
-      "CURRENT_PROJECT_ROLE_ATOM",
-      "CURRENT_ORGANIZATION_ROLE_ATOM",
-      "USER_PROFILE_ATOM",
-      "ORGANIZATION_PERMISSION_ATOM",
-    ];
+  it("should reset each individual atom with RESET value", () => {
+    const mockSetters = atomNames.map(() => vi.fn());
+    let currentSetterIndex = 0;
 
-    hookDependencies.forEach((atom) => {
-      expect(() => Jotai.useAtom(atom as any)).not.toThrow();
+    vi.mocked(Jotai.useAtom).mockImplementation(() => {
+      const setter = mockSetters[currentSetterIndex];
+      currentSetterIndex = (currentSetterIndex + 1) % atomNames.length;
+      return [null, setter] as any;
     });
+
+    const { result } = renderHook(() => useLogout());
+    result.current();
+
+    // Verify each atom setter was called with RESET
+    mockSetters.forEach((setter) => {
+      expect(setter).toHaveBeenCalledWith(RESET);
+      expect(setter).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("should propagate errors if atom reset fails", () => {
+    const mockSetters = atomNames.map(() =>
+      vi.fn().mockImplementation(() => {
+        throw new Error("Reset failed");
+      }),
+    );
+    let currentSetterIndex = 0;
+
+    vi.mocked(Jotai.useAtom).mockImplementation(() => {
+      const setter = mockSetters[currentSetterIndex];
+      currentSetterIndex = (currentSetterIndex + 1) % atomNames.length;
+      return [null, setter] as any;
+    });
+
+    const { result } = renderHook(() => useLogout());
+
+    // Should throw error when called
+    expect(() => result.current()).toThrow("Reset failed");
+
+    // Verify that setter was called before error
+    expect(mockSetters[0]).toHaveBeenCalledWith(RESET);
   });
 });

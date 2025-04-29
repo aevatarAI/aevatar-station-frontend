@@ -1,11 +1,11 @@
 import { service } from "@/api/axios";
 import Layout from "@/app/Account/Layout";
+import GithubIcon from "@/assets/github.svg?react";
+import GoogleIcon from "@/assets/google.svg?react";
 import robotImg1 from "@/assets/overview/robot1.png";
 import robotImg2 from "@/assets/overview/robot2.png";
 import robotImg3 from "@/assets/overview/robot3.png";
 import robotImg4 from "@/assets/overview/robot4.png";
-import GoogleIcon from "@/assets/google.svg?react";
-import GithubIcon from "@/assets/github.svg?react";
 import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,12 +22,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { generateRandomString } from "@/utils/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { generateRandomString } from "@/utils/helpers";
 
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
@@ -39,15 +39,15 @@ const formSchema = z.object({
     .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character"
+      "password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')"
+      "password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')"
+      "password must contain at least one uppercase letter ('A'-'Z')",
     ),
 });
 
@@ -83,7 +83,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken]
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
   );
 
   const handleGithubLogin = () => {
@@ -98,7 +98,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const redirectUri = encodeURIComponent(
-      `${window.location.origin}/auth/google/callback`
+      `${window.location.origin}/auth/google/callback`,
     );
     const scope = encodeURIComponent("openid email profile");
     const responseType = "id_token token";
@@ -233,6 +233,5 @@ const LoginPage = () => {
     </Layout>
   );
 };
-
 
 export default LoginPage;

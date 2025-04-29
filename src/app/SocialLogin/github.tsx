@@ -1,11 +1,11 @@
-import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
-import axios from "axios";
 import { useNavigate } from "@/hooks/navigate";
-import { useAtom } from "jotai";
+import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import { IUserLoginType, USER_LOGIN_TYPE } from "@/state/atoms/profile";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useAtom } from "jotai";
+import { useEffect, useRef } from "react";
 
 export const useGetCallbackCode = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -31,7 +31,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
 
         return response.data;

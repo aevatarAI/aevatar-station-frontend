@@ -60,7 +60,7 @@ const Redirection = () => {
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
       const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id)
+        getProjects(id),
       );
 
       if (organizationIds.length === 0) {

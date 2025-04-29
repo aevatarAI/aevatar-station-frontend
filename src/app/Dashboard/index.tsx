@@ -1,7 +1,8 @@
 import ApiKeys from "@/components/ApiKeys";
+import DllPage from "@/components/DllPage";
 import { SideBar } from "@/components/SideBar";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Usage } from "@/components/Usage";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useNavigate } from "@/hooks/navigate";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
@@ -41,6 +42,7 @@ export default function Dashboard() {
         <div className="pt-[31px] px-[20px]">
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
+          {selectTab === "dll" && <DllPage />}
         </div>
       </div>
     </div>

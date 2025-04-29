@@ -1,9 +1,7 @@
 "use client";
 
-import type * as React from "react";
-import { format } from "date-fns";
+import dayjs from "@/api/dayjs";
 import UpDownIcon from "@/assets/updown.svg?react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -11,7 +9,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import dayjs from "@/api/dayjs";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import type * as React from "react";
 import type { DateRange } from "react-day-picker";
 
 interface DatePickerWithRangeProps {
@@ -34,7 +34,7 @@ export function DatePickerWithRange({
             variant="ghost"
             className={cn(
               "font-source-code font-light text-[14px] max-[768px]:px-[0px]",
-              !date && "text-muted-foreground"
+              !date && "text-muted-foreground",
             )}
           >
             <div className="flex justify-end items-center gap-2 w-full">

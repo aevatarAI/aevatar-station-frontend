@@ -38,7 +38,7 @@ export const AccessTokenUpdater = () => {
       nav("/login");
       return;
     },
-    [logout, nav, refreshToken, setRefreshToken, setAccessToken]
+    [logout, nav, refreshToken, setRefreshToken, setAccessToken],
   );
 
   useEffect(() => {

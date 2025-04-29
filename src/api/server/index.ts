@@ -62,7 +62,7 @@ myServer.prototype.send = async function (
           (data: { error?: any; token?: string }) => {
             if (data.token) resolve(data.token);
             remove();
-          }
+          },
         );
       });
       this.tokenPending = false;

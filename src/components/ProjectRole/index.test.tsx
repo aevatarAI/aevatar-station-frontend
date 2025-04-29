@@ -2,11 +2,18 @@ import { request } from "@/api";
 import { getProjectRoles } from "@/api/utils/project";
 import ProjectRole from "@/components/ProjectRole";
 import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import {
   CURRENT_PROJECT_ATOM,
   CURRENT_PROJECT_ROLE_ATOM,
 } from "@/state/atoms/organisation";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { useAtom } from "jotai";
 import { beforeEach, describe, it, vi } from "vitest";
 
@@ -26,6 +33,11 @@ vi.mock("@/api/utils/project", () => ({
 vi.mock("@/hooks/use-toast", () => ({
   useToast: vi.fn(),
 }));
+
+vi.mock("@/hooks/useProjectPermissions", () => ({
+  useProjectPermissions: vi.fn(),
+}));
+
 vi.mock("@/api", () => ({
   request: {
     projects: {
@@ -81,14 +93,23 @@ describe("ProjectRole Component", () => {
       toasts: [],
     });
 
+    vi.mocked(useProjectPermissions).mockReturnValue({
+      roleCreate: true,
+      roleEdit: true,
+      projectsEdit: true,
+    });
+
     vi.mocked(getProjectRoles).mockResolvedValue(mockRoleList);
 
     vi.mocked(request.projects.deleteProjectRoles).mockResolvedValue({});
     vi.mocked(request.projects.addProjectRoles).mockResolvedValue({});
   });
 
-  it("should render CreateRoleDialog and DataTable", () => {
-    render(<ProjectRole />);
+  it("should render CreateRoleDialog and DataTable", async () => {
+    await act(async () => {
+      render(<ProjectRole />);
+    });
+
     expect(screen.getByText("Create Role")).toBeInTheDocument();
 
     const table = screen.getByRole("table");
@@ -99,7 +120,9 @@ describe("ProjectRole Component", () => {
   });
 
   it("should fetch roles on initial load", async () => {
-    render(<ProjectRole />);
+    await act(async () => {
+      render(<ProjectRole />);
+    });
 
     await waitFor(() => {
       expect(getProjectRoles).toHaveBeenCalledWith("project-123");
@@ -108,10 +131,14 @@ describe("ProjectRole Component", () => {
   });
 
   it("should handle role creation", async () => {
-    render(<ProjectRole />);
+    await act(async () => {
+      render(<ProjectRole />);
+    });
 
     const createButton = screen.getByText("Create Role");
-    fireEvent.click(createButton);
+    await act(async () => {
+      fireEvent.click(createButton);
+    });
 
     await waitFor(() => {
       expect(request.projects.addProjectRoles).toHaveBeenCalledWith({
@@ -123,53 +150,63 @@ describe("ProjectRole Component", () => {
     expect(getProjectRoles).toHaveBeenCalled();
   });
 
-  // it("should handle role deletion", async () => {
-  //   render(<ProjectRole />);
-  //   screen.debug();
-  //   const deleteButton = screen.getAllByText("Delete Role")[0];
-  //   fireEvent.click(deleteButton);
+  it("should handle role deletion", async () => {
+    await act(async () => {
+      render(<ProjectRole />);
+    });
 
-  //   await waitFor(() => {
-  //     expect(request.projects.deleteProjectRoles).toHaveBeenCalledWith({
-  //       query: "project-123/roles/role-1",
-  //     });
-  //   });
+    const deleteButton = screen.getAllByText("Delete Role")[0];
+    await act(async () => {
+      fireEvent.click(deleteButton);
+    });
 
-  //   expect(mockToast).toHaveBeenCalledWith({
-  //     description: "Successfully delete",
-  //   });
+    await waitFor(() => {
+      expect(request.projects.deleteProjectRoles).toHaveBeenCalledWith({
+        query: "project-123/roles/role-1",
+      });
+    });
 
-  //   expect(getProjectRoles).toHaveBeenCalled();
-  // });
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "Successfully deleted",
+    });
 
-  //   it("should not show delete button for owner role", () => {
-  //     const ownerRole = [{ id: "role-1", name: "project_owner" }];
-  //     vi.mocked(useAtom).mockImplementation((atom) => {
-  //       if (atom === CURRENT_PROJECT_ROLE_ATOM) {
-  //         return [ownerRole, mockSetRoles] as any;
-  //       }
-  //       return [null];
-  //     });
+    expect(getProjectRoles).toHaveBeenCalled();
+  });
 
-  //     render(<ProjectRole />);
+  it("should not show delete button for owner role", async () => {
+    const ownerRole = [{ id: "role-1", name: "project_owner" }];
+    vi.mocked(useAtom).mockImplementation((atom) => {
+      if (atom === CURRENT_PROJECT_ROLE_ATOM) {
+        return [ownerRole, mockSetRoles] as any;
+      }
+      return [null];
+    });
 
-  //     expect(screen.queryByText("Delete Role")).not.toBeInTheDocument();
-  //   });
+    await act(async () => {
+      render(<ProjectRole />);
+    });
 
-  //   it("should show error toast when API call fails", async () => {
-  //     vi.mocked(request.projects.deleteProjectRoles).mockRejectedValueOnce(
-  //       new Error("Delete Failed")
-  //     );
+    expect(screen.queryByText("Delete Role")).not.toBeInTheDocument();
+  });
 
-  //     render(<ProjectRole />);
+  it("should show error toast when API call fails", async () => {
+    vi.mocked(request.projects.deleteProjectRoles).mockRejectedValueOnce(
+      new Error("Delete Failed"),
+    );
 
-  //     const deleteButton = screen.getAllByText("Delete Role")[0];
-  //     fireEvent.click(deleteButton);
+    await act(async () => {
+      render(<ProjectRole />);
+    });
 
-  //     await waitFor(() => {
-  //       expect(mockToast).toHaveBeenCalledWith({
-  //         description: "get roles list",
-  //       });
-  //     });
-  //   });
+    const deleteButton = screen.getAllByText("Delete Role")[0];
+    await act(async () => {
+      fireEvent.click(deleteButton);
+    });
+
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        description: "Delete Failed",
+      });
+    });
+  });
 });

@@ -114,7 +114,7 @@ describe("ProfileGeneral Component", () => {
       });
 
       expect(mockToast).toHaveBeenCalledWith({
-        description: "Successfully",
+        description: "successfully saved",
       });
 
       expect(mockGetUserProfile).toHaveBeenCalled();
@@ -140,6 +140,8 @@ describe("ProfileGeneral Component", () => {
   });
 
   it("should send reset password email on click reset password button", async () => {
+    vi.mocked(sendResetPasswordEmail).mockResolvedValue({ code: "200" });
+
     render(<ProfileGeneral />);
 
     const resetPasswordButton = screen.getAllByText("reset password")[1];

@@ -97,7 +97,7 @@ const General = forwardRef(
             <Input
               className="max-w-[498px] disabled:opacity-100"
               placeholder={inputPlaceholder}
-              defaultValue={defaultValue}
+              value={inputText}
               disabled={readonly}
               onChange={(e) => {
                 if (readonly) return;

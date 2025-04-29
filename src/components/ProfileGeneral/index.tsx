@@ -20,7 +20,7 @@ export default function ProfileGeneral() {
   const [userLoginType] = useAtom(USER_LOGIN_TYPE);
   const getUserProfile = useUpdateProfile();
   const [name, setName] = useState<string>(
-    (profile?.userName || profile?.name) ?? ""
+    (profile?.userName || profile?.name) ?? "",
   );
   const onNameSave = useCallback(async () => {
     try {

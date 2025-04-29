@@ -7,7 +7,7 @@ export const truncate = (original: string, sentenceToRemove: string) => {
 export function shortenString(
   str?: string,
   prefixLength = 5,
-  suffixLength = 5
+  suffixLength = 5,
 ) {
   if (!str || typeof str !== "string") return "";
 
@@ -60,7 +60,6 @@ export const generateDates = (from: number, to: number) => {
 
   return dates;
 };
-
 
 export const generateRandomString = (length: number) => {
   const charset =

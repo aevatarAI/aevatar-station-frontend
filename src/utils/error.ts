@@ -32,8 +32,11 @@ export const handleErrorMessage = (error: any, errorText?: string) => {
   if (error?.status === 500) {
     return errorText || "Failed to fetch data";
   }
+  if (typeof error === "string") {
+    return error || errorText;
+  }
   _error = handleError(_error);
-  _error = handleContractError(error);
+  _error = handleContractError(_error);
   if (typeof _error.message === "string" && _error.message !== "")
     _errorText = _error.message;
   return _errorText || "";

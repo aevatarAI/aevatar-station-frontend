@@ -17,7 +17,7 @@ const fetchGoogleUserprofile = async (access_token: string) => {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-    }
+    },
   );
   return response.data;
 };
@@ -47,7 +47,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
 
         return response.data;

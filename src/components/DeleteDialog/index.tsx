@@ -76,6 +76,7 @@ export default function DeleteDialog({
             <LoadingButton
               className="text-[12px] bg-white text-[#303030] flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
+              aria-label="yes"
             >
               yes
             </LoadingButton>

@@ -2,6 +2,7 @@
 
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
+import Dll from "@/assets/dll_menu.svg?react";
 import General from "@/assets/general.svg?react";
 import Member from "@/assets/member.svg?react";
 import Notication from "@/assets/notication.svg?react";
@@ -48,7 +49,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
   const userProjectPermissions = useProjectPermissions();
 
   const organisationMenuList = useMemo(() => {
-    if (organisationList.length <= 0) return [];
+    if (organisationList?.length <= 0) return [];
     // if (!userPermissions.organizations) return [];
     const menuList = [];
     if (userPermissions.organizations)
@@ -95,7 +96,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
   }, [organisationList, userPermissions]);
 
   const projectMenuList = useMemo(() => {
-    if (projectList.length <= 0) return [];
+    if (projectList?.length <= 0) return [];
     if (!userProjectPermissions.projects) return [];
     const menuList = [];
 
@@ -169,6 +170,13 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       text: "usage",
       url: "/dashboard/usage",
     });
+
+    menuList.push({
+      icon: <Dll />,
+      text: "dll",
+      url: "/dashboard/dll",
+    });
+
     return menuList;
   }, [userPermissions, userProjectPermissions]);
 

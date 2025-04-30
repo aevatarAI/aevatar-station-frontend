@@ -79,21 +79,30 @@ export default function DllEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
-            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] disable:opacity/100 group lowercase ${
-              fullWidth && "w-full"
-            }`}
+            className={clsx(
+              "text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              fullWidth && "w-full",
+              disabled && "disabled:hover:bg-transparent",
+              disabled
+                ? "group-hover:text-white"
+                : "group-hover:text-[#303030]",
+            )}
           >
             <Dll
               className={clsx(
                 "text-white",
                 disabled && "text-[#606060]",
-                "group-hover:text-[#303030]",
+                disabled
+                  ? "group-hover:text-white"
+                  : "group-hover:text-[#303030]",
               )}
             />
-            <span className="group-hover:text-[#303030]">upload</span>
+            <span className={clsx(disabled && "text-white!")}>upload</span>
           </Button>
         ) : (
-          <Edit className="cursor-pointer" />
+          <Dll
+            className={clsx("cursor-pointer w-[14px] h-[14px] text-[#B9B9B9]")}
+          />
         )}
       </DialogTrigger>
       <DialogContent

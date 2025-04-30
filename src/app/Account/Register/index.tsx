@@ -26,7 +26,7 @@ const formSchema = z.object({
     .string()
     .min(1, "name must be at least 1 character long")
     .regex(
-      /^[a-zA-Z0-9]+$/,
+      /^[a-zA-Z0-9\-._@+]+$/,
       "Username is invalid, can only contain letters or digits."
     ),
   email: z.string().email({

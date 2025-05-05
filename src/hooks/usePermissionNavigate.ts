@@ -3,15 +3,29 @@ import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useMemo } from "react";
 
 export const usePermissionNavigate = () => {
-  const { apiKeys: orgApiKeysPermission } = useOrgPermissions();
-  const { apiKeys: projApiKeysPermission } = useProjectPermissions();
+  const { apiKeys: orgApiKeysPermission, dashboards: orgDashboardsPermission } =
+    useOrgPermissions();
+  const {
+    apiKeys: projApiKeysPermission,
+    dashboards: projDashboardsPermission,
+  } = useProjectPermissions();
 
   const to = useMemo(() => {
     if (orgApiKeysPermission || projApiKeysPermission) {
       return "/dashboard/apikeys";
     }
-    return "/dashboard/usage";
-  }, [orgApiKeysPermission, projApiKeysPermission]);
+
+    if (orgDashboardsPermission || projDashboardsPermission) {
+      return "/dashboard/usage";
+    }
+
+    return "/dashboard/dll";
+  }, [
+    orgApiKeysPermission,
+    projApiKeysPermission,
+    orgDashboardsPermission,
+    projDashboardsPermission,
+  ]);
 
   return { to };
 };

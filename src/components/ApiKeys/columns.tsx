@@ -22,7 +22,7 @@ export interface IApiKeysListTable extends IApiKeysList {
 
 export const columns: ColumnDef<IApiKeysListTable>[] = [
   {
-    accessorKey: "apiKeyName",
+    accessorKey: "appName",
     header: "Name",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
@@ -31,7 +31,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "clientId",
+    accessorKey: "appId",
     header: "client id",
     cell: ({ row }) => (
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
@@ -45,7 +45,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    id: "apiKey",
+    id: "appSecret",
     header: "api key",
     cell: ({ row }) => (
       <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
@@ -59,7 +59,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "createdTime",
+    accessorKey: "createTime",
     header: "created",
     cell: ({ row }) => (
       <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">

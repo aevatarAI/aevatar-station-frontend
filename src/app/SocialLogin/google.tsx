@@ -90,7 +90,9 @@ export const GoogleLoginCallback = () => {
             if (!data.access_token) {
               throw new Error("unable to obtain access_token");
             }
+            setProfile(data);
             setAccessToken(`Bearer ${data.access_token}`);
+            setLoginType(IUserLoginType.SOCIAL_MEDIA);
             navigate("/redirect");
           },
           onError: () => {
@@ -102,13 +104,4 @@ export const GoogleLoginCallback = () => {
 
     googleLogin();
   }, [mutateAsync, navigate, setAccessToken]);
-
-  useEffect(() => {
-    if (data) {
-      setProfile(data);
-      setLoginType(IUserLoginType.SOCIAL_MEDIA);
-    }
-  }, [data, setProfile, setLoginType]);
-
-  return null;
 };

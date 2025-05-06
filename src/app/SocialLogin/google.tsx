@@ -75,7 +75,7 @@ export const GoogleLoginCallback = () => {
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [googleAccessToken, setGoogleAccessToken] = useState("");
   const { mutateAsync } = useGetAuthServerAccessToken();
-  const { data } = useGetGoogleUserProfile(googleAccessToken);
+  const { data: userProfile } = useGetGoogleUserProfile(googleAccessToken);
 
   useEffect(() => {
     const googleLogin = async () => {
@@ -90,7 +90,7 @@ export const GoogleLoginCallback = () => {
             if (!data.access_token) {
               throw new Error("unable to obtain access_token");
             }
-            setProfile(data);
+            setProfile(userProfile);
             setAccessToken(`Bearer ${data.access_token}`);
             setLoginType(IUserLoginType.SOCIAL_MEDIA);
             navigate("/redirect");

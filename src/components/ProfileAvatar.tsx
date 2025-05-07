@@ -29,18 +29,17 @@ export default function ProfileAvatar() {
         </PopoverTrigger>
         <PopoverContent>
           {(profile?.userName || profile?.name) && (
-            <div className={clsx(itemClassName, "font-semibold font-syne")}>
+            <div
+              className={clsx(
+                itemClassName,
+                "font-semibold font-syne whitespace-nowrap overflow-hidden text-ellipsis"
+              )}
+            >
               <span>{profile?.userName || profile?.name}</span>
             </div>
           )}
           <div className={itemClassName}>
-            <span
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
+            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
               {profile?.email ?? "--"}
             </span>
             {profile?.email && (

@@ -1,5 +1,5 @@
 import { useNavigate } from "@/hooks/navigate";
-import { useEmail } from "@/hooks/useEmail";
+import { useJWTDecode } from "@/hooks/useEmail";
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
 import {
@@ -7,26 +7,10 @@ import {
   USER_LOGIN_TYPE,
   USER_PROFILE_ATOM,
 } from "@/state/atoms/profile";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
-
-// export const useGetGithubAccessToken = (code: string) => {
-//   return useQuery({
-//     queryKey: ["github-access-token"],
-//     queryFn: () => {
-//       return axios.post(
-//         `https://github.com/login/oauth/access_token?client_id=${
-//           import.meta.env.VITE_GITHUB_CLIENT_ID
-//         }&client_secret=${
-//           import.meta.env.VITE_GITHUB_CLIENT_SECRET
-//         }&code=${code}`
-//       );
-//     },
-//     enabled: !!code,
-//   });
-// };
 
 export const useGetCallbackCode = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -67,13 +51,12 @@ const useGetAuthServerAccessToken = () => {
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
   const loginAttemptedRef = useRef(false);
-  const [profile] = useAtom(USER_PROFILE_ATOM);
+  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
-  // const { data: githubAccessToken } = useGetGithubAccessToken(code);
-  console.log({ profile });
+  const { decodeJwt } = useJWTDecode();
 
   useEffect(() => {
     const githubLogin = async () => {
@@ -90,8 +73,12 @@ export const GithubLoginCallback = () => {
           throw new Error("unable to obtain access_token");
         }
 
-        setLoginType(IUserLoginType.SOCIAL_MEDIA);
         setAccessToken(`Bearer ${data.access_token}`);
+        setLoginType(IUserLoginType.SOCIAL_MEDIA);
+
+        const decodedProfile = decodeJwt(data.access_token);
+        setProfile(decodedProfile);
+
         navigate("/redirect");
       } catch (_) {
         navigate("/error");
@@ -101,7 +88,5 @@ export const GithubLoginCallback = () => {
     if (code && !loginAttemptedRef.current) {
       githubLogin();
     }
-  }, [code, mutateAsync, navigate, setAccessToken, setLoginType]);
-
-  return null;
+  }, [code, mutateAsync, navigate, setAccessToken, setProfile, setLoginType]);
 };

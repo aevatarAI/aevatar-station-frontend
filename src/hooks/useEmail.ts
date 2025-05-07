@@ -5,6 +5,7 @@ import { type JwtPayload, jwtDecode } from "jwt-decode";
 interface JwtPayloadExtend extends JwtPayload, IUserProfile {
   email: string;
   role?: string;
+  preferred_username: string;
 }
 
 export const useEmail = () => {

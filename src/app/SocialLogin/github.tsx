@@ -1,11 +1,32 @@
 import { useNavigate } from "@/hooks/navigate";
+import { useEmail } from "@/hooks/useEmail";
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
-import { IUserLoginType, USER_LOGIN_TYPE } from "@/state/atoms/profile";
-import { useMutation } from "@tanstack/react-query";
+import {
+  IUserLoginType,
+  USER_LOGIN_TYPE,
+  USER_PROFILE_ATOM,
+} from "@/state/atoms/profile";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
+
+export const useGetGithubAccessToken = (code: string) => {
+  return useQuery({
+    queryKey: ["github-access-token"],
+    queryFn: () => {
+      return axios.post(
+        `https://github.com/login/oauth/access_token?client_id=${
+          import.meta.env.VITE_GITHUB_CLIENT_ID
+        }&client_secret=${
+          import.meta.env.VITE_GITHUB_CLIENT_SECRET
+        }}&code=${code}`
+      );
+    },
+    enabled: !!code,
+  });
+};
 
 export const useGetCallbackCode = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -31,7 +52,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          },
+          }
         );
 
         return response.data;
@@ -46,10 +67,14 @@ const useGetAuthServerAccessToken = () => {
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
   const loginAttemptedRef = useRef(false);
+  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
+  const { data: githubAccessToken } = useGetGithubAccessToken(code);
+
+  console.log("githubAccessToken", githubAccessToken);
 
   useEffect(() => {
     const githubLogin = async () => {

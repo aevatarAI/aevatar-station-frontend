@@ -12,21 +12,21 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
-export const useGetGithubAccessToken = (code: string) => {
-  return useQuery({
-    queryKey: ["github-access-token"],
-    queryFn: () => {
-      return axios.post(
-        `https://github.com/login/oauth/access_token?client_id=${
-          import.meta.env.VITE_GITHUB_CLIENT_ID
-        }&client_secret=${
-          import.meta.env.VITE_GITHUB_CLIENT_SECRET
-        }&code=${code}`
-      );
-    },
-    enabled: !!code,
-  });
-};
+// export const useGetGithubAccessToken = (code: string) => {
+//   return useQuery({
+//     queryKey: ["github-access-token"],
+//     queryFn: () => {
+//       return axios.post(
+//         `https://github.com/login/oauth/access_token?client_id=${
+//           import.meta.env.VITE_GITHUB_CLIENT_ID
+//         }&client_secret=${
+//           import.meta.env.VITE_GITHUB_CLIENT_SECRET
+//         }&code=${code}`
+//       );
+//     },
+//     enabled: !!code,
+//   });
+// };
 
 export const useGetCallbackCode = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -67,14 +67,13 @@ const useGetAuthServerAccessToken = () => {
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
   const loginAttemptedRef = useRef(false);
-  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
+  const [profile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
-  const { data: githubAccessToken } = useGetGithubAccessToken(code);
-
-  console.log("githubAccessToken", githubAccessToken);
+  // const { data: githubAccessToken } = useGetGithubAccessToken(code);
+  console.log({ profile });
 
   useEffect(() => {
     const githubLogin = async () => {

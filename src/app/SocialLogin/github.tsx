@@ -77,7 +77,10 @@ export const GithubLoginCallback = () => {
         setLoginType(IUserLoginType.SOCIAL_MEDIA);
 
         const decodedProfile = decodeJwt(data.access_token);
-        setProfile(decodedProfile);
+        setProfile({
+          ...decodedProfile,
+          name: decodedProfile.preferred_username,
+        });
 
         navigate("/redirect");
       } catch (_) {

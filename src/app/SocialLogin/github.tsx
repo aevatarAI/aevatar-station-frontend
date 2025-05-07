@@ -21,7 +21,7 @@ export const useGetGithubAccessToken = (code: string) => {
           import.meta.env.VITE_GITHUB_CLIENT_ID
         }&client_secret=${
           import.meta.env.VITE_GITHUB_CLIENT_SECRET
-        }}&code=${code}`
+        }&code=${code}`
       );
     },
     enabled: !!code,

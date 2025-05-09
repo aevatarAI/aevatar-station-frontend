@@ -2,9 +2,11 @@ import { request } from "@/api";
 import LoadingButton from "@/components/LoadingButton.tsx";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUpdateRefreshToken } from "@/hooks/AccessTokenUpdater";
 import { useToast } from "@/hooks/use-toast";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { sendResetPasswordEmail } from "@/services/auth";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
   USER_LOGIN_TYPE,
@@ -22,6 +24,8 @@ export default function ProfileGeneral() {
   const [name, setName] = useState<string>(
     (profile?.userName || profile?.name) ?? "",
   );
+  const { updateAccessToken } = useUpdateRefreshToken();
+
   const onNameSave = useCallback(async () => {
     try {
       await request.profile.editProfile({
@@ -34,6 +38,7 @@ export default function ProfileGeneral() {
           // concurrencyStamp: profile?.concurrencyStamp,
         },
       });
+      updateAccessToken();
       toast({
         description: "successfully saved",
       });

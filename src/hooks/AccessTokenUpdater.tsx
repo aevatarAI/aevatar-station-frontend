@@ -31,7 +31,7 @@ export const useUpdateRefreshToken = () => {
     }
   }, [refreshToken, setAccessToken, setRefreshToken]);
 
-  return { updateAccessToken}
+  return { updateAccessToken };
 }
 
 export const AccessTokenUpdater = () => {

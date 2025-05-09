@@ -38,7 +38,7 @@ export default function ProfileGeneral() {
           // concurrencyStamp: profile?.concurrencyStamp,
         },
       });
-      updateAccessToken();
+      await updateAccessToken();
       toast({
         description: "successfully saved",
       });

@@ -165,11 +165,14 @@ export function SideBar({ className, onClose }: ISideBarProps) {
         url: "/dashboard/apikeys",
       });
     }
-    menuList.push({
-      icon: <ChartIcon />,
-      text: "usage",
-      url: "/dashboard/usage",
-    });
+
+    if(userPermissions.dashboards || userProjectPermissions.dashboards) { 
+      menuList.push({
+        icon: <ChartIcon />,
+        text: "usage",
+        url: "/dashboard/usage",
+      });  
+    }
 
     menuList.push({
       icon: <Dll />,

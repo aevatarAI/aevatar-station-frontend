@@ -78,7 +78,6 @@ export default function ProfileGeneral() {
               onChange={(e) => setName(e.target.value)}
             />
             <LoadingButton
-              disabled={userLoginType === IUserLoginType.SOCIAL_MEDIA}
               className="font-semibold py-[7px] px-[17px] border-input"
               onClick={onNameSave}
             >

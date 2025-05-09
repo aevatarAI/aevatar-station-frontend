@@ -1,7 +1,7 @@
 import { useNavigate } from "@/hooks/navigate";
 import { useJWTDecode } from "@/hooks/useEmail";
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
   USER_LOGIN_TYPE,
@@ -54,6 +54,7 @@ export const GithubLoginCallback = () => {
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [, setRefreshToken] = useAtom(refreshTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
   const { decodeJwt } = useJWTDecode();
@@ -74,6 +75,7 @@ export const GithubLoginCallback = () => {
         }
 
         setAccessToken(`Bearer ${data.access_token}`);
+        setRefreshToken(data.refresh_token);
         setLoginType(IUserLoginType.SOCIAL_MEDIA);
 
         const decodedProfile = decodeJwt(data.access_token);

@@ -1,5 +1,5 @@
 import { useNavigate } from "@/hooks/navigate";
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
   USER_LOGIN_TYPE,
@@ -73,6 +73,7 @@ export const GoogleLoginCallback = () => {
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [, setRefreshToken] = useAtom(refreshTokenAtom);
   const [googleAccessToken, setGoogleAccessToken] = useState("");
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { data: userProfile } = useGetGoogleUserProfile(googleAccessToken);
@@ -91,6 +92,7 @@ export const GoogleLoginCallback = () => {
               throw new Error("unable to obtain access_token");
             }
             setAccessToken(`Bearer ${data.access_token}`);
+            setRefreshToken(data.refresh_token);
             setLoginType(IUserLoginType.SOCIAL_MEDIA);
             navigate("/redirect");
           },

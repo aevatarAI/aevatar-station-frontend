@@ -76,7 +76,7 @@ const WelcomePage: React.FC = () => {
                 }
                 try {
                   const response = await refreshTokenLogin(
-                    refreshToken as string
+                    refreshToken as string,
                   );
                   const { access_token, refresh_token } = response;
                   setAccessToken(access_token);
@@ -117,7 +117,7 @@ const WelcomePage: React.FC = () => {
         )}
       </div>
       {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around"
+        "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",
       )}
     </div>
   );

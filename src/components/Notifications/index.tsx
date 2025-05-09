@@ -68,7 +68,7 @@ export const Notifications = ({
                 <span>has invited you to join</span>
                 <span className="text-white">{` ${truncate(
                   item.content,
-                  "has invited you to join"
+                  "has invited you to join",
                 )}`}</span>
               </div>
             </div>

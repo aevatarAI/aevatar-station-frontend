@@ -36,7 +36,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
 
         return response.data;
@@ -91,5 +91,13 @@ export const GithubLoginCallback = () => {
     if (code && !loginAttemptedRef.current) {
       githubLogin();
     }
-  }, [code, mutateAsync, navigate, setAccessToken, setProfile, setLoginType]);
+  }, [
+    code,
+    mutateAsync,
+    navigate,
+    setAccessToken,
+    setProfile,
+    setLoginType,
+    decodeJwt,
+  ]);
 };

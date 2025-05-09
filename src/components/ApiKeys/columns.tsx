@@ -1,7 +1,7 @@
+import dayjs from "@/api/dayjs";
 import Copy from "@/components/Copy";
 import { shortenString } from "@/utils/helpers";
 import type { ColumnDef } from "@tanstack/react-table";
-import dayjs from "@/api/dayjs";
 
 export interface IApiKeysList {
   id: string;

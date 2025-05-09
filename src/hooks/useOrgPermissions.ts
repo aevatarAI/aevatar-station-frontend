@@ -35,7 +35,7 @@ export const useOrgPermissions = () => {
   const { toast } = useToast();
 
   const [permissions, setUserPermissions] = useAtom(
-    ORGANIZATION_PERMISSION_ATOM
+    ORGANIZATION_PERMISSION_ATOM,
   );
 
   const getUserPermissions = useCallback(async () => {

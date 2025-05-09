@@ -1,5 +1,4 @@
 import { useNavigate } from "@/hooks/navigate";
-import { useJWTDecode } from "@/hooks/useEmail";
 import { accessTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
@@ -18,7 +17,7 @@ const fetchGoogleUserprofile = async (access_token: string) => {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-    }
+    },
   );
   return response.data;
 };
@@ -48,7 +47,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
 
         return response.data;
@@ -77,7 +76,6 @@ export const GoogleLoginCallback = () => {
   const [googleAccessToken, setGoogleAccessToken] = useState("");
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { data: userProfile } = useGetGoogleUserProfile(googleAccessToken);
-  const { decodeJwt } = useJWTDecode();
 
   useEffect(() => {
     const googleLogin = async () => {

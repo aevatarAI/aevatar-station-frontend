@@ -18,12 +18,12 @@ export const useUpdateRefreshToken = () => {
         const accessToken = `${data.token_type} ${data.access_token}`;
         service.defaults.headers.Authorization = accessToken;
 
-      setAccessToken(accessToken);
-      setRefreshToken(data.refresh_token);
+        setAccessToken(accessToken);
+        setRefreshToken(data.refresh_token);
 
-      myEvents.AuthorizationUpdated.emit({
-        token: accessToken,
-        error: null,
+        myEvents.AuthorizationUpdated.emit({
+          token: accessToken,
+          error: null,
         });
       } catch (error) {
         myEvents.AuthorizationUpdated.emit({ token: undefined, error });
@@ -32,7 +32,7 @@ export const useUpdateRefreshToken = () => {
   }, [refreshToken, setAccessToken, setRefreshToken]);
 
   return { updateAccessToken };
-}
+};
 
 export const AccessTokenUpdater = () => {
   const logout = useLogout();

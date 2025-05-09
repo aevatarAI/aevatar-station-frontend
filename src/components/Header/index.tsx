@@ -36,14 +36,14 @@ export default function Header() {
       className={clsx(
         "lg:h-[60px]",
         pathname === "/welcome" ? "h-[60px]" : "h-[110px]",
-        ignoreHeaders.includes(pathname) && "hidden"
+        ignoreHeaders.includes(pathname) && "hidden",
       )}
     >
       <div className={clsx("fixed z-10 w-full  bg-[#000]", hidden && "hidden")}>
         <div
           className={clsx(
             "border-b border-[#303030] flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
-            "lg:px-[16px] lg:py-[13px] lg:pl-[19px]"
+            "lg:px-[16px] lg:py-[13px] lg:pl-[19px]",
           )}
         >
           <div>
@@ -56,7 +56,7 @@ export default function Header() {
           <div
             className={clsx(
               "flex items-center justify-center gap-[20px] text-white font-syne text-[14px] font-semibold leading-normal lowercase cursor-pointer ",
-              "lg:gap-[34px]"
+              "lg:gap-[34px]",
             )}
           >
             {pathname !== "/welcome" && (
@@ -66,7 +66,7 @@ export default function Header() {
                   disabled={!projectList.length}
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
-                    !projectList.length && "text-[#606060] cursor-not-allowed"
+                    !projectList.length && "text-[#606060] cursor-not-allowed",
                   )}
                   onClick={() => {
                     if (!projectList.length) return;

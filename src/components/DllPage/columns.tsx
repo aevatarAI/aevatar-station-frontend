@@ -1,7 +1,9 @@
 import dayjs from "@/api/dayjs";
-import type { IProjectItem } from "@/api/utils/organization";
-import type { IDllPlugin } from "@/api/utils/plugin";
-import Copy from "@/components/Copy";
+import { ELoadStatus, type IDllPlugin } from "@/api/utils/plugin";
+import TipIcon from "@/assets/errorTip.svg?react";
+import { TooltipContent } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export interface IProjectTable extends IDllPlugin {
@@ -41,7 +43,59 @@ export const columns: ColumnDef<IProjectTable>[] = [
       );
     },
   },
-
+  {
+    accessorKey: "updated",
+    header: "updated",
+    cell: ({ row }) => (
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+        {row.original.lastModificationTime
+          ? dayjs
+              .utc(row.original.lastModificationTime)
+              .local()
+              .format("DD.MM.YYYY HH:mm")
+          : "-"}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "lastModifierName",
+    header: "updated by",
+    cell: ({ row }) => {
+      return (
+        <div className="min-w-[125px] text-[15px] font-semibold">
+          {row.original.lastModifierName || "-"}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "loadStatus",
+    header: "status",
+    cell: ({ row }) => {
+      return (
+        <div className="min-w-[125px] text-[14px] font-semibold lowercase font-syne">
+          {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
+          {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
+          {row.original.loadStatus !== ELoadStatus.Uploaded &&
+            row.original.loadStatus !== ELoadStatus.Deployed && (
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex items-center gap-1">
+                      <TipIcon />
+                      <span className="text-[#FF2E2E]">error</span>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{row.original.reason ?? "something went wrong"}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+        </div>
+      );
+    },
+  },
   {
     id: "operation",
     header: "",

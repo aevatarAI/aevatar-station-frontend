@@ -6,7 +6,6 @@ import { columns } from "@/components/DllPage/columns";
 import { textGradient } from "@/constants/cls";
 import type { TDllEditForm } from "@/constants/form/dll";
 import { useToast } from "@/hooks/use-toast";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
 import { DLL_LIST_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
@@ -21,7 +20,6 @@ export default function DllPage() {
   const [dllList] = useAtom(DLL_LIST_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
 
-  const projectPermissions = useProjectPermissions();
   const updateDllHandler = useUpdateDllList();
 
   const updateDllList = useCallback(async () => {

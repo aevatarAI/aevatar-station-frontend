@@ -48,7 +48,7 @@ export default function ProfileGeneral() {
         description: handleErrorMessage(error, "Error: save name"),
       });
     }
-  }, [toast, profile, name, getUserProfile]);
+  }, [toast, profile, name, getUserProfile, updateAccessToken]);
 
   const onResetPassword = useCallback(async () => {
     try {

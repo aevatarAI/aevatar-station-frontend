@@ -12,6 +12,7 @@ import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 import { useNavigate } from "@/hooks/navigate";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { getProjects } from "@/hooks/useGetProjects";
+import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { accessTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
@@ -53,6 +54,7 @@ const Redirection = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useGetOrganizations();
   const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const { to } = usePermissionNavigate();
 
   useEffect(() => {
     if (isLoading || !data) return;
@@ -79,7 +81,7 @@ const Redirection = () => {
             break;
           }
         }
-        navigate(hasProjects ? "/dashboard" : "/profile");
+        navigate(hasProjects ? to : "/profile");
       } catch (_e) {
         navigate("/profile");
       }

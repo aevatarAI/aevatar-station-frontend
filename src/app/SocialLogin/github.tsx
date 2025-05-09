@@ -1,7 +1,12 @@
 import { useNavigate } from "@/hooks/navigate";
+import { useJWTDecode } from "@/hooks/useEmail";
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { accessTokenAtom } from "@/state/atoms";
-import { IUserLoginType, USER_LOGIN_TYPE } from "@/state/atoms/profile";
+import {
+  IUserLoginType,
+  USER_LOGIN_TYPE,
+  USER_PROFILE_ATOM,
+} from "@/state/atoms/profile";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -16,7 +21,7 @@ export const useGetCallbackCode = () => {
 
 const useGetAuthServerAccessToken = () => {
   return useMutation({
-    mutationKey: ["github_access_token"],
+    mutationKey: ["auth_access_token"],
     mutationFn: async (code: string) => {
       try {
         const response = await axios.post(
@@ -46,10 +51,12 @@ const useGetAuthServerAccessToken = () => {
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
   const loginAttemptedRef = useRef(false);
+  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
+  const { decodeJwt } = useJWTDecode();
 
   useEffect(() => {
     const githubLogin = async () => {
@@ -66,8 +73,15 @@ export const GithubLoginCallback = () => {
           throw new Error("unable to obtain access_token");
         }
 
-        setLoginType(IUserLoginType.SOCIAL_MEDIA);
         setAccessToken(`Bearer ${data.access_token}`);
+        setLoginType(IUserLoginType.SOCIAL_MEDIA);
+
+        const decodedProfile = decodeJwt(data.access_token);
+        setProfile({
+          ...decodedProfile,
+          name: decodedProfile.preferred_username,
+        });
+
         navigate("/redirect");
       } catch (_) {
         navigate("/error");
@@ -77,7 +91,13 @@ export const GithubLoginCallback = () => {
     if (code && !loginAttemptedRef.current) {
       githubLogin();
     }
-  }, [code, mutateAsync, navigate, setAccessToken, setLoginType]);
-
-  return null;
+  }, [
+    code,
+    mutateAsync,
+    navigate,
+    setAccessToken,
+    setProfile,
+    setLoginType,
+    decodeJwt,
+  ]);
 };

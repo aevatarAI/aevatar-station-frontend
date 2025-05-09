@@ -10,11 +10,16 @@ import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
+import { login, refreshTokenLogin } from "@/services/auth";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { useAtom } from "jotai";
 import type React from "react";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
   const navigate = useNavigate();
+  const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [refreshToken, setRefreshToken] = useAtom(refreshTokenAtom);
   const { data, isLoading } = useGetOrganisationInvites();
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } =
@@ -69,7 +74,17 @@ const WelcomePage: React.FC = () => {
                 for (const id of selectedValues) {
                   await mutateAsync({ id, status: ACCEPTED });
                 }
-                navigate("/profile");
+                try {
+                  const response = await refreshTokenLogin(
+                    refreshToken as string,
+                  );
+                  const { access_token, refresh_token } = response;
+                  setAccessToken(access_token);
+                  setRefreshToken(refresh_token);
+                  navigate("/profile");
+                } catch (e) {
+                  console.error(e);
+                }
               }}
             >
               {isPending ? "joining..." : "join"}

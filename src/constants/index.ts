@@ -4,6 +4,7 @@ export const WEBSOCKET_URL = "ws://localhost:8080";
 export const INVITED = 0;
 export const DEFAULT = 0;
 export const NOTIFIED = 1;
+export const EXPIRED = 5;
 
 export const NONE = 0;
 export const ACCEPTED = 1;

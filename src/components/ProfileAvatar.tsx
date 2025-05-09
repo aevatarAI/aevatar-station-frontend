@@ -42,13 +42,7 @@ export default function ProfileAvatar() {
             </div>
           )}
           <div className={itemClassName}>
-            <span
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
+            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
               {profile?.email ?? "--"}
             </span>
             {profile?.email && (

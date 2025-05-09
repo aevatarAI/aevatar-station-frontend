@@ -5,6 +5,7 @@ import OriganisactionHeader from "@/components/OriganisactionHeader";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { SheetSideBar } from "@/components/SheetSideBar";
 import { useNavigate } from "@/hooks/navigate";
+import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
 import { usePostReadNotifications } from "@/hooks/usePostReadNotifications";
 import { UNREAD_NOTIFICATION_ATOM } from "@/state/atoms/notification";
 import { PROJECT_LIST_ATOM } from "@/state/atoms/organisation";
@@ -22,6 +23,7 @@ export default function Header() {
   const { mutate } = usePostReadNotifications();
   const [pathname] = useLocation();
   const navigate = useNavigate();
+  const { to } = usePermissionNavigate();
 
   const hidden = useMemo(() => {
     if (pathname === "/") return true;
@@ -68,7 +70,7 @@ export default function Header() {
                   )}
                   onClick={() => {
                     if (!projectList.length) return;
-                    navigate("/dashboard");
+                    navigate(to);
                   }}
                 >
                   dashboard

@@ -78,8 +78,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
           {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&
             row.original.loadStatus !== ELoadStatus.Deployed && (
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
+              <TooltipProvider delayDuration={0} key={`${row.id}-provider`}>
+                <Tooltip key={`${row.id}-tooltip`}>
                   <TooltipTrigger asChild>
                     <span className="inline-flex items-center gap-1">
                       <TipIcon />

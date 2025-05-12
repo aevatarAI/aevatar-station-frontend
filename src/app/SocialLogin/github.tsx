@@ -15,7 +15,6 @@ import { useEffect, useRef } from "react";
 export const useGetCallbackCode = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const code = searchParams.get("code") as string;
-  console.log({ code, searchParams });
 
   return { code };
 };
@@ -63,27 +62,20 @@ export const GithubLoginCallback = () => {
 
   useEffect(() => {
     const githubLogin = async () => {
-      console.log("1", { code });
       if (!code) {
-        console.log("navigate");
         return navigate("/login");
       }
-      console.log("2");
 
       if (loginAttemptedRef.current) {
-        console.log("2.5");
         return;
       }
 
-      console.log("3");
       loginAttemptedRef.current = true;
 
       try {
         const data = await mutateAsync(code);
-        console.log("5");
 
         if (!data?.access_token) {
-          console.log("!5.5");
           throw new Error("unable to obtain access_token");
         }
 
@@ -99,19 +91,16 @@ export const GithubLoginCallback = () => {
 
         navigate("/redirect");
       } catch (_) {
-        console.log("6", "error");
         navigate("/error");
       }
     };
 
     if (!code && !loginAttemptedRef.current) {
-      console.log("redirect to login here");
       loginAttemptedRef.current = true;
       navigate("/login");
     }
 
     if (code && !loginAttemptedRef.current) {
-      console.log("git hub login");
       githubLogin();
     }
   }, [

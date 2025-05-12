@@ -103,9 +103,12 @@ export const GithubLoginCallback = () => {
         navigate("/error");
       }
     };
-
     if (code && !loginAttemptedRef.current) {
+      console.log("git hub login");
       githubLogin();
+    } else {
+      console.log("redirect to login here");
+      navigate("/login");
     }
   }, [
     code,

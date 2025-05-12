@@ -61,6 +61,10 @@ export const GithubLoginCallback = () => {
 
   useEffect(() => {
     const githubLogin = async () => {
+      if (!code) {
+        return navigate("/login");
+      }
+
       if (loginAttemptedRef.current) {
         return;
       }
@@ -98,6 +102,7 @@ export const GithubLoginCallback = () => {
     mutateAsync,
     navigate,
     setAccessToken,
+    setRefreshToken,
     setProfile,
     setLoginType,
     decodeJwt,

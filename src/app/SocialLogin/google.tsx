@@ -82,22 +82,26 @@ export const GoogleLoginCallback = () => {
   useEffect(() => {
     const googleLogin = async () => {
       const hash = window.location.hash;
+      console.log("2 user profile", userProfile);
 
       if (hash) {
         const params = getURLParams(hash);
         setGoogleAccessToken(params.access_token);
+        console.log("3 user profile", userProfile);
 
         await mutateAsync(params.id_token, {
           onSettled(data) {
             if (!data.access_token) {
               throw new Error("unable to obtain access_token");
             }
+            console.log("4 user profile", userProfile);
             setAccessToken(`Bearer ${data.access_token}`);
             setRefreshToken(data.refresh_token);
             setLoginType(IUserLoginType.SOCIAL_MEDIA);
             navigate("/redirect");
           },
           onError: () => {
+            console.log("5 user profile", userProfile);
             navigate("/error");
           },
         });
@@ -112,7 +116,7 @@ export const GoogleLoginCallback = () => {
       console.log("1. setProfile", userProfile);
       setProfile(userProfile);
     } else {
-      console.log("1.5 error in setting profile")
+      console.log("1.5 error in setting profile", userProfile);
     }
   }, [userProfile, setProfile]);
 };

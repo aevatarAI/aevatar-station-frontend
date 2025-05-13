@@ -21,7 +21,7 @@ const fetchGoogleUserprofile = async (access_token: string) => {
       }
     );
     console.log("response", response);
-    localStorage.setItem("user_profile", response.data);
+    localStorage.setItem("user_profile", JSON.stringify(response.data));
     return response.data;
   } catch (e) {
     console.log("error in fetching google profile", e);

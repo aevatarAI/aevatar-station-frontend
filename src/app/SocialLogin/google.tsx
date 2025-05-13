@@ -77,6 +77,7 @@ export const GoogleLoginCallback = () => {
   const [googleAccessToken, setGoogleAccessToken] = useState("");
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { data: userProfile } = useGetGoogleUserProfile(googleAccessToken);
+  console.log("0. data", userProfile);
 
   useEffect(() => {
     const googleLogin = async () => {
@@ -108,7 +109,10 @@ export const GoogleLoginCallback = () => {
 
   useEffect(() => {
     if (userProfile) {
+      console.log("1. setProfile", userProfile);
       setProfile(userProfile);
+    } else {
+      console.log("1.5 error in setting profile")
     }
   }, [userProfile, setProfile]);
 };

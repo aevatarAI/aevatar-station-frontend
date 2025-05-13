@@ -11,6 +11,8 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const fetchGoogleUserprofile = async (access_token: string) => {
+  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
+
   try {
     const response = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -21,6 +23,8 @@ const fetchGoogleUserprofile = async (access_token: string) => {
       }
     );
     console.log("response", response);
+
+    setProfile(response.data);
     return response.data;
   } catch (e) {
     console.log("error in fetching google profile", e);

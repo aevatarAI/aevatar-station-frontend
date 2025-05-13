@@ -11,15 +11,21 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const fetchGoogleUserprofile = async (access_token: string) => {
-  const response = await axios.get(
-    "https://www.googleapis.com/oauth2/v3/userinfo",
-    {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    },
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    console.log("response", response);
+    return response.data;
+  } catch (e) {
+    console.log("error in fetching google profile", e);
+  }
+
 };
 
 const useGetGoogleUserProfile = (access_token: string) => {

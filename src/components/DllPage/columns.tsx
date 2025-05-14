@@ -86,7 +86,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
                       <span className="text-[#FF2E2E]">error</span>
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="max-w-[300px] text-center">
                     <p>{row.original.reason ?? "something went wrong"}</p>
                   </TooltipContent>
                 </Tooltip>

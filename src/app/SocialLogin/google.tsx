@@ -1,4 +1,6 @@
+import { service } from "@/api/axios";
 import { useNavigate } from "@/hooks/navigate";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
@@ -18,7 +20,7 @@ const fetchGoogleUserprofile = async (access_token: string) => {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     console.log("response", response);
     localStorage.setItem("user_profile", JSON.stringify(response.data));
@@ -77,13 +79,13 @@ export const getURLParams = (hash: any) => {
 export const GoogleLoginCallback = () => {
   const navigate = useNavigate();
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
-  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setRefreshToken] = useAtom(refreshTokenAtom);
   const [googleAccessToken, setGoogleAccessToken] = useState("");
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { data: userProfile } = useGetGoogleUserProfile(googleAccessToken);
   console.log("0. data", userProfile);
+  const getUserProfile = useUpdateProfile();
 
   useEffect(() => {
     const googleLogin = async () => {
@@ -96,13 +98,16 @@ export const GoogleLoginCallback = () => {
         console.log("3 user profile", userProfile);
 
         await mutateAsync(params.id_token, {
-          onSettled(data) {
+          async onSettled(data) {
             if (!data.access_token) {
               throw new Error("unable to obtain access_token");
             }
             console.log("4 user profile", userProfile);
+            const accessToken = `${data.token_type} ${data.access_token}`;
+            service.defaults.headers.Authorization = accessToken;
             setAccessToken(`Bearer ${data.access_token}`);
             setRefreshToken(data.refresh_token);
+            await getUserProfile();
             setLoginType(IUserLoginType.SOCIAL_MEDIA);
             navigate("/redirect");
           },
@@ -115,14 +120,15 @@ export const GoogleLoginCallback = () => {
     };
 
     googleLogin();
-  }, [mutateAsync, navigate, setLoginType, setAccessToken]);
+  }, [
+    userProfile,
+    setRefreshToken,
+    mutateAsync,
+    navigate,
+    setLoginType,
+    setAccessToken,
+    getUserProfile,
+  ]);
 
-  useEffect(() => {
-    if (userProfile) {
-      console.log("1. setProfile", userProfile);
-      setProfile(userProfile);
-    } else {
-      console.log("1.5 error in setting profile", userProfile);
-    }
-  }, [userProfile, setProfile]);
+  return null;
 };

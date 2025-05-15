@@ -1,12 +1,9 @@
+import { service } from "@/api/axios";
 import { useNavigate } from "@/hooks/navigate";
-import { useJWTDecode } from "@/hooks/useEmail";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
-import {
-  IUserLoginType,
-  USER_LOGIN_TYPE,
-  USER_PROFILE_ATOM,
-} from "@/state/atoms/profile";
+import { IUserLoginType, USER_LOGIN_TYPE } from "@/state/atoms/profile";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -36,7 +33,7 @@ const useGetAuthServerAccessToken = () => {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
         console.log("4 response", response);
         return response.data;
@@ -52,13 +49,12 @@ const useGetAuthServerAccessToken = () => {
 export const GithubLoginCallback = () => {
   const navigate = useNavigate();
   const loginAttemptedRef = useRef(false);
-  const [, setProfile] = useAtom(USER_PROFILE_ATOM);
   const [, setLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setRefreshToken] = useAtom(refreshTokenAtom);
   const { mutateAsync } = useGetAuthServerAccessToken();
   const { code } = useGetCallbackCode();
-  const { decodeJwt } = useJWTDecode();
+  const getUserProfile = useUpdateProfile();
 
   useEffect(() => {
     const githubLogin = async () => {
@@ -78,16 +74,13 @@ export const GithubLoginCallback = () => {
         if (!data?.access_token) {
           throw new Error("unable to obtain access_token");
         }
-
+        const accessToken = `${data.token_type} ${data.access_token}`;
+        service.defaults.headers.Authorization = accessToken;
         setAccessToken(`Bearer ${data.access_token}`);
         setRefreshToken(data.refresh_token);
         setLoginType(IUserLoginType.SOCIAL_MEDIA);
 
-        const decodedProfile = decodeJwt(data.access_token);
-        setProfile({
-          ...decodedProfile,
-          name: decodedProfile.preferred_username,
-        });
+        await getUserProfile();
 
         navigate("/redirect");
       } catch (_) {
@@ -109,8 +102,8 @@ export const GithubLoginCallback = () => {
     navigate,
     setAccessToken,
     setRefreshToken,
-    setProfile,
+    getUserProfile,
     setLoginType,
-    decodeJwt,
   ]);
+  return null;
 };

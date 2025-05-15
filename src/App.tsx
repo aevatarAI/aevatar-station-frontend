@@ -88,7 +88,7 @@ const Redirection = () => {
     };
 
     fetchProjectsThenRedirect();
-  }, [data, isLoading, setCurrentOrganisationId, navigate]);
+  }, [data, isLoading, to, setCurrentOrganisationId, navigate]);
 
   return isLoading ? <Loading /> : null;
 };

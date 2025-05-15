@@ -1,4 +1,5 @@
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { DLL_LIST_ATOM } from "@/state/atoms/dll";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
@@ -33,6 +34,7 @@ export const useLogout = () => {
   const [, setOrgRole] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
   const [, setOrgMember] = useAtom(ORGANIZATION_MEMBER_ATOM);
   const [, setUserLoginType] = useAtom(USER_LOGIN_TYPE);
+  const [, setDllListType] = useAtom(DLL_LIST_ATOM);
 
   return useCallback(() => {
     setOrganizationsList(RESET);
@@ -49,6 +51,7 @@ export const useLogout = () => {
     setProfile(RESET);
     setOrgPermission(RESET);
     setUserLoginType(RESET);
+    setDllListType(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
@@ -63,5 +66,6 @@ export const useLogout = () => {
     setProjectRole,
     setOrgPermission,
     setUserLoginType,
+    setDllListType,
   ]);
 };

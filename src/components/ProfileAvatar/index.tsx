@@ -12,26 +12,14 @@ import { useLogout } from "@/hooks/useLogout";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ProfileAvatar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
 
   const logout = useLogout();
-  const [profile, setProfile] = useAtom(USER_PROFILE_ATOM);
-  console.log("0", { profile });
-
-  useEffect(() => {
-    const userProfile = localStorage.getItem("user_profile") as string;
-    console.log("2", { userProfile });
-    const parsedUserProfile = JSON.parse(userProfile);
-    console.log("3", "parsedUserProfile", parsedUserProfile);
-    if (parsedUserProfile) {
-      console.log("4", "setting profile", parsedUserProfile);
-      setProfile(parsedUserProfile);
-    }
-  }, [setProfile]);
+  const [profile] = useAtom(USER_PROFILE_ATOM);
 
   return (
     <div className="border-4 border-white rounded-[2px] w-[34px] h-[34px] bg-white">

@@ -75,14 +75,15 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
         </div>
         <Input
           className="max-w-[498px] disabled:opacity-100"
-          disabled={!userProjectPermissions?.projectsEdit}
+          disabled
+          // disabled={!userProjectPermissions?.projectsEdit}
           placeholder={curProject?.domainName ?? "domain name"}
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
         />
       </div>
     ),
-    [domainName, curProject?.domainName, userProjectPermissions],
+    [domainName, curProject?.domainName],
   );
 
   return (

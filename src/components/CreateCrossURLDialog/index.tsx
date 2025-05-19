@@ -1,5 +1,6 @@
-import Plus from "@/assets/+.svg?react";
-import Edit from "@/assets/edit_action.svg?react";
+import Add from "@/assets/add.svg?react";
+import Dll from "@/assets/dll_menu.svg?react";
+import Loading from "@/assets/loading.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,42 +18,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import Loading from "@/assets/loading.svg?react";
 import {
-  ProjectEditForm,
-  type TProjectEditForm,
-} from "@/constants/form/project";
+  CreateCrossURLSchema,
+  type TCreateCrossURLForm,
+} from "@/constants/form/CreateCrossURL";
 import { useToast } from "@/hooks/use-toast";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { handleErrorMessage } from "@/utils/error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface IProjectEditDialogProps {
+interface ICreateCrossURLDialogProps {
   type: "edit" | "create";
-  name?: string;
   disabled?: boolean;
-  domainName?: string;
   fullWidth?: boolean;
-  onSubmit?: (values: TProjectEditForm) => Promise<void>;
+  onSubmit?: (values: TCreateCrossURLForm) => Promise<void>;
 }
 
-export default function ProjectEditDialog({
+export default function CreateCrossURLDialog({
   type,
-  name,
   disabled,
-  domainName,
   fullWidth,
   onSubmit: onFinish,
-}: IProjectEditDialogProps) {
-  const form = useForm<TProjectEditForm>({
-    resolver: zodResolver(ProjectEditForm),
+}: ICreateCrossURLDialogProps) {
+  const form = useForm<TCreateCrossURLForm>({
+    resolver: zodResolver(CreateCrossURLSchema),
     defaultValues: {
-      name,
-      domainName,
+      domain: "",
     },
   });
   const [open, setOpen] = useState(false);
@@ -60,7 +53,7 @@ export default function ProjectEditDialog({
   const { toast } = useToast();
 
   const onSubmit = useCallback(
-    async (values: TProjectEditForm) => {
+    async (values: TCreateCrossURLForm) => {
       try {
         setBtnLoading(true);
         await onFinish?.(values);
@@ -68,9 +61,7 @@ export default function ProjectEditDialog({
         setOpen(false);
         toast({
           title: "",
-          description: `successfully ${
-            type === "create" ? "created" : "saved"
-          }`,
+          description: "cross-origin domain added",
         });
       } catch (error) {
         toast({
@@ -80,7 +71,7 @@ export default function ProjectEditDialog({
         setBtnLoading(false);
       }
     },
-    [toast, onFinish, type],
+    [toast, onFinish],
   );
 
   useEffect(() => {
@@ -88,13 +79,9 @@ export default function ProjectEditDialog({
   }, [form, open]);
 
   const btnText = useMemo(() => {
-    if (type === "create") {
-      if (btnLoading) return "creating";
-      return "create";
-    }
-    if (btnLoading) return "saving";
-    return "save";
-  }, [btnLoading, type]);
+    if (btnLoading) return "adding";
+    return "add";
+  }, [btnLoading]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -102,61 +89,60 @@ export default function ProjectEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
-            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${
-              fullWidth && "w-full"
-            }`}
+            className={clsx(
+              "text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              fullWidth && "w-full",
+              disabled && "disabled:hover:bg-transparent",
+              disabled
+                ? "group-hover:text-white"
+                : "group-hover:text-[#303030]",
+            )}
           >
-            <Plus />
-            <span>create {fullWidth && "project"}</span>
+            <Add
+              className={clsx(
+                "text-white w-[14px]! h-[14px]!",
+                disabled && "text-[#606060]",
+                disabled
+                  ? "group-hover:text-white"
+                  : "group-hover:text-[#303030]",
+              )}
+            />
+            <span className={clsx(disabled && "text-white!")}>add</span>
           </Button>
         ) : (
-          <Edit className="cursor-pointer" />
+          <Dll
+            className={clsx("cursor-pointer w-[14px] h-[14px] text-[#B9B9B9]")}
+          />
         )}
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+        className="w-[328px] sm:w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            {type === "create" ? "create project" : "edit project"}
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] pb-[18px] font-semibold leading-normal lowercase">
+            {type === "create"
+              ? "add cross-origin domain"
+              : "update cross-origin domain"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-[28px] items-start content-start self-stretch">
               <FormField
-                key={"name"}
+                key="domain"
                 control={form.control}
-                name={"name"}
+                name={"domain"}
                 render={({ field }) => (
-                  <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">project name</FormLabel>
+                  <FormItem aria-labelledby="domain" className="w-full">
+                    <FormLabel id="domain">domain</FormLabel>
                     <FormControl>
-                      <Input placeholder="-" {...field} />
+                      <Input
+                        placeholder="-"
+                        {...field}
+                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                      />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="domainName"
-                disabled={type === "edit"}
-                render={({ field }) => (
-                  <FormItem
-                    aria-labelledby="domainNameLabel"
-                    className="w-full"
-                  >
-                    <FormLabel id="domainNameLabel">domain name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="-" {...field} />
-                    </FormControl>
-                    <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-pro lowercase">
-                      Note: Once the project is created, the domain name cannot
-                      be changed.
-                    </div>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -172,7 +158,9 @@ export default function ProjectEditDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
+                  className={clsx(
+                    "text-[12px] bg-white text-[#303030] py-[7px] leading-[14px] w-[79px]",
+                  )}
                   type="submit"
                 >
                   {btnLoading && (
@@ -181,7 +169,7 @@ export default function ProjectEditDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnText}</span>
+                  {!btnLoading && <span>{btnText}</span>}
                 </Button>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
-import { DLL_LIST_ATOM } from "@/state/atoms/dll";
+import { DLL_LIST_ATOM, RESTART_POD_SERVER_TIME_ATOM } from "@/state/atoms/dll";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
@@ -35,7 +35,7 @@ export const useLogout = () => {
   const [, setOrgMember] = useAtom(ORGANIZATION_MEMBER_ATOM);
   const [, setUserLoginType] = useAtom(USER_LOGIN_TYPE);
   const [, setDllListType] = useAtom(DLL_LIST_ATOM);
-
+  const [, setRestartPodServerTime] = useAtom(RESTART_POD_SERVER_TIME_ATOM);
   return useCallback(() => {
     setOrganizationsList(RESET);
     setProjectList(RESET);
@@ -52,6 +52,7 @@ export const useLogout = () => {
     setOrgPermission(RESET);
     setUserLoginType(RESET);
     setDllListType(RESET);
+    setRestartPodServerTime(RESET);
   }, [
     setOrganizationsList,
     setProjectList,
@@ -67,5 +68,6 @@ export const useLogout = () => {
     setOrgPermission,
     setUserLoginType,
     setDllListType,
+    setRestartPodServerTime,
   ]);
 };

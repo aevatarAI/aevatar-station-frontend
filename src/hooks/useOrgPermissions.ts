@@ -41,6 +41,7 @@ export const useOrgPermissions = () => {
   const getUserPermissions = useCallback(async () => {
     try {
       if (!organizationId) return;
+      console.log("getUserPermissions===");
       const result = await getOrganizationPermissions(organizationId);
 
       setUserPermissions(result);

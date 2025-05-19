@@ -16,7 +16,7 @@ import Loading from "@/components/Loading";
 import { Toaster } from "@/components/ui/toaster";
 import type React from "react";
 
-import ProviderComponent from "@/components/providers/webProvider";
+import RestartPodServer from "@/components/ RestartPodServer";
 
 const queryClient = new QueryClient();
 
@@ -27,13 +27,14 @@ export default function LayoutDefault({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ProviderComponent>
-        <div>
-          <div className="grow">{children}</div>
-          <Loading />
-          <Toaster />
-        </div>
-      </ProviderComponent>
+      {/* <ProviderComponent> */}
+      <div>
+        <div className="grow">{children}</div>
+        <Loading />
+        <Toaster />
+        <RestartPodServer />
+      </div>
+      {/* </ProviderComponent> */}
     </QueryClientProvider>
   );
 }

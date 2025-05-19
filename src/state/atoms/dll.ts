@@ -7,3 +7,12 @@ export const DLL_LIST_ATOM = atomWithStorage<IDllPlugin[]>(
   undefined,
   { getOnInit: true },
 );
+
+export const RESTART_POD_SERVER_TIME_ATOM = atomWithStorage<
+  | {
+      time: number;
+    }
+  | undefined
+>("restart_pod_server_time_atom", undefined, undefined, {
+  getOnInit: true,
+});

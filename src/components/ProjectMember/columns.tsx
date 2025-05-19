@@ -26,7 +26,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
         <Copy
           description="email address copied"
           toCopy={row.original.email}
-          className="text-[#606060] hover:text-white"
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),

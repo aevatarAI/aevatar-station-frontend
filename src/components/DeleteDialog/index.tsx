@@ -44,7 +44,7 @@ export default function DeleteDialog({
       )}
       <DialogContent
         aria-describedby="edit api key"
-        className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[#303030]"
+        className="w-[328px] p-5 flex flex-col rounded-[6px] border border-black-light"
       >
         <VisuallyHidden>
           <DialogTitle />
@@ -74,7 +74,7 @@ export default function DeleteDialog({
               cancel
             </Button>
             <LoadingButton
-              className="text-[12px] bg-white text-[#303030] flex-1 py-[7px] leading-[14px]"
+              className="text-[12px] bg-white text-black-light flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
               aria-label="yes"
             >

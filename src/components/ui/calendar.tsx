@@ -16,17 +16,17 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3 bg-[#303030] min-w-[560px]", className)}
+      className={cn("p-3 bg-black-light min-w-[560px]", className)}
       classNames={{
         months:
           "flex flex-col sm:flex-row gap-4 font-syne font-bold justify-center",
         month: "flex flex-col gap-4",
         caption: "flex justify-center pt-1 relative items-center w-full",
-        caption_label: "text-sm font-semibold lowercase font-[600]",
+        caption_label: "text-sm font-semibold lowercase font-semibold",
         nav: "flex items-center gap-1",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "size-7 bg-transparent p-0 border border-[#606060] border-solid cursor-pointer hover:bg-[#606060]",
+          "size-7 bg-transparent p-0 border border-gray-deep border-solid cursor-pointer hover:bg-gray-deep",
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
@@ -43,7 +43,7 @@ function Calendar({
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "size-9 p-0 font-normal aria-selected:opacity-100 font-source-code text-[13px] cursor-pointer w-full h-9 hover:bg-[#606060] hover:opacity-80",
+          "size-9 p-0 font-normal aria-selected:opacity-100 font-source-code text-[13px] cursor-pointer w-full h-9 hover:bg-gray-deep hover:opacity-80",
         ),
         day_range_start:
           "day-range-start aria-selected:bg-primary aria-selected:text-primary-foreground",
@@ -56,7 +56,7 @@ function Calendar({
           "day-outside text-muted-foreground aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
-          "aria-selected:bg-[#606060] aria-selected:text-accent-foreground",
+          "aria-selected:bg-gray-deep aria-selected:text-accent-foreground",
         day_hidden: "invisible",
         ...classNames,
       }}

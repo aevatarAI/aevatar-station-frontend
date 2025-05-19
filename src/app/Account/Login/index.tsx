@@ -125,7 +125,7 @@ const Login = () => {
           </span>
         </p>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form

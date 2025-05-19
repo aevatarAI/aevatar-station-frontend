@@ -106,7 +106,7 @@ const CustomTooltip = ({
   if (!active || !payload || !payload.length) return null;
 
   return (
-    <div className="custom-tooltip bg-black p-1.5 border-[#303030]">
+    <div className="custom-tooltip bg-black p-1.5 border-black-light">
       <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
         {label}
       </p>
@@ -187,7 +187,7 @@ export function Usage() {
       </div>
       {displayGraphs?.llmsModels && (
         <>
-          <div className="max-[768px]:h-[1px] max-[768px]:my-[30px] max-[768px]:bg-[#303030] min-[769px]:py-[15px]" />
+          <div className="max-[768px]:h-px max-[768px]:my-[30px] max-[768px]:bg-black-light min-[769px]:py-[15px]" />
           <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
             llms model
           </span>

@@ -166,12 +166,12 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       });
     }
 
-    if(userPermissions.dashboards || userProjectPermissions.dashboards) { 
+    if (userPermissions.dashboards || userProjectPermissions.dashboards) {
       menuList.push({
         icon: <ChartIcon />,
         text: "usage",
         url: "/dashboard/usage",
-      });  
+      });
     }
 
     menuList.push({
@@ -217,7 +217,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#303030] mb-[34px]",
+              item[0] === "profile" && "border-b border-black-light mb-[34px]",
             )}
           >
             <div

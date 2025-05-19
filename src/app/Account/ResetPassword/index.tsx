@@ -101,7 +101,7 @@ const ResetPassword = () => {
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -182,7 +182,7 @@ const ResetPasswordPage = () => {
       <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
         <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
           <DescHome className="items-start lg:items-center" />
-          <div className="h-[1px] w-full bg-black-light" />
+          <div className="h-px w-full bg-black-light" />
           <ResetPassword />
         </div>
         <div className="w-full lg:w-[408px]">

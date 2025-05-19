@@ -145,7 +145,7 @@ export default function DropzoneItem({
           <div
             {...getRootProps({
               className: cn(
-                "border border-dashed border-[#303030] py-[29px] flex items-center justify-center cursor-pointer focus-visible:outline-hidden",
+                "border border-dashed border-black-light py-[29px] flex items-center justify-center cursor-pointer focus-visible:outline-hidden",
               ),
               "data-testid": "dropzone-id",
             })}
@@ -169,7 +169,7 @@ export default function DropzoneItem({
               >
                 {field.name}
               </div>
-              <div className="font-pro text-[10px] text-[#606060]">
+              <div className="font-pro text-[10px] text-gray-deep">
                 {field.content?.size && `${field.content?.size} bytes`}
               </div>
             </div>

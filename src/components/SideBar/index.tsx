@@ -1,5 +1,6 @@
 "use client";
 
+import Agents from "@/assets/agents_menu.svg?react";
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
 import Dll from "@/assets/dll_menu.svg?react";
@@ -173,6 +174,12 @@ export function SideBar({ className, onClose }: ISideBarProps) {
         url: "/dashboard/usage",
       });
     }
+
+    menuList.push({
+      icon: <Agents />,
+      text: "g-agents",
+      url: "/dashboard/g-agents",
+    });
 
     menuList.push({
       icon: <Dll />,

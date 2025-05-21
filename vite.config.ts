@@ -44,6 +44,14 @@ export default defineConfig((_config) => ({
         secure: false,
         rewriteWsOrigin: true,
       },
+      "/agent-api": {
+        target: "https://station-developer-staging.aevatar.ai/sdk-client",
+        ws: true,
+        changeOrigin: true,
+        secure: false,
+        rewriteWsOrigin: true,
+        rewrite: (path) => path.replace(/^\/agent-api/, ""),
+      },
     },
   },
   test: {

@@ -39,7 +39,7 @@ export default function Header() {
         ignoreHeaders.includes(pathname) && "hidden",
       )}
     >
-      <div className={clsx("fixed z-10 w-full  bg-black", hidden && "hidden")}>
+      <div className={clsx("fixed z-100 w-full  bg-black", hidden && "hidden")}>
         <div
           className={clsx(
             "border-b border-black-light flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",

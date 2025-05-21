@@ -1,5 +1,6 @@
 import ApiKeys from "@/components/ApiKeys";
 import DllPage from "@/components/DllPage";
+import GAgents from "@/components/GAgents";
 import { SideBar } from "@/components/SideBar";
 import { Usage } from "@/components/Usage";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -32,6 +33,7 @@ export default function Dashboard() {
         <div className="pt-[31px] px-[20px]">
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
+          {selectTab === "g-agents" && <GAgents />}
           {selectTab === "dll" && <DllPage />}
         </div>
       </div>

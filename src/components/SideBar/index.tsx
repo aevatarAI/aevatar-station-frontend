@@ -1,5 +1,6 @@
 "use client";
 
+import Agents from "@/assets/agents_menu.svg?react";
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
 import Dll from "@/assets/dll_menu.svg?react";
@@ -166,13 +167,19 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       });
     }
 
-    if(userPermissions.dashboards || userProjectPermissions.dashboards) { 
+    if (userPermissions.dashboards || userProjectPermissions.dashboards) {
       menuList.push({
         icon: <ChartIcon />,
         text: "usage",
         url: "/dashboard/usage",
-      });  
+      });
     }
+
+    menuList.push({
+      icon: <Agents />,
+      text: "g-agents",
+      url: "/dashboard/g-agents",
+    });
 
     menuList.push({
       icon: <Dll />,
@@ -217,7 +224,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#303030] mb-[34px]",
+              item[0] === "profile" && "border-b border-black-light mb-[34px]",
             )}
           >
             <div

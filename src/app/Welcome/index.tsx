@@ -60,7 +60,7 @@ const WelcomePage: React.FC = () => {
               <p className="text-[12px] text-gray-light font-source-code">
                 pending invitations for your approval
               </p>
-              <div className="w-full h-[1px] bg-black-light my-4" />
+              <div className="w-full h-px bg-black-light my-4" />
               <CheckboxGroup
                 data={invites}
                 values={selectedValues}
@@ -99,7 +99,7 @@ const WelcomePage: React.FC = () => {
               you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
-            <div className="w-full h-[1px] bg-black-light my-4" />
+            <div className="w-full h-px bg-black-light my-4" />
             <span className="text-gray-light font-syne text-[12px] font-semibold leading-normal lowercase mb-2.5 ">
               your email address
             </span>

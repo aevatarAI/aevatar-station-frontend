@@ -175,7 +175,7 @@ describe("Header Component", () => {
 
       render(<Header />);
       const dashboardButton = screen.getByText("dashboard");
-      expect(dashboardButton).toHaveClass("cursor-not-allowed text-[#606060]");
+      expect(dashboardButton).toHaveClass("cursor-not-allowed text-gray-deep");
 
       fireEvent.click(dashboardButton);
       expect(mockNavigate).not.toHaveBeenCalled();

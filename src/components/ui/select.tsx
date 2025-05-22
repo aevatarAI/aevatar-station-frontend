@@ -26,7 +26,7 @@ const SelectTrigger = React.forwardRef<
     <SelectPrimitiveTrigger
       ref={ref}
       className={cn(
-        "flex font-pro h-10 w-full items-center justify-center gap-[10px] border border-[#303030] bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        "flex font-pro h-10 w-full items-center justify-center gap-[10px] border border-black-light bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         "text-white text-center font-syne text-xs font-semibold leading-normal lowercase",
         className,
       )}
@@ -111,7 +111,7 @@ const SelectContent = React.forwardRef<
       <SelectScrollUpButton />
       <SelectPrimitiveViewport
         className={cn(
-          position === "popper" && "h-[var(--radix-select-trigger-height)]",
+          position === "popper" && "h-(--radix-select-trigger-height)",
         )}
       >
         {children}

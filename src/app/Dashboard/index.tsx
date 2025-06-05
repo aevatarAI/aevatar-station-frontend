@@ -14,9 +14,9 @@ export default function Dashboard() {
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-[calc(100vh-60px)] overflow-auto">
       {/* Fixed sidebar for desktop - full viewport height */}
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-screen sticky top-0">
+      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
         <SideBar onClose={handleClose} />
       </div>
 
@@ -29,8 +29,8 @@ export default function Dashboard() {
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-screen bg-black">
-        <div className="pt-[31px] px-[20px]">
+      <div className="flex-1 overflow-auto h-full bg-black">
+        <div className="pt-[31px] px-[20px]  h-full">
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
           {selectTab === "g-agents" && <GAgents />}

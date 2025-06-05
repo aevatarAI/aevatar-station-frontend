@@ -1,3 +1,4 @@
+import { StagewiseToolbar } from "@stagewise/toolbar-react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -11,3 +12,17 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>,
 );
+
+// Only inject StagewiseToolbar in development environment
+if (import.meta.env.MODE === "development") {
+  document.addEventListener("DOMContentLoaded", () => {
+    const toolbarRoot = document.createElement("div");
+    toolbarRoot.id = "stagewise-toolbar-root";
+    document.body.appendChild(toolbarRoot);
+    createRoot(toolbarRoot).render(
+      <StrictMode>
+        <StagewiseToolbar config={{ plugins: [] }} />
+      </StrictMode>,
+    );
+  });
+}

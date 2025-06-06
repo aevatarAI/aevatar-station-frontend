@@ -1,5 +1,12 @@
 import type { API_REQ_FUNCTION } from "./types";
 
+const getDomainBaseUrl = () => {
+  if (import.meta.env.MODE === "development") {
+    return "https://station-developer-staging.aevatar.ai";
+  }
+  return location.origin;
+};
+
 export const DEFAULT_METHOD = "GET";
 
 const NOTIFICATIONS_API_LIST = {
@@ -191,6 +198,15 @@ const PLUGINS_API_LIST = {
   updatePlugins: { target: "/api/plugins", baseConfig: { method: "PUT" } },
   deletePlugins: { target: "/api/plugins", baseConfig: { method: "DELETE" } },
 };
+
+export const PROJECT_PRIVATE_DOMAIN_API = {
+  getServiceHealthStatus: {
+    target: getDomainBaseUrl(),
+    baseConfig: { method: "GET" },
+    extendUrlSuffix: "/health",
+  },
+};
+
 export const EXPAND_APIS = {
   apiKeys: API_KEYS_API_LIST,
   apiRequests: API_REQUESTS_API_LIST,
@@ -199,6 +215,7 @@ export const EXPAND_APIS = {
   projects: PROJECT_API_LIST,
   profile: PROFILE_API_LIST,
   plugins: PLUGINS_API_LIST,
+  projectPrivateDomain: PROJECT_PRIVATE_DOMAIN_API,
 };
 
 export type EXPAND_REQ_TYPES = {

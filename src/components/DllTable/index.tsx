@@ -8,7 +8,7 @@ import { textGradient } from "@/constants/cls";
 import type { TDllEditForm } from "@/constants/form/dll";
 import { useToast } from "@/hooks/use-toast";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
-import { DLL_LIST_ATOM, RESTART_POD_SERVER_TIME_ATOM } from "@/state/atoms/dll";
+import { DLL_LIST_ATOM, RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
@@ -21,7 +21,7 @@ export default function DllTable() {
   const { toast } = useToast();
   const [dllList] = useAtom(DLL_LIST_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
-  const [isRestart] = useAtom(RESTART_POD_SERVER_TIME_ATOM);
+  const [restartPodServer] = useAtom(RESTART_POD_SERVER_ATOM);
 
   const updateDllHandler = useUpdateDllList();
 
@@ -126,13 +126,13 @@ export default function DllTable() {
     [dllList, onEdit, onDeleteYes],
   );
   return (
-    <div>
+    <div className="min-h-[394px]">
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>dll</div>
 
         <DllEditDialog
           disabled={
-            Boolean(isRestart) // !projectPermissions?.dllCreate
+            Boolean(restartPodServer) // !projectPermissions?.dllCreate
           }
           type="create"
           onSubmit={onCreate}

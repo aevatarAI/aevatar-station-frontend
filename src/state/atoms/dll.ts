@@ -8,11 +8,11 @@ export const DLL_LIST_ATOM = atomWithStorage<IDllPlugin[]>(
   { getOnInit: true },
 );
 
-export const RESTART_POD_SERVER_TIME_ATOM = atomWithStorage<
+export const RESTART_POD_SERVER_ATOM = atomWithStorage<
   | {
-      time: number;
+      domain: string;
     }
   | undefined
->("restart_pod_server_time_atom", undefined, undefined, {
+>("restart_pod_server_atom", undefined, undefined, {
   getOnInit: true,
 });

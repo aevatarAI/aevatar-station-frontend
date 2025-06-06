@@ -1,5 +1,6 @@
 import { request } from "@/api";
 import type { TDataResponse } from "@/api/types/index";
+import { getServiceHealthStatus } from "@/api/utils/apiWithDomain";
 
 export enum ELoadStatus {
   Uploaded = -1,
@@ -65,8 +66,10 @@ export const restartToApplyConfig = async (): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 };
 
-export const getRestartStatus = async (): Promise<boolean> => {
+export const getRestartStatus = async (domain: string): Promise<boolean> => {
   // await request.plugins.getRestartStatus();
+  const result = await getServiceHealthStatus(domain);
+  console.log(result, "getRestartStatus==result");
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  return true;
+  return result === "Healthy";
 };

@@ -1,10 +1,9 @@
-import myEvents from "@/utils/myEvent";
 import axios from "axios";
 
 export const isDeniedRequest = (error: { message: string }) => {
   try {
     const message: string = error.message;
-    if (message.includes("401")) return true;
+    if (message?.includes("401")) return true;
   } catch (error) {
     console.error(error);
   }
@@ -29,6 +28,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    if (response.data === "Healthy") return response.data;
     const res = response.data;
     if (res?.code?.substring(0, 1) !== "2") {
       return Promise.reject(res);

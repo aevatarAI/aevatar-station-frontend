@@ -1,25 +1,30 @@
 import { getServiceHealthStatus } from "@/api/utils/apiWithDomain";
 import CrossURL from "@/components/CrossURL";
 import DllTable from "@/components/DllTable";
-import { RESTART_POD_SERVER_TIME_ATOM } from "@/state/atoms/dll";
+import { useCurrentProject } from "@/hooks/useCurrentProject";
+import { RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
 import Configuration from "./Configuration";
 
 export default function DllPage() {
-  const [, setRestartPodServerTime] = useAtom(RESTART_POD_SERVER_TIME_ATOM);
+  const [, setRestartPodServer] = useAtom(RESTART_POD_SERVER_ATOM);
+
+  const curProject = useCurrentProject();
 
   const onRestart = useCallback(async () => {
     try {
-      const result = await getServiceHealthStatus("developer-client");
+      const domain = "developer-client"; //curProject?.domainName ?? "";
+      const result = await getServiceHealthStatus(domain);
       console.log(result, "getServiceHealthStatus==result");
-      setRestartPodServerTime({
-        time: new Date().getTime(),
+      setRestartPodServer({
+        domain,
       });
     } catch (error) {
       console.log(error, "error=onRestart=");
     }
-  }, [setRestartPodServerTime]);
+  }, [setRestartPodServer]);
   return (
     <div>
       <Configuration onRestart={onRestart} />

@@ -48,11 +48,11 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
   const onNameSave = useCallback(
     async (displayName: string) => {
       if (!projectId || !organizationId) return;
-      if (!domainName) return;
+      // if (!domainName) return;
       try {
         await request.projects.editProject({
           query: projectId,
-          data: { displayName, domainName },
+          data: { displayName },
         });
         toast({
           description: "successfully saved",
@@ -64,7 +64,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
         });
       }
     },
-    [toast, projectId, organizationId, domainName, updateProjectList],
+    [toast, projectId, organizationId, updateProjectList],
   );
 
   const extraInput = useMemo(

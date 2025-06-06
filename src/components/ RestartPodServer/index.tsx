@@ -2,6 +2,7 @@ import { getRestartStatus } from "@/api/utils/plugin";
 import Loading from "@/assets/loading.svg?react";
 import { useToast } from "@/hooks/use-toast";
 import { RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -10,11 +11,12 @@ import { useCallback, useEffect } from "react";
 
 export default function RestartPodServer() {
   const { toast } = useToast();
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [restartPodServer, setRestartPodServer] = useAtom(
     RESTART_POD_SERVER_ATOM,
   );
   const loopGetRestartStatus = useCallback(async () => {
-    if (restartPodServer) {
+    if (restartPodServer && restartPodServer.projectId === projectId) {
       const { dismiss } = toast({
         description: (
           <div className="flex items-center gap-[5px]">
@@ -42,7 +44,7 @@ export default function RestartPodServer() {
         await delay(3000);
       }
     }
-  }, [restartPodServer, toast, setRestartPodServer]);
+  }, [restartPodServer, toast, setRestartPodServer, projectId]);
 
   useEffect(() => {
     loopGetRestartStatus();

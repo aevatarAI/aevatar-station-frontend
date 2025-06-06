@@ -31,34 +31,65 @@ export const getDllPlugins = async (
 };
 
 export interface ICrossURL {
-  id: string;
-  domain: string;
+  projectId: string;
   creationTime: number;
   creatorName: string;
+  domain: string;
+  id: string;
 }
 
 export const getCrossURLs = async (projectId: string): Promise<ICrossURL[]> => {
+  // const result: TDataResponse<{ items: ICrossURL[] }> =
+  //   await request.projects.getProjectCorsOriginList({
+  //     query: projectId,
+  //   });
+  // return result.data?.items ?? [];
   // Mock data for demonstration
   return [
     {
       id: "1",
       domain: "https://example.com/api1",
+      projectId: "1",
       creationTime: Date.now() - 100000,
       creatorName: "Alice",
     },
     {
       id: "2",
       domain: "https://example.com/api2",
+      projectId: "1",
       creationTime: Date.now() - 50000,
       creatorName: "Bob",
     },
     {
       id: "3",
       domain: "https://example.com/api3",
+      projectId: "1",
       creationTime: Date.now(),
       creatorName: "Charlie",
     },
   ];
+};
+
+export const addProjectCorsOrigin = async (
+  projectId: string,
+  domain: string,
+): Promise<ICrossURL> => {
+  return request.projects.addProjectCorsOrigin({
+    query: projectId,
+    params: {
+      domain,
+    },
+  });
+};
+
+export const deleteProjectCorsOrigin = async (
+  projectId: string,
+  domainId: string,
+): Promise<void> => {
+  await request.projects.deleteProjectCorsOrigin({
+    query: projectId,
+    query1: domainId,
+  });
 };
 
 export const restartToApplyConfig = async (): Promise<void> => {

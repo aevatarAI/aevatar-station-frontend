@@ -188,6 +188,22 @@ const PROJECT_API_LIST = {
     baseConfig: { method: "POST" },
     extendUrlSuffix: "/restart",
   },
+  // cors origin
+  getProjectCorsOriginList: {
+    target: "/api/projects",
+    extendUrlSuffix: "/cors-origin",
+    baseConfig: { method: "GET" },
+  },
+  addProjectCorsOrigin: {
+    target: "/api/projects",
+    extendUrlSuffix: "/cors-origin",
+    baseConfig: { method: "POST" },
+  },
+  deleteProjectCorsOrigin: {
+    target: "/api/projects",
+    extendUrlSuffix: "/cors-origin",
+    baseConfig: { method: "DELETE" },
+  },
 };
 
 const PROFILE_API_LIST = {

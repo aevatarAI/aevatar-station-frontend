@@ -13,7 +13,6 @@ import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function DllTable() {
@@ -95,7 +94,7 @@ export default function DllTable() {
     },
     [toast, updateDllList],
   );
-
+  console.log(restartPodServer, "restartPodServer==");
   const tableData = useMemo(
     () =>
       (dllList || []).map((item) => ({
@@ -132,7 +131,7 @@ export default function DllTable() {
 
         <DllEditDialog
           disabled={
-            Boolean(restartPodServer) // !projectPermissions?.dllCreate
+            Boolean(restartPodServer?.projectId === projectId) // !projectPermissions?.dllCreate
           }
           type="create"
           onSubmit={onCreate}

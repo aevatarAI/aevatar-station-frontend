@@ -11,6 +11,7 @@ export const DLL_LIST_ATOM = atomWithStorage<IDllPlugin[]>(
 export const RESTART_POD_SERVER_ATOM = atomWithStorage<
   | {
       domain: string;
+      projectId: string;
     }
   | undefined
 >("restart_pod_server_atom", undefined, undefined, {

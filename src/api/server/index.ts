@@ -128,12 +128,16 @@ export function getRequestConfig(base: BaseConfig, config?: requestConfig) {
     return config;
   }
   const { baseConfig, extendUrlSuffix = "" } = base || {};
-  const { query, method, params, data } = config || {};
-
+  const { query, method, params, data, query1 } = config || {};
+  console.log(config, "config=getRequestConfig");
   return {
     ...config,
     ...baseConfig,
-    query: (baseConfig.query || "") + (query || "") + (extendUrlSuffix || ""),
+    query:
+      (baseConfig.query || "") +
+      (query || "") +
+      (extendUrlSuffix || "") +
+      (query1 ? `/${query1}` : ""),
     method: method ? method : baseConfig.method,
     params: Object.assign({}, baseConfig.params, params),
     data:

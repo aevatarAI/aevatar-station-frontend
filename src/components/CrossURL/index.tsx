@@ -1,4 +1,8 @@
-import { getCrossURLs } from "@/api/utils/plugin";
+import {
+  addProjectCorsOrigin,
+  deleteProjectCorsOrigin,
+  getCrossURLs,
+} from "@/api/utils/plugin";
 import CreateCrossURLDialog from "@/components/CreateCrossURLDialog";
 import { type ICrossURLTable, columns } from "@/components/CrossURL/columns";
 import DataTable from "@/components/DataTable";
@@ -27,10 +31,7 @@ export default function CrossURL() {
     } catch (error) {
       setLoading(false);
       toast({
-        description: handleErrorMessage(
-          error,
-          "Failed to update cross URL list",
-        ),
+        description: handleErrorMessage(error, "Failed to get cross URL list"),
       });
     }
   }, [projectId, toast]);
@@ -41,17 +42,28 @@ export default function CrossURL() {
 
   const onCreate = useCallback(
     async ({ domain }: { domain: string }) => {
-      if (!projectId) throw new Error("Project ID is required");
-
-      updateCrossURLList();
+      try {
+        if (!projectId) throw new Error("Project ID is required");
+        await addProjectCorsOrigin(projectId, domain);
+        toast({
+          description: "cross-origin domain added",
+        });
+        updateCrossURLList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "Failed to add cross-url"),
+        });
+      }
     },
-    [projectId, updateCrossURLList],
+    [projectId, updateCrossURLList, toast],
   );
 
   const onDeleteYes = useCallback(
     async (id: string) => {
       console.log("delete", id);
       try {
+        if (!projectId) throw new Error("Project ID is required");
+        await deleteProjectCorsOrigin(projectId, id);
         toast({
           description: "cross-origin domain deleted",
         });
@@ -62,7 +74,7 @@ export default function CrossURL() {
       }
       updateCrossURLList();
     },
-    [updateCrossURLList, toast],
+    [projectId, updateCrossURLList, toast],
   );
 
   const tableData = useMemo(

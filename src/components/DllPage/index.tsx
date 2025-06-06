@@ -1,30 +1,36 @@
 import { getServiceHealthStatus } from "@/api/utils/apiWithDomain";
+import { restartProjectServer } from "@/api/utils/project";
 import CrossURL from "@/components/CrossURL";
 import DllTable from "@/components/DllTable";
+import { useToast } from "@/hooks/use-toast";
 import { useCurrentProject } from "@/hooks/useCurrentProject";
 import { RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
 import Configuration from "./Configuration";
 
 export default function DllPage() {
   const [, setRestartPodServer] = useAtom(RESTART_POD_SERVER_ATOM);
-
+  const { toast } = useToast();
   const curProject = useCurrentProject();
 
   const onRestart = useCallback(async () => {
     try {
-      const domain = "developer-client"; //curProject?.domainName ?? "";
-      const result = await getServiceHealthStatus(domain);
-      console.log(result, "getServiceHealthStatus==result");
+      const result = await restartProjectServer(curProject?.id ?? "");
+      console.log(result, "restartProjectServer==result");
+
       setRestartPodServer({
-        domain,
+        domain: curProject?.domainName ?? "",
       });
     } catch (error) {
       console.log(error, "error=onRestart=");
+      toast({
+        description: handleErrorMessage(error, "service restart failed"),
+      });
     }
-  }, [setRestartPodServer]);
+  }, [setRestartPodServer, curProject?.id, curProject?.domainName, toast]);
   return (
     <div>
       <Configuration onRestart={onRestart} />

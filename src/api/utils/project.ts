@@ -55,3 +55,11 @@ export const getProjectRolesPermission = async (
 
   return result.data;
 };
+
+export const restartProjectServer = async (projectId: string) => {
+  const result: TDataResponse<null> =
+    await request.projects.restartProjectServer({
+      query: projectId,
+    });
+  return result.data;
+};

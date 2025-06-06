@@ -183,6 +183,11 @@ const PROJECT_API_LIST = {
     target: "/api/project-permissions",
     baseConfig: { method: "PUT" },
   },
+  restartProjectServer: {
+    target: "/api/projects",
+    baseConfig: { method: "POST" },
+    extendUrlSuffix: "/restart",
+  },
 };
 
 const PROFILE_API_LIST = {

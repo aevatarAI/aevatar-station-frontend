@@ -15,18 +15,20 @@ vi.mock("jotai", async () => {
 describe("useLogout Hook", () => {
   const atomNames = [
     "ORGANIZATIONS_LIST_ATOM",
-    "PROJECT_LIST_ATOM",
     "CURRENT_ORGANIZATION_ATOM",
+    "PROJECT_LIST_ATOM",
     "CURRENT_PROJECT_ATOM",
     "accessTokenAtom",
     "refreshTokenAtom",
-    "ORGANIZATION_MEMBER_ATOM",
+    "USER_PROFILE_ATOM",
     "PROJECT_PERMISSION_ATOM",
+    "ORGANIZATION_PERMISSION_ATOM",
     "CURRENT_PROJECT_ROLE_ATOM",
     "CURRENT_ORGANIZATION_ROLE_ATOM",
-    "USER_PROFILE_ATOM",
-    "ORGANIZATION_PERMISSION_ATOM",
+    "ORGANIZATION_MEMBER_ATOM",
     "USER_LOGIN_TYPE",
+    "DLL_LIST_ATOM",
+    "RESTART_POD_SERVER_ATOM",
   ];
 
   beforeEach(() => {

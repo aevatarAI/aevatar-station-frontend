@@ -145,8 +145,7 @@ describe("ProjectsInner Component", () => {
       expect(request.projects.editProject).toHaveBeenCalledWith({
         query: "mock-project-id",
         data: {
-          displayName: "mocked-project-name", // From Mocked General component
-          domainName: "new-domain.com",
+          displayName: "mocked-project-name",
         },
       });
     });

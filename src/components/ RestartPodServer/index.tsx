@@ -31,17 +31,24 @@ export default function RestartPodServer() {
       });
 
       let isFinish = false;
-      while (!isFinish) {
-        const result = await getRestartStatus(restartPodServer.domain);
-        if (result) {
-          isFinish = true;
-          setRestartPodServer(RESET);
-          dismiss();
-          toast({
-            description: "service restarted successfully",
-          });
+      try {
+        while (!isFinish) {
+          const result = await getRestartStatus(restartPodServer.domain);
+          if (result) {
+            isFinish = true;
+            setRestartPodServer(RESET);
+            dismiss();
+            toast({
+              description: "service restarted successfully",
+            });
+          }
+          await delay(3000);
         }
-        await delay(3000);
+      } catch (e: any) {
+        dismiss();
+        toast({
+          description: e?.message || "service restart failed",
+        });
       }
     }
   }, [restartPodServer, toast, setRestartPodServer, projectId]);

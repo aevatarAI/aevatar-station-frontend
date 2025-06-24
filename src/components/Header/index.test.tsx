@@ -94,6 +94,17 @@ describe("Header Component", () => {
       if (atom === UNREAD_NOTIFICATION_ATOM) {
         return [0] as any;
       }
+      if (
+        (typeof atom === "object" &&
+          atom !== null &&
+          "key" in atom &&
+          typeof atom.key === "string" &&
+          atom.key.includes("ORGANIZATION_PERMISSION_ATOM")) ||
+        (typeof atom === "string" &&
+          atom.includes("ORGANIZATION_PERMISSION_ATOM"))
+      ) {
+        return [[]] as any;
+      }
       return [null];
     });
   });
@@ -161,18 +172,7 @@ describe("Header Component", () => {
   });
 
   describe("Navigation Tests", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
     it("should disable dashboard button if project list is empty", () => {
-      vi.mocked(useAtom).mockImplementation((atom) => {
-        if (atom === PROJECT_LIST_ATOM) {
-          return [[]] as any;
-        }
-        return [false];
-      });
-
       render(<Header />);
       const dashboardButton = screen.getByText("dashboard");
       expect(dashboardButton).toHaveClass("cursor-not-allowed text-gray-deep");

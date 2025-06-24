@@ -110,6 +110,7 @@ describe("SideBar Component", () => {
     (useLocation as any).mockReturnValue(["/dashboard"]);
     (useOrgPermissions as any).mockReturnValue({
       apiKeys: true,
+      dashboards: true,
     });
     render(<SideBar />);
     expect(screen.getByText("api keys")).toBeInTheDocument();
@@ -128,6 +129,7 @@ describe("SideBar Component", () => {
     (useLocation as any).mockReturnValue(["/dashboard"]);
     (useOrgPermissions as any).mockReturnValue({
       apiKeys: true,
+      dashboards: true,
     });
 
     render(<SideBar onClose={mockOnClose} />);

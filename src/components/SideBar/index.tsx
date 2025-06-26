@@ -10,6 +10,7 @@ import Notication from "@/assets/notication.svg?react";
 import NoticationEmpty from "@/assets/notification_empty.svg?react";
 import Project from "@/assets/project.svg?react";
 import Role from "@/assets/role.svg?react";
+import Workflow from "@/assets/workflow.svg?react";
 import {
   menuItemClx,
   menuItemSelectedClx,
@@ -179,6 +180,12 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       icon: <Agents />,
       text: "g-agents",
       url: "/dashboard/g-agents",
+    });
+
+    menuList.push({
+      icon: <Workflow />,
+      text: "workflow",
+      url: "/dashboard/workflow",
     });
 
     menuList.push({

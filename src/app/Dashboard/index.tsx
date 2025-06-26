@@ -3,6 +3,7 @@ import DllPage from "@/components/DllPage";
 import GAgents from "@/components/GAgents";
 import { SideBar } from "@/components/SideBar";
 import { Usage } from "@/components/Usage";
+import WorkflowPage from "@/components/WorkflowPage";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
@@ -34,6 +35,7 @@ export default function Dashboard() {
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
           {selectTab === "g-agents" && <GAgents />}
+          {selectTab === "workflow" && <WorkflowPage />}
           {selectTab === "dll" && <DllPage />}
         </div>
       </div>

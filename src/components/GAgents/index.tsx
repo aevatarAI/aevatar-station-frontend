@@ -105,7 +105,7 @@ export default function GAgents() {
   }, [getAuthToken]);
 
   return (
-    <AevatarProvider hiddenGAevatarType={[]}>
+    <AevatarProvider>
       {stage === Stage.myGAevatar && (
         <MyGAevatar
           height={"100%"}

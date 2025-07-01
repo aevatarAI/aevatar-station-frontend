@@ -9,6 +9,7 @@ import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
@@ -20,6 +21,7 @@ export default function CrossURL() {
   const [crossURLs, setCrossURLs] = useState<ICrossURLTable[]>([]);
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
+  const projectPermissions = useProjectPermissions();
 
   const updateCrossURLList = useCallback(async () => {
     if (!projectId) return;
@@ -83,22 +85,19 @@ export default function CrossURL() {
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
-            {/* ) : (
+            {projectPermissions?.corsOriginsDelete ? (
+              <DeleteDialog
+                onYes={() => onDeleteYes(item.id)}
+                title={"Are you sure you want to delete this URL?"}
+                data-testid={`delete-dll-${item.id}`}
+              />
+            ) : (
               <span />
-            )} */}
-            {/* {projectPermissions?.dllDelete ? ( */}
-            <DeleteDialog
-              onYes={() => onDeleteYes(item.id)}
-              title={"Are you sure you want to delete this URL?"}
-              data-testid={`delete-dll-${item.id}`}
-            />
-            {/* ) : (
-              <span />
-            )} */}
+            )}
           </div>
         ),
       })),
-    [crossURLs, onDeleteYes],
+    [crossURLs, onDeleteYes, projectPermissions?.corsOriginsDelete],
   );
 
   return (
@@ -106,6 +105,7 @@ export default function CrossURL() {
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>cross-url</div>
         <CreateCrossURLDialog
+          disabled={!projectPermissions?.corsOriginsCreate}
           type="create"
           data-testid="create-cross-url-button"
           onSubmit={onCreate}

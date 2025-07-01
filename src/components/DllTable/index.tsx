@@ -7,6 +7,8 @@ import { columns } from "@/components/DllTable/columns";
 import { textGradient } from "@/constants/cls";
 import type { TDllEditForm } from "@/constants/form/dll";
 import { useToast } from "@/hooks/use-toast";
+import { useCurrentProject } from "@/hooks/useCurrentProject";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
 import { DLL_LIST_ATOM, RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
@@ -21,9 +23,9 @@ export default function DllTable() {
   const [dllList] = useAtom(DLL_LIST_ATOM);
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [restartPodServer] = useAtom(RESTART_POD_SERVER_ATOM);
-
+  const curProject = useCurrentProject();
   const updateDllHandler = useUpdateDllList();
-
+  const projectPermissions = useProjectPermissions();
   const updateDllList = useCallback(async () => {
     if (!projectId) return;
     setLoading(true);
@@ -41,7 +43,8 @@ export default function DllTable() {
       const formData = new FormData();
       formData.append("code", file[0].content);
       await request.plugins.updatePlugins({
-        query: id,
+        query: `${curProject?.domainName}-client`,
+        query1: id,
         data: { code: formData.get("code") },
         headers: {
           "Content-Type": "multipart/form-data",
@@ -50,7 +53,7 @@ export default function DllTable() {
 
       updateDllList();
     },
-    [updateDllList],
+    [updateDllList, curProject?.domainName],
   );
 
   const onCreate = useCallback(
@@ -62,6 +65,7 @@ export default function DllTable() {
       formData.append("projectId", projectId);
 
       await request.plugins.addPlugins({
+        query: `${curProject?.domainName}-client`,
         data: {
           projectId,
           code: formData.get("code"),
@@ -73,14 +77,15 @@ export default function DllTable() {
 
       updateDllList();
     },
-    [projectId, updateDllList],
+    [projectId, updateDllList, curProject?.domainName],
   );
 
   const onDeleteYes = useCallback(
     async (id: string) => {
       try {
         await request.plugins.deletePlugins({
-          query: id,
+          query: `${curProject?.domainName}-client`,
+          query1: id,
         });
         toast({
           description: "successfully deleted",
@@ -92,7 +97,7 @@ export default function DllTable() {
         });
       }
     },
-    [toast, updateDllList],
+    [toast, updateDllList, curProject?.domainName],
   );
   console.log(restartPodServer, "restartPodServer==");
   const tableData = useMemo(
@@ -101,28 +106,34 @@ export default function DllTable() {
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
-            {/* {projectPermissions?.dllEdit ? ( */}
-            <DllEditDialog
-              type="edit"
-              onSubmit={(v) => onEdit(v, item.id)}
-              data-testid={`edit-dll-${item.id}`}
-            />
-            {/* ) : (
-                <span />
-              )} */}
-            {/* {projectPermissions?.dllDelete ? ( */}
-            <DeleteDialog
-              onYes={() => onDeleteYes(item.id)}
-              title={"Are you sure you want to delete this dll?"}
-              data-testid={`delete-dll-${item.id}`}
-            />
-            {/* ) : (
-                <span />
-              )} */}
+            {projectPermissions?.pluginsEdit ? (
+              <DllEditDialog
+                type="edit"
+                onSubmit={(v) => onEdit(v, item.id)}
+                data-testid={`edit-dll-${item.id}`}
+              />
+            ) : (
+              <span />
+            )}
+            {projectPermissions?.pluginsDelete ? (
+              <DeleteDialog
+                onYes={() => onDeleteYes(item.id)}
+                title={"Are you sure you want to delete this dll?"}
+                data-testid={`delete-dll-${item.id}`}
+              />
+            ) : (
+              <span />
+            )}
           </div>
         ),
       })),
-    [dllList, onEdit, onDeleteYes],
+    [
+      dllList,
+      onEdit,
+      onDeleteYes,
+      projectPermissions?.pluginsEdit,
+      projectPermissions?.pluginsDelete,
+    ],
   );
   return (
     <div className="min-h-[394px]">
@@ -131,7 +142,8 @@ export default function DllTable() {
 
         <DllEditDialog
           disabled={
-            Boolean(restartPodServer?.projectId === projectId) // !projectPermissions?.dllCreate
+            Boolean(restartPodServer?.projectId === projectId) &&
+            !projectPermissions?.pluginsCreate
           }
           type="create"
           onSubmit={onCreate}

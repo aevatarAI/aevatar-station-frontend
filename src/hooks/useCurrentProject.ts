@@ -8,8 +8,14 @@ import { useMemo } from "react";
 export const useCurrentProject = () => {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  return useMemo(
-    () => projectList.find((item) => item.id === projectId),
-    [projectList, projectId],
-  );
+  return useMemo(() => {
+    const project = projectList.find((item) => item.id === projectId);
+    if (project) {
+      return {
+        ...project,
+        // domainName: "developer",
+      };
+    }
+    return null;
+  }, [projectList, projectId]);
 };

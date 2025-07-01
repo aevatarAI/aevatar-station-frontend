@@ -3,6 +3,7 @@ import CrossURL from "@/components/CrossURL";
 import DllTable from "@/components/DllTable";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrentProject } from "@/hooks/useCurrentProject";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
 import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
@@ -13,6 +14,8 @@ export default function DllPage() {
   const [, setRestartPodServer] = useAtom(RESTART_POD_SERVER_ATOM);
   const { toast } = useToast();
   const curProject = useCurrentProject();
+
+  const projectPermissions = useProjectPermissions();
 
   const onRestart = useCallback(async () => {
     try {
@@ -33,9 +36,9 @@ export default function DllPage() {
   return (
     <div>
       <Configuration onRestart={onRestart} />
-      <DllTable />
+      {projectPermissions?.plugins && <DllTable />}
       <div className="pt-[30px]" />
-      <CrossURL />
+      {projectPermissions?.corsOrigins && <CrossURL />}
     </div>
   );
 }

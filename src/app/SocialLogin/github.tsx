@@ -22,7 +22,7 @@ const useGetAuthServerAccessToken = () => {
     mutationFn: async (code: string) => {
       try {
         const response = await axios.post(
-          "https://aevatar-station-ui-staging.aevatar.ai/pre-auth/connect/token",
+          "/connect/token",
           {
             grant_type: GITHUB,
             scope: SCOPE,

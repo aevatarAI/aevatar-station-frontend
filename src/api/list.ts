@@ -184,9 +184,8 @@ const PROJECT_API_LIST = {
     baseConfig: { method: "PUT" },
   },
   restartProjectServer: {
-    target: "/api/projects",
+    target: "/api/developers/service",
     baseConfig: { method: "POST" },
-    extendUrlSuffix: "/restart",
   },
   // cors origin
   getProjectCorsOriginList: {

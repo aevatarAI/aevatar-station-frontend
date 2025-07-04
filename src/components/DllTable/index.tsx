@@ -1,4 +1,5 @@
 import { request } from "@/api";
+import { getRestartStatus } from "@/api/utils/plugin";
 import CrossURL from "@/components/CrossURL";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
@@ -28,11 +29,17 @@ export default function DllTable() {
   const projectPermissions = useProjectPermissions();
   const updateDllList = useCallback(async () => {
     if (!projectId) return;
+    if (!curProject?.domainName) return;
+    const serviceHealth = await getRestartStatus(
+      `${curProject?.domainName}-client`,
+    );
+    console.log(serviceHealth, "serviceHealth===");
+
     setLoading(true);
     await updateDllHandler(projectId);
     setLoading(false);
     window.scrollTo(0, 0);
-  }, [projectId, updateDllHandler]);
+  }, [projectId, updateDllHandler, curProject?.domainName]);
 
   useEffect(() => {
     updateDllList();

@@ -19,7 +19,10 @@ export default function DllPage() {
 
   const onRestart = useCallback(async () => {
     try {
-      const result = await restartProjectServer(curProject?.id ?? "");
+      const result = await restartProjectServer({
+        projectId: curProject?.id ?? "",
+        clientId: `${curProject?.domainName}-client`,
+      });
       console.log(result, "restartProjectServer==result");
 
       setRestartPodServer({

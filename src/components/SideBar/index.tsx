@@ -176,11 +176,11 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       });
     }
 
-    menuList.push({
-      icon: <Agents />,
-      text: "g-agents",
-      url: "/dashboard/g-agents",
-    });
+    // menuList.push({
+    //   icon: <Agents />,
+    //   text: "g-agents",
+    //   url: "/dashboard/g-agents",
+    // });
 
     menuList.push({
       icon: <Workflow />,
@@ -188,11 +188,13 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       url: "/dashboard/workflow",
     });
 
-    menuList.push({
-      icon: <Dll />,
-      text: "dll",
-      url: "/dashboard/dll",
-    });
+    if (userProjectPermissions.plugins || userProjectPermissions.corsOrigins) {
+      menuList.push({
+        icon: <Dll />,
+        text: "dll",
+        url: "/dashboard/dll",
+      });
+    }
 
     return menuList;
   }, [userPermissions, userProjectPermissions]);
@@ -275,7 +277,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     <div
       data-testid="sidebar-id"
       className={clsx(
-        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
+        "h-full flex flex-col  justify-between  pt-[118px] lg:pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
         className,
       )}
     >

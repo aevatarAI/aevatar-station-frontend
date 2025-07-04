@@ -1,3 +1,4 @@
+import { service } from "@/api/axios";
 import ApiKeys from "@/components/ApiKeys";
 import DllPage from "@/components/DllPage";
 import GAgents from "@/components/GAgents";
@@ -5,6 +6,7 @@ import { SideBar } from "@/components/SideBar";
 import { Usage } from "@/components/Usage";
 import WorkflowPage from "@/components/WorkflowPage";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useAevatarConfig } from "@/hooks/useAevatarConfig";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
@@ -14,6 +16,9 @@ export default function Dashboard() {
   useUpdateOrganisations();
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
+
+  useAevatarConfig();
+
   return (
     <div className="flex h-[calc(100vh-60px)] overflow-auto">
       {/* Fixed sidebar for desktop - full viewport height */}

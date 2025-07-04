@@ -22,10 +22,12 @@ export interface IDllPlugin {
 
 export const getDllPlugins = async (
   projectId: string,
+  domainName: string,
 ): Promise<IDllPlugin[]> => {
   const result: TDataResponse<{ items: IDllPlugin[] }> =
     await request.plugins.getPlugins({
       params: { projectId },
+      query: `${domainName}-client`,
     });
   return result.data?.items ?? [];
 };
@@ -39,35 +41,11 @@ export interface ICrossURL {
 }
 
 export const getCrossURLs = async (projectId: string): Promise<ICrossURL[]> => {
-  // const result: TDataResponse<{ items: ICrossURL[] }> =
-  //   await request.projects.getProjectCorsOriginList({
-  //     query: projectId,
-  //   });
-  // return result.data?.items ?? [];
-  // Mock data for demonstration
-  return [
-    {
-      id: "1",
-      domain: "https://example.com/api1",
-      projectId: "1",
-      creationTime: Date.now() - 100000,
-      creatorName: "Alice",
-    },
-    {
-      id: "2",
-      domain: "https://example.com/api2",
-      projectId: "1",
-      creationTime: Date.now() - 50000,
-      creatorName: "Bob",
-    },
-    {
-      id: "3",
-      domain: "https://example.com/api3",
-      projectId: "1",
-      creationTime: Date.now(),
-      creatorName: "Charlie",
-    },
-  ];
+  const result: TDataResponse<{ items: ICrossURL[] }> =
+    await request.projects.getProjectCorsOriginList({
+      query: projectId,
+    });
+  return result.data?.items ?? [];
 };
 
 export const addProjectCorsOrigin = async (
@@ -76,7 +54,7 @@ export const addProjectCorsOrigin = async (
 ): Promise<ICrossURL> => {
   return request.projects.addProjectCorsOrigin({
     query: projectId,
-    params: {
+    data: {
       domain,
     },
   });

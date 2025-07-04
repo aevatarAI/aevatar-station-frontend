@@ -1,6 +1,6 @@
 import type { API_REQ_FUNCTION } from "./types";
 
-const getDomainBaseUrl = () => {
+export const getDomainBaseUrl = () => {
   if (import.meta.env.MODE === "development") {
     return "https://station-developer-staging.aevatar.ai";
   }
@@ -184,24 +184,23 @@ const PROJECT_API_LIST = {
     baseConfig: { method: "PUT" },
   },
   restartProjectServer: {
-    target: "/api/projects",
+    target: "/api/developers/service",
     baseConfig: { method: "POST" },
-    extendUrlSuffix: "/restart",
   },
   // cors origin
   getProjectCorsOriginList: {
     target: "/api/projects",
-    extendUrlSuffix: "/cors-origin",
+    extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "GET" },
   },
   addProjectCorsOrigin: {
     target: "/api/projects",
-    extendUrlSuffix: "/cors-origin",
+    extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "POST" },
   },
   deleteProjectCorsOrigin: {
     target: "/api/projects",
-    extendUrlSuffix: "/cors-origin",
+    extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "DELETE" },
   },
 };
@@ -214,10 +213,26 @@ const PROFILE_API_LIST = {
   getProfile: "/api/account/my-profile",
 };
 const PLUGINS_API_LIST = {
-  getPlugins: "/api/plugins",
-  addPlugins: { target: "/api/plugins", baseConfig: { method: "POST" } },
-  updatePlugins: { target: "/api/plugins", baseConfig: { method: "PUT" } },
-  deletePlugins: { target: "/api/plugins", baseConfig: { method: "DELETE" } },
+  getPlugins: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/plugins",
+    baseConfig: { method: "GET" },
+  },
+  addPlugins: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/plugins",
+    baseConfig: { method: "POST" },
+  },
+  updatePlugins: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/plugins",
+    baseConfig: { method: "PUT" },
+  },
+  deletePlugins: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/plugins",
+    baseConfig: { method: "DELETE" },
+  },
 };
 
 export const PROJECT_PRIVATE_DOMAIN_API = {

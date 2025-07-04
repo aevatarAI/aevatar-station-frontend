@@ -56,10 +56,13 @@ export const getProjectRolesPermission = async (
   return result.data;
 };
 
-export const restartProjectServer = async (projectId: string) => {
+export const restartProjectServer = async (data: {
+  projectId: string;
+  clientId: string;
+}) => {
   const result: TDataResponse<null> =
     await request.projects.restartProjectServer({
-      query: projectId,
+      data,
     });
   return result.data;
 };

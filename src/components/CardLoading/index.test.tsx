@@ -10,36 +10,36 @@ vi.mock("../../assets/loading.svg?react", () => ({
   ),
 }));
 
-describe("CardLoading 组件", () => {
-  it("应正确渲染并包含 loading 图标", () => {
+describe("CardLoading Component", () => {
+  it("should render correctly and contain loading icon", () => {
     const { getByTestId } = render(<CardLoading />);
     const loadingDiv = getByTestId("card-loading");
     expect(loadingDiv).toBeTruthy();
-    // 检查mock的loading-icon是否渲染
+    // Check if mocked loading-icon renders
     expect(getByTestId("loading-icon")).toBeTruthy();
   });
 
-  it("应支持自定义 className", () => {
+  it("should support custom className", () => {
     const { getByTestId } = render(<CardLoading className="custom-class" />);
     const loadingDiv = getByTestId("card-loading");
     expect(loadingDiv.className).toContain("custom-class");
   });
 
-  it("边界情况：className 为空字符串", () => {
+  it("boundary case: className is empty string", () => {
     const { getByTestId } = render(<CardLoading className="" />);
     const loadingDiv = getByTestId("card-loading");
     expect(loadingDiv.className).toContain("flex");
   });
 
-  it("异常情况：className 为 null/undefined", () => {
-    // @ts-expect-error 测试异常传参
+  it("error case: className is null/undefined", () => {
+    // @ts-expect-error testing exception parameters
     const { getByTestId: getByTestId1, unmount } = render(
       <CardLoading className={null} />,
     );
     const loadingDiv1 = getByTestId1("card-loading");
     expect(loadingDiv1.className).toContain("flex");
     unmount();
-    // undefined 情况
+    // undefined case
     const { getByTestId: getByTestId2 } = render(
       <CardLoading className={undefined} />,
     );
@@ -47,5 +47,5 @@ describe("CardLoading 组件", () => {
     expect(loadingDiv2.className).toContain("flex");
   });
 
-  // 异步/Mock场景：无异步逻辑与外部依赖，无需Mock
+  // Async/Mock scenario: no async logic or external dependencies, no mock needed
 });

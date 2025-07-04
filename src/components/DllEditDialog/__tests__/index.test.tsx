@@ -63,7 +63,7 @@ describe("DllEditDialog Component", () => {
 
   it("renders in edit mode", () => {
     render(<DllEditDialog type="edit" onSubmit={mockOnSubmit} />);
-    expect(screen.getByTestId("edit-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("dll-icon")).toBeInTheDocument();
   });
 
   it("resets form when dialog is opened", async () => {

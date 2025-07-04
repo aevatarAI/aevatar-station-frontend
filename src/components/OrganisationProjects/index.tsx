@@ -41,12 +41,12 @@ export default function OrganisationProjects() {
   }, [updateProjectList]);
 
   const onEdit = useCallback(
-    async ({ name, domainName }: TProjectEditForm, id: string) => {
+    async ({ name }: TProjectEditForm, id: string) => {
       await request.projects.editProject({
         query: id,
         data: {
           displayName: name,
-          domainName,
+          // domainName,
         },
       });
 

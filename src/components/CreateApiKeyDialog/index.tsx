@@ -98,7 +98,7 @@ export default function CreateApiKeyDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
       >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
@@ -169,7 +169,7 @@ export default function CreateApiKeyDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
+                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

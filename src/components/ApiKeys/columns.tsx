@@ -39,7 +39,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
         <Copy
           description="client id copied"
           toCopy={row.original.appId}
-          className="text-[#606060] hover:text-white"
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),
@@ -53,7 +53,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
         <Copy
           description="api key copied"
           toCopy={row.original.appSecret}
-          className="text-[#606060] hover:text-white"
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),

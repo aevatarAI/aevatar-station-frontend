@@ -6,7 +6,7 @@ import clsx from "clsx";
 const checkboxLabel =
   "font-normal text-[11px] leading-[14px] mb-0 mt-0! font-pro";
 const checkboxCls =
-  "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#606060] data-[state=checked]:border-[#606060]";
+  "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-deep data-[state=checked]:border-gray-deep";
 
 export default function CheckboxLabel({
   text,

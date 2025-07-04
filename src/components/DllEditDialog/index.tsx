@@ -85,16 +85,16 @@ export default function DllEditDialog({
               disabled && "disabled:hover:bg-transparent",
               disabled
                 ? "group-hover:text-white"
-                : "group-hover:text-[#303030]",
+                : "group-hover:text-black-light",
             )}
           >
             <Dll
               className={clsx(
                 "text-white",
-                disabled && "text-[#606060]",
+                disabled && "text-gray-deep",
                 disabled
                   ? "group-hover:text-white"
-                  : "group-hover:text-[#303030]",
+                  : "group-hover:text-black-light",
               )}
             />
             <span className={clsx(disabled && "text-white!")}>upload</span>
@@ -107,10 +107,10 @@ export default function DllEditDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[329px] sm:w-[635px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+        className="w-[329px] sm:w-[635px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] pb-[18px] border-b border-[#303030] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] pb-[18px] border-b border-black-light font-semibold leading-normal lowercase">
             {type === "create" ? "upload dll file" : "update dll file"}
           </DialogTitle>
         </DialogHeader>
@@ -148,7 +148,7 @@ export default function DllEditDialog({
                 </Button>
                 <Button
                   className={clsx(
-                    "text-[12px] bg-white text-[#303030] py-[7px] leading-[14px] w-[79px]",
+                    "text-[12px] bg-white text-black-light py-[7px] leading-[14px] w-[79px]",
                   )}
                   type="submit"
                 >

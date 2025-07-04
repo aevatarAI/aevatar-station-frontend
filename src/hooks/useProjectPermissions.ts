@@ -26,13 +26,17 @@ type TUserPermissions = {
   roleCreate?: boolean;
   roleEdit?: boolean;
   roleDelete?: boolean;
-  dll?: boolean;
-  dllCreate?: boolean;
-  dllEdit?: boolean;
-  dllDelete?: boolean;
   dashboards?: boolean;
   llmsModels?: boolean;
   apiRequests?: boolean;
+  plugins?: boolean;
+  pluginsCreate?: boolean;
+  pluginsEdit?: boolean;
+  pluginsDelete?: boolean;
+  corsOrigins?: boolean;
+  corsOriginsCreate?: boolean;
+  corsOriginsEdit?: boolean;
+  corsOriginsDelete?: boolean;
 };
 
 export const useProjectPermissions = () => {
@@ -117,18 +121,7 @@ export const useProjectPermissions = () => {
         case "Permission:Roles.Delete":
           _permissions.roleDelete = item.isGranted;
           break;
-        case "Permission:Dll":
-          _permissions.dll = item.isGranted;
-          break;
-        case "Permission:Dll.Create":
-          _permissions.dllCreate = item.isGranted;
-          break;
-        case "Permission:Dll.Edit":
-          _permissions.dllEdit = item.isGranted;
-          break;
-        case "Permission:Dll.Delete":
-          _permissions.dllDelete = item.isGranted;
-          break;
+
         case "Permission:Dashboards":
           _permissions.dashboards = item.isGranted;
           break;
@@ -137,6 +130,30 @@ export const useProjectPermissions = () => {
           break;
         case "Permission:ApiRequests":
           _permissions.apiRequests = item.isGranted;
+          break;
+        case "Permission:Plugins":
+          _permissions.plugins = item.isGranted;
+          break;
+        case "Permission:Plugins.Create":
+          _permissions.pluginsCreate = item.isGranted;
+          break;
+        case "Permission:Plugins.Edit":
+          _permissions.pluginsEdit = item.isGranted;
+          break;
+        case "Permission:Plugins.Delete":
+          _permissions.pluginsDelete = item.isGranted;
+          break;
+        case "Permission:ProjectCorsOrigins":
+          _permissions.corsOrigins = item.isGranted;
+          break;
+        case "Permission:ProjectCorsOrigins.Create":
+          _permissions.corsOriginsCreate = item.isGranted;
+          break;
+        case "Permission:ProjectCorsOrigins.Edit":
+          _permissions.corsOriginsEdit = item.isGranted;
+          break;
+        case "Permission:ProjectCorsOrigins.Delete":
+          _permissions.corsOriginsDelete = item.isGranted;
           break;
       }
     });

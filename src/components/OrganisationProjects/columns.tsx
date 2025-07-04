@@ -1,7 +1,7 @@
+import dayjs from "@/api/dayjs";
 import type { IProjectItem } from "@/api/utils/organization";
 import Copy from "@/components/Copy";
 import type { ColumnDef } from "@tanstack/react-table";
-import dayjs from "@/api/dayjs";
 
 export interface IProjectTable extends IProjectItem {
   operation?: JSX.Element;
@@ -26,7 +26,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
         <Copy
           description="domain name copied"
           toCopy={row.original.domainName}
-          className="text-[#606060] hover:text-white"
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),
@@ -45,7 +45,10 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "created",
     cell: ({ row }) => (
       <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
-        {dayjs.utc(row.original.creationTime).local().format("DD.MM.YYYY HH:mm")}
+        {dayjs
+          .utc(row.original.creationTime)
+          .local()
+          .format("DD.MM.YYYY HH:mm")}
       </div>
     ),
   },

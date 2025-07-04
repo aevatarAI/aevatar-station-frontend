@@ -39,10 +39,10 @@ export default function Header() {
         ignoreHeaders.includes(pathname) && "hidden",
       )}
     >
-      <div className={clsx("fixed z-10 w-full  bg-[#000]", hidden && "hidden")}>
+      <div className={clsx("fixed z-100 w-full  bg-black", hidden && "hidden")}>
         <div
           className={clsx(
-            "border-b border-[#303030] flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
+            "border-b border-black-light flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
             "lg:px-[16px] lg:py-[13px] lg:pl-[19px]",
           )}
         >
@@ -66,7 +66,7 @@ export default function Header() {
                   disabled={!projectList.length}
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
-                    !projectList.length && "text-[#606060] cursor-not-allowed",
+                    !projectList.length && "text-gray-deep cursor-not-allowed",
                   )}
                   onClick={() => {
                     if (!projectList.length) return;

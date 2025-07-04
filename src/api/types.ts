@@ -5,8 +5,9 @@ export enum CancelTokenSourceKey {
 }
 
 export type requestConfig = {
-  query?: string; //this for url parameter； example: test/:id
-  params?: any; // this for url params; example: test?pageIndex=0&pageSize=3
+  query?: string; // for url parameter; example: test/:id
+  query1?: string; // for url parameter; example: /api/:id/test/:query1
+  params?: any; // for url params; example: test?pageIndex=0&pageSize=3
   cancelTokenSourceKey?: CancelTokenSourceKey;
 } & AxiosRequestConfig<any>;
 
@@ -21,5 +22,5 @@ export type BaseConfig =
 export type UrlObj = { [key: string]: BaseConfig };
 
 export type API_REQ_FUNCTION<T = any> = (
-  config?: requestConfig
+  config?: requestConfig,
 ) => Promise<T | AxiosResponse<T>>;

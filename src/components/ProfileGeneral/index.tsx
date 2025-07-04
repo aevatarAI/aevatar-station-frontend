@@ -61,7 +61,7 @@ export default function ProfileGeneral() {
 
   return (
     <div>
-      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[#303030]">
+      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
         <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
           profile
         </div>
@@ -109,7 +109,7 @@ export default function ProfileGeneral() {
             re-try.
           </div>
           <Button
-            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-[#303030] text-[12px] leading-[14px]"
+            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-black-light text-[12px] leading-[14px]"
             onClick={onResetPassword}
           >
             reset password

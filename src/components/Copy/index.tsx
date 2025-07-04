@@ -37,6 +37,7 @@ export default function Copy({
 
   return (
     <span
+      data-testid="copy-span"
       onClick={onClick}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {

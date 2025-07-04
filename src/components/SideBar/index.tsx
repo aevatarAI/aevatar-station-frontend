@@ -1,5 +1,6 @@
 "use client";
 
+import Agents from "@/assets/agents_menu.svg?react";
 import ApikeysIcon from "@/assets/api_keys.svg?react";
 import ChartIcon from "@/assets/chart.svg?react";
 import Dll from "@/assets/dll_menu.svg?react";
@@ -9,6 +10,7 @@ import Notication from "@/assets/notication.svg?react";
 import NoticationEmpty from "@/assets/notification_empty.svg?react";
 import Project from "@/assets/project.svg?react";
 import Role from "@/assets/role.svg?react";
+import Workflow from "@/assets/workflow.svg?react";
 import {
   menuItemClx,
   menuItemSelectedClx,
@@ -166,19 +168,33 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       });
     }
 
-    if(userPermissions.dashboards || userProjectPermissions.dashboards) { 
+    if (userPermissions.dashboards || userProjectPermissions.dashboards) {
       menuList.push({
         icon: <ChartIcon />,
         text: "usage",
         url: "/dashboard/usage",
-      });  
+      });
     }
 
+    // menuList.push({
+    //   icon: <Agents />,
+    //   text: "g-agents",
+    //   url: "/dashboard/g-agents",
+    // });
+
     menuList.push({
-      icon: <Dll />,
-      text: "dll",
-      url: "/dashboard/dll",
+      icon: <Workflow />,
+      text: "workflow",
+      url: "/dashboard/workflow",
     });
+
+    if (userProjectPermissions.plugins || userProjectPermissions.corsOrigins) {
+      menuList.push({
+        icon: <Dll />,
+        text: "dll",
+        url: "/dashboard/dll",
+      });
+    }
 
     return menuList;
   }, [userPermissions, userProjectPermissions]);
@@ -217,7 +233,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-[#303030] mb-[34px]",
+              item[0] === "profile" && "border-b border-black-light mb-[34px]",
             )}
           >
             <div
@@ -261,7 +277,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     <div
       data-testid="sidebar-id"
       className={clsx(
-        "h-full flex flex-col  justify-between  pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
+        "h-full flex flex-col  justify-between  pt-[118px] lg:pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
         className,
       )}
     >

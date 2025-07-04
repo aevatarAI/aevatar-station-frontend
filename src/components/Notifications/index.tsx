@@ -44,7 +44,7 @@ export const Notifications = ({
 
   return (
     <div data-testid="notifications-container">
-      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[#303030]">
+      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
         <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
           Notifications
         </div>

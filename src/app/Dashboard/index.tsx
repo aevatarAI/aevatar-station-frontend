@@ -1,8 +1,12 @@
+import { service } from "@/api/axios";
 import ApiKeys from "@/components/ApiKeys";
 import DllPage from "@/components/DllPage";
+import GAgents from "@/components/GAgents";
 import { SideBar } from "@/components/SideBar";
 import { Usage } from "@/components/Usage";
+import WorkflowPage from "@/components/WorkflowPage";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useAevatarConfig } from "@/hooks/useAevatarConfig";
 import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
@@ -12,10 +16,13 @@ export default function Dashboard() {
   useUpdateOrganisations();
   const [, selectTab] = useSideBarParams();
   const { ref, handleClose } = useCloseDialog();
+
+  useAevatarConfig();
+
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-[calc(100vh-60px)] overflow-auto">
       {/* Fixed sidebar for desktop - full viewport height */}
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-screen sticky top-0">
+      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
         <SideBar onClose={handleClose} />
       </div>
 
@@ -28,10 +35,12 @@ export default function Dashboard() {
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-screen bg-black">
-        <div className="pt-[31px] px-[20px]">
+      <div className="flex-1 overflow-auto h-full bg-black">
+        <div className="pt-[31px] px-[20px]  h-full">
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
+          {selectTab === "g-agents" && <GAgents />}
+          {selectTab === "workflow" && <WorkflowPage />}
           {selectTab === "dll" && <DllPage />}
         </div>
       </div>

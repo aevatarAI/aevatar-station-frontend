@@ -102,7 +102,9 @@ export default function ProjectEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
-            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${fullWidth && "w-full"}`}
+            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${
+              fullWidth && "w-full"
+            }`}
           >
             <Plus />
             <span>create {fullWidth && "project"}</span>
@@ -113,7 +115,7 @@ export default function ProjectEditDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
       >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
@@ -140,6 +142,7 @@ export default function ProjectEditDialog({
               <FormField
                 control={form.control}
                 name="domainName"
+                disabled={type === "edit"}
                 render={({ field }) => (
                   <FormItem
                     aria-labelledby="domainNameLabel"
@@ -149,6 +152,11 @@ export default function ProjectEditDialog({
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
+                    <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-pro lowercase">
+                      Note: Once the project is created, the domain name cannot
+                      be changed.
+                    </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -164,7 +172,7 @@ export default function ProjectEditDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
+                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

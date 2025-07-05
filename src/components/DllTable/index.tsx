@@ -18,6 +18,11 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+export enum EDllEmptyMessage {
+  NoDllsUploaded = "No DLLs uploaded yet",
+  ServiceRestarting = "Service restarting...",
+}
+
 export default function DllTable() {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
@@ -27,13 +32,18 @@ export default function DllTable() {
   const curProject = useCurrentProject();
   const updateDllHandler = useUpdateDllList();
   const projectPermissions = useProjectPermissions();
+
+  const [dllEmptyMessage, setDllEmptyMessage] = useState<EDllEmptyMessage>(
+    EDllEmptyMessage.NoDllsUploaded,
+  );
   const updateDllList = useCallback(async () => {
     if (!projectId) return;
     if (!curProject?.domainName) return;
-    const serviceHealth = await getRestartStatus(
+    const isServiceHealth = await getRestartStatus(
       `${curProject?.domainName}-client`,
     );
-    console.log(serviceHealth, "serviceHealth===");
+    if (isServiceHealth) setDllEmptyMessage(EDllEmptyMessage.NoDllsUploaded);
+    else return setDllEmptyMessage(EDllEmptyMessage.ServiceRestarting);
 
     setLoading(true);
     await updateDllHandler(projectId);
@@ -165,7 +175,7 @@ export default function DllTable() {
         data={tableData}
         emptyNode={
           <div className="lowercase" data-testid="empty-dll-message">
-            No DLLs uploaded yet
+            {dllEmptyMessage}
           </div>
         }
         data-testid="dll-table"

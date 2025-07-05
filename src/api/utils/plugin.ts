@@ -76,7 +76,6 @@ export const restartToApplyConfig = async (): Promise<void> => {
 };
 
 export const getRestartStatus = async (domain: string): Promise<boolean> => {
-  // await request.plugins.getRestartStatus();
   const result = await getServiceHealthStatus(domain);
   console.log(result, "getRestartStatus==result");
   await new Promise((resolve) => setTimeout(resolve, 3000));

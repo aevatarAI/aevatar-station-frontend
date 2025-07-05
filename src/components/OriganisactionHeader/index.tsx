@@ -18,9 +18,12 @@ import { useCreateProject } from "@/hooks/useCreateProject";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useGetProjects } from "@/hooks/useGetProjects";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useUpdateOrganisationsHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
+  ORGANIZATIONS_LIST_ATOM,
+  PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -44,8 +47,10 @@ export default function OriganisactionHeader({
   const navigate = useNavigate();
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
-  const { data: organisationList, refetch } = useGetOrganizations();
-  const { data: projectList } = useGetProjects();
+  const updateOrganisationsHandler = useUpdateOrganisationsHandler();
+
+  const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const { mutate } = useCreateProject();
   const isAdmin = useIsAdmin();
   const { toast } = useToast();
@@ -55,24 +60,16 @@ export default function OriganisactionHeader({
   );
   const currentOrganisation = useMemo(
     () =>
-      organisationList?.data?.items.find(
-        (item: any) => item.id === currentOrganisationId,
-      ),
-    [organisationList?.data?.items, currentOrganisationId],
+      organisationList?.find((item: any) => item.id === currentOrganisationId),
+    [organisationList, currentOrganisationId],
   );
 
   const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentProject = useMemo(
     () =>
-      projectList?.data?.items.find(
-        (project: Project) => project.id === currentProjectId,
-      ),
-    [projectList?.data?.items, currentProjectId],
+      projectList?.find((project: Project) => project.id === currentProjectId),
+    [projectList, currentProjectId],
   );
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return (
     <div
@@ -89,7 +86,7 @@ export default function OriganisactionHeader({
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
             <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
-              {organisationList?.data?.items.map((item: any) => (
+              {organisationList?.map((item: any) => (
                 <div
                   className={clsx(
                     itemClassName,
@@ -138,7 +135,7 @@ export default function OriganisactionHeader({
         </PopoverTrigger>
         <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
           <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-0 max-h-[300px] scrollbar-hide overflow-auto">
-            {projectList?.data?.items?.map((item: Project) => (
+            {projectList?.map((item: Project) => (
               <div
                 className={clsx(
                   itemClassName,

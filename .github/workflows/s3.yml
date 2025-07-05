@@ -25,7 +25,7 @@ jobs:
       - name: create env file
         run: |
           touch .env
-          echo VITE_APP_NETWORKTYPE=TESTNET >> .env
+          echo VITE_APP_NETWORKTYPE=MAINNET >> .env
           echo VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }} >> .env
           echo VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }} >> .env
           echo VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }} >> .env

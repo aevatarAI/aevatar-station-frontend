@@ -1,7 +1,7 @@
 import type { API_REQ_FUNCTION } from "./types";
 
 export const getDomainBaseUrl = () => {
-  if (import.meta.env.MODE === "development") {
+  if (import.meta.env.VITE_APP_NETWORKTYPE === "TESTNET") {
     return "https://station-developer-dev-staging.aevatar.ai";
   }
   return location.origin;

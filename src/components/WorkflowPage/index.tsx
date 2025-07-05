@@ -5,19 +5,12 @@ import type {
 } from "@aevatar-react-sdk/services";
 import {
   AevatarProvider,
-  ConfigProvider,
   WorkflowConfiguration,
   aevatarAI,
 } from "@aevatar-react-sdk/ui-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { delay } from "@/utils/common";
-import myEvents from "@/utils/myEvent";
-
-aevatarAI.fetchRequest.setHeaders({
-  // authorization: sdkToken,
-  authorization: (service.defaults.headers.Authorization as string) || "",
-});
 
 export default function WorkflowPage() {
   const [gaevatarList, setGaevatarList] = useState<IAgentInfoDetail[]>();
@@ -46,39 +39,11 @@ export default function WorkflowPage() {
     setGaevatarList(list);
   }, []);
 
+  console.log(aevatarAI.fetchRequest.commonHeaders, "accessToken===");
+
   useEffect(() => {
     refreshGaevatarList();
   }, [refreshGaevatarList]);
-
-  const tokenPendingRef = useRef(false);
-
-  const getAuthToken = useCallback(async () => {
-    if (!tokenPendingRef.current) {
-      tokenPendingRef.current = true;
-      myEvents.AuthorizationExpired.emit();
-    }
-
-    const token: string = await new Promise((resolve) => {
-      const { remove } = myEvents.AuthorizationUpdated.addListener(
-        (data: { error?: any; token?: string }) => {
-          if (data.token) resolve(data.token);
-          remove();
-        },
-      );
-    });
-    tokenPendingRef.current = false;
-    service.defaults.headers.Authorization = token;
-
-    console.log("getAuthToken==");
-    // TODO
-    return (service.defaults.headers.Authorization as string) || "";
-  }, []);
-
-  useEffect(() => {
-    ConfigProvider.setConfig({
-      getAevatarAuthToken: getAuthToken,
-    });
-  }, [getAuthToken]);
 
   const onGaevatarChange = useCallback(
     async (isCreate: boolean, data: { params: any; agentId?: string }) => {

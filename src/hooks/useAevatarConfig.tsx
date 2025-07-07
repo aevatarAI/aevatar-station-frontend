@@ -22,7 +22,7 @@ export const useAevatarConfig = () => {
   useEffect(() => {
     aevatarAI.fetchRequest.setHeaders({
       // authorization: sdkToken,
-      authorization: accessToken || "",
+      Authorization: accessToken || "",
     });
   }, [accessToken]);
 

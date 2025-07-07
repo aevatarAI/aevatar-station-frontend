@@ -33,7 +33,9 @@ export default function RestartPodServer() {
       let isFinish = false;
       try {
         while (!isFinish) {
-          const result = await getRestartStatus(restartPodServer.domain);
+          const result = await getRestartStatus(
+            `${restartPodServer.domain}-client`,
+          );
           if (result) {
             isFinish = true;
             setRestartPodServer(RESET);

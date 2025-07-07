@@ -1,6 +1,5 @@
 import { request } from "@/api";
 import { getRestartStatus } from "@/api/utils/plugin";
-import CrossURL from "@/components/CrossURL";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import DllEditDialog from "@/components/DllEditDialog";
@@ -13,10 +12,16 @@ import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { useUpdateDllList } from "@/hooks/useUpdateDllList";
 import { DLL_LIST_ATOM, RESTART_POD_SERVER_ATOM } from "@/state/atoms/dll";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import { delay } from "@/utils/common";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
+export enum EDllEmptyMessage {
+  NoDllsUploaded = "No DLLs uploaded yet",
+  ServiceRestarting = "Service restarting...",
+}
 
 export default function DllTable() {
   const [loading, setLoading] = useState<boolean>();
@@ -27,19 +32,47 @@ export default function DllTable() {
   const curProject = useCurrentProject();
   const updateDllHandler = useUpdateDllList();
   const projectPermissions = useProjectPermissions();
+
+  const [dllEmptyMessage, setDllEmptyMessage] = useState<EDllEmptyMessage>(
+    EDllEmptyMessage.NoDllsUploaded,
+  );
+
+  const getRestartStatusHandler = useCallback(async () => {
+    const isServiceHealth = await getRestartStatus(
+      `${curProject?.domainName}-client`,
+    );
+    if (isServiceHealth) setDllEmptyMessage(EDllEmptyMessage.NoDllsUploaded);
+    else return setDllEmptyMessage(EDllEmptyMessage.ServiceRestarting);
+  }, [curProject?.domainName]);
+
   const updateDllList = useCallback(async () => {
     if (!projectId) return;
     if (!curProject?.domainName) return;
-    const serviceHealth = await getRestartStatus(
-      `${curProject?.domainName}-client`,
-    );
-    console.log(serviceHealth, "serviceHealth===");
+    try {
+      setLoading(true);
 
-    setLoading(true);
-    await updateDllHandler(projectId);
-    setLoading(false);
-    window.scrollTo(0, 0);
-  }, [projectId, updateDllHandler, curProject?.domainName]);
+      try {
+        await getRestartStatusHandler();
+      } catch (error: any) {
+        if (error?.message === "Network Error") {
+          await delay(2000);
+          await getRestartStatusHandler();
+        }
+      }
+
+      await updateDllHandler(projectId);
+      setLoading(false);
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error, "updateDllList===");
+      setLoading(false);
+    }
+  }, [
+    projectId,
+    updateDllHandler,
+    curProject?.domainName,
+    getRestartStatusHandler,
+  ]);
 
   useEffect(() => {
     updateDllList();
@@ -165,7 +198,7 @@ export default function DllTable() {
         data={tableData}
         emptyNode={
           <div className="lowercase" data-testid="empty-dll-message">
-            No DLLs uploaded yet
+            {dllEmptyMessage}
           </div>
         }
         data-testid="dll-table"

@@ -19,11 +19,10 @@ export const useAevatarConfig = () => {
   }, [curProject?.domainName]);
 
   const [accessToken] = useAtom(accessTokenAtom);
-
   useEffect(() => {
     aevatarAI.fetchRequest.setHeaders({
       // authorization: sdkToken,
-      authorization: accessToken || "",
+      Authorization: accessToken || "",
     });
   }, [accessToken]);
 

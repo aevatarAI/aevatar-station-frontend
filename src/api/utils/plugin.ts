@@ -70,11 +70,6 @@ export const deleteProjectCorsOrigin = async (
   });
 };
 
-export const restartToApplyConfig = async (): Promise<void> => {
-  // await request.plugins.restartToApplyConfig();
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-};
-
 export const getRestartStatus = async (domain: string): Promise<boolean> => {
   const result = await getServiceHealthStatus(domain);
   console.log(result, "getRestartStatus==result");

@@ -11,6 +11,7 @@ import { useCloseDialog } from "@/hooks/useCloseDialog";
 import { useSideBarParams } from "@/hooks/useSideBarParams";
 import { useUpdateOrganisations } from "@/hooks/useUpdateOrganisations";
 import { DialogClose } from "@radix-ui/react-dialog";
+import clsx from "clsx";
 
 export default function Dashboard() {
   useUpdateOrganisations();
@@ -36,7 +37,12 @@ export default function Dashboard() {
 
       {/* Scrollable main content */}
       <div className="flex-1 overflow-auto h-full bg-black">
-        <div className="pt-[31px] px-[20px]  h-full">
+        <div
+          className={clsx(
+            " h-full",
+            selectTab !== "workflow" && "pt-[31px] px-[20px] ",
+          )}
+        >
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
           {selectTab === "g-agents" && <GAgents />}

@@ -33,10 +33,10 @@ const WelcomePage: React.FC = () => {
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]" />
       <div className="text-center mb-[72px]">
-        <h1 className="text-gradient text-[36px] lg:text-[54px] font-semibold leading-none mb-[11px]">
+        <h1 className="text-gradient text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
         </h1>
-        <p className="text-gray-light text-[14px] font-source-code">
+        <p className="text-gray-light text-[14px] font-outfit">
           create or join an organisation
         </p>
       </div>
@@ -46,7 +46,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[12px] text-gray-light font-source-code">
+          <p className="text-[12px] text-gray-light font-outfit">
             create a new organisation - You will be the owner
           </p>
         </div>
@@ -57,7 +57,7 @@ const WelcomePage: React.FC = () => {
               <h2 className="font-semibold text-[18px] mb-3 text-white">
                 join an existing organisation
               </h2>
-              <p className="text-[12px] text-gray-light font-source-code">
+              <p className="text-[12px] text-gray-light font-outfit">
                 pending invitations for your approval
               </p>
               <div className="w-full h-px bg-black-light my-4" />
@@ -95,16 +95,16 @@ const WelcomePage: React.FC = () => {
             <h2 className="font-semibold text-[18px] mb-3 text-white ">
               join an existing organisation
             </h2>
-            <p className="text-[12px] text-gray-light font-source-code">
+            <p className="text-[12px] text-gray-light font-outfit">
               you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
             <div className="w-full h-px bg-black-light my-4" />
-            <span className="text-gray-light font-syne text-[12px] font-semibold leading-normal lowercase mb-2.5 ">
+            <span className="text-gray-light font-outfit text-[12px] font-semibold leading-normal lowercase mb-2.5 ">
               your email address
             </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[12px] font-source-code truncate overflow-hidden block max-w-[200px]">
+              <span className="text-[12px] font-outfit truncate overflow-hidden block max-w-[200px]">
                 {email}
               </span>
               <Copy

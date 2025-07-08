@@ -421,7 +421,7 @@ export default function PermissionManagerInnerDialog({
                   </div>
                   {/* permission card */}
                   <div className="flex-1">
-                    <div className="aevatarai-text-gradient-center font-syne text-[18px] font-semibold leading-[22px] lowercase  pb-[14px] border-b border-black-light">
+                    <div className="aevatarai-text-gradient-center font-outfit text-[18px] font-semibold leading-[22px] lowercase  pb-[14px] border-b border-black-light">
                       {permissionTab?.split(".")?.[1] ?? permissionTab}
                     </div>
                     {permissionMap?.[permissionTab] && (

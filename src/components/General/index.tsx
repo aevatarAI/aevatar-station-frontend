@@ -84,14 +84,14 @@ const General = forwardRef(
     return (
       <div>
         <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-          <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
+          <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
             {header}
           </div>
           <div>{_buttonProps.placement === "top-right" && buttonELe}</div>
         </div>
         <div className="pt-[30px]">
           <div>
-            <div className="text-[#B9B9B9] font-syne text-[12px] font-semibold leading-normal pb-[10px]">
+            <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
               {title}
             </div>
             <Input

@@ -210,6 +210,9 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      '@fontsource/outfit':
+        specifier: ^5.1.0
+        version: 5.2.6
       '@fontsource/source-code-pro':
         specifier: ^5.1.0
         version: 5.2.5
@@ -861,6 +864,9 @@ packages:
 
   '@fontsource/kode-mono@5.2.5':
     resolution: {integrity: sha512-i4AERmfnYic0NpD7ffSL5wM7hcd4hCIVN3JKFgHnPr2TYPBP5mEuJAVB8vaRXkPYJe3RNwUCJu0cSl3fLHZwvw==}
+
+  '@fontsource/outfit@5.2.6':
+    resolution: {integrity: sha512-fXkIBhYAFJ2VU+PcPd/xi4vCdXHUaGMgSlJ0KCXcwEHqayMwzoExuoharIVgnae9wd5/QtcepFKXtmabsqIoEQ==}
 
   '@fontsource/source-code-pro@5.2.5':
     resolution: {integrity: sha512-1k7b9IdhVSdK/rJ8CkqqGFZ01C3NaXNynPZqKaTetODog/GPJiMYd6E8z+LTwSUTIX8dm2QZORDC+Uh91cjXSg==}
@@ -6657,6 +6663,8 @@ snapshots:
   '@floating-ui/utils@0.2.9': {}
 
   '@fontsource/kode-mono@5.2.5': {}
+
+  '@fontsource/outfit@5.2.6': {}
 
   '@fontsource/source-code-pro@5.2.5': {}
 

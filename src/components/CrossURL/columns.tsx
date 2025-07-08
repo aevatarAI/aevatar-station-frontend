@@ -20,7 +20,7 @@ export const columns: ColumnDef<ICrossURLTable>[] = [
     accessorKey: "created",
     header: "created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
           .utc(row.original.creationTime)
           .local()

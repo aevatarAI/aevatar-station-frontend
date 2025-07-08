@@ -130,7 +130,7 @@ export default function InviteMembersDialog({
                           <SelectItem
                             key={item.id}
                             value={item.id}
-                            className="text-[#B9B9B9] text-center font-syne lowercase py-[7px] select-item-wrapper text-[14px]"
+                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[14px]"
                           >
                             {item.name.split("_")[1]}
                           </SelectItem>

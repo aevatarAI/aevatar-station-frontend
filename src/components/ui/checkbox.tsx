@@ -30,7 +30,7 @@ const Checkbox = React.forwardRef<
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
     <label
-      className="text-[11px] text-gray-light font-source-code cursor-pointer"
+      className="text-[11px] text-gray-light font-outfit cursor-pointer"
       htmlFor={props?.id}
     >
       {props.name}

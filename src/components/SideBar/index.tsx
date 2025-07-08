@@ -168,13 +168,13 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       });
     }
 
-    if (userPermissions.dashboards || userProjectPermissions.dashboards) {
-      menuList.push({
-        icon: <ChartIcon />,
-        text: "usage",
-        url: "/dashboard/usage",
-      });
-    }
+    // if (userPermissions.dashboards || userProjectPermissions.dashboards) {
+    //   menuList.push({
+    //     icon: <ChartIcon />,
+    //     text: "usage",
+    //     url: "/dashboard/usage",
+    //   });
+    // }
 
     // menuList.push({
     //   icon: <Agents />,
@@ -238,7 +238,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
           >
             <div
               className={clsx(
-                "text-[#B9B9B9] font-source-code text-[11px] font-normal leading-normal lowercase mb-[16px]",
+                "text-[#B9B9B9] font-outfit text-[11px] font-normal leading-normal lowercase mb-[16px]",
               )}
             >
               {item[0]}
@@ -287,7 +287,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       <div className={clsx("inline-flex pl-[22px] flex-col gap-[24px]")}>
         {socialMediaList.map((item) => (
           <a
-            className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal lowercase"
+            className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal lowercase"
             key={item.title}
             href={item.href}
             target="_blank"

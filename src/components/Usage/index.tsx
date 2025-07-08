@@ -268,7 +268,7 @@ export function Usage() {
                 <Legend
                   wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
                   formatter={(value) => (
-                    <span className="font-source-code text-white text-[10px]">
+                    <span className="font-outfit text-white text-[10px]">
                       {value}
                     </span>
                   )}
@@ -320,7 +320,7 @@ export function Usage() {
                       paddingLeft: isMobile ? 44 : 0,
                     }}
                     formatter={(value) => (
-                      <span className="font-source-code text-white text-[10px]">
+                      <span className="font-outfit text-white text-[10px]">
                         {value}
                       </span>
                     )}
@@ -381,9 +381,7 @@ export const EmptyAPIRequests = ({
             paddingLeft: isMobile ? 44 : 0,
           }}
           formatter={(value) => (
-            <span className="font-source-code text-white text-[10px]">
-              {value}
-            </span>
+            <span className="font-outfit text-white text-[10px]">{value}</span>
           )}
         />
         <Line type="monotone" dataKey="count" stroke="#ffffff" />

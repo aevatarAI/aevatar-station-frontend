@@ -80,7 +80,7 @@ export default function DllEditDialog({
           <Button
             disabled={disabled}
             className={clsx(
-              "text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              "text-white text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled

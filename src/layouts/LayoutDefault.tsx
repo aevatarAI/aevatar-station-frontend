@@ -3,7 +3,7 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import "@fontsource/source-code-pro";
+import "@fontsource/outfit";
 import "@fontsource/syne";
 import "@fontsource/syne/600.css";
 import "@fontsource/syne/700.css";

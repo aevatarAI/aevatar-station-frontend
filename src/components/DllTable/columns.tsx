@@ -24,7 +24,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "created",
     header: "created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
           .utc(row.original.creationTime)
           .local()
@@ -47,7 +47,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "updated",
     header: "updated",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {row.original.lastModificationTime
           ? dayjs
               .utc(row.original.lastModificationTime)
@@ -73,7 +73,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "status",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold lowercase font-syne">
+        <div className="min-w-[125px] text-[14px] font-semibold lowercase font-outfit">
           {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
           {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&

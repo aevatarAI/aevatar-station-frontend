@@ -102,7 +102,7 @@ export default function ProjectEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
-            className={`text-white text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${
+            className={`text-white text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${
               fullWidth && "w-full"
             }`}
           >
@@ -152,7 +152,7 @@ export default function ProjectEditDialog({
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
-                    <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-pro lowercase">
+                    <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit lowercase">
                       Note: Once the project is created, the domain name cannot
                       be changed.
                     </div>

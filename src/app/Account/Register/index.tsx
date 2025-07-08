@@ -97,7 +97,7 @@ const Register = () => {
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[12px] font-outfit">
           already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer"

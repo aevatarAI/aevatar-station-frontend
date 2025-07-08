@@ -26,8 +26,8 @@ const SelectTrigger = React.forwardRef<
     <SelectPrimitiveTrigger
       ref={ref}
       className={cn(
-        "flex font-pro h-10 w-full items-center justify-center gap-[10px] border border-black-light bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-        "text-white text-center font-syne text-xs font-semibold leading-normal lowercase",
+        "flex font-outfit h-10 w-full items-center justify-center gap-[10px] border border-black-light bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        "text-white text-center font-outfit text-xs font-semibold leading-normal lowercase",
         className,
       )}
       {...props}
@@ -99,7 +99,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitiveContent
       ref={ref}
       className={cn(
-        "relative font-pro z-50  bg-[#141415] text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative font-outfit z-50  bg-[#141415] text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         " w-[259px] p-[20px] left-[16px]",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
@@ -148,7 +148,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative cursor-pointer select-none items-center text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
-      "text-[#B9B9B9] text-center font-syne text-[11px] leading-normal lowercase py-[7px]",
+      "text-[#B9B9B9] text-center font-outfit text-[11px] leading-normal lowercase py-[7px]",
       "select-item-wrapper",
       className,
     )}

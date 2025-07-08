@@ -63,7 +63,7 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[12px] cursor-pointer font-source-code text-white hover:text-gray-light">
+        <span className="text-[12px] cursor-pointer font-outfit text-white hover:text-gray-light">
           forgot password?
         </span>
       </DialogTrigger>
@@ -75,7 +75,7 @@ const ForgotPasswordDialog = () => {
         </DialogHeader>
         {isSubmitted ? (
           <div>
-            <DialogDescription className="mb-7 font-source-code">
+            <DialogDescription className="mb-7 font-outfit">
               an account recovery email has been sent. if you don’t see it in 15
               minutes, check your junk folder and mark it as ‘not junk’.
             </DialogDescription>
@@ -90,7 +90,9 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className={`bg-white text-black-light text-[12px] px-[16px] py-[8px] ${loading ? "opacity-50" : "opacity-100"}`}
+                className={`bg-white text-black-light text-[12px] px-[16px] py-[8px] ${
+                  loading ? "opacity-50" : "opacity-100"
+                }`}
                 onClick={form.handleSubmit(onSubmit)}
               >
                 resend password

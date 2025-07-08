@@ -54,11 +54,11 @@ export default function DeleteDialog({
         <div className="text-center">
           <div className="flex flex-col items-center gap-[16px]">
             <TipIcon />
-            <div className="text-white text-center font-syne text-[18px] font-semibold leading-normal lowercase w-[274px]">
+            <div className="text-white text-center font-outfit text-[18px] font-semibold leading-normal lowercase w-[274px]">
               {title}
             </div>
             {description && (
-              <div className="text-[#B9B9B9] font-source-code text-[12px] font-normal leading-normal lowercase w-[220px]">
+              <div className="text-[#B9B9B9] font-outfit text-[12px] font-normal leading-normal lowercase w-[220px]">
                 {description}
               </div>
             )}

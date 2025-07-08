@@ -113,10 +113,10 @@ const Login = () => {
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[12px] font-outfit">
           not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-source-code text-white hover:text-gray-light"
+            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
             onClick={() => {
               navigate("/register");
             }}

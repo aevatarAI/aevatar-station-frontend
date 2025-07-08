@@ -29,7 +29,7 @@ export default function ProfileAvatar() {
         </PopoverTrigger>
         <PopoverContent>
           {profile?.userName && (
-            <div className={clsx(itemClassName, "font-semibold font-syne")}>
+            <div className={clsx(itemClassName, "font-semibold font-outfit")}>
               <span>{profile?.userName}</span>
             </div>
           )}

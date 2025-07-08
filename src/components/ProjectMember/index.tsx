@@ -145,7 +145,7 @@ export default function ProjectMember() {
           !item.roleId ||
           !projectPermissions.memberManage ||
           item.email === profile?.email ? (
-            <span className="text-[12px] font-syne font-semibold lowercase">
+            <span className="text-[12px] font-outfit font-semibold lowercase">
               {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
           ) : (

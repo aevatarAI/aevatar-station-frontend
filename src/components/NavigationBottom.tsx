@@ -9,7 +9,7 @@ export default function NavigationBottom() {
       {bottomLinks.map(({ href, label }) => (
         <a
           key={href}
-          className="text-gray-light text-sm font-semibold font-syne capitalize block mt-[24px]"
+          className="text-gray-light text-sm font-semibold font-outfit capitalize block mt-[24px]"
           href={href}
           target="_blank"
           rel="noopener noreferrer"

@@ -7,6 +7,7 @@
 @theme {
   --font-*: initial;
   --font-syne: Syne;
+  --font-outfit: Outfit;
   --font-pro: Source Code Pro;
   --font-kode: Kode Mono, monospace;
   --font-source-code: Source Code Pro;
@@ -93,7 +94,7 @@
 
 @layer base {
   body {
-    @apply m-0 min-h-screen min-w-[320px] bg-[#141415] font-syne text-white;
+    @apply m-0 min-h-screen min-w-[320px] bg-[#141415] font-outfit text-white;
   }
 }
 .aevatarai-text-gradient {

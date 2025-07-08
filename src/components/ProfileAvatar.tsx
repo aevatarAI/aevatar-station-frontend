@@ -33,7 +33,7 @@ export default function ProfileAvatar() {
         </PopoverTrigger>
         <PopoverContent>
           {profileName && (
-            <div className={clsx(itemClassName, "font-semibold font-syne")}>
+            <div className={clsx(itemClassName, "font-semibold font-outfit")}>
               <span>
                 {profileName?.length >= 30
                   ? shortenString(profileName, 5, 5)

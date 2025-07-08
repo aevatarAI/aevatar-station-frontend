@@ -74,7 +74,7 @@ export default function OriganisactionHeader({
   return (
     <div
       className={clsx(
-        "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
+        "flex text-[14px] gap-[14px] items-center text-white font-outfit text-[14px] font-normal leading-normal ",
         className,
       )}
     >
@@ -105,7 +105,7 @@ export default function OriganisactionHeader({
             </div>
 
             {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-black-light">
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+              <Button className="text-white w-full text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
                 navigate("/profile/organisation/general")
                 setOrgOpen(false)
               }}>
@@ -116,7 +116,7 @@ export default function OriganisactionHeader({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
+        <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
           No Organisation
         </div>
       )}
@@ -127,7 +127,7 @@ export default function OriganisactionHeader({
           {currentProject ? (
             currentProject.displayName
           ) : (
-            <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
+            <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
               No project
             </div>
           )}
@@ -175,7 +175,7 @@ export default function OriganisactionHeader({
               }}
             />
             <Button
-              className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase"
+              className="text-white w-full text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] lowercase"
               disabled={!isAdmin}
               onClick={() => {
                 navigate("/profile/organisation/project");

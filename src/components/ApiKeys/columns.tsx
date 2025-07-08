@@ -34,7 +34,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "appId",
     header: "client id",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
+      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{row.original.appId}</span>
         <Copy
           description="client id copied"
@@ -48,7 +48,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     id: "appSecret",
     header: "api key",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
+      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.appSecret)}</span>
         <Copy
           description="api key copied"
@@ -62,7 +62,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "createTime",
     header: "created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
       </div>
     ),

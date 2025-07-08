@@ -126,7 +126,7 @@ export default function OrganisationMember() {
             {!userPermissions?.organizationMembersManage ||
             item.email === profile?.email ||
             item.status !== IMemberStatus.joined ? (
-              <div className="text-[12px] font-syne font-semibold lowercase">
+              <div className="text-[12px] font-outfit font-semibold lowercase">
                 {item.roleId && getRoleName(item.roleId)}
                 {item.status === IMemberStatus.refused && "rejected"}
                 {item.status === IMemberStatus.pending && "invite pending"}

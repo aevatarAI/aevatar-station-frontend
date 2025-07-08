@@ -62,13 +62,13 @@ export default function ProfileGeneral() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-        <div className="font-syne text-[18px] font-semibold lowercase aevatarai-text-gradient">
+        <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
           profile
         </div>
       </div>
       <div className="pt-[30px]">
         <div>
-          <div className="text-[#B9B9B9] font-syne text-[12px] font-semibold leading-normal pb-[10px]">
+          <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
             name
           </div>
           <div className="flex gap-[10px]">
@@ -88,7 +88,7 @@ export default function ProfileGeneral() {
         </div>
       </div>
       <div className="pt-[30px]">
-        <div className="text-[#B9B9B9] font-syne text-[12px] font-semibold leading-normal pb-[10px]">
+        <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
           email address
         </div>
         <Input
@@ -99,10 +99,10 @@ export default function ProfileGeneral() {
       </div>
       {userLoginType !== IUserLoginType.SOCIAL_MEDIA && (
         <div className="pt-[30px]">
-          <div className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal pb-[10px]">
+          <div className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal pb-[10px]">
             reset password
           </div>
-          <div className="text-[#B9B9B9] font-pro text-[13px] font-normal leading-normal lowercase">
+          <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase">
             A password reset link will be sent to your email to reset your
             password.
             <br /> if you don't get an email within a few minutes. please

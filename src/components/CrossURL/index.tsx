@@ -89,7 +89,7 @@ export default function CrossURL() {
               <DeleteDialog
                 onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete this URL?"}
-                data-testid={`delete-dll-${item.id}`}
+                data-testid={"delete-cross-url-button"}
               />
             ) : (
               <span />

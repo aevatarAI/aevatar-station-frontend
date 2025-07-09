@@ -39,6 +39,19 @@ vi.mock("@/hooks/useCurrentProject", async () => {
     })),
   };
 });
+vi.mock("@/hooks/useProjectPermissions", async () => {
+  const actual = await vi.importActual("@/hooks/useProjectPermissions");
+  return {
+    ...actual,
+    useProjectPermissions: vi.fn(() => ({
+      projects: true,
+      member: true,
+      role: true,
+      plugins: true,
+      corsOrigins: true,
+    })),
+  };
+});
 
 // Mock API
 vi.mock("@/api/utils/project", () => ({
@@ -66,7 +79,10 @@ describe("DllPage", () => {
     renderWithProviders(<DllPage />);
     fireEvent.click(screen.getByTestId("restart-btn"));
     await waitFor(() => {
-      expect(restartProjectServer).toHaveBeenCalledWith("test-id");
+      expect(restartProjectServer).toHaveBeenCalledWith({
+        projectId: "test-id",
+        clientId: "test-domain",
+      });
       expect(setRestartPodServer).toHaveBeenCalledWith({
         domain: "test-domain",
         projectId: "test-id",

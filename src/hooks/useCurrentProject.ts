@@ -9,6 +9,7 @@ export const useCurrentProject = () => {
   const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   return useMemo(() => {
+    if (!Array.isArray(projectList)) return null;
     const project = projectList.find((item) => item.id === projectId);
     if (project) {
       return {

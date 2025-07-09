@@ -65,15 +65,6 @@ pnpm dev
 
 The project uses Vitest for unit testing with comprehensive coverage requirements.
 
-### Test Coverage
-
-| Metric | Coverage |
-|--------|----------|
-| Lines  | 100%     |
-| Functions | 100%  |
-| Branches | 100%   |
-| Statements | 100% |
-
 *Coverage metrics for DllTable component - our main tested component*
 
 ### Test Structure

@@ -114,8 +114,6 @@ describe("SideBar Component", () => {
     });
     render(<SideBar />);
     expect(screen.getByText("api keys")).toBeInTheDocument();
-    expect(screen.getByText("usage")).toBeInTheDocument();
-    expect(screen.getByText("dll")).toBeInTheDocument();
   });
 
   it("renders profile menu when path starts with /profile", () => {

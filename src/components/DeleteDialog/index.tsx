@@ -77,6 +77,7 @@ export default function DeleteDialog({
               className="text-[12px] bg-white text-black-light flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
               aria-label="yes"
+              data-testid="delete-dll-btn"
             >
               yes
             </LoadingButton>

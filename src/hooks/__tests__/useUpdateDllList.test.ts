@@ -31,7 +31,7 @@ describe("useUpdateDllList", () => {
       await result.current("test-project-id");
     });
 
-    expect(getDllPlugins).toHaveBeenCalledWith("test-project-id");
+    expect(getDllPlugins).toHaveBeenCalledWith("test-project-id", "");
   });
 
   it("should handle error and show toast", async () => {
@@ -46,6 +46,6 @@ describe("useUpdateDllList", () => {
       await result.current("test-project-id");
     });
 
-    expect(getDllPlugins).toHaveBeenCalledWith("test-project-id");
+    expect(getDllPlugins).toHaveBeenCalledWith("test-project-id", "");
   });
 });

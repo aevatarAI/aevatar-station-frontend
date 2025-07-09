@@ -3,6 +3,7 @@ import {
   deleteProjectCorsOrigin,
   getCrossURLs,
 } from "@/api/utils/plugin";
+import Configuration from "@/components/DllPage/Configuration";
 import { useToast } from "@/hooks/use-toast";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import {
@@ -34,6 +35,13 @@ vi.mock("@/hooks/use-toast", () => ({
   useToast: vi.fn(),
 }));
 
+vi.mock("@/hooks/useProjectPermissions", () => ({
+  useProjectPermissions: () => ({
+    corsOriginsDelete: true,
+    corsOriginsCreate: true,
+  }),
+}));
+
 vi.mock("@/components/CreateCrossURLDialog", () => ({
   __esModule: true,
   default: ({ onSubmit }: { onSubmit: any }) => (
@@ -49,8 +57,8 @@ vi.mock("@/components/CreateCrossURLDialog", () => ({
 
 vi.mock("@/components/DeleteDialog", () => ({
   __esModule: true,
-  default: ({ onYes }: { onYes: any }) => (
-    <button type="button" data-testid="delete-cross-url-button" onClick={onYes}>
+  default: ({ onYes, ...props }: { onYes: any; [key: string]: any }) => (
+    <button type="button" {...props} onClick={onYes}>
       delete
     </button>
   ),
@@ -102,7 +110,7 @@ describe("CrossURL Component", () => {
     render(<CrossURL />);
     await waitFor(() => {
       expect(getCrossURLs).toHaveBeenCalledWith(mockProjectId);
-      expect(screen.getByText("cross-url")).toBeInTheDocument();
+      expect(screen.getByText("cors")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api1")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api2")).toBeInTheDocument();
     });
@@ -208,5 +216,26 @@ describe("CrossURL Component", () => {
     render(<CrossURL />);
     expect(screen.queryByTestId("delete-cross-url-button")).toBeNull();
     expect(mockToast).not.toHaveBeenCalled();
+  });
+});
+
+describe("Configuration Component", () => {
+  it("should render title and button", () => {
+    render(<Configuration />);
+    expect(screen.getByText("configuration")).toBeInTheDocument();
+    expect(screen.getByText("restart to apply config")).toBeInTheDocument();
+  });
+
+  it("should call onRestart when button clicked", () => {
+    const onRestart = vi.fn();
+    render(<Configuration onRestart={onRestart} />);
+    fireEvent.click(screen.getByText("restart to apply config"));
+    expect(onRestart).toHaveBeenCalled();
+  });
+
+  it("should not fail if onRestart is not provided", () => {
+    render(<Configuration />);
+    fireEvent.click(screen.getByText("restart to apply config"));
+    // No error thrown
   });
 });

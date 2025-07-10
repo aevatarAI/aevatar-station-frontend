@@ -39,7 +39,7 @@ export default function DeleteDialog({
         <Delete className="opacity-50" role="img" />
       ) : (
         <DialogTrigger asChild>
-          <Delete className="cursor-pointer" role="img" />
+          <Delete className="cursor-pointer w-[17px] h-[17px]" role="img" />
         </DialogTrigger>
       )}
       <DialogContent

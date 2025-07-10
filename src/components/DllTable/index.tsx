@@ -4,6 +4,13 @@ import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import DllEditDialog from "@/components/DllEditDialog";
 import { columns } from "@/components/DllTable/columns";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipContentCls,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { textGradient } from "@/constants/cls";
 import type { TDllEditForm } from "@/constants/form/dll";
 import { useToast } from "@/hooks/use-toast";
@@ -147,20 +154,42 @@ export default function DllTable() {
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
             {projectPermissions?.pluginsEdit ? (
-              <DllEditDialog
-                type="edit"
-                onSubmit={(v) => onEdit(v, item.id)}
-                data-testid={`edit-dll-${item.id}`}
-              />
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <DllEditDialog
+                        type="edit"
+                        onSubmit={(v) => onEdit(v, item.id)}
+                        data-testid={`edit-dll-${item.id}`}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className={clsx(TooltipContentCls)}>
+                    update
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ) : (
               <span />
             )}
             {projectPermissions?.pluginsDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete this dll?"}
-                data-testid={`delete-dll-${item.id}`}
-              />
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <DeleteDialog
+                        onYes={() => onDeleteYes(item.id)}
+                        title={"Are you sure you want to delete this dll?"}
+                        data-testid={`delete-dll-${item.id}`}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className={clsx(TooltipContentCls)}>
+                    delete
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ) : (
               <span />
             )}

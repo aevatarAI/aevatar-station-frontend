@@ -223,19 +223,19 @@ describe("Configuration Component", () => {
   it("should render title and button", () => {
     render(<Configuration />);
     expect(screen.getByText("configuration")).toBeInTheDocument();
-    expect(screen.getByText("restart to apply config")).toBeInTheDocument();
+    expect(screen.getByText(" restart services")).toBeInTheDocument();
   });
 
   it("should call onRestart when button clicked", () => {
     const onRestart = vi.fn();
     render(<Configuration onRestart={onRestart} />);
-    fireEvent.click(screen.getByText("restart to apply config"));
+    fireEvent.click(screen.getByText(" restart services"));
     expect(onRestart).toHaveBeenCalled();
   });
 
   it("should not fail if onRestart is not provided", () => {
     render(<Configuration />);
-    fireEvent.click(screen.getByText("restart to apply config"));
+    fireEvent.click(screen.getByText(" restart services"));
     // No error thrown
   });
 });

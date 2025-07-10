@@ -20,7 +20,7 @@ export default function Configuration({
       >
         <RestartIcon className="w-[14px]! h-[14px]! group-hover:text-black-light" />
         <span className="font-outfit font-semibold text-[13px] leading-[1.2] lowercase text-center">
-          restart to apply config
+          restart services
         </span>
       </Button>
     </div>

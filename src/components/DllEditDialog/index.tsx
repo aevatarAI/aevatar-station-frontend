@@ -91,6 +91,7 @@ export default function DllEditDialog({
             <Dll
               className={clsx(
                 "text-white",
+                "w-[16px] h-[16px]",
                 disabled && "text-gray-deep",
                 disabled
                   ? "group-hover:text-white"
@@ -101,7 +102,7 @@ export default function DllEditDialog({
           </Button>
         ) : (
           <Dll
-            className={clsx("cursor-pointer w-[14px] h-[14px] text-[#B9B9B9]")}
+            className={clsx("cursor-pointer w-[16px] h-[16px] text-[#B9B9B9]")}
           />
         )}
       </DialogTrigger>

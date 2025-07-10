@@ -16,6 +16,14 @@ export const getOrganizationList = async (): Promise<IOrganizationItem[]> => {
   return result.data.items;
 };
 
+export const createOrganization = async (
+  displayName: string,
+): Promise<IOrganizationItem> => {
+  const result: TDataResponse<IOrganizationItem> =
+    await request.organizations.createOrganization({ data: { displayName } });
+  return result.data;
+};
+
 export interface IProjectItem {
   id: string;
   displayName: string;

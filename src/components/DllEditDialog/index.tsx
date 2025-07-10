@@ -80,7 +80,7 @@ export default function DllEditDialog({
           <Button
             disabled={disabled}
             className={clsx(
-              "text-white text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              "text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
@@ -138,7 +138,7 @@ export default function DllEditDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
@@ -148,7 +148,7 @@ export default function DllEditDialog({
                 </Button>
                 <Button
                   className={clsx(
-                    "text-[12px] bg-white text-black-light py-[7px] leading-[14px] w-[79px]",
+                    "text-[13px] bg-white text-black-light py-[7px] leading-[14px] w-[79px]",
                   )}
                   type="submit"
                 >

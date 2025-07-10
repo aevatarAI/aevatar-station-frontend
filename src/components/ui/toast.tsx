@@ -108,7 +108,7 @@ const ToastTitle = React.forwardRef<
   <ToastActionTitleEle
     ref={ref}
     className={cn(
-      "text-white text-[12px] font-normal lowercase font-outfit",
+      "text-white text-[13px] font-normal lowercase font-outfit",
       className,
     )}
     {...props}
@@ -127,7 +127,7 @@ const ToastDescription = React.forwardRef<
   <ToastActionDescriptionEle
     ref={ref}
     className={cn(
-      "text-white text-[11px] font-normal lowercase font-outfit",
+      "text-white text-[12px] font-normal lowercase font-outfit",
       className,
     )}
     {...props}

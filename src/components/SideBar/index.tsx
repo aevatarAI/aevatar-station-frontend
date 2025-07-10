@@ -184,15 +184,15 @@ export function SideBar({ className, onClose }: ISideBarProps) {
 
     menuList.push({
       icon: <Workflow />,
-      text: "workflow",
-      url: "/dashboard/workflow",
+      text: "workflows",
+      url: "/dashboard/workflows",
     });
 
     if (userProjectPermissions.plugins || userProjectPermissions.corsOrigins) {
       menuList.push({
         icon: <Dll />,
-        text: "dll",
-        url: "/dashboard/dll",
+        text: "configuration",
+        url: "/dashboard/configuration",
       });
     }
 
@@ -287,7 +287,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       <div className={clsx("inline-flex pl-[22px] flex-col gap-[24px]")}>
         {socialMediaList.map((item) => (
           <a
-            className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal lowercase"
+            className="text-[#B9B9B9] font-outfit text-[16px] font-semibold leading-normal lowercase"
             key={item.title}
             href={item.href}
             target="_blank"

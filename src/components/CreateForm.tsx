@@ -113,7 +113,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col lg:flex-row gap-[19px]">
           <div className="flex-1">
-            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[15px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
+            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[14px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
               Atomic-Aevatars Type
             </h2>
             <Card className="cutCorner__white w-full">
@@ -168,7 +168,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
             </Card>
           </div>
           <div className="flex-1">
-            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[15px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
+            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[14px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
               Details
             </h2>
             <Card className="cutCorner__white w-full">
@@ -285,7 +285,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
                                 })}
                               >
                                 <input {...getInputProps()} />
-                                <p className="font-pro text-[11px] text-[#606060] flex gap-4 items-center">
+                                <p className="font-pro text-[12px] text-[#606060] flex gap-4 items-center">
                                   <CloudIcon />
                                   Click to upload (PDF)
                                 </p>
@@ -302,7 +302,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
                           key={field.id}
                           className="flex mb-[10px] justify-between"
                         >
-                          <div className="font-pro text-[11px] text-[#606060]">
+                          <div className="font-pro text-[12px] text-[#606060]">
                             {field.name}
                           </div>
                           <MinusIcon onClick={() => remove(index)} />

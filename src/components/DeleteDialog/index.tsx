@@ -58,7 +58,7 @@ export default function DeleteDialog({
               {title}
             </div>
             {description && (
-              <div className="text-[#B9B9B9] font-outfit text-[12px] font-normal leading-normal lowercase w-[220px]">
+              <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase w-[220px]">
                 {description}
               </div>
             )}
@@ -66,7 +66,7 @@ export default function DeleteDialog({
 
           <div className="flex justify-between items-start self-stretch pt-[28px] gap-[14px]">
             <Button
-              className="text-[12px] flex-1 py-[7px] leading-[14px]"
+              className="text-[13px] flex-1 py-[7px] leading-[14px]"
               onClick={() => {
                 setOpen(false);
               }}
@@ -74,7 +74,7 @@ export default function DeleteDialog({
               cancel
             </Button>
             <LoadingButton
-              className="text-[12px] bg-white text-black-light flex-1 py-[7px] leading-[14px]"
+              className="text-[13px] bg-white text-black-light flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
               aria-label="yes"
               data-testid="delete-dll-btn"

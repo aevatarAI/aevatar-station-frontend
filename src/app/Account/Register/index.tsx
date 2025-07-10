@@ -97,7 +97,7 @@ const Register = () => {
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[12px] font-outfit">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer"
@@ -122,7 +122,7 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       name
                     </FormLabel>
                     <FormControl>
@@ -144,7 +144,7 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -166,7 +166,7 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>

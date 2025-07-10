@@ -104,7 +104,7 @@ export default function EditApiKeyDialog({
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
@@ -113,7 +113,7 @@ export default function EditApiKeyDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

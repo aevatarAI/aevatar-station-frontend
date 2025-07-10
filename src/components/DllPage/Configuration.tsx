@@ -15,11 +15,11 @@ export default function Configuration({
         configuration
       </span>
       <Button
-        className="group flex flex-row items-center gap-[5px] px-[18px] py-[8px] border border-black-light font-outfit text-[12px] leading-[1.2] lowercase"
+        className="group flex flex-row items-center gap-[5px] px-[18px] py-[8px] border border-black-light font-outfit text-[13px] leading-[1.2] lowercase"
         onClick={onRestart}
       >
         <RestartIcon className="w-[14px]! h-[14px]! group-hover:text-black-light" />
-        <span className="font-outfit font-semibold text-[12px] leading-[1.2] lowercase text-center">
+        <span className="font-outfit font-semibold text-[13px] leading-[1.2] lowercase text-center">
           restart to apply config
         </span>
       </Button>

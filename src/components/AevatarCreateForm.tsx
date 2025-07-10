@@ -76,7 +76,7 @@ export default function AevatarCreateForm() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px]">
             <div>
               <div className="border border-dashed py-[24px] px-[26px] min-h-[512px] flex flex-col">
-                <div className="text-white text-[15px] font-semibold font-outfit mb-[11px]">
+                <div className="text-white text-[14px] font-semibold font-outfit mb-[11px]">
                   AI Basic
                 </div>
                 <div className="text-white text-xs font-pro mb-[26px]">
@@ -125,7 +125,7 @@ export default function AevatarCreateForm() {
             </div>
             <div className="lg:col-span-2">
               <div className="border border-dashed py-[24px] px-[26px] min-h-[512px] flex flex-col">
-                <div className="text-white text-[15px] font-semibold font-outfit mb-[11px]">
+                <div className="text-white text-[14px] font-semibold font-outfit mb-[11px]">
                   Social Platform
                 </div>
                 <div className="text-white text-xs font-pro mb-[26px]">

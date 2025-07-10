@@ -97,7 +97,7 @@ const Verification = () => {
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-gray-light font-normal text-[12px] font-outfit">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer hover:text-gray-light"
@@ -122,7 +122,7 @@ const Verification = () => {
                 name="verificationCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       Verification Code
                     </FormLabel>
                     <FormControl>
@@ -150,7 +150,7 @@ const Verification = () => {
               </Button>
               <div className="text-right">
                 <span
-                  className="text-[12px] cursor-pointer font-outfit text-white hover:text-gray-light"
+                  className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light"
                   onClick={sendVerificationCode}
                 >
                   resend email

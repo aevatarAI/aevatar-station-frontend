@@ -69,6 +69,10 @@ const API_REQUESTS_API_LIST = {
 const ORGANIZATIONS_API_LIST = {
   getUserOrganizations: "/api/organizations",
   getOrganizationDetail: "/api/organizations",
+  createOrganization: {
+    target: "/api/organizations",
+    baseConfig: { method: "POST" },
+  },
   addOrganization: {
     target: "/api/organizations",
     baseConfig: { method: "POST" },

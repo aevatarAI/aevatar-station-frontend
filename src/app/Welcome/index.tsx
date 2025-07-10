@@ -1,19 +1,25 @@
+import { createOrganization } from "@/api/utils/organization";
 import LogoIcon from "@/assets/logo.svg?react";
 import Copy from "@/components/Copy";
+import CreateOrgDialog from "@/components/CreateOrgDialog";
 import Loading from "@/components/Loading";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import { CheckboxGroup } from "@/components/ui/checkbox-group";
 import { ACCEPTED } from "@/constants";
+import type { TCreateOrgForm } from "@/constants/form/createOrg";
 import { useNavigate } from "@/hooks/navigate";
+import { useToast } from "@/hooks/use-toast";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { login, refreshTokenLogin } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import type React from "react";
+import { useCallback } from "react";
 
 const WelcomePage: React.FC = () => {
   const email = useEmail();
@@ -24,6 +30,29 @@ const WelcomePage: React.FC = () => {
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } =
     useGetInvitations(data);
+
+  const { toast } = useToast();
+
+  const onCreateOrg = useCallback(
+    async (values: TCreateOrgForm) => {
+      console.log(values);
+      try {
+        const response = await createOrganization(values.orgName);
+        console.log(response);
+        toast({
+          description: "Organization created",
+        });
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(
+            error,
+            "Failed to create organization",
+          ),
+        });
+      }
+    },
+    [toast],
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -42,13 +71,14 @@ const WelcomePage: React.FC = () => {
       </div>
       <div className="w-full lg:w-[793px] flex-col-reverse lg:flex-row flex gap-5  justify-center ">
         <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative border-0 min-h-[285px]">
-          <div className="absolute inset-0 bg-black/50 z-10  border-0" />
+          {/* <div className="absolute inset-0 bg-black/50 z-10  border-0" /> */}
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[13px] text-gray-light font-outfit">
+          <p className="text-[13px] text-gray-light font-outfit mb-3">
             create a new organisation - You will be the owner
           </p>
+          <CreateOrgDialog onCreate={onCreateOrg} />
         </div>
 
         {hasInvites ? (

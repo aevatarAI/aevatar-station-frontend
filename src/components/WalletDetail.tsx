@@ -15,7 +15,7 @@ export default function WalletDetail({
 }: IWalletDetailProps) {
   return (
     <div className="mb-[28px]">
-      <div className="text-white text-[15px] font-semibold font-outfit bg-white/40 pt-[5px] pb-[4px] px-[10px] border-l-8 border-white mb-[16px]">
+      <div className="text-white text-[14px] font-semibold font-outfit bg-white/40 pt-[5px] pb-[4px] px-[10px] border-l-8 border-white mb-[16px]">
         {type}
       </div>
       <div className="text-white text-sm font-medium font-pro flex gap-2 justify-between m-[10px] ml-[18px]">
@@ -25,7 +25,7 @@ export default function WalletDetail({
         <div className="text-white text-sm font-medium font-pro mr-[10px]">
           {balance} ELF
         </div>
-        <div className="text-gray-light text-[11px] font-medium font-pro">
+        <div className="text-gray-light text-[12px] font-medium font-pro">
           {balanceUSD} USD
         </div>
       </div>

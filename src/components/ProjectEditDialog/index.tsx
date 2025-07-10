@@ -102,7 +102,7 @@ export default function ProjectEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
-            className={`text-white text-center font-outfit text-[12px] font-semibold py-[7px] leading-[14px] lowercase ${
+            className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${
               fullWidth && "w-full"
             }`}
           >
@@ -163,7 +163,7 @@ export default function ProjectEditDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
@@ -172,7 +172,7 @@ export default function ProjectEditDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

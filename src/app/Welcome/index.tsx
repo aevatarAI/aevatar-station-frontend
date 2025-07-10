@@ -36,7 +36,7 @@ const WelcomePage: React.FC = () => {
         <h1 className="text-gradient text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
         </h1>
-        <p className="text-gray-light text-[14px] font-outfit">
+        <p className="text-gray-light text-[16px] font-outfit">
           create or join an organisation
         </p>
       </div>
@@ -46,7 +46,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[12px] text-gray-light font-outfit">
+          <p className="text-[13px] text-gray-light font-outfit">
             create a new organisation - You will be the owner
           </p>
         </div>
@@ -57,7 +57,7 @@ const WelcomePage: React.FC = () => {
               <h2 className="font-semibold text-[18px] mb-3 text-white">
                 join an existing organisation
               </h2>
-              <p className="text-[12px] text-gray-light font-outfit">
+              <p className="text-[13px] text-gray-light font-outfit">
                 pending invitations for your approval
               </p>
               <div className="w-full h-px bg-black-light my-4" />
@@ -95,16 +95,16 @@ const WelcomePage: React.FC = () => {
             <h2 className="font-semibold text-[18px] mb-3 text-white ">
               join an existing organisation
             </h2>
-            <p className="text-[12px] text-gray-light font-outfit">
+            <p className="text-[13px] text-gray-light font-outfit">
               you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
             <div className="w-full h-px bg-black-light my-4" />
-            <span className="text-gray-light font-outfit text-[12px] font-semibold leading-normal lowercase mb-2.5 ">
+            <span className="text-gray-light font-outfit text-[13px] font-semibold leading-normal lowercase mb-2.5 ">
               your email address
             </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[12px] font-outfit truncate overflow-hidden block max-w-[200px]">
+              <span className="text-[13px] font-outfit truncate overflow-hidden block max-w-[200px]">
                 {email}
               </span>
               <Copy

@@ -57,13 +57,13 @@ export const Notifications = ({
             data-testid={`notification-item-${item.id}`}
           >
             <div className="mb-[15px] lg:mb-0">
-              <div className="text-[#B9B9B9] font-outfit text-[12px] font-normal leading-normal lowercase mb-[10px]">
+              <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase mb-[10px]">
                 {dayjs
                   .utc(item.creationTime)
                   .local()
                   .format("DD.MM.YYYY HH:mm")}
               </div>
-              <div className="text-[#B9B9B9] font-outfit text-[15px] font-semibold leading-normal">
+              <div className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal">
                 <span className="text-white">{`${item.creatorName} `}</span>
                 <span>has invited you to join</span>
                 <span className="text-white">{` ${truncate(
@@ -77,14 +77,14 @@ export const Notifications = ({
                 <>
                   <LoadingButton
                     data-testid="join-button"
-                    className="py-[7px] px-[17px] leading-[14px] text-[12px]"
+                    className="py-[7px] px-[17px] leading-[14px] text-[13px]"
                     onClick={() => onJoin(item.id, ACCEPTED)}
                   >
                     join
                   </LoadingButton>
                   <LoadingButton
                     data-testid="decline-button"
-                    className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
+                    className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                     onClick={() => onDecline(item.id, DECLINED)}
                   >
                     decline
@@ -94,7 +94,7 @@ export const Notifications = ({
               {item.type === INVITED && item.status === EXPIRED && (
                 <Button
                   data-testid="expired-button"
-                  className="py-[7px] px-[17px] leading-[14px] text-[12px]"
+                  className="py-[7px] px-[17px] leading-[14px] text-[13px]"
                   disabled
                 >
                   expired
@@ -103,7 +103,7 @@ export const Notifications = ({
               {item.type === INVITED && item.status === ACCEPTED && (
                 <Button
                   data-testid="joined-button"
-                  className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
+                  className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled
                 >
                   joined
@@ -112,7 +112,7 @@ export const Notifications = ({
               {item.type === INVITED && item.status === DECLINED && (
                 <Button
                   data-testid="rejected-button"
-                  className="py-[7px]  px-[17px]  leading-[14px] text-[12px]"
+                  className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled
                 >
                   rejected

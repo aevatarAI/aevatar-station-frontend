@@ -4,6 +4,13 @@ import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import EditApiKeyDialog from "@/components/EditApiKeyDialog";
 import Loading from "@/components/Loading";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipContentCls,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { textGradient } from "@/constants/cls";
 import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
 import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
@@ -12,6 +19,7 @@ import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Button } from "../ui/button";
 
 export default function ApiKeys() {
   const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
@@ -33,21 +41,48 @@ export default function ApiKeys() {
       ...item,
       operation: (
         <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
-          <EditApiKeyDialog
-            name={item.appName}
-            disabled={!permissions.apiKeysEdit}
-            onYes={async (name: string) =>
-              mutationUpdate({ id: item.id, name, projectId: item.projectId })
-            }
-          />
-          <DeleteDialog
-            title="Are you sure you want to delete the API key?"
-            description="*Once deleted, the existing API key will become invalid."
-            disabled={!permissions.apiKeysDelete}
-            onYes={async () =>
-              mutate({ projectId: item.projectId, id: item.id })
-            }
-          />
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <EditApiKeyDialog
+                    name={item.appName}
+                    disabled={!permissions.apiKeysEdit}
+                    onYes={async (name: string) =>
+                      mutationUpdate({
+                        id: item.id,
+                        name,
+                        projectId: item.projectId,
+                      })
+                    }
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className={clsx(TooltipContentCls)}>
+                edit
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <DeleteDialog
+                    title="Are you sure you want to delete the API key?"
+                    description="*Once deleted, the existing API key will become invalid."
+                    disabled={!permissions.apiKeysDelete}
+                    onYes={async () =>
+                      mutate({ projectId: item.projectId, id: item.id })
+                    }
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className={clsx(TooltipContentCls)}>
+                delete
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       ),
     }));

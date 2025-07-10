@@ -113,7 +113,7 @@ const Login = () => {
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[12px] font-outfit">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           not a member yet?&nbsp;
           <span
             className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
@@ -138,7 +138,7 @@ const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -160,7 +160,7 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>
@@ -195,7 +195,7 @@ const Login = () => {
           <ForgotPasswordDialog />
         </div>
         <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
-          <span className="text-gray-light font-normal font-semibold text-[12px]">
+          <span className="text-gray-light font-normal font-semibold text-[13px]">
             or sign in with
           </span>
           <div className="flex flex-between gap-[20px] max-[431px]:flex-col">

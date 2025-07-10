@@ -11,7 +11,7 @@ export const columns: ColumnDef<ICrossURLTable>[] = [
     accessorKey: "domain",
     header: "domain",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.domain}
       </div>
     ),
@@ -33,7 +33,7 @@ export const columns: ColumnDef<ICrossURLTable>[] = [
     header: "created by",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[15px] font-semibold">
+        <div className="min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );

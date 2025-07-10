@@ -126,7 +126,7 @@ export default function OrganisationMember() {
             {!userPermissions?.organizationMembersManage ||
             item.email === profile?.email ||
             item.status !== IMemberStatus.joined ? (
-              <div className="text-[12px] font-outfit font-semibold lowercase">
+              <div className="text-[13px] font-outfit font-semibold lowercase">
                 {item.roleId && getRoleName(item.roleId)}
                 {item.status === IMemberStatus.refused && "rejected"}
                 {item.status === IMemberStatus.pending && "invite pending"}
@@ -142,7 +142,7 @@ export default function OrganisationMember() {
                 <SelectContent className="w-[193px] left-0 -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                   {roleList.map((roleItem) => (
                     <SelectItem
-                      className="text-[14px]"
+                      className="text-[16px]"
                       key={roleItem.id}
                       value={roleItem.id}
                     >

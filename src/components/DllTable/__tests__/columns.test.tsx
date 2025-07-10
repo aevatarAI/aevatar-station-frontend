@@ -62,7 +62,7 @@ describe("DllTable Columns", () => {
       expect(container).toHaveTextContent("my-dll.dll");
       expect(container.firstChild?.firstChild).toHaveClass(
         "min-w-[125px]",
-        "text-[15px]",
+        "text-[14px]",
         "font-semibold",
         "pl-[15px]",
         "pr-[20px]",
@@ -332,7 +332,7 @@ describe("DllTable Columns", () => {
 
       expect(container.firstChild?.firstChild).toHaveClass(
         "min-w-[125px]",
-        "text-[14px]",
+        "text-[16px]",
         "font-semibold",
         "lowercase",
         "font-outfit",

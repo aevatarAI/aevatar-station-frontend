@@ -15,7 +15,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "name",
     header: "dll file",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.name}
       </div>
     ),
@@ -37,7 +37,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "created by",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[15px] font-semibold">
+        <div className="min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );
@@ -62,7 +62,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "updated by",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[15px] font-semibold">
+        <div className="min-w-[125px] text-[14px] font-semibold">
           {row.original.lastModifierName || "-"}
         </div>
       );
@@ -73,7 +73,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "status",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold lowercase font-outfit">
+        <div className="min-w-[125px] text-[16px] font-semibold lowercase font-outfit">
           {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
           {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&

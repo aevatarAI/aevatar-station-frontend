@@ -40,14 +40,14 @@ export default function Dashboard() {
         <div
           className={clsx(
             " h-full",
-            selectTab !== "workflow" && "pt-[31px] px-[20px] ",
+            selectTab !== "workflows" && "pt-[31px] px-[20px] ",
           )}
         >
           {selectTab === "apikeys" && <ApiKeys />}
           {selectTab === "usage" && <Usage />}
           {selectTab === "g-agents" && <GAgents />}
-          {selectTab === "workflow" && <WorkflowPage />}
-          {selectTab === "dll" && <DllPage />}
+          {selectTab === "workflows" && <WorkflowPage />}
+          {selectTab === "configuration" && <DllPage />}
         </div>
       </div>
     </div>

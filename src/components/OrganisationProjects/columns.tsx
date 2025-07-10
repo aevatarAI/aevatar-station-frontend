@@ -12,7 +12,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.displayName}
       </div>
     ),

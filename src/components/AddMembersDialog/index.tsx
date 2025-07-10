@@ -83,7 +83,7 @@ export default function AddMembersDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
           <Plus />
           <span>add new member</span>
         </Button>
@@ -118,7 +118,7 @@ export default function AddMembersDialog({
                         <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                           {orgMemberList.map((item) => (
                             <SelectItem
-                              className="text-[14px]"
+                              className="text-[16px]"
                               key={item.email}
                               value={item.email}
                             >
@@ -150,7 +150,7 @@ export default function AddMembersDialog({
                         <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                           {roleList.map((item) => (
                             <SelectItem
-                              className="text-[14px]"
+                              className="text-[16px]"
                               key={item.id}
                               value={item.id}
                             >
@@ -165,7 +165,7 @@ export default function AddMembersDialog({
                 />
                 <div className="flex justify-between items-start self-stretch pt-[8px]">
                   <Button
-                    className="text-[12px] py-[7px] leading-[14px]"
+                    className="text-[13px] py-[7px] leading-[14px]"
                     type="reset"
                     onClick={() => {
                       setOpen(false);
@@ -174,7 +174,7 @@ export default function AddMembersDialog({
                     cancel
                   </Button>
                   <Button
-                    className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
+                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (

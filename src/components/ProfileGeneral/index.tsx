@@ -68,7 +68,7 @@ export default function ProfileGeneral() {
       </div>
       <div className="pt-[30px]">
         <div>
-          <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
+          <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
             name
           </div>
           <div className="flex gap-[10px]">
@@ -88,7 +88,7 @@ export default function ProfileGeneral() {
         </div>
       </div>
       <div className="pt-[30px]">
-        <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
+        <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
           email address
         </div>
         <Input
@@ -99,17 +99,17 @@ export default function ProfileGeneral() {
       </div>
       {userLoginType !== IUserLoginType.SOCIAL_MEDIA && (
         <div className="pt-[30px]">
-          <div className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal pb-[10px]">
+          <div className="text-[#B9B9B9] font-outfit text-[16px] font-semibold leading-normal pb-[10px]">
             reset password
           </div>
-          <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase">
+          <div className="text-[#B9B9B9] font-outfit text-[14px] font-normal leading-normal lowercase">
             A password reset link will be sent to your email to reset your
             password.
             <br /> if you don't get an email within a few minutes. please
             re-try.
           </div>
           <Button
-            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-black-light text-[12px] leading-[14px]"
+            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-black-light text-[13px] leading-[14px]"
             onClick={onResetPassword}
           >
             reset password

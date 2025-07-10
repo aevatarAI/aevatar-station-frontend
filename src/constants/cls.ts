@@ -1,5 +1,5 @@
 export const itemClassName =
-  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[14px] text-white";
+  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[16px] text-white";
 
 export const itemHoverClassName =
   "hover:bg-white/40 cursor-pointer hover:border-l-8 hover:border-white";
@@ -17,4 +17,4 @@ export const menuItemSelectedClx =
   "bg-white/40 text-white before:w-[8px] before:h-full before:absolute before:right-0 before:bg-white";
 
 export const menuItemTextClx =
-  "font-outfit text-[12px] font-semibold leading-normal lowercase";
+  "font-outfit text-[14px] font-semibold leading-normal lowercase";

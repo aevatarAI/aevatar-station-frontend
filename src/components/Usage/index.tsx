@@ -107,13 +107,13 @@ const CustomTooltip = ({
 
   return (
     <div className="custom-tooltip bg-black p-1.5 border-black-light">
-      <p className="label font-['source_code_pro'] text-[#B9B9B9] text-[10px] my-0.5">
+      <p className="label font-outfit text-[#B9B9B9] text-[11px] my-0.5">
         {label}
       </p>
       {payload.map((entry: any) => {
         return (
           <p
-            className="font-['source_code_pro'] text-[10px] my-[2px]"
+            className="font-outfit text-[11px] my-[2px]"
             key={`item-${entry.name}`}
           >
             <span style={{ color: entry.color }}>{entry.name}: </span>
@@ -188,21 +188,21 @@ export function Usage() {
       {displayGraphs?.llmsModels && (
         <>
           <div className="max-[768px]:h-px max-[768px]:my-[30px] max-[768px]:bg-black-light min-[769px]:py-[15px]" />
-          <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
+          <span className="text-[16px] text-gray-light font-semibold max-[768px]:text-white">
             llms model
           </span>
           <div className="py-[10px]" />
           <div className="flex justify-between items-center max-[768px]:grid max-[768px]:justify-normal max-[768px]:items-start">
             <div className="flex max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-[5px] gap-[10px]">
-              <span className="text-gray-light font-semibold text-[15px]">
+              <span className="text-gray-light font-semibold text-[14px]">
                 <strong className="underline text-white">?</strong>{" "}
                 <span>total cost</span>
               </span>
-              <span className="text-gray-light font-semibold text-[15px]">
+              <span className="text-gray-light font-semibold text-[14px]">
                 <strong className="underline text-white">?</strong>{" "}
                 <span>total input tokens</span>
               </span>
-              <span className="text-gray-light font-semibold text-[15px]">
+              <span className="text-gray-light font-semibold text-[14px]">
                 <strong className="underline text-white">?</strong>{" "}
                 <span>total output tokens</span>
               </span>
@@ -221,7 +221,7 @@ export function Usage() {
                       {models?.data?.length > 0 ? (
                         models?.data?.map((item: string) => (
                           <SelectItem
-                            className="text-[14px]"
+                            className="text-[16px]"
                             key={item}
                             value={item}
                           >
@@ -229,7 +229,7 @@ export function Usage() {
                           </SelectItem>
                         ))
                       ) : (
-                        <SelectItem className="text-[14px]" value="all models">
+                        <SelectItem className="text-[16px]" value="all models">
                           all models
                         </SelectItem>
                       )}
@@ -268,7 +268,7 @@ export function Usage() {
                 <Legend
                   wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
                   formatter={(value) => (
-                    <span className="font-outfit text-white text-[10px]">
+                    <span className="font-outfit text-white text-[11px]">
                       {value}
                     </span>
                   )}
@@ -293,11 +293,11 @@ export function Usage() {
       {displayGraphs?.apiRequests && (
         <>
           <div className="py-[15px]" />
-          <span className="text-[14px] text-gray-light font-semibold max-[768px]:text-white">
+          <span className="text-[16px] text-gray-light font-semibold max-[768px]:text-white">
             api request
           </span>
           <div className="py-[10px]" />
-          <span className="text-gray-light font-semibold text-[15px]">
+          <span className="text-gray-light font-semibold text-[14px]">
             <strong className="underline text-white">
               {data?.data?.totalRequests}
             </strong>{" "}
@@ -320,7 +320,7 @@ export function Usage() {
                       paddingLeft: isMobile ? 44 : 0,
                     }}
                     formatter={(value) => (
-                      <span className="font-outfit text-white text-[10px]">
+                      <span className="font-outfit text-white text-[11px]">
                         {value}
                       </span>
                     )}
@@ -381,7 +381,7 @@ export const EmptyAPIRequests = ({
             paddingLeft: isMobile ? 44 : 0,
           }}
           formatter={(value) => (
-            <span className="font-outfit text-white text-[10px]">{value}</span>
+            <span className="font-outfit text-white text-[11px]">{value}</span>
           )}
         />
         <Line type="monotone" dataKey="count" stroke="#ffffff" />

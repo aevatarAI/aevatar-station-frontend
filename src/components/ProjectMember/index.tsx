@@ -145,7 +145,7 @@ export default function ProjectMember() {
           !item.roleId ||
           !projectPermissions.memberManage ||
           item.email === profile?.email ? (
-            <span className="text-[12px] font-outfit font-semibold lowercase">
+            <span className="text-[13px] font-outfit font-semibold lowercase">
               {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
           ) : (
@@ -159,7 +159,7 @@ export default function ProjectMember() {
               <SelectContent className="w-[193px] left-0 -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
                 {roleList.map((item) => (
                   <SelectItem
-                    className="text-[14px]"
+                    className="text-[16px]"
                     key={item.id}
                     value={item.id}
                   >

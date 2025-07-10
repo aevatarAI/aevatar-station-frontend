@@ -78,7 +78,7 @@ export default function InviteMembersDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
           <Plus />
           <span>add new member</span>
         </Button>
@@ -130,7 +130,7 @@ export default function InviteMembersDialog({
                           <SelectItem
                             key={item.id}
                             value={item.id}
-                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[14px]"
+                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[16px]"
                           >
                             {item.name.split("_")[1]}
                           </SelectItem>
@@ -163,7 +163,7 @@ export default function InviteMembersDialog({
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
@@ -172,7 +172,7 @@ export default function InviteMembersDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

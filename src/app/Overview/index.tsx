@@ -32,7 +32,7 @@ export default function Overview() {
       >
         {socialMediaList.map((item) => (
           <a
-            className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal lowercase"
+            className="text-[#B9B9B9] font-syne text-[16px] font-semibold leading-normal lowercase"
             key={item.title}
             href={item.href}
             target="_blank"

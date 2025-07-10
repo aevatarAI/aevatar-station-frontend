@@ -12,7 +12,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px]">
         {row.original.userName}
       </div>
     ),

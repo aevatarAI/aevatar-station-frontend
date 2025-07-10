@@ -89,7 +89,7 @@ export default function CreateApiKeyDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]"
+          className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]"
           disabled={disabled}
         >
           <Plus />
@@ -145,7 +145,7 @@ export default function CreateApiKeyDialog({
                       <SelectContent className="w-[286px] left-0 -top-[4px] p-[8px_8px_20px_10px] cutCorner cutCorner__white">
                         {projectList?.data?.items?.map((item: APIKey) => (
                           <SelectItem
-                            className="text-[14px] normal-case"
+                            className="text-[16px] normal-case"
                             key={item.id}
                             value={item.id}
                           >
@@ -160,7 +160,7 @@ export default function CreateApiKeyDialog({
               />
               <div className="flex justify-between items-start self-stretch pt-[12px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
@@ -169,7 +169,7 @@ export default function CreateApiKeyDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

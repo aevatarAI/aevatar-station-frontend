@@ -1,5 +1,4 @@
-import Edit from "@/assets/edit_action.svg?react";
-import Loading from "@/assets/loading.svg?react";
+import Plus from "@/assets/+.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,45 +16,41 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  type TEditApiKeyForm,
-  editKeyApiForm,
-} from "@/constants/form/editKeyApi";
+
+import Loading from "@/assets/loading.svg?react";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-interface EditApiKeyDialogProps {
-  name: string;
-  disabled?: boolean;
-  onYes: (name: string) => Promise<void>;
+
+import { type TCreateOrgForm, createOrgForm } from "@/constants/form/createOrg";
+
+export interface ICreateOrgDialogProps {
+  onCreate?: (values: TCreateOrgForm) => Promise<void>;
 }
 
-export default function EditApiKeyDialog({
-  name,
-  disabled,
-  onYes,
-}: EditApiKeyDialogProps) {
-  const form = useForm<TEditApiKeyForm>({
-    resolver: zodResolver(editKeyApiForm),
+export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
+  const form = useForm<TCreateOrgForm>({
+    resolver: zodResolver(createOrgForm),
   });
-  const [btnLoading, setBtnLoading] = useState<boolean>();
   const [open, setOpen] = useState(false);
+  const [btnLoading, setBtnLoading] = useState<boolean>();
+
   const { toast } = useToast();
 
   const onSubmit = useCallback(
-    async (values: TEditApiKeyForm) => {
+    async (values: TCreateOrgForm) => {
       setBtnLoading(true);
-      onYes(values.name);
+      await onCreate?.(values);
       setBtnLoading(false);
       setOpen(false);
       toast({
         title: "",
-        description: "successfully saved",
+        description: "successfully created",
       });
     },
-    [toast, onYes],
+    [toast, onCreate],
   );
 
   useEffect(() => {
@@ -64,38 +59,33 @@ export default function EditApiKeyDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {disabled ? (
-        <Edit className="opacity-50" />
-      ) : (
-        <DialogTrigger asChild>
-          <Edit className="cursor-pointer" />
-        </DialogTrigger>
-      )}
+      <DialogTrigger asChild>
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px] w-full">
+          <Plus />
+          <span>create organisation</span>
+        </Button>
+      </DialogTrigger>
       <DialogContent
-        aria-describedby="edit api key"
+        aria-describedby="create new api key"
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            edit api key
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
+            create new organisation
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-[28px] items-start content-start self-stretch">
               <FormField
-                key={"name"}
+                key={"orgName"}
                 control={form.control}
-                name={"name"}
+                name={"orgName"}
                 render={({ field }) => (
-                  <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
+                  <FormItem aria-labelledby="emailLabel" className="w-full">
+                    <FormLabel id="orgLabel">name of organisation</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="name"
-                        {...field}
-                        defaultValue={name}
-                      />
+                      <Input placeholder="name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,12 +108,12 @@ export default function EditApiKeyDialog({
                 >
                   {btnLoading && (
                     <Loading
-                      key={"save"}
                       className={clsx("aevatarai-loading-icon")}
                       style={{ width: 14, height: 14 }}
+                      data-testid="loading-icon"
                     />
                   )}
-                  <span>{btnLoading ? "saving" : "save"}</span>
+                  <span>{btnLoading ? "creating" : "create"}</span>
                 </Button>
               </div>
             </div>

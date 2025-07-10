@@ -28,7 +28,7 @@ export interface IGeneralProps {
 const defalutButtonProps: IGeneralProps["buttonProps"] = {
   placement: "bottom-left",
   text: "save",
-  className: "text-[12px] font-normal px-[18px] py-[8px]",
+  className: "text-[13px] font-normal px-[18px] py-[8px]",
 };
 
 export interface IGeneralInstance {
@@ -91,7 +91,7 @@ const General = forwardRef(
         </div>
         <div className="pt-[30px]">
           <div>
-            <div className="text-[#B9B9B9] font-outfit text-[12px] font-semibold leading-normal pb-[10px]">
+            <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
               {title}
             </div>
             <Input

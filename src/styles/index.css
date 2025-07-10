@@ -110,3 +110,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.aevatar-ai-watermark {
+  display: none;
+}

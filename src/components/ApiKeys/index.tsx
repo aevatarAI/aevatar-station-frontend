@@ -19,6 +19,7 @@ import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { useMemo } from "react";
 import { Button } from "../ui/button";
 
 export default function ApiKeys() {
@@ -28,16 +29,8 @@ export default function ApiKeys() {
   const { mutate: mutationUpdate } = useUpdateAPIKey();
   const { mutate } = useDeleteAPIKey();
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <div>error...</div>;
-  }
-
-  const tableData = () => {
-    return data.data.map((item: IApiKeysList) => ({
+  const tableData = useMemo(() => {
+    return data?.data?.map((item: IApiKeysList) => ({
       ...item,
       operation: (
         <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
@@ -86,7 +79,15 @@ export default function ApiKeys() {
         </div>
       ),
     }));
-  };
+  }, [data, permissions, mutate, mutationUpdate]);
+
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
+
+  if (isError) {
+    return <div>error...</div>;
+  }
 
   return (
     <div>
@@ -96,15 +97,18 @@ export default function ApiKeys() {
           disabled={!permissions.apiKeysCreate || data?.data.length > 0}
         />
       </div>
-      {data && (
-        <DataTable
-          className={clsx(!isLoading && data.data.length && "min-w-[600px]")}
-          tableHeadClassName={"first:pl-[15px]"}
-          columns={columns}
-          loading={isLoading}
-          data={tableData()}
-        />
-      )}
+      <DataTable
+        className={clsx(!isLoading && data?.data?.length && "min-w-[600px]")}
+        tableHeadClassName={"first:pl-[15px]"}
+        columns={columns}
+        loading={isLoading}
+        emptyNode={
+          <div className="lowercase" data-testid="empty-dll-message">
+            No API keys created yet
+          </div>
+        }
+        data={tableData}
+      />
     </div>
   );
 }

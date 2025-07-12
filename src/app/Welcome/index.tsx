@@ -79,7 +79,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[13px] text-gray-light font-outfit mb-3">
+          <p className="text-[13px] text-gray-light font-outfit mb-[16px]">
             create a new organisation - You will be the owner
           </p>
           <CreateOrgDialog onCreate={onCreateOrg} />

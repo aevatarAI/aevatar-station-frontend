@@ -16,6 +16,7 @@ import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { login, refreshTokenLogin } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import type React from "react";
@@ -31,6 +32,8 @@ const WelcomePage: React.FC = () => {
   const { invites, hasInvites, selectedValues, setSelectedValues } =
     useGetInvitations(data);
 
+  const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
+
   const { toast } = useToast();
 
   const onCreateOrg = useCallback(
@@ -38,10 +41,11 @@ const WelcomePage: React.FC = () => {
       console.log(values);
       try {
         const response = await createOrganization(values.orgName);
-        console.log(response);
+        setCurrentOrganization(response.id);
         toast({
           description: "Organization created",
         });
+        navigate("/profile");
       } catch (error) {
         toast({
           description: handleErrorMessage(
@@ -51,7 +55,7 @@ const WelcomePage: React.FC = () => {
         });
       }
     },
-    [toast],
+    [navigate, setCurrentOrganization, toast],
   );
 
   if (isLoading) {
@@ -75,7 +79,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-white">
             create a new organisation
           </h2>
-          <p className="text-[13px] text-gray-light font-outfit mb-3">
+          <p className="text-[13px] text-gray-light font-outfit mb-[16px]">
             create a new organisation - You will be the owner
           </p>
           <CreateOrgDialog onCreate={onCreateOrg} />

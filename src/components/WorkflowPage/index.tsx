@@ -47,7 +47,15 @@ export default function WorkflowPage() {
       aevatarAI.services.agent.getAllAgentsConfiguration(),
     ]);
     console.log(gaevatarList, "gaevatarList==");
-    setAgentTypeList(agentTypeList);
+    // TODO: support more agent types
+    const _agentTypeList = agentTypeList.filter(
+      (item) =>
+        item.agentType === "Aevatar.SignalR.GAgents.SignalRGAgent" ||
+        item.agentType ===
+          "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+    );
+    setAgentTypeList(_agentTypeList);
+
     const list = gaevatarList.map((item) => {
       const agentType = agentTypeList.find(
         (type) => type.agentType === item.agentType,

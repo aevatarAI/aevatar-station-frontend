@@ -107,13 +107,13 @@ const CustomTooltip = ({
 
   return (
     <div className="custom-tooltip bg-black p-1.5 border-black-light">
-      <p className="label font-outfit text-[#B9B9B9] text-[11px] my-0.5">
+      <p className="label font-outfit text-[#B9B9B9] text-[12px] my-0.5">
         {label}
       </p>
       {payload.map((entry: any) => {
         return (
           <p
-            className="font-outfit text-[11px] my-[2px]"
+            className="font-outfit text-[12px] my-[2px]"
             key={`item-${entry.name}`}
           >
             <span style={{ color: entry.color }}>{entry.name}: </span>
@@ -268,7 +268,7 @@ export function Usage() {
                 <Legend
                   wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
                   formatter={(value) => (
-                    <span className="font-outfit text-white text-[11px]">
+                    <span className="font-outfit text-white text-[12px]">
                       {value}
                     </span>
                   )}
@@ -320,7 +320,7 @@ export function Usage() {
                       paddingLeft: isMobile ? 44 : 0,
                     }}
                     formatter={(value) => (
-                      <span className="font-outfit text-white text-[11px]">
+                      <span className="font-outfit text-white text-[12px]">
                         {value}
                       </span>
                     )}
@@ -381,7 +381,7 @@ export const EmptyAPIRequests = ({
             paddingLeft: isMobile ? 44 : 0,
           }}
           formatter={(value) => (
-            <span className="font-outfit text-white text-[11px]">{value}</span>
+            <span className="font-outfit text-white text-[12px]">{value}</span>
           )}
         />
         <Line type="monotone" dataKey="count" stroke="#ffffff" />

@@ -74,7 +74,7 @@ export default function OriganisactionHeader({
   return (
     <div
       className={clsx(
-        "flex text-[16px] gap-[14px] items-center text-white font-outfit text-[16px] font-normal leading-normal ",
+        "flex text-[14px] gap-[14px] items-center text-white font-outfit font-normal leading-normal ",
         className,
       )}
     >
@@ -116,7 +116,7 @@ export default function OriganisactionHeader({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="text-white font-outfit text-[16px] font-normal leading-[18px] lowercase">
+        <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
           No Organisation
         </div>
       )}
@@ -127,7 +127,7 @@ export default function OriganisactionHeader({
           {currentProject ? (
             currentProject.displayName
           ) : (
-            <div className="text-white font-outfit text-[16px] font-normal leading-[18px] lowercase">
+            <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
               No project
             </div>
           )}

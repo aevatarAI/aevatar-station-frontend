@@ -7,6 +7,13 @@ import CreateCrossURLDialog from "@/components/CreateCrossURLDialog";
 import { type ICrossURLTable, columns } from "@/components/CrossURL/columns";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipContentCls,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
 import { useProjectPermissions } from "@/hooks/useProjectPermissions";
@@ -86,11 +93,22 @@ export default function CrossURL() {
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
             {projectPermissions?.corsOriginsDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete this URL?"}
-                data-testid={"delete-cross-url-button"}
-              />
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <DeleteDialog
+                        onYes={() => onDeleteYes(item.id)}
+                        title={"Are you sure you want to delete this URL?"}
+                        data-testid={"delete-cross-url-button"}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className={clsx(TooltipContentCls)}>
+                    delete
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ) : (
               <span />
             )}

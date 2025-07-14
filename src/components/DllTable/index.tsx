@@ -211,8 +211,9 @@ export default function DllTable() {
 
         <DllEditDialog
           disabled={
-            Boolean(restartPodServer?.projectId === projectId) &&
-            !projectPermissions?.pluginsCreate
+            (restartPodServer
+              ? Boolean(restartPodServer?.projectId === projectId)
+              : true) && !projectPermissions?.pluginsCreate
           }
           type="create"
           onSubmit={onCreate}

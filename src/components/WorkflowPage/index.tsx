@@ -92,7 +92,7 @@ export default function WorkflowPage() {
           data.params,
         );
       }
-      await delay(1500);
+      await delay(2000);
       await refreshGaevatarList();
 
       return result;
@@ -194,7 +194,7 @@ export default function WorkflowPage() {
               }
             }}
             onSave={async (workflowAgentId: string) => {
-              await delay(2000);
+              await delay(2500);
               await getWorkflowDetail(workflowAgentId);
             }}
             editWorkflow={editWorkflow}

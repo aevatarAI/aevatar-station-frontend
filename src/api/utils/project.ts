@@ -58,7 +58,7 @@ export const getProjectRolesPermission = async (
 
 export const restartProjectServer = async (data: {
   projectId: string;
-  clientId: string;
+  domainName: string;
 }) => {
   const result: TDataResponse<null> =
     await request.projects.restartProjectServer({

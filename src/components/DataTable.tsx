@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
 
 export default function DataTable<TData, TValue>({
   columns,
-  data,
+  data = [],
   className,
   tableHeadClassName,
   loading,

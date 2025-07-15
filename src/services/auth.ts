@@ -1,18 +1,22 @@
+import { isSupportConfigUrl } from "@/constants";
 import { fetcher } from "@/lib/fetcher";
-import {
-  LoginMockData,
-  RegisterMockData,
-  SendRegisterCodeMockData,
-} from "@/utils/mock-data";
+import { RegisterMockData, SendRegisterCodeMockData } from "@/utils/mock-data";
 export const GITHUB = "github";
 export const SCOPE = "Aevatar offline_access";
 export const CLIENT_ID = "AevatarAuthServer";
-export const LOGIN_URL = "/connect/token";
-const REGISTER_URL = "/api/account/register";
-const SEND_REGISTER_CODE_URL = "/api/account/send-register-code";
-const RESET_TOEKN_URL = "/api/account/verify-password-reset-token";
-const SEND_PASSWORD_REST_CODE_URL = "/api/account/send-password-reset-code";
-const RESET_PASSWORD_URL = "/api/account/reset-password";
+const SERVER_URL = isSupportConfigUrl
+  ? (localStorage.getItem("serverUrl") ?? "")
+  : "";
+const AUTH_SERVER_URL = isSupportConfigUrl
+  ? (localStorage.getItem("authServerUrl") ?? "")
+  : "";
+export const LOGIN_URL = `${AUTH_SERVER_URL}/connect/token`;
+
+const REGISTER_URL = `${SERVER_URL}/api/account/register`;
+const SEND_REGISTER_CODE_URL = `${SERVER_URL}/api/account/send-register-code`;
+const RESET_TOEKN_URL = `${SERVER_URL}/api/account/verify-password-reset-token`;
+const SEND_PASSWORD_REST_CODE_URL = `${SERVER_URL}/api/account/send-password-reset-code`;
+const RESET_PASSWORD_URL = `${SERVER_URL}/api/account/reset-password`;
 export const login = async (username: string, password: string) => {
   return fetcher(LOGIN_URL, {
     method: "POST",

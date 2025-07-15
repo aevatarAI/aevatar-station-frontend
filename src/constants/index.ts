@@ -13,3 +13,6 @@ export const READ = 3;
 export const IGNORED = 4;
 
 export const FIFTEEN_MB = 15 * 1024 * 1024;
+
+export const isSupportConfigUrl =
+  import.meta.env.VITE_APP_SUPPORT_CONFIG_URL === "1";

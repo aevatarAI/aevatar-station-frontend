@@ -1,6 +1,7 @@
 import { service } from "@/api/axios";
 import { useNavigate } from "@/hooks/navigate";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
+import { LOGIN_URL } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import {
   IUserLoginType,
@@ -43,7 +44,7 @@ const useGetAuthServerAccessToken = () => {
     mutationFn: async (id_token: string) => {
       try {
         const response = await axios.post(
-          "/connect/token",
+          LOGIN_URL,
           {
             grant_type: "google",
             scope: "Aevatar offline_access",

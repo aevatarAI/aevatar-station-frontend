@@ -1,4 +1,5 @@
 import { loadingAtom } from "@//state/atoms";
+import { LOGIN_URL } from "@/services/auth";
 import myEvents from "@/utils/myEvent";
 import { WalletTypeEnum } from "@aelf-web-login/wallet-adapter-base";
 import { useConnectWallet } from "@aelf-web-login/wallet-adapter-react";
@@ -65,7 +66,7 @@ Nonce: ${Date.now()}`;
         grant_type: "signature",
       };
 
-      const fetchRes = await fetch("/connect/token", {
+      const fetchRes = await fetch(LOGIN_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

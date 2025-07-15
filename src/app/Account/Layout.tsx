@@ -2,6 +2,7 @@ import LoginImage from "@/assets/login.png";
 import LogoIcon from "@/assets/logo-white.svg?react";
 import { CustomButton } from "@/components/CustomButton";
 import DescHome from "@/components/DescHome";
+import ServiceConfiguration from "@/components/ServiceConfiguration";
 import socialMediaReander from "@/components/SocialMediaReander";
 export default function Layout({
   children,
@@ -24,6 +25,7 @@ export default function Layout({
             style={{ backgroundImage: `url(${backgroundImage})` }}
           />
         </div>
+        <ServiceConfiguration />
         {children}
         {socialMediaReander(
           "relative lg:absolute w-full lg:w-[408px] mt-[68px] lg:mt-auto lg:bottom-[20px]",

@@ -1,4 +1,5 @@
 import { MAX_REQUEST } from "@/api/constants";
+import { isSupportConfigUrl } from "@/constants";
 import myEvents from "@/utils/myEvent";
 import { isDeniedRequest, service, spliceUrl } from "../axios";
 import { DEFAULT_METHOD } from "../list";
@@ -56,7 +57,7 @@ myServer.prototype.send = async function (
     ...axiosConfig
   } = getRequestConfig(base, config) || {};
   // Generate unique key for request
-  const requestUrl =
+  let requestUrl =
     url || spliceUrl(typeof base === "string" ? base : base.target, query);
   console.log(requestUrl, base, config, "requestUrl==");
   const requestKey = getRequestKey(
@@ -70,6 +71,11 @@ myServer.prototype.send = async function (
   const pending = this._pendingRequests.get(requestKey);
   if (pending && now - pending.timestamp < this._throttleWindow) {
     return pending.promise;
+  }
+  if (isSupportConfigUrl) {
+    requestUrl = requestUrl.startsWith("http")
+      ? requestUrl
+      : `${localStorage.getItem("serverUrl") ?? ""}${requestUrl}`;
   }
   // Create request Promise
   const reqPromise = (async () => {

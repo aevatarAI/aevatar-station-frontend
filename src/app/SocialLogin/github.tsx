@@ -1,7 +1,7 @@
 import { service } from "@/api/axios";
 import { useNavigate } from "@/hooks/navigate";
 import { useUpdateProfile } from "@/hooks/useUpdateProfile";
-import { CLIENT_ID, GITHUB, SCOPE } from "@/services/auth";
+import { CLIENT_ID, GITHUB, LOGIN_URL, SCOPE } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { IUserLoginType, USER_LOGIN_TYPE } from "@/state/atoms/profile";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ const useGetAuthServerAccessToken = () => {
     mutationFn: async (code: string) => {
       try {
         const response = await axios.post(
-          "/connect/token",
+          LOGIN_URL,
           {
             grant_type: GITHUB,
             scope: SCOPE,

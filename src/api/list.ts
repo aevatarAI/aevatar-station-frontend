@@ -2,7 +2,13 @@ import type { API_REQ_FUNCTION } from "./types";
 
 export const getDomainBaseUrl = () => {
   if (import.meta.env.VITE_APP_NETWORKTYPE === "TESTNET") {
-    return "https://aevatar-station-mcp-staging.aevatar.ai";
+    if (import.meta.env.VITE_APP_SUPPORT_CONFIG_URL === "1") {
+      return (
+        localStorage.getItem("serverUrl") ||
+        import.meta.env.VITE_APP_DEFAULT_SERVER_URL
+      );
+    }
+    return import.meta.env.VITE_APP_DEFAULT_SERVER_URL;
   }
   return location.origin;
 };

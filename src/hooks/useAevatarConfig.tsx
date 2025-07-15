@@ -14,12 +14,12 @@ export const useAevatarConfig = () => {
     ConfigProvider.setConfig({
       requestDefaults: {
         // TODO: need to change to the new domain name
-        baseURL: `${"https://station-developer-dev-staging.aevatar.ai"}/tool-client`,
+        // baseURL: `${"https://station-developer-dev-staging.aevatar.ai"}/tool-client`,
 
-        // baseURL: `${getDomainBaseUrl()}/${curProject?.domainName}-client`,
+        baseURL: `${getDomainBaseUrl()}/${curProject?.domainName}-client`,
       },
     });
-  }, []);
+  }, [curProject?.domainName]);
 
   const [accessToken] = useAtom(accessTokenAtom);
   useEffect(() => {

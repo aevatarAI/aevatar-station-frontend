@@ -2,7 +2,7 @@ import type { API_REQ_FUNCTION } from "./types";
 
 export const getDomainBaseUrl = () => {
   if (import.meta.env.VITE_APP_NETWORKTYPE === "TESTNET") {
-    return "https://aevatar-station-mcp-staging.aevatar.ai/";
+    return "https://aevatar-station-mcp-staging.aevatar.ai";
   }
   return location.origin;
 };

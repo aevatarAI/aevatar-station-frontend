@@ -104,11 +104,8 @@ export default function ServiceConfiguration() {
                 control={form.control}
                 name="authServerUrl"
                 render={({ field }) => (
-                  <FormItem
-                    aria-labelledby="domainNameLabel"
-                    className="w-full"
-                  >
-                    <FormLabel id="domainNameLabel">domain name</FormLabel>
+                  <FormItem aria-labelledby="authServerUrl" className="w-full">
+                    <FormLabel id="authServerUrl">authServerUrl</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>

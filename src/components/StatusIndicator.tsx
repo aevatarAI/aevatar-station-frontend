@@ -35,10 +35,13 @@ export default function StatusIndicator({
         })}
       />
       <span
-        className={cn("font-pro text-[13px] font-medium ml-[7px] uppercase", {
-          "text-white": status !== Status.NotStarted,
-          [Status.NotStarted]: status === Status.NotStarted,
-        })}
+        className={cn(
+          "font-outfit text-[13px] font-medium ml-[7px] uppercase",
+          {
+            "text-white": status !== Status.NotStarted,
+            [Status.NotStarted]: status === Status.NotStarted,
+          },
+        )}
       >
         {status === Status.Running
           ? "Running"

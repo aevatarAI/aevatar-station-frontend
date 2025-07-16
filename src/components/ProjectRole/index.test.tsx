@@ -116,7 +116,7 @@ describe("ProjectRole Component", () => {
     expect(table).toBeInTheDocument();
 
     expect(screen.getByText("role")).toBeInTheDocument();
-    expect(screen.getByText("projectRole role")).toBeInTheDocument();
+    expect(screen.getByText("project role")).toBeInTheDocument();
   });
 
   it("should fetch roles on initial load", async () => {

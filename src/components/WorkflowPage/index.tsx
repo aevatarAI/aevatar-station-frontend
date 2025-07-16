@@ -13,6 +13,12 @@ import {
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+const supportAgentTypes = [
+  "Aevatar.SignalR.GAgents.SignalRGAgent",
+  "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+  "aevatar.mcp",
+];
+
 enum WorkflowType {
   WorkflowList = "WorkflowList",
   WorkflowEdit = "WorkflowEdit",
@@ -48,11 +54,8 @@ export default function WorkflowPage() {
     ]);
     console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList.filter(
-      (item) =>
-        item.agentType === "Aevatar.SignalR.GAgents.SignalRGAgent" ||
-        item.agentType ===
-          "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+    const _agentTypeList = agentTypeList.filter((item) =>
+      supportAgentTypes.includes(item.agentType),
     );
     setAgentTypeList(_agentTypeList);
 

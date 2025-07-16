@@ -20,7 +20,7 @@ export const columns: ColumnDef<IRoleTable>[] = [
 
   {
     accessorKey: "projectRole",
-    header: "projectRole role",
+    header: "project role",
     cell: ({ row }) => row.original.projectRole,
   },
 

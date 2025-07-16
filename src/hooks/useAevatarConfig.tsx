@@ -14,7 +14,7 @@ export const useAevatarConfig = () => {
     ConfigProvider.setConfig({
       requestDefaults: {
         // TODO: need to change to the new domain name
-        // baseURL: `${"https://station-developer-dev-staging.aevatar.ai"}/tool-client`,
+        // baseURL: `${getDomainBaseUrl()}/tool-client`,
 
         baseURL: `${getDomainBaseUrl()}/${curProject?.domainName}-client`,
       },

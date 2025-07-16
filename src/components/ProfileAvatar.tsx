@@ -31,7 +31,7 @@ export default function ProfileAvatar() {
         <PopoverTrigger>
           <img src={profileImg} alt="profile" className="object-cover" />
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent className="profile-popover">
           {profileName && (
             <div className={clsx(itemClassName, "font-semibold font-outfit")}>
               <span>

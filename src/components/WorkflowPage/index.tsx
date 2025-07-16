@@ -13,11 +13,11 @@ import {
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const supportAgentTypes = [
-  "Aevatar.SignalR.GAgents.SignalRGAgent",
-  "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-  "aevatar.mcp",
-];
+// const supportAgentTypes = [
+//   "Aevatar.SignalR.GAgents.SignalRGAgent",
+//   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+//   "aevatar.mcp",
+// ];
 
 enum WorkflowType {
   WorkflowList = "WorkflowList",

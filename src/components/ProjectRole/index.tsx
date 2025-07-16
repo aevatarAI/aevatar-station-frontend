@@ -140,7 +140,7 @@ export default function ProjectRole() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>project name roles</div>
+        <div className={clsx(textGradient)}>project roles</div>
         {projectPermissions?.roleCreate ? (
           <CreateRoleDialog onCreate={onCreate} />
         ) : (

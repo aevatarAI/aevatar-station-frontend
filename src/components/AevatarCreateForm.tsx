@@ -79,7 +79,7 @@ export default function AevatarCreateForm() {
                 <div className="text-white text-[14px] font-semibold font-outfit mb-[11px]">
                   AI Basic
                 </div>
-                <div className="text-white text-xs font-pro mb-[26px]">
+                <div className="text-white text-xs font-outfit mb-[26px]">
                   The "Brain" of Aevatars
                 </div>
                 <FormField
@@ -128,7 +128,7 @@ export default function AevatarCreateForm() {
                 <div className="text-white text-[14px] font-semibold font-outfit mb-[11px]">
                   Social Platform
                 </div>
-                <div className="text-white text-xs font-pro mb-[26px]">
+                <div className="text-white text-xs font-outfit mb-[26px]">
                   Message Transmission between social platforms
                 </div>
                 <FormField

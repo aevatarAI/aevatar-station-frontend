@@ -139,7 +139,7 @@ export default function OrganisationRole() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>Organisation name roles</div>
+        <div className={clsx(textGradient)}>Organisation roles</div>
         {userPermissions?.roleCreate ? (
           <CreateRoleDialog onCreate={onCreate} />
         ) : (

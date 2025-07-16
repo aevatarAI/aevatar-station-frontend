@@ -277,7 +277,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     <div
       data-testid="sidebar-id"
       className={clsx(
-        "h-full flex flex-col  justify-between  pt-[118px] lg:pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto",
+        "h-full flex flex-col  justify-between  pt-[118px] lg:pt-[35px] pr-[19px] pb-[36px] pl-[19px] overflow-auto scrollable-touch",
         className,
       )}
     >

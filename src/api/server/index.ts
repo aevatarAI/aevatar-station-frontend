@@ -73,9 +73,13 @@ myServer.prototype.send = async function (
     return pending.promise;
   }
   if (isSupportConfigUrl) {
+    const serverUrl = localStorage.getItem("serverUrl") ?? "";
+    const domainName = localStorage.getItem("projectDomainName") ?? "";
+    const serverAllUrl =
+      serverUrl && domainName ? `${serverUrl}/${domainName}-client` : "";
     requestUrl = requestUrl.startsWith("http")
       ? requestUrl
-      : `${localStorage.getItem("serverUrl") ?? ""}${requestUrl}`;
+      : `${serverAllUrl}${requestUrl}`;
   }
   // Create request Promise
   const reqPromise = (async () => {

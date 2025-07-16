@@ -31,6 +31,7 @@ export default function ServiceConfiguration() {
     resolver: zodResolver(ServerConfigForm),
     defaultValues: {
       serverUrl: "https://station-developer-dev-staging.aevatar.ai",
+      domainName: "developer",
       authServerUrl: "https://auth-pre-station-dev-staging.aevatar.ai",
     },
   });
@@ -45,8 +46,10 @@ export default function ServiceConfiguration() {
           url.endsWith("/") ? url.slice(0, -1) : url;
         const serverUrl = sanitizeUrl(values.serverUrl);
         const authServerUrl = sanitizeUrl(values.authServerUrl);
+        const domainName = values.domainName;
         localStorage.setItem("serverUrl", serverUrl);
         localStorage.setItem("authServerUrl", authServerUrl);
+        localStorage.setItem("projectDomainName", domainName);
         toast({
           description: "successfully saved",
         });
@@ -93,6 +96,23 @@ export default function ServiceConfiguration() {
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">serverUrl</FormLabel>
+                    <FormControl>
+                      <Input placeholder="-" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                key={"domainName"}
+                control={form.control}
+                name={"domainName"}
+                render={({ field }) => (
+                  <FormItem
+                    aria-labelledby="domainNameLabel"
+                    className="w-full"
+                  >
+                    <FormLabel id="domainNameLabel">domainName</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>

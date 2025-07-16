@@ -54,9 +54,10 @@ export default function WorkflowPage() {
     ]);
     console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList.filter((item) =>
-      supportAgentTypes.includes(item.agentType),
-    );
+    const _agentTypeList = agentTypeList;
+    // agentTypeList.filter((item) =>
+    //   supportAgentTypes.includes(item.agentType),
+    // );
     setAgentTypeList(_agentTypeList);
 
     const list = gaevatarList.map((item) => {

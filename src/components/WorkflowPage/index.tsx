@@ -16,7 +16,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 const supportAgentTypes = [
   "Aevatar.SignalR.GAgents.SignalRGAgent",
   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-  "Aevatar.GAgents.MCP.GAgents.MCPGAgent",
+  "aevatar.mcp",
 ];
 
 enum WorkflowType {

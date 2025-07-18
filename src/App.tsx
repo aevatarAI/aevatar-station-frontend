@@ -20,8 +20,8 @@ import { useAtom } from "jotai";
 import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
 import ReactLoading from "react-loading";
 import { Redirect, Route, Switch } from "wouter";
+import Welcome from "./app/Welcome";
 
-const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));
 
@@ -117,7 +117,6 @@ const PrivateRoute = ({
 
   // Check if user has organisations
   if (data?.data?.items?.length === 0) {
-    console.log("redirecting...");
     return <Welcome />;
   }
 

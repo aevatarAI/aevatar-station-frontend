@@ -117,6 +117,8 @@ const PrivateRoute = ({
 
   // Check if user has organisations
   if (data?.data?.items?.length === 0) {
+    window.history.pushState(null, "", "/welcome");
+
     return <Welcome />;
   }
 

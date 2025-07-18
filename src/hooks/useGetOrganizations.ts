@@ -15,7 +15,6 @@ export const useGetOrganizations = () => {
         return response;
       } catch (_) {
         navigate("/welcome");
-        console.error("useGetOrganizations error:", _);
         return null;
       }
     },

@@ -1,5 +1,5 @@
 export const itemClassName =
-  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[16px] text-white";
+  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[14px] text-white";
 
 export const itemHoverClassName =
   "hover:bg-white/40 cursor-pointer hover:border-l-8 hover:border-white";

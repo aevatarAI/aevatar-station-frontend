@@ -62,7 +62,7 @@ const Redirection = () => {
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
       const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id),
+        getProjects(id)
       );
 
       if (organizationIds.length === 0) {
@@ -100,14 +100,27 @@ const PrivateRoute = ({
   path: string;
   children: React.ReactNode;
 }) => {
+  const { data, isLoading } = useGetOrganizations();
   const [accessToken] = useAtom(accessTokenAtom);
   const authenticated = accessToken || localStorage.getItem("access_token");
 
   if (!authenticated) {
     return <Redirect to="/login" />;
   }
+
   if (!service.defaults.headers.Authorization)
     service.defaults.headers.Authorization = authenticated;
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  // Check if user has organisations
+  if (data?.data?.items?.length === 0) {
+    console.log("redirecting...");
+    return <Welcome />;
+  }
+
   return (
     <Route path={path}>
       <AccessTokenUpdater />

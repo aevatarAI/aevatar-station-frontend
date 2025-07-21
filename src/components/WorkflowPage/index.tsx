@@ -52,6 +52,7 @@ export default function WorkflowPage() {
       }),
       aevatarAI.services.agent.getAllAgentsConfiguration(),
     ]);
+
     console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
     const _agentTypeList = agentTypeList;

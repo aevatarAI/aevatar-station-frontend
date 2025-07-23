@@ -25,6 +25,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { type TCreateOrgForm, createOrgForm } from "@/constants/form/createOrg";
+import { handleErrorMessage } from "@/utils/error";
 
 export interface ICreateOrgDialogProps {
   onCreate?: (values: TCreateOrgForm) => Promise<void>;
@@ -41,14 +42,25 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
 
   const onSubmit = useCallback(
     async (values: TCreateOrgForm) => {
-      setBtnLoading(true);
-      await onCreate?.(values);
-      setBtnLoading(false);
-      setOpen(false);
-      toast({
-        title: "",
-        description: "successfully created",
-      });
+      try {
+        setBtnLoading(true);
+        await onCreate?.(values);
+        setBtnLoading(false);
+        setOpen(false);
+        toast({
+          title: "",
+          description: "successfully created",
+        });
+      } catch (error) {
+        setBtnLoading(false);
+        toast({
+          title: "",
+          description: handleErrorMessage(
+            error,
+            "Failed to create organization",
+          ),
+        });
+      }
     },
     [toast, onCreate],
   );

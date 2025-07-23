@@ -44,21 +44,13 @@ const WelcomePage: React.FC = () => {
 
   const onCreateOrg = useCallback(
     async (values: TCreateOrgForm) => {
-      try {
-        const response = await createOrganization(values.orgName);
-        setCurrentOrganization(response.id);
-        toast({
-          description: "Organization created",
-        });
-        navigate("/profile");
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(
-            error,
-            "Failed to create organization"
-          ),
-        });
-      }
+      console.log(values);
+      const response = await createOrganization(values.orgName);
+      setCurrentOrganization(response.id);
+      toast({
+        description: "Organization created",
+      });
+      navigate("/profile");
     },
     [navigate, setCurrentOrganization, toast]
   );

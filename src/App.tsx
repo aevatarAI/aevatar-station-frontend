@@ -100,7 +100,6 @@ const PrivateRoute = ({
   path: string;
   children: React.ReactNode;
 }) => {
-  const { data, isLoading } = useGetOrganizations();
   const [accessToken] = useAtom(accessTokenAtom);
   const authenticated = accessToken || localStorage.getItem("access_token");
 
@@ -110,17 +109,6 @@ const PrivateRoute = ({
 
   if (!service.defaults.headers.Authorization)
     service.defaults.headers.Authorization = authenticated;
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  // Check if user has organisations
-  if (data?.data?.items?.length === 0) {
-    window.history.pushState(null, "", "/welcome");
-
-    return <Welcome />;
-  }
 
   return (
     <Route path={path}>

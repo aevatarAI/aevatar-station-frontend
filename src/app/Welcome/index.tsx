@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { refreshTokenLogin } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
@@ -20,7 +21,7 @@ import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import type React from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 const WelcomePage: React.FC = () => {
   const { toast } = useToast();
@@ -33,10 +34,16 @@ const WelcomePage: React.FC = () => {
   const { invites, hasInvites, selectedValues, setSelectedValues } =
     useGetInvitations(data);
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const { data: org } = useGetOrganizations();
+
+  useEffect(() => {
+    if (org?.data?.items?.length > 0) {
+      navigate("/profile/profile/general");
+    }
+  }, [org, navigate]);
 
   const onCreateOrg = useCallback(
     async (values: TCreateOrgForm) => {
-      console.log(values);
       try {
         const response = await createOrganization(values.orgName);
         setCurrentOrganization(response.id);

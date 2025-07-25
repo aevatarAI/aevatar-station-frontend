@@ -21,7 +21,7 @@ export default function DllPage() {
     try {
       await restartProjectServer({
         projectId: curProject?.id ?? "",
-        clientId: curProject?.domainName ?? "",
+        domainName: curProject?.domainName ?? "",
       });
 
       setRestartPodServer({

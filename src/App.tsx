@@ -20,8 +20,8 @@ import { useAtom } from "jotai";
 import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
 import ReactLoading from "react-loading";
 import { Redirect, Route, Switch } from "wouter";
+import Welcome from "./app/Welcome";
 
-const Welcome = lazy(() => import("./app/Welcome"));
 const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));
 
@@ -62,7 +62,7 @@ const Redirection = () => {
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
       const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id),
+        getProjects(id)
       );
 
       if (organizationIds.length === 0) {
@@ -106,8 +106,10 @@ const PrivateRoute = ({
   if (!authenticated) {
     return <Redirect to="/login" />;
   }
+
   if (!service.defaults.headers.Authorization)
     service.defaults.headers.Authorization = authenticated;
+
   return (
     <Route path={path}>
       <AccessTokenUpdater />

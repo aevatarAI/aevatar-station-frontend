@@ -285,7 +285,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
                                 })}
                               >
                                 <input {...getInputProps()} />
-                                <p className="font-pro text-[12px] text-[#606060] flex gap-4 items-center">
+                                <p className="font-outfit text-[12px] text-[#606060] flex gap-4 items-center">
                                   <CloudIcon />
                                   Click to upload (PDF)
                                 </p>
@@ -302,7 +302,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
                           key={field.id}
                           className="flex mb-[10px] justify-between"
                         >
-                          <div className="font-pro text-[12px] text-[#606060]">
+                          <div className="font-outfit text-[12px] text-[#606060]">
                             {field.name}
                           </div>
                           <MinusIcon onClick={() => remove(index)} />

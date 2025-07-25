@@ -365,7 +365,7 @@ export default function PermissionManagerInnerDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] px-[16px] font-pro text-[13px] font-normal leading-[15px] border-black-light">
+        <Button className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-black-light">
           {`${readonly ? "view" : "edit"} permissions`}
         </Button>
       </DialogTrigger>

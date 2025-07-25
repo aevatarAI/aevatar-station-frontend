@@ -141,7 +141,7 @@ describe("OrganisationMember Component", () => {
   it("should render DataTable with members data", () => {
     render(<OrganisationMember />);
     // Verify table rows
-    expect(screen.getByText("Organisation name members")).toBeInTheDocument();
+    expect(screen.getByText("Organisation members")).toBeInTheDocument();
     expect(screen.getByText("Invite Member")).toBeInTheDocument();
   });
 

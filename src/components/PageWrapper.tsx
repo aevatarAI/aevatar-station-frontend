@@ -14,7 +14,7 @@ export default function PageWrapper({ children, title }: IPageWrapperProps) {
             {title}
           </h1>
           <a
-            className="text-white font-pro text-xs flex"
+            className="text-white font-outfit text-xs flex"
             href="https://aevatar.ai/docs"
             target="_blank"
             rel="noopener noreferrer"

@@ -160,7 +160,7 @@ describe("OrganisationRole", () => {
     renderWithProvider(<OrganisationRole />);
 
     await waitFor(() => {
-      expect(screen.getByText("Organisation name roles")).toBeInTheDocument();
+      expect(screen.getByText("Organisation roles")).toBeInTheDocument();
       expect(screen.getByTestId("mock-table")).toBeInTheDocument();
       expect(screen.getByTestId("role-1")).toBeInTheDocument();
       expect(screen.getByTestId("role-2")).toBeInTheDocument();

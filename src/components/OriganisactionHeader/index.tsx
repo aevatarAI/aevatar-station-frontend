@@ -1,6 +1,9 @@
 import Add from "@/assets/+.svg?react";
+import Plus from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
-import ProjectEditDialog from "@/components/ProjectEditDialog";
+import ProjectEditDialog, {
+  type IProjectEditDialogRef,
+} from "@/components/ProjectEditDialog";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -27,7 +30,7 @@ import {
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export interface Project {
   id: string;
@@ -71,6 +74,8 @@ export default function OriganisactionHeader({
     [projectList, currentProjectId],
   );
 
+  const projectEditDialogRef = useRef<IProjectEditDialogRef>(null);
+
   return (
     <div
       className={clsx(
@@ -85,7 +90,7 @@ export default function OriganisactionHeader({
             <StepSelect />
           </PopoverTrigger>
           <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
-            <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+            <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto scrollable-touch">
               {organisationList?.map((item: any) => (
                 <div
                   className={clsx(
@@ -134,7 +139,7 @@ export default function OriganisactionHeader({
           <StepSelect />
         </PopoverTrigger>
         <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
-          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-0 max-h-[300px] scrollbar-hide overflow-auto">
+          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-0 max-h-[300px] scrollbar-hide overflow-auto scrollable-touch">
             {projectList?.map((item: Project) => (
               <div
                 className={clsx(
@@ -153,27 +158,14 @@ export default function OriganisactionHeader({
             ))}
           </div>
           <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-black-light">
-            <ProjectEditDialog
-              type="create"
+            <Button
               disabled={!isAdmin}
-              fullWidth={true}
-              onSubmit={async ({ name, domainName }) => {
-                mutate(
-                  {
-                    organizationId: currentOrganisationId as string,
-                    displayName: name,
-                    domainName,
-                  },
-                  {
-                    onError: () => {
-                      toast({ description: "unable to create project" });
-                    },
-                  },
-                );
-                navigate("/profile/organisation/project");
-                setPjtOpen(false);
-              }}
-            />
+              className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${"w-full"}`}
+              onClick={() => projectEditDialogRef.current?.open()}
+            >
+              <Plus />
+              <span>create project</span>
+            </Button>
             <Button
               className="text-white w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase"
               disabled={!isAdmin}
@@ -188,6 +180,31 @@ export default function OriganisactionHeader({
           </div>
         </PopoverContent>
       </Popover>
+
+      <ProjectEditDialog
+        type="create"
+        ref={projectEditDialogRef}
+        disabled={!isAdmin}
+        showCreateButton={false}
+        fullWidth={true}
+        onSubmit={async ({ name, domainName }) => {
+          mutate(
+            {
+              organizationId: currentOrganisationId as string,
+              displayName: name,
+              domainName,
+            },
+            {
+              onError: () => {
+                toast({ description: "unable to create project" });
+              },
+            },
+          );
+          updateOrganisationsHandler();
+          navigate("/profile/organisation/project");
+          setPjtOpen(false);
+        }}
+      />
     </div>
   );
 }

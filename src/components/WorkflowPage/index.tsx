@@ -13,6 +13,12 @@ import {
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+// const supportAgentTypes = [
+//   "Aevatar.SignalR.GAgents.SignalRGAgent",
+//   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+//   "aevatar.mcp",
+// ];
+
 enum WorkflowType {
   WorkflowList = "WorkflowList",
   WorkflowEdit = "WorkflowEdit",
@@ -46,14 +52,13 @@ export default function WorkflowPage() {
       }),
       aevatarAI.services.agent.getAllAgentsConfiguration(),
     ]);
+
     console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList.filter(
-      (item) =>
-        item.agentType === "Aevatar.SignalR.GAgents.SignalRGAgent" ||
-        item.agentType ===
-          "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-    );
+    const _agentTypeList = agentTypeList;
+    // agentTypeList.filter((item) =>
+    //   supportAgentTypes.includes(item.agentType),
+    // );
     setAgentTypeList(_agentTypeList);
 
     const list = gaevatarList.map((item) => {
@@ -92,7 +97,7 @@ export default function WorkflowPage() {
           data.params,
         );
       }
-      await delay(1500);
+      await delay(2000);
       await refreshGaevatarList();
 
       return result;
@@ -194,7 +199,7 @@ export default function WorkflowPage() {
               }
             }}
             onSave={async (workflowAgentId: string) => {
-              await delay(2000);
+              await delay(2500);
               await getWorkflowDetail(workflowAgentId);
             }}
             editWorkflow={editWorkflow}

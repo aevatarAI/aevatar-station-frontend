@@ -81,7 +81,7 @@ describe("DllPage", () => {
     await waitFor(() => {
       expect(restartProjectServer).toHaveBeenCalledWith({
         projectId: "test-id",
-        clientId: "test-domain",
+        domainName: "test-domain",
       });
       expect(setRestartPodServer).toHaveBeenCalledWith({
         domain: "test-domain",

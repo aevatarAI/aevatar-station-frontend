@@ -155,8 +155,6 @@ export default function WorkflowPage() {
             fullscreen &&
               "fixed top-0 left-0 w-screen h-screen z-[2000] bg-black",
           )}
-          // Use absolute positioning for fullscreen mode
-          style={fullscreen ? { position: "absolute" } : {}}
         >
           <WorkflowConfiguration
             sidebarConfig={{

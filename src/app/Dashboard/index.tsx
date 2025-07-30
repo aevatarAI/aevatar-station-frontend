@@ -21,7 +21,7 @@ export default function Dashboard() {
   useAevatarConfig();
 
   return (
-    <div className="flex h-[calc(100vh-60px)] overflow-auto scrollable-touch">
+    <div className="flex h-[calc(100vh-60px)] overflow-auto ">
       {/* Fixed sidebar for desktop - full viewport height */}
       <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
         <SideBar onClose={handleClose} />

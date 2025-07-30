@@ -51,7 +51,7 @@ export default function Profile() {
       <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px]">
         <SideBar />
       </div>
-      <div className="pt-[31px] lg:pt-[39px] px-[20px] lg:pl-[43px] lg:pr-[40px] flex-1 overflow-auto scrollable-touch">
+      <div className="pt-[31px] lg:pt-[39px] px-[20px] lg:pl-[43px] lg:pr-[40px] flex-1 overflow-auto">
         {selectMenu === "profile" && <ProfileInner tab={selectTab} />}
         {selectMenu === "organisation" && <OrganisationInner tab={selectTab} />}
         {selectMenu === "projects" && <ProjectsInner tab={selectTab} />}

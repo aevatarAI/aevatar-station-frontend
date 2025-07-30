@@ -6,5 +6,6 @@ export const isProduction = () => {
   return import.meta.env.PROD === true;
 };
 
-export const SIGNAL_R_URL =
-  "https://station-developer-dev-staging.aevatar.ai/developer-client/api/notifications";
+export const SIGNAL_R_URL = `${
+  import.meta.env.VITE_APP_SIGNAL_R_URL ?? ""
+}/developer-client/api/notifications`;

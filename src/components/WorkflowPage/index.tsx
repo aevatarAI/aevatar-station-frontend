@@ -1,3 +1,4 @@
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import type {
   IAgentInfoDetail,
@@ -11,7 +12,9 @@ import {
   aevatarAI,
 } from "@aevatar-react-sdk/ui-react";
 import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useUpdateEffect } from "react-use";
 
 // const supportAgentTypes = [
 //   "Aevatar.SignalR.GAgents.SignalRGAgent",
@@ -131,11 +134,28 @@ export default function WorkflowPage() {
     }
   }, [workflowType, fullscreenHandle]);
 
+  const workflowListRef = useRef<{ refresh: () => void }>(null);
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+
+  useUpdateEffect(() => {
+    setWorkflowType(WorkflowType.WorkflowList);
+    setEditWorkflow(undefined);
+    fullscreenHandle.exit();
+    setGaevatarList(undefined);
+    setAgentTypeList(undefined);
+    setFullscreen(false);
+
+    if (workflowListRef.current) {
+      workflowListRef.current.refresh();
+    }
+  }, [projectId]);
+
   return (
     <AevatarProvider>
       {workflowType === WorkflowType.WorkflowList && (
         <div className={clsx("h-full pt-[35px] pl-[43px] pr-[40px]")}>
           <WorkflowList
+            ref={workflowListRef}
             onEditWorkflow={(workflowAgentId) => {
               onEditWorkflow(workflowAgentId);
             }}

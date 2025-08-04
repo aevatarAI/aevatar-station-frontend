@@ -48,15 +48,9 @@ export default function WorkflowPage() {
   );
 
   const refreshGaevatarList = useCallback(async () => {
-    const [gaevatarList, agentTypeList] = await Promise.all([
-      aevatarAI.services.agent.getAgents({
-        pageIndex: 0,
-        pageSize: 100,
-      }),
-      aevatarAI.services.agent.getAllAgentsConfiguration(),
-    ]);
+    const agentTypeList =
+      await aevatarAI.services.agent.getAllAgentsConfiguration();
 
-    console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
     const _agentTypeList = agentTypeList;
     // agentTypeList.filter((item) =>
@@ -64,18 +58,18 @@ export default function WorkflowPage() {
     // );
     setAgentTypeList(_agentTypeList);
 
-    const list = gaevatarList.map((item) => {
-      const agentType = agentTypeList.find(
-        (type) => type.agentType === item.agentType,
-      );
-      item.propertyJsonSchema = agentType?.propertyJsonSchema;
-      // TODO
-      item.businessAgentGrainId =
-        item.businessAgentGrainId ??
-        `${item.agentType}/${item.id.replace(/-/g, "")}`;
-      return { ...item };
-    });
-    setGaevatarList(list);
+    // const list = gaevatarList.map((item) => {
+    //   const agentType = agentTypeList.find(
+    //     (type) => type.agentType === item.agentType
+    //   );
+    //   item.propertyJsonSchema = agentType?.propertyJsonSchema;
+    //   // TODO
+    //   item.businessAgentGrainId =
+    //     item.businessAgentGrainId ??
+    //     `${item.agentType}/${item.id.replace(/-/g, "")}`;
+    //   return { ...item };
+    // });
+    // setGaevatarList(list);
   }, []);
 
   useEffect(() => {
@@ -87,36 +81,17 @@ export default function WorkflowPage() {
     setWorkflowType(WorkflowType.WorkflowEdit);
   }, [refreshGaevatarList]);
 
-  const onGaevatarChange = useCallback(
-    async (isCreate: boolean, data: { params: any; agentId?: string }) => {
-      console.log(isCreate, data, "isCreate, data=");
-      let result: IAgentInfoDetail;
-      if (isCreate) {
-        result = await aevatarAI.services.agent.createAgent(data.params);
-      } else {
-        if (!data.agentId) throw "Not agentId";
-        result = await aevatarAI.services.agent.updateAgentInfo(
-          data.agentId,
-          data.params,
-        );
-      }
-      await delay(2000);
-      await refreshGaevatarList();
-
-      return result;
-    },
-    [refreshGaevatarList],
-  );
   const [editWorkflow, setEditWorkflow] = useState<any>();
 
   const getWorkflowDetail = useCallback(async (workflowAgentId: string) => {
     const result =
-      await aevatarAI.getWorkflowUnitRelationByAgentId(workflowAgentId);
+      await aevatarAI.getWorkflowViewDataByAgentId(workflowAgentId);
     console.log("getWorkflowDetail", result);
     setEditWorkflow({
       workflowAgentId,
+      workflowId: result.workflowId,
       workflowName: result.workflowName,
-      workUnitRelations: result.workUnitRelations,
+      workflowViewData: result.workflowViewData,
     });
   }, []);
 
@@ -181,7 +156,6 @@ export default function WorkflowPage() {
               gaevatarList,
               isNewGAevatar: true,
               gaevatarTypeList: agentTypeList,
-              type: "newAgent",
             }}
             extraControlBar={
               <div className="w-full h-full bg-[#141415] flex flow-row border-[1px] border-[#303030]">
@@ -216,12 +190,7 @@ export default function WorkflowPage() {
                 setWorkflowType(WorkflowType.WorkflowList);
               }
             }}
-            onSave={async (workflowAgentId: string) => {
-              await delay(2500);
-              await getWorkflowDetail(workflowAgentId);
-            }}
             editWorkflow={editWorkflow}
-            onGaevatarChange={onGaevatarChange}
           />
         </div>
       )}

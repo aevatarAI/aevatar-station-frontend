@@ -16,11 +16,10 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUpdateEffect } from "react-use";
 
-// const supportAgentTypes = [
-//   "Aevatar.SignalR.GAgents.SignalRGAgent",
-//   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-//   "aevatar.mcp",
-// ];
+const supportAgentTypes = [
+  "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
+  "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+];
 
 enum WorkflowType {
   WorkflowList = "WorkflowList",
@@ -52,10 +51,9 @@ export default function WorkflowPage() {
       await aevatarAI.services.agent.getAllAgentsConfiguration();
 
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList;
-    // agentTypeList.filter((item) =>
-    //   supportAgentTypes.includes(item.agentType),
-    // );
+    const _agentTypeList = agentTypeList.filter((item) =>
+      supportAgentTypes.includes(item.agentType),
+    );
     setAgentTypeList(_agentTypeList);
 
     // const list = gaevatarList.map((item) => {

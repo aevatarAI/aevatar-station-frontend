@@ -27,11 +27,11 @@ importers:
         specifier: 0.3.2-alpha.3
         version: 0.3.2-alpha.3(@babel/core@7.26.10)(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(date-fns@4.1.0)(eslint@8.57.1)(query-string@7.1.3)(react-redux@9.2.0(@types/react@18.3.20)(react@18.3.1)(redux@5.0.1))
       '@aevatar-react-sdk/services':
-        specifier: 0.4.11
-        version: 0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+        specifier: 0.4.12
+        version: 0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
       '@aevatar-react-sdk/ui-react':
-        specifier: 0.4.11
-        version: 0.4.11(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)
+        specifier: 0.4.12
+        version: 0.4.12(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)
       '@etransfer/utils':
         specifier: 1.12.2-alpha.1
         version: 1.12.2-alpha.1(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)
@@ -334,28 +334,28 @@ packages:
     resolution: {integrity: sha512-xa8i/rsC/Dj6Wh0DWpgr4eODVu8tVktyTENJU0QGjwmu317PCyp/8p7rEcvplljAteoQ31cFxUCrnzFQ0iLG1g==}
     hasBin: true
 
-  '@aevatar-react-sdk/core@0.4.11':
-    resolution: {integrity: sha512-1sogNzdVqp9ICQ2HegNRBeXAEvziA93m/i+xvkhALVYbGBhT8joVg7Eh46XHPpufmWGaUlgtYP1eXdK1ZLoKCw==}
+  '@aevatar-react-sdk/core@0.4.12':
+    resolution: {integrity: sha512-KYunZLX47GYM9MMJhzRVU7AAPLt070EMPBDYm8tsDsKttddY07cPV/Rwr6y3bE3zrwUuH5ABFmoz0uBMdcNVyA==}
     peerDependencies:
       aelf-sdk: 3.4.16-alpha.7
 
-  '@aevatar-react-sdk/services@0.4.11':
-    resolution: {integrity: sha512-bMIyGtrYFHlYH524f3By8UXwTj4Pd3FWY5zNDpsa4tBf1t+CiXOMax5sOE/KBOeCmHRQ8mY/dhmWC5vOPaGWXA==}
+  '@aevatar-react-sdk/services@0.4.12':
+    resolution: {integrity: sha512-rDSJfzHItUASpN6RZvnNeMXrL58JwksA2cPBP1OuQBm9CKt/KeHezvBEHimNOXgIxTFWJdKTAdq2uDEke30uMw==}
     peerDependencies:
       aelf-sdk: 3.4.16-alpha.7
       query-string: ^7.1.1
 
-  '@aevatar-react-sdk/types@0.4.11':
-    resolution: {integrity: sha512-2F0AdrJMl3vuweGOD42cmptDSBT9lbfSlXLlWHJarsxNn+iNl/BJCJQiLH5je2McWSofVx9yjhfUGS707UNq8w==}
+  '@aevatar-react-sdk/types@0.4.12':
+    resolution: {integrity: sha512-pmGiLQY8nT2nDTLlNWewkd4adgSE1JteUAylnjFI4vFFlDGxZ9/Dv/obkSFFKGnmO6x5WRvrrRY+coiqOlQFmQ==}
 
-  '@aevatar-react-sdk/ui-react@0.4.11':
-    resolution: {integrity: sha512-bXfnoToD2mmPdj1ox6QhNcm8OoRP06OrgqTt3MmXDrJ1hzP0T/OnCjkSNrNt2ZM3uJtUDQP0mbqsDR+KdUNN3g==}
+  '@aevatar-react-sdk/ui-react@0.4.12':
+    resolution: {integrity: sha512-5IWOtdJBZeIHsZUuIN6PUaEi0wAU5LA/Q8czWLB3UTDNFJAsJRyUFmNoeTaEgUwA4V0xITYVPsQkF7nu+f+xyQ==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@aevatar-react-sdk/utils@0.4.11':
-    resolution: {integrity: sha512-Ug+mPWc1k7kfj77u9umKE2C/hma4oHwxCBOanyOz1/SG/cvk4JPDdTnV8U+RY6jVKdAMqR/EfS4mp549PZFPcg==}
+  '@aevatar-react-sdk/utils@0.4.12':
+    resolution: {integrity: sha512-w7ERZB9bmC5XkkSHWTC2h8hSXRb/LOA7NeCV92Cmo1xwEgI6ZxRcpX4h4J2zqTrlNtKX7zrlZyxNZxxRy1NiLw==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -6063,11 +6063,11 @@ snapshots:
       '@types/node': 10.17.60
       long: 4.0.0
 
-  '@aevatar-react-sdk/core@0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
+  '@aevatar-react-sdk/core@0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
     dependencies:
-      '@aevatar-react-sdk/services': 0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/types': 0.4.11
-      '@aevatar-react-sdk/utils': 0.4.11(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/services': 0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/types': 0.4.12
+      '@aevatar-react-sdk/utils': 0.4.12(@babel/core@7.26.10)(eslint@8.57.1)
       '@portkey/request': 2.19.0-alpha.24
       aelf-sdk: 3.4.15(@babel/core@7.26.10)(eslint@8.57.1)
     transitivePeerDependencies:
@@ -6077,10 +6077,10 @@ snapshots:
       - query-string
       - supports-color
 
-  '@aevatar-react-sdk/services@0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
+  '@aevatar-react-sdk/services@0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
     dependencies:
-      '@aevatar-react-sdk/types': 0.4.11
-      '@aevatar-react-sdk/utils': 0.4.11(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/types': 0.4.12
+      '@aevatar-react-sdk/utils': 0.4.12(@babel/core@7.26.10)(eslint@8.57.1)
       '@portkey/request': 2.19.0-alpha.24
       aelf-sdk: 3.4.15(@babel/core@7.26.10)(eslint@8.57.1)
       query-string: 7.1.3
@@ -6090,14 +6090,14 @@ snapshots:
       - eslint
       - supports-color
 
-  '@aevatar-react-sdk/types@0.4.11': {}
+  '@aevatar-react-sdk/types@0.4.12': {}
 
-  '@aevatar-react-sdk/ui-react@0.4.11(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)':
+  '@aevatar-react-sdk/ui-react@0.4.12(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)':
     dependencies:
-      '@aevatar-react-sdk/core': 0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/services': 0.4.11(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/types': 0.4.11
-      '@aevatar-react-sdk/utils': 0.4.11(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/core': 0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/services': 0.4.12(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/types': 0.4.12
+      '@aevatar-react-sdk/utils': 0.4.12(@babel/core@7.26.10)(eslint@8.57.1)
       '@hookform/resolvers': 3.10.0(react-hook-form@7.56.0(react@18.3.1))
       '@radix-ui/react-checkbox': 1.3.2(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog': 1.1.14(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6149,9 +6149,9 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  '@aevatar-react-sdk/utils@0.4.11(@babel/core@7.26.10)(eslint@8.57.1)':
+  '@aevatar-react-sdk/utils@0.4.12(@babel/core@7.26.10)(eslint@8.57.1)':
     dependencies:
-      '@aevatar-react-sdk/types': 0.4.11
+      '@aevatar-react-sdk/types': 0.4.12
       aelf-sdk: 3.4.16-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)
       events: 3.3.0
     transitivePeerDependencies:

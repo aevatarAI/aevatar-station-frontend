@@ -1,3 +1,4 @@
+import { request } from "@/api";
 import Add from "@/assets/+.svg?react";
 import Plus from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
@@ -16,12 +17,10 @@ import {
   itemSelectClassName,
 } from "@/constants/cls";
 import { useNavigate } from "@/hooks/navigate";
-import { useToast } from "@/hooks/use-toast";
-import { useCreateProject } from "@/hooks/useCreateProject";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
-import { useGetProjects } from "@/hooks/useGetProjects";
+
 import { useIsAdmin } from "@/hooks/useIsAdmin";
-import { useUpdateOrganisationsHandler } from "@/hooks/useUpdateOrganisations";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
+import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -30,7 +29,7 @@ import {
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export interface Project {
   id: string;
@@ -50,13 +49,13 @@ export default function OriganisactionHeader({
   const navigate = useNavigate();
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
-  const updateOrganisationsHandler = useUpdateOrganisationsHandler();
+  const updateProjectListHandler = useUpdateProjectHandler();
+
+  const setCurrentProject = useSetCurrentProject();
 
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  const { mutate } = useCreateProject();
   const isAdmin = useIsAdmin();
-  const { toast } = useToast();
 
   const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
     CURRENT_ORGANIZATION_ATOM,
@@ -67,7 +66,7 @@ export default function OriganisactionHeader({
     [organisationList, currentOrganisationId],
   );
 
-  const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentProject = useMemo(
     () =>
       projectList?.find((project: Project) => project.id === currentProjectId),
@@ -75,6 +74,19 @@ export default function OriganisactionHeader({
   );
 
   const projectEditDialogRef = useRef<IProjectEditDialogRef>(null);
+
+  // const onCheckProjectService = useCallback(
+  //   async (domainName: string, projectId: string) => {
+  //     setPjtOpen(false);
+  //     setProjectInitialising(true);
+  //     await checkProjectService(domainName);
+  //     setProjectInitialising(false);
+  //     setCurProjectId(projectId);
+
+  //     navigate("/dashboard/workflows");
+  //   },
+  //   [checkProjectService, navigate, setProjectInitialising, setCurProjectId]
+  // );
 
   return (
     <div
@@ -148,7 +160,7 @@ export default function OriganisactionHeader({
                   currentProject?.id === item.id && itemSelectClassName,
                 )}
                 onClick={() => {
-                  setCurrentProjectId(() => item.id);
+                  setCurrentProject(item.id, item.domainName);
                   setPjtOpen(false);
                 }}
                 key={item.id}
@@ -187,22 +199,21 @@ export default function OriganisactionHeader({
         disabled={!isAdmin}
         showCreateButton={false}
         fullWidth={true}
+        // onCheckProjectService={onCheckProjectService}
         onSubmit={async ({ name, domainName }) => {
-          mutate(
-            {
-              organizationId: currentOrganisationId as string,
+          const result = await request.projects.addProject({
+            data: {
+              organizationId: currentOrganisationId,
               displayName: name,
               domainName,
             },
-            {
-              onError: () => {
-                toast({ description: "unable to create project" });
-              },
-            },
-          );
-          updateOrganisationsHandler();
-          navigate("/profile/organisation/project");
+          });
+
+          await updateProjectListHandler(currentOrganisationId || "");
+          setCurrentProject(result.data.id, result.data.domainName);
           setPjtOpen(false);
+          navigate("/dashboard/workflows");
+          return { projectId: result.data.id };
         }}
       />
     </div>

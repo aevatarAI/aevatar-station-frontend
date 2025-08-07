@@ -99,6 +99,7 @@ export default function DashboardWrapper() {
 
   useEffect(() => {
     if (!isProjectInit) {
+      console.log("checkCurrentProjectService");
       checkCurrentProjectService();
     }
   }, [isProjectInit, checkCurrentProjectService]);

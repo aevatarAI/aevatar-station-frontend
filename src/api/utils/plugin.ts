@@ -71,8 +71,11 @@ export const deleteProjectCorsOrigin = async (
 };
 
 export const getRestartStatus = async (domain: string): Promise<boolean> => {
-  const result = await getServiceHealthStatus(domain);
-  console.log(result, "getRestartStatus==result");
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return result === "Healthy";
+  try {
+    const result = await getServiceHealthStatus(domain);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return result === "Healthy";
+  } catch (_error) {
+    return false;
+  }
 };

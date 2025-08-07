@@ -1,5 +1,6 @@
 import { getOrganizationList, getProjectList } from "@/api/utils/organization";
-import { toast, useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -14,6 +15,7 @@ export const useUpdateProjectHandler = () => {
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const [curProject, setCurProject] = useAtom(CURRENT_PROJECT_ATOM);
   const { toast } = useToast();
+  const setCurrentProject = useSetCurrentProject();
 
   return useCallback(
     async (id: string) => {
@@ -29,14 +31,18 @@ export const useUpdateProjectHandler = () => {
         const curId = isSome && curProject ? curProject : list[0].id;
 
         setProjectList(list);
-        if (!isSome) setCurProject(curId);
+        if (!isSome)
+          setCurrentProject(
+            curId,
+            list.find((item) => item.id === curId)?.domainName || "",
+          );
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "fetch Project error"),
         });
       }
     },
-    [setProjectList, setCurProject, toast, curProject],
+    [setProjectList, setCurProject, setCurrentProject, toast, curProject],
   );
 };
 

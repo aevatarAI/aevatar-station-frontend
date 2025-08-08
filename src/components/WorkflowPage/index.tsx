@@ -18,6 +18,8 @@ import { useUpdateEffect } from "react-use";
 
 const supportAgentTypes = [
   "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
+  "aevatar.mcp",
+  "psi.omni",
   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
 ];
 

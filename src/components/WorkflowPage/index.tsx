@@ -1,3 +1,4 @@
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import type {
   IAgentInfoDetail,
@@ -11,13 +12,16 @@ import {
   aevatarAI,
 } from "@aevatar-react-sdk/ui-react";
 import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useUpdateEffect } from "react-use";
 
-// const supportAgentTypes = [
-//   "Aevatar.SignalR.GAgents.SignalRGAgent",
-//   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-//   "aevatar.mcp",
-// ];
+const supportAgentTypes = [
+  "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
+  "aevatar.mcp",
+  "psi.omni",
+  "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+];
 
 enum WorkflowType {
   WorkflowList = "WorkflowList",
@@ -45,34 +49,27 @@ export default function WorkflowPage() {
   );
 
   const refreshGaevatarList = useCallback(async () => {
-    const [gaevatarList, agentTypeList] = await Promise.all([
-      aevatarAI.services.agent.getAgents({
-        pageIndex: 0,
-        pageSize: 100,
-      }),
-      aevatarAI.services.agent.getAllAgentsConfiguration(),
-    ]);
+    const agentTypeList =
+      await aevatarAI.services.agent.getAllAgentsConfiguration();
 
-    console.log(gaevatarList, "gaevatarList==");
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList;
-    // agentTypeList.filter((item) =>
-    //   supportAgentTypes.includes(item.agentType),
-    // );
+    const _agentTypeList = agentTypeList.filter((item) =>
+      supportAgentTypes.includes(item.agentType),
+    );
     setAgentTypeList(_agentTypeList);
 
-    const list = gaevatarList.map((item) => {
-      const agentType = agentTypeList.find(
-        (type) => type.agentType === item.agentType,
-      );
-      item.propertyJsonSchema = agentType?.propertyJsonSchema;
-      // TODO
-      item.businessAgentGrainId =
-        item.businessAgentGrainId ??
-        `${item.agentType}/${item.id.replace(/-/g, "")}`;
-      return { ...item };
-    });
-    setGaevatarList(list);
+    // const list = gaevatarList.map((item) => {
+    //   const agentType = agentTypeList.find(
+    //     (type) => type.agentType === item.agentType
+    //   );
+    //   item.propertyJsonSchema = agentType?.propertyJsonSchema;
+    //   // TODO
+    //   item.businessAgentGrainId =
+    //     item.businessAgentGrainId ??
+    //     `${item.agentType}/${item.id.replace(/-/g, "")}`;
+    //   return { ...item };
+    // });
+    // setGaevatarList(list);
   }, []);
 
   useEffect(() => {
@@ -84,36 +81,17 @@ export default function WorkflowPage() {
     setWorkflowType(WorkflowType.WorkflowEdit);
   }, [refreshGaevatarList]);
 
-  const onGaevatarChange = useCallback(
-    async (isCreate: boolean, data: { params: any; agentId?: string }) => {
-      console.log(isCreate, data, "isCreate, data=");
-      let result: IAgentInfoDetail;
-      if (isCreate) {
-        result = await aevatarAI.services.agent.createAgent(data.params);
-      } else {
-        if (!data.agentId) throw "Not agentId";
-        result = await aevatarAI.services.agent.updateAgentInfo(
-          data.agentId,
-          data.params,
-        );
-      }
-      await delay(2000);
-      await refreshGaevatarList();
-
-      return result;
-    },
-    [refreshGaevatarList],
-  );
   const [editWorkflow, setEditWorkflow] = useState<any>();
 
   const getWorkflowDetail = useCallback(async (workflowAgentId: string) => {
     const result =
-      await aevatarAI.getWorkflowUnitRelationByAgentId(workflowAgentId);
+      await aevatarAI.getWorkflowViewDataByAgentId(workflowAgentId);
     console.log("getWorkflowDetail", result);
     setEditWorkflow({
       workflowAgentId,
+      workflowId: result.workflowId,
       workflowName: result.workflowName,
-      workUnitRelations: result.workUnitRelations,
+      workflowViewData: result.workflowViewData,
     });
   }, []);
 
@@ -131,11 +109,28 @@ export default function WorkflowPage() {
     }
   }, [workflowType, fullscreenHandle]);
 
+  const workflowListRef = useRef<{ refresh: () => void }>(null);
+  const [projectId] = useAtom(CURRENT_PROJECT_ATOM);
+
+  useUpdateEffect(() => {
+    setWorkflowType(WorkflowType.WorkflowList);
+    setEditWorkflow(undefined);
+    fullscreenHandle.exit();
+    setGaevatarList(undefined);
+    setAgentTypeList(undefined);
+    setFullscreen(false);
+
+    if (workflowListRef.current) {
+      workflowListRef.current.refresh();
+    }
+  }, [projectId]);
+
   return (
     <AevatarProvider>
       {workflowType === WorkflowType.WorkflowList && (
         <div className={clsx("h-full pt-[35px] pl-[43px] pr-[40px]")}>
           <WorkflowList
+            ref={workflowListRef}
             onEditWorkflow={(workflowAgentId) => {
               onEditWorkflow(workflowAgentId);
             }}
@@ -155,15 +150,12 @@ export default function WorkflowPage() {
             fullscreen &&
               "fixed top-0 left-0 w-screen h-screen z-[2000] bg-black",
           )}
-          // Use absolute positioning for fullscreen mode
-          style={fullscreen ? { position: "absolute" } : {}}
         >
           <WorkflowConfiguration
             sidebarConfig={{
               gaevatarList,
               isNewGAevatar: true,
               gaevatarTypeList: agentTypeList,
-              type: "newAgent",
             }}
             extraControlBar={
               <div className="w-full h-full bg-[#141415] flex flow-row border-[1px] border-[#303030]">
@@ -198,12 +190,7 @@ export default function WorkflowPage() {
                 setWorkflowType(WorkflowType.WorkflowList);
               }
             }}
-            onSave={async (workflowAgentId: string) => {
-              await delay(2500);
-              await getWorkflowDetail(workflowAgentId);
-            }}
             editWorkflow={editWorkflow}
-            onGaevatarChange={onGaevatarChange}
           />
         </div>
       )}

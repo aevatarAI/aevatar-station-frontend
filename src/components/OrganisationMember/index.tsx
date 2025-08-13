@@ -10,7 +10,7 @@ import InviteMembersDialog from "@/components/InviteMembersDialog";
 import { columns } from "@/components/OrganisationMember/columns";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -139,7 +139,7 @@ export default function OrganisationMember() {
                 <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="w-[193px] left-0 -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                <SelectContentHypotenuse wrapperClassName="w-[193px] left-0 -left-[70px] top-[4px]">
                   {roleList.map((roleItem) => (
                     <SelectItem
                       className="text-[16px]"
@@ -149,7 +149,7 @@ export default function OrganisationMember() {
                       {roleItem.name.split("_")[1]}
                     </SelectItem>
                   ))}
-                </SelectContent>
+                </SelectContentHypotenuse>
               </Select>
             )}
           </>

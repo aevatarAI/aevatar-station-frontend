@@ -5,11 +5,14 @@ import { columns } from "@/components/OrganisationProjects/columns";
 import ProjectEditDialog from "@/components/ProjectEditDialog";
 import { textGradient } from "@/constants/cls";
 import type { TProjectEditForm } from "@/constants/form/project";
+import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
+  CURRENT_PROJECT_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
@@ -20,8 +23,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const setCurrentProject = useSetCurrentProject();
 
   const userPermissions = useOrgPermissions();
   const updateProjectListHandler = useUpdateProjectHandler();
@@ -51,25 +56,39 @@ export default function OrganisationProjects() {
       });
 
       updateProjectList();
+      return { projectId: id };
     },
     [updateProjectList],
   );
 
   const onCreate = useCallback(
     async ({ domainName, name }: TProjectEditForm) => {
-      if (!organizationId) return;
-      await request.projects.addProject({
+      if (!organizationId) throw new Error("organizationId is required");
+      const result = await request.projects.addProject({
         data: {
           organizationId,
           displayName: name,
           domainName,
         },
       });
-
-      updateProjectList();
+      const projectId = result.data.id;
+      await updateProjectListHandler(organizationId);
+      setCurrentProject(projectId, result.data.domainName);
+      navigate("/dashboard/workflows");
+      return { projectId };
     },
-    [organizationId, updateProjectList],
+    [organizationId, updateProjectListHandler, setCurrentProject, navigate],
   );
+
+  // const onCheckProjectService = useCallback(
+  //   async (domainName: string) => {
+  //     setProjectInitialising(true);
+  //     await checkProjectService(domainName);
+  //     setProjectInitialising(false);
+  //     navigate("/dashboard/workflows");
+  //   },
+  //   [checkProjectService, navigate, setProjectInitialising]
+  // );
 
   const onDeleteYes = useCallback(
     async (id: string) => {
@@ -127,7 +146,11 @@ export default function OrganisationProjects() {
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
         {userPermissions?.projectsCreate ? (
-          <ProjectEditDialog type="create" onSubmit={onCreate} />
+          <ProjectEditDialog
+            type="create"
+            onSubmit={onCreate}
+            // onCheckProjectService={onCheckProjectService}
+          />
         ) : (
           <span />
         )}

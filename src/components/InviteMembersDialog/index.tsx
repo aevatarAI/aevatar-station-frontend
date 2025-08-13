@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -125,7 +125,7 @@ export default function InviteMembersDialog({
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                      <SelectContentHypotenuse wrapperClassName="w-[286px] left-0 -top-[4px]">
                         {roleList.map((item) => (
                           <SelectItem
                             key={item.id}
@@ -135,7 +135,7 @@ export default function InviteMembersDialog({
                             {item.name.split("_")[1]}
                           </SelectItem>
                         ))}
-                      </SelectContent>
+                      </SelectContentHypotenuse>
                     </Select>
                     <FormMessage />
                   </FormItem>

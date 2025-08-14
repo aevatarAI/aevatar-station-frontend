@@ -31,7 +31,7 @@ export default function ServiceConfiguration() {
     resolver: zodResolver(ServerConfigForm),
     defaultValues: {
       serverUrl: "https://station-dev-staging.aevatar.ai",
-      domainUrl: "https://station-developer-dev-staging.aevatar.ai/",
+      domainUrl: "https://station-developer-dev-staging.aevatar.ai",
       authServerUrl: "https://auth-station-dev-staging.aevatar.ai",
     },
   });

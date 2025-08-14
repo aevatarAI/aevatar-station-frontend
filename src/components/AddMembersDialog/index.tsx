@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -115,7 +115,10 @@ export default function AddMembersDialog({
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContentHypotenuse
+                          wrapperClassName="w-[286px] left-0 -top-[4px]"
+                          className=" pt-[16px] px-[22px] pb-[2px]"
+                        >
                           {orgMemberList.map((item) => (
                             <SelectItem
                               className="text-[16px]"
@@ -125,7 +128,7 @@ export default function AddMembersDialog({
                               {item.email}
                             </SelectItem>
                           ))}
-                        </SelectContent>
+                        </SelectContentHypotenuse>
                       </Select>
                       <FormMessage />
                     </FormItem>
@@ -147,7 +150,10 @@ export default function AddMembersDialog({
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContentHypotenuse
+                          wrapperClassName="w-[286px] left-0 -top-[4px]"
+                          className=" pt-[16px] px-[22px] pb-[2px]"
+                        >
                           {roleList.map((item) => (
                             <SelectItem
                               className="text-[16px]"
@@ -157,7 +163,7 @@ export default function AddMembersDialog({
                               {item.name.split("_")[1]}
                             </SelectItem>
                           ))}
-                        </SelectContent>
+                        </SelectContentHypotenuse>
                       </Select>
                       <FormMessage />
                     </FormItem>

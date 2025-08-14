@@ -20,6 +20,7 @@ function AtomInput() {
 }
 
 export default function DemoPage() {
+  console.log("demo page");
   return (
     <div className="container mx-auto p-10 flex gap-4 flex-col">
       <div>
@@ -33,7 +34,8 @@ export default function DemoPage() {
           <Button
             onClick={() => {
               request.organizations.getUserOrganizations();
-            }}>
+            }}
+          >
             getUserOrganizations
           </Button>
         </div>

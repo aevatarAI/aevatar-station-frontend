@@ -46,7 +46,8 @@ const formSchema = z.object({
     .regex(
       /[A-Z]/,
       "password must contain at least one uppercase letter ('A'-'Z')",
-    ),
+    )
+    .regex(/[0-9]/, "password must contain at least one digit ('0'-'9')"),
 });
 
 const Register = () => {

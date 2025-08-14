@@ -45,7 +45,11 @@ interface IProjectEditDialogProps {
   domainName?: string;
   fullWidth?: boolean;
   showCreateButton?: boolean;
-  onSubmit?: (values: TProjectEditForm) => Promise<void>;
+  onSubmit: (values: TProjectEditForm) => Promise<{ projectId: string }>;
+  onCheckProjectService?: (
+    domainName: string,
+    projectId: string,
+  ) => Promise<void>;
 }
 
 export interface IProjectEditDialogRef {
@@ -66,6 +70,7 @@ const ProjectEditDialog = forwardRef<
       fullWidth,
       showCreateButton = true,
       onSubmit: onFinish,
+      onCheckProjectService,
     }: IProjectEditDialogProps,
     ref: React.Ref<IProjectEditDialogRef>,
   ) => {
@@ -89,7 +94,7 @@ const ProjectEditDialog = forwardRef<
       async (values: TProjectEditForm) => {
         try {
           setBtnLoading(true);
-          await onFinish?.(values);
+          const { projectId } = await onFinish(values);
           setBtnLoading(false);
           setOpen(false);
           toast({
@@ -98,6 +103,7 @@ const ProjectEditDialog = forwardRef<
               type === "create" ? "created" : "saved"
             }`,
           });
+          await onCheckProjectService?.(values.domainName, projectId);
         } catch (error) {
           toast({
             title: "error",
@@ -106,7 +112,7 @@ const ProjectEditDialog = forwardRef<
           setBtnLoading(false);
         }
       },
-      [toast, onFinish, type],
+      [toast, onFinish, type, onCheckProjectService],
     );
 
     useEffect(() => {

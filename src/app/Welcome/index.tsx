@@ -13,16 +13,18 @@ import { useToast } from "@/hooks/use-toast";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
-import { login, refreshTokenLogin } from "@/services/auth";
+import { refreshTokenLogin } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import type React from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 const WelcomePage: React.FC = () => {
+  const { toast } = useToast();
   const email = useEmail();
   const navigate = useNavigate();
   const [, setAccessToken] = useAtom(accessTokenAtom);
@@ -31,29 +33,24 @@ const WelcomePage: React.FC = () => {
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } =
     useGetInvitations(data);
-
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const { data: org } = useGetOrganizations();
 
-  const { toast } = useToast();
+  useEffect(() => {
+    if (org?.data?.items?.length > 0) {
+      navigate("/profile/profile/general");
+    }
+  }, [org, navigate]);
 
   const onCreateOrg = useCallback(
     async (values: TCreateOrgForm) => {
       console.log(values);
-      try {
-        const response = await createOrganization(values.orgName);
-        setCurrentOrganization(response.id);
-        toast({
-          description: "Organization created",
-        });
-        navigate("/profile");
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(
-            error,
-            "Failed to create organization",
-          ),
-        });
-      }
+      const response = await createOrganization(values.orgName);
+      setCurrentOrganization(response.id);
+      toast({
+        description: "Organization created",
+      });
+      navigate("/profile/organisation/project");
     },
     [navigate, setCurrentOrganization, toast],
   );

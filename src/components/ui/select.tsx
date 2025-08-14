@@ -1,12 +1,13 @@
 "use client";
 
 import DownIcon from "@/assets/down.svg?react";
+import Hypotenuse from "@/assets/hypotenuse.svg?react";
+import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import * as React from "react";
-
-import { cn } from "@/lib/utils";
 import "./select.css";
+import clsx from "clsx";
 
 const Select = SelectPrimitive.Root;
 
@@ -122,6 +123,43 @@ const SelectContent = React.forwardRef<
 ));
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
+const SelectContentHypotenuse = ({
+  className,
+  children,
+  wrapperClassName,
+}: {
+  className?: string;
+  wrapperClassName?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <SelectContent
+      className={clsx(
+        "w-[286px] p-0 bg-transparent shadow-none",
+        wrapperClassName,
+      )}
+    >
+      <div
+        className={clsx(
+          "bg-[#141415] border border-[#303030] border-b-[0px]",
+          " pt-[16px] px-[22px] pb-[2px]",
+          className,
+        )}
+      >
+        {children}
+      </div>
+      <div className="h-[14px] relative flex ">
+        <div
+          className={clsx(
+            " bg-[#141415] flex-1 border border-[#303030] border-t-[0px] border-r-[0px]",
+          )}
+        />
+        <Hypotenuse className={clsx("w-[17px] h-[14px] text-[#303030]")} />
+      </div>
+    </SelectContent>
+  );
+};
+
 const SelectPrimitiveLabel: React.ElementType = SelectPrimitive.Label;
 
 const SelectLabel = React.forwardRef<
@@ -180,6 +218,7 @@ export {
   SelectValue,
   SelectTrigger,
   SelectContent,
+  SelectContentHypotenuse,
   SelectLabel,
   SelectItem,
   SelectSeparator,

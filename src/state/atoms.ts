@@ -3,6 +3,7 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 export const loadingAtom = atom(false);
+
 export const atomicAevatarAtom = atom<TAtomicAevatar[]>([]);
 
 // login
@@ -43,4 +44,11 @@ export const passwordAtom = atom(
     sessionStorage.setItem("password", password);
     set(passwordAtom, password);
   },
+);
+
+export const projectInitialisingAtom = atomWithStorage<string[] | null>(
+  "projectInitialising",
+  null,
+  undefined,
+  { getOnInit: true },
 );

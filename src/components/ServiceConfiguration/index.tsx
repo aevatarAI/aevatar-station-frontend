@@ -46,10 +46,10 @@ export default function ServiceConfiguration() {
           url.endsWith("/") ? url.slice(0, -1) : url;
         const serverUrl = sanitizeUrl(values.serverUrl);
         const authServerUrl = sanitizeUrl(values.authServerUrl);
-        const domainName = values.domainName;
+        // const domainName = values.domainName;
         localStorage.setItem("serverUrl", serverUrl);
         localStorage.setItem("authServerUrl", authServerUrl);
-        localStorage.setItem("projectDomainName", domainName);
+        // localStorage.setItem("projectDomainName", domainName);
         toast({
           description: "successfully saved",
         });
@@ -103,7 +103,7 @@ export default function ServiceConfiguration() {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 key={"domainName"}
                 control={form.control}
                 name={"domainName"}
@@ -119,7 +119,7 @@ export default function ServiceConfiguration() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="authServerUrl"

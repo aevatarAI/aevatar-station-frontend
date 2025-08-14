@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const ServerConfigForm = z.object({
   serverUrl: z.string().url(),
-  domainName: z.string(),
+  domainUrl: z.string().url(),
   authServerUrl: z.string().url(),
 });
 

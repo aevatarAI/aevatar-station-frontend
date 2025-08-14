@@ -30,9 +30,9 @@ export default function ServiceConfiguration() {
   const form = useForm<TServerConfigForm>({
     resolver: zodResolver(ServerConfigForm),
     defaultValues: {
-      serverUrl: "https://station-developer-dev-staging.aevatar.ai",
-      domainName: "developer",
-      authServerUrl: "https://auth-pre-station-dev-staging.aevatar.ai",
+      serverUrl: "https://station-dev-staging.aevatar.ai",
+      domainUrl: "https://station-developer-dev-staging.aevatar.ai/",
+      authServerUrl: "https://auth-station-dev-staging.aevatar.ai",
     },
   });
   const { toast } = useToast();
@@ -46,10 +46,10 @@ export default function ServiceConfiguration() {
           url.endsWith("/") ? url.slice(0, -1) : url;
         const serverUrl = sanitizeUrl(values.serverUrl);
         const authServerUrl = sanitizeUrl(values.authServerUrl);
-        // const domainName = values.domainName;
+        const domainUrl = values.domainUrl;
         localStorage.setItem("serverUrl", serverUrl);
         localStorage.setItem("authServerUrl", authServerUrl);
-        // localStorage.setItem("projectDomainName", domainName);
+        localStorage.setItem("domainUrl", domainUrl);
         toast({
           description: "successfully saved",
         });
@@ -103,23 +103,23 @@ export default function ServiceConfiguration() {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                key={"domainName"}
+              <FormField
+                key={"domainUrl"}
                 control={form.control}
-                name={"domainName"}
+                name={"domainUrl"}
                 render={({ field }) => (
                   <FormItem
                     aria-labelledby="domainNameLabel"
                     className="w-full"
                   >
-                    <FormLabel id="domainNameLabel">domainName</FormLabel>
+                    <FormLabel id="domainNameLabel">domainUrl</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
               <FormField
                 control={form.control}
                 name="authServerUrl"

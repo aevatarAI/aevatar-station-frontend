@@ -4,7 +4,7 @@ export const getDomainBaseUrl = () => {
   if (import.meta.env.VITE_APP_NETWORKTYPE === "TESTNET") {
     if (import.meta.env.VITE_APP_SUPPORT_CONFIG_URL === "1") {
       return (
-        localStorage.getItem("serverUrl") ||
+        localStorage.getItem("domainUrl") ||
         import.meta.env.VITE_APP_DEFAULT_SERVER_URL
       );
     }

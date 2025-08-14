@@ -21,6 +21,7 @@ const supportAgentTypes = [
   "aevatar.mcp",
   "psi.omni",
   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+  "social.twitter.twitter-webapi",
 ];
 
 enum WorkflowType {

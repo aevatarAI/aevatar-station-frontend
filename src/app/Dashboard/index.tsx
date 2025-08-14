@@ -87,8 +87,14 @@ export default function DashboardWrapper() {
     }
     await checkProjectService(currentProject?.domainName);
 
-    setProjectInitialising((prev) => [...(prev ?? []), currentProject.id]);
-    navigate(`/dashboard/${selectTab ?? "workflows"}`);
+    setProjectInitialising((prev) => {
+      const newArray = [...(prev ?? [])];
+      if (!newArray.includes(currentProject.id)) {
+        newArray.push(currentProject.id);
+      }
+      return newArray;
+    });
+    navigate(`/dashboard/${selectTab ?? "workflows"}${location.search ?? ""}`);
   }, [
     checkProjectService,
     navigate,

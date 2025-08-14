@@ -1,4 +1,7 @@
-import { getOrganizationPermissions } from "@/api/utils/organization";
+import {
+  type IPermissionsItem,
+  getOrganizationPermissions,
+} from "@/api/utils/organization";
 import { useToast } from "@/hooks/use-toast";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { ORGANIZATION_PERMISSION_ATOM } from "@/state/atoms/permissions";
@@ -30,6 +33,79 @@ type TUserPermissions = {
   apiRequests?: boolean;
 };
 
+const getPermissions = (permissions: IPermissionsItem[]) => {
+  const _permissions: TUserPermissions = {};
+  permissions?.forEach((item) => {
+    switch (item.displayName) {
+      case "Permission:Organizations":
+        _permissions.organizations = item.isGranted;
+        break;
+      case "Permission:Organizations.Create":
+        _permissions.organizationsCreate = item.isGranted;
+        break;
+      case "Permission:Organizations.Edit":
+        _permissions.organizationsEdit = item.isGranted;
+        break;
+      case "Permission:Organizations.Delete":
+        _permissions.organizationsDelete = item.isGranted;
+        break;
+      case "Permission:Projects":
+        _permissions.projects = item.isGranted;
+        break;
+      case "Permission:Projects.Create":
+        _permissions.projectsCreate = item.isGranted;
+        break;
+      case "Permission:Projects.Edit":
+        _permissions.projectsEdit = item.isGranted;
+        break;
+      case "Permission:Projects.Delete":
+        _permissions.projectsDelete = item.isGranted;
+        break;
+      case "Permission:Members":
+        _permissions.organizationMembers = item.isGranted;
+        break;
+      case "Permission:Members.Manage":
+        _permissions.organizationMembersManage = item.isGranted;
+        break;
+      case "Permission:ApiKeys":
+        _permissions.apiKeys = item.isGranted;
+        break;
+      case "Permission:ApiKeys.Create":
+        _permissions.apiKeysCreate = item.isGranted;
+        break;
+      case "Permission:ApiKeys.Edit":
+        _permissions.apiKeysEdit = item.isGranted;
+        break;
+      case "Permission:ApiKeys.Delete":
+        _permissions.apiKeysDelete = item.isGranted;
+        break;
+
+      case "Permission:Roles":
+        _permissions.role = item.isGranted;
+        break;
+      case "Permission:Roles.Create":
+        _permissions.roleCreate = item.isGranted;
+        break;
+      case "Permission:Roles.Edit":
+        _permissions.roleEdit = item.isGranted;
+        break;
+      case "Permission:Roles.Delete":
+        _permissions.roleDelete = item.isGranted;
+        break;
+      case "Permission:Dashboards":
+        _permissions.dashboards = item.isGranted;
+        break;
+      case "Permission:LLMSModels":
+        _permissions.llmsModels = item.isGranted;
+        break;
+      case "Permission:ApiRequests":
+        _permissions.apiRequests = item.isGranted;
+        break;
+    }
+  });
+  return _permissions;
+};
+
 export const useOrgPermissions = () => {
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
@@ -57,75 +133,23 @@ export const useOrgPermissions = () => {
   }, [getUserPermissions]);
 
   return useMemo(() => {
-    const _permissions: TUserPermissions = {};
-    permissions?.forEach((item) => {
-      switch (item.displayName) {
-        case "Permission:Organizations":
-          _permissions.organizations = item.isGranted;
-          break;
-        case "Permission:Organizations.Create":
-          _permissions.organizationsCreate = item.isGranted;
-          break;
-        case "Permission:Organizations.Edit":
-          _permissions.organizationsEdit = item.isGranted;
-          break;
-        case "Permission:Organizations.Delete":
-          _permissions.organizationsDelete = item.isGranted;
-          break;
-        case "Permission:Projects":
-          _permissions.projects = item.isGranted;
-          break;
-        case "Permission:Projects.Create":
-          _permissions.projectsCreate = item.isGranted;
-          break;
-        case "Permission:Projects.Edit":
-          _permissions.projectsEdit = item.isGranted;
-          break;
-        case "Permission:Projects.Delete":
-          _permissions.projectsDelete = item.isGranted;
-          break;
-        case "Permission:Members":
-          _permissions.organizationMembers = item.isGranted;
-          break;
-        case "Permission:Members.Manage":
-          _permissions.organizationMembersManage = item.isGranted;
-          break;
-        case "Permission:ApiKeys":
-          _permissions.apiKeys = item.isGranted;
-          break;
-        case "Permission:ApiKeys.Create":
-          _permissions.apiKeysCreate = item.isGranted;
-          break;
-        case "Permission:ApiKeys.Edit":
-          _permissions.apiKeysEdit = item.isGranted;
-          break;
-        case "Permission:ApiKeys.Delete":
-          _permissions.apiKeysDelete = item.isGranted;
-          break;
-
-        case "Permission:Roles":
-          _permissions.role = item.isGranted;
-          break;
-        case "Permission:Roles.Create":
-          _permissions.roleCreate = item.isGranted;
-          break;
-        case "Permission:Roles.Edit":
-          _permissions.roleEdit = item.isGranted;
-          break;
-        case "Permission:Roles.Delete":
-          _permissions.roleDelete = item.isGranted;
-          break;
-        case "Permission:Dashboards":
-          _permissions.dashboards = item.isGranted;
-          break;
-        case "Permission:LLMSModels":
-          _permissions.llmsModels = item.isGranted;
-          break;
-        case "Permission:ApiRequests":
-          _permissions.apiRequests = item.isGranted;
-          break;
-      }
-    });
-    return _permissions;
+    return getPermissions(permissions);
   }, [permissions]);
+};
+
+export const useGetOrgPermissions = () => {
+  const [orgId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const [, setUserPermissions] = useAtom(ORGANIZATION_PERMISSION_ATOM);
+  return useCallback(
+    async (organizationId: string) => {
+      const result = await getOrganizationPermissions(organizationId);
+      console.log(orgId, organizationId, "useGetOrgPermissions===");
+      if (orgId === organizationId) {
+        setUserPermissions(result);
+      }
+
+      return getPermissions(result);
+    },
+    [orgId, setUserPermissions],
+  );
 };

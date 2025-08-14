@@ -207,6 +207,15 @@ const PROJECT_API_LIST = {
     extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "DELETE" },
   },
+  createDefaultProject: {
+    target: "/api/projects/default",
+    baseConfig: { method: "POST" },
+  },
+  createDefaultWorkflow: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/workflow-view/default",
+    baseConfig: { method: "POST" },
+  },
 };
 
 const PROFILE_API_LIST = {

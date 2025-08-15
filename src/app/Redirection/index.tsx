@@ -11,12 +11,12 @@ import {
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSearchParams } from "wouter";
 
 const Redirection = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetOrganizations();
+  const { data } = useGetOrganizations();
   const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const [, setCurrntProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const { to } = usePermissionNavigate();
@@ -25,64 +25,57 @@ const Redirection = () => {
   const createDefaultProject = useCreateDefaultProject();
   const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    if (isLoading || !data) return;
+  const fetchProjectsThenRedirect = useCallback(async () => {
+    let organizationIds = data.data.items.map((datum: any) => datum.id);
+    const orgId = searchParams.get("orgId");
 
-    const fetchProjectsThenRedirect = async () => {
-      let organizationIds = data.data.items.map((datum: any) => datum.id);
-      const orgId = searchParams.get("orgId");
+    if (orgId && organizationIds.includes(orgId)) {
+      organizationIds = [orgId];
+    }
+    const projectsPromises = organizationIds.map((id: string) =>
+      getProjects(id),
+    );
 
-      if (orgId && organizationIds.includes(orgId)) {
-        organizationIds = [orgId];
-      }
-      const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id),
-      );
+    if (organizationIds.length === 0) {
+      return navigate("/welcome");
+    }
 
-      if (organizationIds.length === 0) {
-        return navigate("/welcome");
-      }
-
-      setOrganisations(data.data.items);
-      try {
-        let hasProjects = false;
-        const proRes = await Promise.allSettled(projectsPromises);
-        const responses = proRes
-          .map((res, index) => {
-            if (res.status === "fulfilled") {
-              return { ...res.value, orgId: organizationIds[index] };
-            }
-            return null;
-          })
-          .filter((res) => res);
-        console.log(responses, "response==");
-        for (const index in responses) {
-          const response = responses[index];
-          if (!response) continue;
-          if (response.code === "20000" && response.data.items.length > 0) {
-            hasProjects = true;
-            setCurrentOrganisationId(response.orgId);
-            setProjectList(response.data.items);
-            setCurrntProjectId(response.data.items[0].id);
-            break;
+    setOrganisations(data.data.items);
+    try {
+      let hasProjects = false;
+      const proRes = await Promise.allSettled(projectsPromises);
+      const responses = proRes
+        .map((res, index) => {
+          if (res.status === "fulfilled") {
+            return { ...res.value, orgId: organizationIds[index] };
           }
+          return null;
+        })
+        .filter((res) => res);
+      console.log(responses, "response==");
+      for (const index in responses) {
+        const response = responses[index];
+        if (!response) continue;
+        if (response.code === "20000" && response.data.items.length > 0) {
+          hasProjects = true;
+          setCurrentOrganisationId(response.orgId);
+          setProjectList(response.data.items);
+          setCurrntProjectId(response.data.items[0].id);
+          break;
         }
-        if (!hasProjects) {
-          setCurrentOrganisationId(organizationIds[0]);
-          await createDefaultProject(organizationIds[0]);
-        } else {
-          navigate(hasProjects ? to : "/profile");
-        }
-      } catch (_e) {
-        console.log(_e, "response==");
-        navigate("/profile");
       }
-    };
-
-    fetchProjectsThenRedirect();
+      if (!hasProjects) {
+        setCurrentOrganisationId(organizationIds[0]);
+        await createDefaultProject(organizationIds[0]);
+      } else {
+        navigate(hasProjects ? to : "/profile");
+      }
+    } catch (_e) {
+      console.log(_e, "response==");
+      navigate("/profile");
+    }
   }, [
     data,
-    isLoading,
     to,
     searchParams,
     setCurrentOrganisationId,
@@ -92,6 +85,10 @@ const Redirection = () => {
     setProjectList,
     createDefaultProject,
   ]);
+
+  useEffect(() => {
+    fetchProjectsThenRedirect();
+  }, [fetchProjectsThenRedirect]);
 
   return <Loading />;
 };

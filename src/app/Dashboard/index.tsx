@@ -18,7 +18,7 @@ import { projectInitialisingAtom } from "@/state/atoms";
 import { DialogClose } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 function Dashboard() {
   useUpdateOrganisations();
@@ -80,6 +80,14 @@ export default function DashboardWrapper() {
 
   const [, selectTab] = useSideBarParams();
 
+  const isDestroyed = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      isDestroyed.current = true;
+    };
+  }, []);
+
   const checkCurrentProjectService = useCallback(async () => {
     if (!currentProject?.domainName) {
       navigate("/profile/organisation/project");
@@ -94,6 +102,9 @@ export default function DashboardWrapper() {
       }
       return newArray;
     });
+    if (isDestroyed.current) {
+      return;
+    }
     navigate(`/dashboard/${selectTab ?? "workflows"}${location.search ?? ""}`);
   }, [
     checkProjectService,

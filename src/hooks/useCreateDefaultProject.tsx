@@ -6,6 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { useCheckProjectService } from "@/hooks/useCheckProjectService";
 import { useGetOrgPermissions } from "@/hooks/useOrgPermissions";
 import { useGetProjectPermissions } from "@/hooks/useProjectPermissions";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import {
   projectInitialisingAtom,
   projectInitialisingLoadingAtom,
@@ -25,7 +26,7 @@ export const useCreateDefaultProject = () => {
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const navigate = useNavigate();
   const checkProjectService = useCheckProjectService();
-  const [, setCurrntProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const setCurrentProject = useSetCurrentProject();
   const getOrgPermissions = useGetOrgPermissions();
   const getProjectPermissions = useGetProjectPermissions();
   const [, setProjectInitialising] = useAtom(projectInitialisingAtom);
@@ -98,7 +99,8 @@ export const useCreateDefaultProject = () => {
 
         return {};
       }
-      setCurrntProjectId(project.id);
+
+      setCurrentProject(project.id, project.domainName);
       await checkProjectService(project.domainName);
 
       setProjectInitialising((prev) => {
@@ -128,7 +130,7 @@ export const useCreateDefaultProject = () => {
     [
       navigate,
       getOrgPermissions,
-      setCurrntProjectId,
+      setCurrentProject,
       createProject,
       checkProjectService,
       setProjectInitialisingLoading,

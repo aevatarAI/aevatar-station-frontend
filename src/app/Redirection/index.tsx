@@ -4,6 +4,7 @@ import { useCreateDefaultProject } from "@/hooks/useCreateDefaultProject";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { getProjects } from "@/hooks/useGetProjects";
 import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -18,7 +19,7 @@ const Redirection = () => {
   const navigate = useNavigate();
   const { data } = useGetOrganizations();
   const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
-  const [, setCurrntProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const setCurrentProject = useSetCurrentProject();
   const { to } = usePermissionNavigate();
   const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
@@ -60,7 +61,10 @@ const Redirection = () => {
           hasProjects = true;
           setCurrentOrganisationId(response.orgId);
           setProjectList(response.data.items);
-          setCurrntProjectId(response.data.items[0].id);
+          setCurrentProject(
+            response.data.items[0].id,
+            response.data.items[0].domainName,
+          );
           break;
         }
       }
@@ -80,7 +84,7 @@ const Redirection = () => {
     searchParams,
     setCurrentOrganisationId,
     navigate,
-    setCurrntProjectId,
+    setCurrentProject,
     setOrganisations,
     setProjectList,
     createDefaultProject,

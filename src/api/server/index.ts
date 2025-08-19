@@ -59,7 +59,6 @@ myServer.prototype.send = async function (
   // Generate unique key for request
   let requestUrl =
     url || spliceUrl(typeof base === "string" ? base : base.target, query);
-  console.log(requestUrl, base, config, "requestUrl==");
   const requestKey = getRequestKey(
     method,
     requestUrl,

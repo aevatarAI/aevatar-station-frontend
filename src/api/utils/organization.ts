@@ -45,6 +45,16 @@ export const getProjectList = async (
   return result.data.items;
 };
 
+export const createDefaultProject = async (data: {
+  organizationId: string;
+}): Promise<IProjectItem> => {
+  const result: TDataResponse<IProjectItem> =
+    await request.projects.createDefaultProject({
+      data,
+    });
+  return result.data;
+};
+
 export interface IPermissionsItem {
   name: string;
   displayName: string;

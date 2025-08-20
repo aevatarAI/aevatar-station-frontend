@@ -216,6 +216,14 @@ const PROJECT_API_LIST = {
     extendUrlSuffix: "/api/workflow-view/default",
     baseConfig: { method: "POST" },
   },
+  updateRecentUsed: {
+    target: "/api/projects/recent-used",
+    baseConfig: { method: "POST" },
+  },
+  getRecentUsed: {
+    target: "/api/projects/recent-used",
+    baseConfig: { method: "GET" },
+  },
 };
 
 const PROFILE_API_LIST = {

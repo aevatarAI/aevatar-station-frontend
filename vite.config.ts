@@ -6,7 +6,12 @@ import { imagetools } from "vite-imagetools";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
+const appFolder = process.env.VITE_APP_FOLDER;
+console.log(appFolder, "appFolder==");
 export default defineConfig((_config) => ({
+  build: {
+    outDir: appFolder ? `dist/${appFolder}` : "dist",
+  },
   // build: {
   //   terserOptions: {
   //     compress: {

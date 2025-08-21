@@ -1,10 +1,7 @@
 import type { API_REQ_FUNCTION } from "./types";
 
 export const getDomainBaseUrl = () => {
-  if (import.meta.env.VITE_APP_NETWORKTYPE === "TESTNET") {
-    return "https://station-developer-dev-staging.aevatar.ai";
-  }
-  return location.origin;
+  return import.meta.env.VITE_APP_DOMAIN_URL;
 };
 
 export const DEFAULT_METHOD = "GET";
@@ -206,6 +203,15 @@ const PROJECT_API_LIST = {
     target: "/api/projects",
     extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "DELETE" },
+  },
+  createDefaultProject: {
+    target: "/api/projects/default",
+    baseConfig: { method: "POST" },
+  },
+  createDefaultWorkflow: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/workflow-view/default",
+    baseConfig: { method: "POST" },
   },
 };
 

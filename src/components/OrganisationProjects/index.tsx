@@ -47,7 +47,7 @@ export default function OrganisationProjects() {
 
   const onEdit = useCallback(
     async ({ name }: TProjectEditForm, id: string) => {
-      await request.projects.editProject({
+      const result = await request.projects.editProject({
         query: id,
         data: {
           displayName: name,
@@ -56,26 +56,25 @@ export default function OrganisationProjects() {
       });
 
       updateProjectList();
-      return { projectId: id };
+      return { projectId: id, domainName: result.data.domainName };
     },
     [updateProjectList],
   );
 
   const onCreate = useCallback(
-    async ({ domainName, name }: TProjectEditForm) => {
+    async ({ name }: TProjectEditForm) => {
       if (!organizationId) throw new Error("organizationId is required");
       const result = await request.projects.addProject({
         data: {
           organizationId,
           displayName: name,
-          domainName,
         },
       });
       const projectId = result.data.id;
       await updateProjectListHandler(organizationId);
       setCurrentProject(projectId, result.data.domainName);
       navigate("/dashboard/workflows");
-      return { projectId };
+      return { projectId, domainName: result.data.domainName };
     },
     [organizationId, updateProjectListHandler, setCurrentProject, navigate],
   );

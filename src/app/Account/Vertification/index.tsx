@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
+import { useLogin } from "@/hooks/useLogin";
 import { register, sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,6 +34,8 @@ const Verification = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const { loginUser } = useLogin();
+
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       try {
@@ -43,16 +46,25 @@ const Verification = () => {
           code: values.verificationCode,
         });
 
-        if (response.code === "20000") {
-          toast({
-            description: response.message || "Registration successful!",
+        if (!["20000", "20001"].includes(response.code)) {
+          form.setError("verificationCode", {
+            message:
+              response.message ||
+              "invalid verification code. please check and try again.",
           });
-        } else {
-          toast({
-            description:
-              response.message || "Registration failed. Please try again.",
-          });
+          return;
         }
+
+        toast({ description: "verification successful." });
+
+        const isLoggedIn = await loginUser(name, password);
+
+        if (!isLoggedIn) {
+          toast({ description: "log in failed." });
+          return;
+        }
+
+        navigate("/welcome");
       } catch (error) {
         console.error(error, "register error");
         toast({
@@ -60,30 +72,35 @@ const Verification = () => {
         });
       }
     },
-    [toast, name, email, password],
+    [toast, navigate, name, email, password, form, loginUser],
   );
 
   const sendVerificationCode = useCallback(async () => {
     try {
-      const response = await sendRegisterCode(email);
-      toast({
-        description: response.message || "Send Register Code successful!",
-      });
-    } catch (error) {
-      console.error(error, "Send Register Code error");
+      const response = await sendRegisterCode(name, email);
+      if (response.code !== "20001") {
+        toast({
+          description: response.message,
+        });
+      } else {
+        toast({
+          description: "Send Register Code successful!",
+        });
+      }
+    } catch (_error) {
       toast({
         description: "Send Register Code failed. Please try again.",
       });
     }
-  }, [toast, email]);
+  }, [toast, name, email]);
   return (
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-gray-light font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer"
+            className="font-normal text-white cursor-pointer hover:text-gray-light"
             onClick={() => {
               navigate("/login");
             }}
@@ -92,7 +109,7 @@ const Verification = () => {
           </span>
         </p>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -105,7 +122,7 @@ const Verification = () => {
                 name="verificationCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       Verification Code
                     </FormLabel>
                     <FormControl>
@@ -133,7 +150,7 @@ const Verification = () => {
               </Button>
               <div className="text-right">
                 <span
-                  className="text-[12px] cursor-pointer"
+                  className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light"
                   onClick={sendVerificationCode}
                 >
                   resend email

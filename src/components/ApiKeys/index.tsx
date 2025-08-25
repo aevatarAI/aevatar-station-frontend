@@ -1,108 +1,112 @@
-import { columns, type IApiKeysList } from "@/components/ApiKeys/columns";
+import { type IApiKeysList, columns } from "@/components/ApiKeys/columns";
 import CreateApiKeyDialog from "@/components/CreateApiKeyDialog";
 import DataTable from "@/components/DataTable";
-import { textGradient } from "@/constants/cls";
-import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { sleep } from "@etransfer/utils";
-import EditApiKeyDialog from "@/components/EditApiKeyDialog";
 import DeleteDialog from "@/components/DeleteDialog";
+import EditApiKeyDialog from "@/components/EditApiKeyDialog";
+import Loading from "@/components/Loading";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipContentCls,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { textGradient } from "@/constants/cls";
+import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
+import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
+import { useProjectPermissions } from "@/hooks/useProjectPermissions";
+import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
+import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useMemo } from "react";
+import { Button } from "../ui/button";
 
 export default function ApiKeys() {
-  const [apiKeysList, setApiKeysList] = useState<IApiKeysList[]>([]);
-  const [loading, setLoading] = useState<boolean>();
+  const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const { data, isLoading, isError } = useGetAPIKeys(currentProjectId || "");
+  const permissions = useProjectPermissions();
+  const { mutate: mutationUpdate } = useUpdateAPIKey();
+  const { mutate } = useDeleteAPIKey();
 
-  useEffect(() => {
-    setLoading(true);
-    sleep(2000).then(() => {
-      setApiKeysList([
-        {
-          id: "1",
-          name: "name",
-          apiKeys: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys111111",
-          createdTime:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          createdBy: "createBycreateBy",
-          isEdit: true,
-          isRemove: true,
-        },
-        {
-          id: "2",
-          name: "text",
-          apiKeys: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys222222",
-          createdTime:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          createdBy: 
-            "createBy createBycr eateBycreat eBycreateBycreate BycreateByc reateBycreateB ycreateByc reateBycr eateBy",
-          isEdit: false,
-          isRemove: true,
-        },
-        {
-          id: "3",
+  const tableData = useMemo(() => {
+    return data?.data?.map((item: IApiKeysList) => ({
+      ...item,
+      operation: (
+        <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <EditApiKeyDialog
+                    name={item.appName}
+                    disabled={!permissions.apiKeysEdit}
+                    onYes={async (name: string) =>
+                      mutationUpdate({
+                        id: item.id,
+                        name,
+                        projectId: item.projectId,
+                      })
+                    }
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className={clsx(TooltipContentCls)}>
+                edit
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
-          name: "text",
-          apiKeys: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys3433333",
-          createdTime:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          createdBy: "createBycreateBy",
-          isEdit: true,
-          isRemove: false,
-        },
-        {
-          id: "4",
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <DeleteDialog
+                    title="Are you sure you want to delete the API key?"
+                    description="*Once deleted, the existing API key will become invalid."
+                    disabled={!permissions.apiKeysDelete}
+                    onYes={async () =>
+                      mutate({ projectId: item.projectId, id: item.id })
+                    }
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className={clsx(TooltipContentCls)}>
+                delete
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    }));
+  }, [data, permissions, mutate, mutationUpdate]);
 
-          name: "text",
-          apiKeys: "apiKeysapiKeysapiKeysapiKeysapiKeysapiKeys444444",
-          createdTime:
-            Date.now() - Math.floor(Math.random() * (24 * 60 * 60 * 1000)),
-          createdBy: "createBycreateBy",
-          isEdit: false,
-          isRemove: false,
-        },
-      ]);
-      setLoading(false);
-    });
-  }, []);
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
-  const onDeleteYes = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+  if (isError) {
+    return <div>error...</div>;
+  }
 
-  const tableData = useMemo(
-    () =>
-      apiKeysList.map((item) => ({
-        ...item,
-        operation: (
-          <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {item.isEdit ? <EditApiKeyDialog /> : <span />}
-            {item.isRemove ? (
-              <DeleteDialog
-                title="Are you sure you want to delete the API key?"
-                onYes={onDeleteYes}
-                description={
-                  "*Once deleted, the existing API key will become invalid."
-                }
-              />
-            ) : (
-              <span />
-            )}
-          </div>
-        ),
-      })),
-    [apiKeysList, onDeleteYes]
-  );
-  console.log(loading, "loading==");
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>api keys</div>
-        <CreateApiKeyDialog />
+        <CreateApiKeyDialog
+          disabled={!permissions.apiKeysCreate || data?.data.length > 0}
+        />
       </div>
       <DataTable
-        className={clsx(!loading && apiKeysList.length && "min-w-[600px]")}
+        className={clsx(!isLoading && data?.data?.length && "min-w-[600px]")}
         tableHeadClassName={"first:pl-[15px]"}
         columns={columns}
-        loading={loading}
+        loading={isLoading}
+        emptyNode={
+          <div className="lowercase" data-testid="empty-dll-message">
+            No API keys created yet
+          </div>
+        }
         data={tableData}
       />
     </div>

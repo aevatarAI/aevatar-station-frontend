@@ -1,83 +1,104 @@
-import ProjectEditDialog from "@/components/ProjectEditDialog";
+import { request } from "@/api";
 import DataTable from "@/components/DataTable";
-import { columns } from "@/components/OrganisationProjects/columns";
-import { textGradient } from "@/constants/cls";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
-import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { TProjectEditForm } from "@/constants/form/project";
 import DeleteDialog from "@/components/DeleteDialog";
-import { useAtom } from "jotai";
+import { columns } from "@/components/OrganisationProjects/columns";
+import ProjectEditDialog from "@/components/ProjectEditDialog";
+import { textGradient } from "@/constants/cls";
+import type { TProjectEditForm } from "@/constants/form/project";
+import { useNavigate } from "@/hooks/navigate";
+import { useToast } from "@/hooks/use-toast";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
+import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
+  CURRENT_PROJECT_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { getProjectList } from "@/api/utils/organization";
-import { useToast } from "@/hooks/use-toast";
-import { request } from "@/api";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { handleErrorMessage } from "@/utils/error";
+import clsx from "clsx";
+import { useAtom } from "jotai";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
-  const [projectList, setProjectList] = useAtom(PROJECT_LIST_ATOM);
+  const navigate = useNavigate();
+  const [projectList] = useAtom(PROJECT_LIST_ATOM);
   const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const setCurrentProject = useSetCurrentProject();
 
-  const userPermissions = useUserPermissions();
+  const userPermissions = useOrgPermissions();
+  const updateProjectListHandler = useUpdateProjectHandler();
 
   const updateProjectList = useCallback(async () => {
-    try {
-      if (!organizationId) return;
-      setLoading(true);
+    if (!organizationId) return;
 
-      const list = await getProjectList(organizationId);
-      setProjectList(list);
-      setLoading(false);
-    } catch (error) {
-      toast({
-        description: handleErrorMessage(error),
-      });
-      setLoading(false);
-    }
-  }, [organizationId, setProjectList, toast]);
+    setLoading(true);
+
+    await updateProjectListHandler(organizationId);
+    setLoading(false);
+    window.scrollTo(0, 0);
+  }, [organizationId, updateProjectListHandler]);
 
   useEffect(() => {
     updateProjectList();
   }, [updateProjectList]);
 
   const onEdit = useCallback(
-    async ({ name, domainName }: TProjectEditForm, id: string) => {
-      try {
-        await request.projects.editProject({
-          query: id,
-          data: {
-            displayName: name,
-            domainName,
-          },
-        });
-        await sleep(500);
-        updateProjectList();
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
+    async ({ name }: TProjectEditForm, id: string) => {
+      await request.projects.editProject({
+        query: id,
+        data: {
+          displayName: name,
+          // domainName,
+        },
+      });
+
+      updateProjectList();
+      return { projectId: id };
     },
-    [updateProjectList, toast]
+    [updateProjectList],
   );
 
   const onCreate = useCallback(
     async ({ domainName, name }: TProjectEditForm) => {
+      if (!organizationId) throw new Error("organizationId is required");
+      const result = await request.projects.addProject({
+        data: {
+          organizationId,
+          displayName: name,
+          domainName,
+        },
+      });
+      const projectId = result.data.id;
+      await updateProjectListHandler(organizationId);
+      setCurrentProject(projectId, result.data.domainName);
+      navigate("/dashboard/workflows");
+      return { projectId };
+    },
+    [organizationId, updateProjectListHandler, setCurrentProject, navigate],
+  );
+
+  // const onCheckProjectService = useCallback(
+  //   async (domainName: string) => {
+  //     setProjectInitialising(true);
+  //     await checkProjectService(domainName);
+  //     setProjectInitialising(false);
+  //     navigate("/dashboard/workflows");
+  //   },
+  //   [checkProjectService, navigate, setProjectInitialising]
+  // );
+
+  const onDeleteYes = useCallback(
+    async (id: string) => {
       try {
-        if (!organizationId) return;
-        await request.projects.addProject({
-          data: {
-            organizationId,
-            displayName: name,
-            domainName,
-          },
+        await request.projects.deleteProject({
+          query: id,
         });
-        await sleep(500);
+        toast({
+          description: "successfully deleted",
+        });
         updateProjectList();
       } catch (error) {
         toast({
@@ -85,23 +106,7 @@ export default function OrganisationProjects() {
         });
       }
     },
-    [organizationId, toast, updateProjectList]
-  );
-
-  const onDeleteYes = useCallback(
-    async (id: string) => {
-      try {
-        const result = await request.projects.deleteProject({
-          query: id,
-        });
-        console.log(result, "result=");
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
-    },
-    [toast]
+    [toast, updateProjectList],
   );
 
   const tableData = useMemo(
@@ -110,7 +115,7 @@ export default function OrganisationProjects() {
         ...item,
         operation: (
           <div className="flex items-center gap-[7px] pl-[20px]">
-            {userPermissions?.edit ? (
+            {userPermissions?.projectsEdit ? (
               <ProjectEditDialog
                 type="edit"
                 name={item.displayName}
@@ -120,7 +125,7 @@ export default function OrganisationProjects() {
             ) : (
               <span />
             )}
-            {userPermissions?.delete ? (
+            {userPermissions?.projectsDelete ? (
               <DeleteDialog
                 onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the project?"}
@@ -134,15 +139,18 @@ export default function OrganisationProjects() {
           </div>
         ),
       })),
-    [projectList, userPermissions, onEdit, onDeleteYes]
+    [projectList, userPermissions, onEdit, onDeleteYes],
   );
-  console.log(loading, "loading==");
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
         <div className={clsx(textGradient)}>organisation projects</div>
-        {userPermissions?.create ? (
-          <ProjectEditDialog type="create" onSubmit={onCreate} />
+        {userPermissions?.projectsCreate ? (
+          <ProjectEditDialog
+            type="create"
+            onSubmit={onCreate}
+            // onCheckProjectService={onCheckProjectService}
+          />
         ) : (
           <span />
         )}

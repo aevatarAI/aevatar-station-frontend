@@ -32,7 +32,7 @@ export default function Overview() {
       >
         {socialMediaList.map((item) => (
           <a
-            className="text-[#B9B9B9] font-syne text-[14px] font-semibold leading-normal lowercase"
+            className="text-[#B9B9B9] font-syne text-[16px] font-semibold leading-normal lowercase"
             key={item.title}
             href={item.href}
             target="_blank"
@@ -47,7 +47,7 @@ export default function Overview() {
   );
 
   return (
-    <div className="pt-[70px] pr-[47px] pb-[51px] h-[100vh] pl-[47px] md:px-[40px] md:py-[42px] flex flex-col lg:flex-row lg:gap-20">
+    <div className="pt-[70px] pr-[47px] pb-[51px] h-screen pl-[47px] md:px-[40px] md:py-[42px] flex flex-col lg:flex-row lg:gap-20">
       <div className="lg:basis-1/2 lg:self-center lg:h-full flex flex-col items-center justify-between">
         <Logo className="text-white self-start hidden lg:block" />
         <div className="max-w-[285px] lg:mx-auto">
@@ -57,7 +57,7 @@ export default function Overview() {
             <br />
             aevatar.ai
           </h1>
-          <h2 className="text-sm font-pro lowercase mb-[36px] lg:mb-[54.5px] text-muted-foreground">
+          <h2 className="text-sm font-outfit lowercase mb-[36px] lg:mb-[54.5px] text-muted-foreground">
             the future of on-chain autonomous
             <br />
             intelligence

@@ -1,12 +1,11 @@
-import myEvents from "@/utils/myEvent";
 import axios from "axios";
 
-const isDeniedRequest = (error: { message: string }) => {
+export const isDeniedRequest = (error: { message: string }) => {
   try {
     const message: string = error.message;
-    if (message.includes("401")) return true;
+    if (message?.includes("401")) return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   return false;
 };
@@ -24,11 +23,12 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    if (response.data === "Healthy") return response.data;
     const res = response.data;
     if (res?.code?.substring(0, 1) !== "2") {
       return Promise.reject(res);
@@ -36,11 +36,8 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
-    if (isDeniedRequest(error)) {
-      myEvents.AuthorizationExpired.emit();
-    }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const service = axiosInstance;

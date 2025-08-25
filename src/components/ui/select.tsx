@@ -1,12 +1,13 @@
 "use client";
 
 import DownIcon from "@/assets/down.svg?react";
+import Hypotenuse from "@/assets/hypotenuse.svg?react";
+import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import * as React from "react";
-
-import { cn } from "@/lib/utils";
 import "./select.css";
+import clsx from "clsx";
 
 const Select = SelectPrimitive.Root;
 
@@ -26,15 +27,17 @@ const SelectTrigger = React.forwardRef<
     <SelectPrimitiveTrigger
       ref={ref}
       className={cn(
-        "flex font-pro h-10 w-full items-center justify-center gap-[10px] border border-[#303030] bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-        "text-white text-center font-syne text-xs font-semibold leading-normal lowercase",
-        className
+        "flex font-outfit h-10 w-full items-center justify-center gap-[10px] border border-black-light bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        "text-white text-center font-outfit text-xs font-semibold leading-normal lowercase",
+        className,
       )}
-      {...props}>
+      {...props}
+    >
       {children}
       <SelectPrimitiveIcon
         asChild
-        className={props["aria-disabled"] ? "hidden" : undefined}>
+        className={props["aria-disabled"] ? "hidden" : undefined}
+      >
         <DownIcon />
       </SelectPrimitiveIcon>
     </SelectPrimitiveTrigger>
@@ -54,9 +57,10 @@ const SelectScrollUpButton = React.forwardRef<
     ref={ref}
     className={cn(
       "flex cursor-default items-center justify-center py-1",
-      className
+      className,
     )}
-    {...props}>
+    {...props}
+  >
     <ChevronUp className="h-4 w-4" />
   </SelectPrimitiveScrollUpButton>
 ));
@@ -74,9 +78,10 @@ const SelectScrollDownButton = React.forwardRef<
     ref={ref}
     className={cn(
       "flex cursor-default items-center justify-center py-1",
-      className
+      className,
     )}
-    {...props}>
+    {...props}
+  >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitiveDownButton>
 ));
@@ -95,19 +100,21 @@ const SelectContent = React.forwardRef<
     <SelectPrimitiveContent
       ref={ref}
       className={cn(
-        "relative font-pro z-50  bg-[#141415] text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative font-outfit z-50  bg-[#141415] text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         " w-[259px] p-[20px] left-[16px]",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-        className
+        className,
       )}
       position={position}
-      {...props}>
+      {...props}
+    >
       <SelectScrollUpButton />
       <SelectPrimitiveViewport
         className={cn(
-          position === "popper" && "h-[var(--radix-select-trigger-height)]"
-        )}>
+          position === "popper" && "h-(--radix-select-trigger-height)",
+        )}
+      >
         {children}
       </SelectPrimitiveViewport>
       <SelectScrollDownButton />
@@ -115,6 +122,43 @@ const SelectContent = React.forwardRef<
   </SelectPrimitive.Portal>
 ));
 SelectContent.displayName = SelectPrimitive.Content.displayName;
+
+const SelectContentHypotenuse = ({
+  className,
+  children,
+  wrapperClassName,
+}: {
+  className?: string;
+  wrapperClassName?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <SelectContent
+      className={clsx(
+        "w-[286px] p-0 bg-transparent shadow-none",
+        wrapperClassName,
+      )}
+    >
+      <div
+        className={clsx(
+          "bg-[#141415] border border-[#303030] border-b-[0px]",
+          " pt-[16px] px-[22px] pb-[2px]",
+          className,
+        )}
+      >
+        {children}
+      </div>
+      <div className="h-[14px] relative flex ">
+        <div
+          className={clsx(
+            " bg-[#141415] flex-1 border border-[#303030] border-t-[0px] border-r-[0px]",
+          )}
+        />
+        <Hypotenuse className={clsx("w-[17px] h-[14px] text-[#303030]")} />
+      </div>
+    </SelectContent>
+  );
+};
 
 const SelectPrimitiveLabel: React.ElementType = SelectPrimitive.Label;
 
@@ -141,12 +185,13 @@ const SelectItem = React.forwardRef<
   <SelectPrimitiveItem
     ref={ref}
     className={cn(
-      "relative cursor-pointer select-none items-center text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      "text-[#B9B9B9] text-center font-syne text-[11px] leading-normal lowercase py-[7px]",
+      "relative cursor-pointer select-none items-center text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
+      "text-[#B9B9B9] text-center font-outfit text-[12px] leading-normal lowercase py-[7px]",
       "select-item-wrapper",
-      className
+      className,
     )}
-    {...props}>
+    {...props}
+  >
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitiveItem>
 ));
@@ -173,6 +218,7 @@ export {
   SelectValue,
   SelectTrigger,
   SelectContent,
+  SelectContentHypotenuse,
   SelectLabel,
   SelectItem,
   SelectSeparator,

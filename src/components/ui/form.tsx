@@ -12,26 +12,26 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { Label } from "@/components/ui/label";
 import { cn } from "@//lib/utils";
+import { Label } from "@/components/ui/label";
 import clsx from "clsx";
 
 const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -70,7 +70,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -98,7 +98,7 @@ const FormLabel = React.forwardRef<
       ref={ref}
       htmlFor={formItemId}
       {...props}
-      className={clsx(props.className, error && "text-[#FF2E2E]")}
+      className={props.className}
     />
   );
 });
@@ -159,8 +159,12 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-[12px] font-pro text-destructive  text-left", className)}
-      {...props}>
+      className={cn(
+        "text-[13px] font-outfit text-destructive  text-left",
+        className,
+      )}
+      {...props}
+    >
       {body}
     </p>
   );

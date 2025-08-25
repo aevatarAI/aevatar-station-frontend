@@ -1,48 +1,29 @@
-import { request } from "@/api";
 import General from "@/components/General";
 import OrganisationMember from "@/components/OrganisationMember";
 import OrganisationProjects from "@/components/OrganisationProjects";
 import OrganisationRole from "@/components/OrganisationRole";
 import type { TAB_LIST } from "@/constants/sideBar";
-import { useToast } from "@/hooks/use-toast";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
-import { useCallback } from "react";
-
+import { useGeneral } from "@/hooks/useGeneral";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
 interface IOrganisationInnerProps {
   tab: (typeof TAB_LIST)[number];
 }
 
 export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
-  const { toast } = useToast();
-  const onNameSave = useCallback(
-    async (displayName: string) => {
-      try {
-        await sleep(2000);
-        await request.organizations.editOrganization({
-          params: {
-            displayName,
-          },
-        });
-        toast({
-          description: "Successfully",
-        });
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error, "Error: save name"),
-        });
-      }
-    },
-    [toast]
-  );
+  const { handleUpdateName, currentOrg } = useGeneral();
+  const userPermissions = useOrgPermissions();
+
   return (
     <div>
       {tab === "general" && (
         <General
           header="organisation settings"
-          title={"organisation name"}
-          inputPlaceholder="name"
+          title="organisation name"
+          readonly={!userPermissions?.organizationsEdit}
+          inputPlaceholder={currentOrg?.displayName ?? "name"}
+          defaultValue={currentOrg?.displayName ?? ""}
           buttonProps={{ placement: "bottom-left" }}
-          onConfirm={onNameSave}
+          onConfirm={handleUpdateName}
         />
       )}
       {tab === "project" && <OrganisationProjects />}

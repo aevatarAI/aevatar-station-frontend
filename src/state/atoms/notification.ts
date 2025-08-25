@@ -1,3 +1,3 @@
-import { atom } from "jotai";
+import { atom } from 'jotai';
 
-export const notificationAtom = atom(false);
+export const UNREAD_NOTIFICATION_ATOM = atom(false);

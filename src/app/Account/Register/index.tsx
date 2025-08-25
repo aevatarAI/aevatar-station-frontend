@@ -12,23 +12,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
-import { register, sendRegisterCode } from "@/services/auth";
+import { sendRegisterCode } from "@/services/auth";
 import { emailAtom, passwordAtom, usernameAtom } from "@/state/atoms";
-import { sleep } from "@etransfer/utils";
+import { delay } from "@/utils/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z
+    .string()
+    .min(1, "name must be at least 1 character long")
+    .regex(
+      /^[a-zA-Z0-9\-._@+]+$/,
+      "Username is invalid, can only contain letters or digits.",
+    ),
   email: z.string().email({
     message: "please enter a valid email address.",
   }),
   password: z
     .string()
-    .min(8, "password must be at least 8 characters long")
+    .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
       "password must contain at least one non-alphanumeric character",
@@ -40,7 +46,8 @@ const formSchema = z.object({
     .regex(
       /[A-Z]/,
       "password must contain at least one uppercase letter ('A'-'Z')",
-    ),
+    )
+    .regex(/[0-9]/, "password must contain at least one digit ('0'-'9')"),
 });
 
 const Register = () => {
@@ -59,7 +66,7 @@ const Register = () => {
       setLoading(true);
       const { name, email, password } = values;
       try {
-        const result = await sendRegisterCode(email);
+        const result = await sendRegisterCode(name, email);
         setName(name);
         setEmail(email);
         setPassword(password);
@@ -67,12 +74,17 @@ const Register = () => {
           toast({
             description: "Send Register Code successful!",
           });
-          await sleep(2000);
+          await delay(2000);
           setLoading(false);
           navigate("/verification");
+        } else {
+          toast({
+            description:
+              result.message || "Send Register Code failed. Please try again.",
+          });
+          setLoading(false);
         }
-        setLoading(false);
-      } catch (error) {
+      } catch (_error) {
         toast({
           description: "Send Register Code failed. Please try again.",
         });
@@ -86,7 +98,7 @@ const Register = () => {
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer"
@@ -98,7 +110,7 @@ const Register = () => {
           </span>
         </p>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -111,7 +123,7 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       name
                     </FormLabel>
                     <FormControl>
@@ -133,7 +145,7 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -155,7 +167,7 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>

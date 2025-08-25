@@ -17,16 +17,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import Loading from "@/assets/loading.svg?react";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
-import { useToast } from "@/hooks/use-toast";
 
 import {
-  createRoleForm,
   type TCreateRoleForm,
+  createRoleForm,
 } from "@/constants/form/createRole";
 
 export interface ICreateRoleDialogProps {
@@ -44,7 +44,6 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
 
   const onSubmit = useCallback(
     async (values: TCreateRoleForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
       await onCreate?.(values);
       setBtnLoading(false);
@@ -54,7 +53,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
         description: "successfully created",
       });
     },
-    [toast, onCreate]
+    [toast, onCreate],
   );
 
   useEffect(() => {
@@ -64,16 +63,17 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
           <Plus />
           <span>add role</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+      >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-gradient-to-r from-white to-gray-600">
+          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
             create role
           </DialogTitle>
         </DialogHeader>
@@ -97,23 +97,26 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}
                       style={{ width: 14, height: 14 }}
+                      data-testid="loading-icon"
                     />
                   )}
-                  <span>{btnLoading ? "inviting" : "invite"}</span>
+                  <span>{btnLoading ? "creating" : "create"}</span>
                 </Button>
               </div>
             </div>

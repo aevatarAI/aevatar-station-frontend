@@ -2,7 +2,6 @@ import Plus from "@/assets/+.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -18,12 +17,13 @@ import {
 } from "@/components/ui/form";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
+import type { IMemberItem, IRoleItem } from "@/api/utils/organization";
 import Loading from "@/assets/loading.svg?react";
 import {
   type TInviteMembersKeyForm,
@@ -31,34 +31,33 @@ import {
 } from "@/constants/form/inviteMembers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { CURRENT_PROJECT_ROLE_ATOM } from "@/state/atoms/organisation";
-import { useAtom } from "jotai";
-import type { IMemberItem } from "@/api/utils/organization";
+import { useUpdateEffect } from "react-use";
 
 interface IInviteMembersDialogProps {
   defaultRoleId?: string;
   defaulteEmail?: string;
   orgMemberList: IMemberItem[];
+  roleList: IRoleItem[];
   onAddMember: (values: TInviteMembersKeyForm) => Promise<void>;
 }
 
-export default function InviteMembersDialog({
+export default function AddMembersDialog({
   defaultRoleId,
   defaulteEmail,
   orgMemberList,
+  roleList,
   onAddMember,
 }: IInviteMembersDialogProps) {
-  const [roleList] = useAtom(CURRENT_PROJECT_ROLE_ATOM);
-
   const form = useForm<TInviteMembersKeyForm>({
     resolver: zodResolver(inviteMembersForm),
     defaultValues: {
-      role: defaultRoleId ?? roleList[0]?.roleId,
+      role: defaultRoleId ?? roleList[0]?.id,
       email: defaulteEmail ?? orgMemberList[0]?.email,
     },
   });
+
   const [open, setOpen] = useState(false);
   const [btnLoading, setBtnLoading] = useState<boolean>();
 
@@ -69,24 +68,30 @@ export default function InviteMembersDialog({
       setBtnLoading(false);
       setOpen(false);
     },
-    [onAddMember]
+    [onAddMember],
   );
 
-  useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
+  useUpdateEffect(() => {
+    if (open) {
+      form.setValue("role", roleList[0]?.id);
+      form.setValue("email", orgMemberList[0]?.email);
+    } else {
+      form.reset();
+    }
+  }, [form, open, roleList, orgMemberList]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
           <Plus />
           <span>add new member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="add new member"
-        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-black-light"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             add team members
@@ -103,22 +108,27 @@ export default function InviteMembersDialog({
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}>
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContentHypotenuse
+                          wrapperClassName="w-[286px] left-0 -top-[4px]"
+                          className=" pt-[16px] px-[22px] pb-[2px]"
+                        >
                           {orgMemberList.map((item) => (
                             <SelectItem
-                              className="text-[14px]"
+                              className="text-[16px]"
                               key={item.email}
-                              value={item.email}>
+                              value={item.email}
+                            >
                               {item.email}
                             </SelectItem>
                           ))}
-                        </SelectContent>
+                        </SelectContentHypotenuse>
                       </Select>
                       <FormMessage />
                     </FormItem>
@@ -133,22 +143,27 @@ export default function InviteMembersDialog({
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
-                        onValueChange={field.onChange}>
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger aria-disabled={field?.disabled}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                        <SelectContentHypotenuse
+                          wrapperClassName="w-[286px] left-0 -top-[4px]"
+                          className=" pt-[16px] px-[22px] pb-[2px]"
+                        >
                           {roleList.map((item) => (
                             <SelectItem
-                              className="text-[14px]"
-                              key={item.roleId}
-                              value={item.roleId}>
-                              {item.roleName}
+                              className="text-[16px]"
+                              key={item.id}
+                              value={item.id}
+                            >
+                              {item.name.split("_")[1]}
                             </SelectItem>
                           ))}
-                        </SelectContent>
+                        </SelectContentHypotenuse>
                       </Select>
                       <FormMessage />
                     </FormItem>
@@ -156,16 +171,18 @@ export default function InviteMembersDialog({
                 />
                 <div className="flex justify-between items-start self-stretch pt-[8px]">
                   <Button
-                    className="text-[12px] py-[7px] leading-[14px]"
+                    className="text-[13px] py-[7px] leading-[14px]"
                     type="reset"
                     onClick={() => {
                       setOpen(false);
-                    }}>
+                    }}
+                  >
                     cancel
                   </Button>
                   <Button
-                    className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                    type="submit">
+                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                    type="submit"
+                  >
                     {btnLoading && (
                       <Loading
                         className={clsx("aevatarai-loading-icon")}

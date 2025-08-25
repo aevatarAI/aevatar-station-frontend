@@ -1,5 +1,10 @@
+import { request } from "@/api";
 import Add from "@/assets/+.svg?react";
+import Plus from "@/assets/+.svg?react";
 import StepSelect from "@/assets/step_select.svg?react";
+import ProjectEditDialog, {
+  type IProjectEditDialogRef,
+} from "@/components/ProjectEditDialog";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,6 +16,11 @@ import {
   itemHoverClassName,
   itemSelectClassName,
 } from "@/constants/cls";
+import { useNavigate } from "@/hooks/navigate";
+
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
+import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
@@ -19,7 +29,15 @@ import {
 } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+
+export interface Project {
+  id: string;
+  displayName: string;
+  domainName: string;
+  memberCount: number;
+  creationTime: number;
+}
 
 export interface IOriganisactionHeaderProps {
   className?: string;
@@ -28,114 +46,176 @@ export interface IOriganisactionHeaderProps {
 export default function OriganisactionHeader({
   className,
 }: IOriganisactionHeaderProps) {
+  const navigate = useNavigate();
   const [orgOpen, setOrgOpen] = useState<boolean>();
   const [pjtOpen, setPjtOpen] = useState<boolean>();
+  const updateProjectListHandler = useUpdateProjectHandler();
+
+  const setCurrentProject = useSetCurrentProject();
 
   const [organisationList] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
-    CURRENT_ORGANIZATION_ATOM
-  );
-
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
-  const [currentProjectId, setCurrentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
+  const isAdmin = useIsAdmin();
+
+  const [currentOrganisationId, setCurrentOrganisationId] = useAtom(
+    CURRENT_ORGANIZATION_ATOM,
+  );
   const currentOrganisation = useMemo(
-    () => organisationList.find((item) => item.id === currentOrganisationId),
-    [organisationList, currentOrganisationId]
+    () =>
+      organisationList?.find((item: any) => item.id === currentOrganisationId),
+    [organisationList, currentOrganisationId],
   );
 
+  const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
   const currentProject = useMemo(
-    () => projectList.find((item) => item.id === currentProjectId),
-    [projectList, currentProjectId]
+    () =>
+      projectList?.find((project: Project) => project.id === currentProjectId),
+    [projectList, currentProjectId],
   );
+
+  const projectEditDialogRef = useRef<IProjectEditDialogRef>(null);
+
+  // const onCheckProjectService = useCallback(
+  //   async (domainName: string, projectId: string) => {
+  //     setPjtOpen(false);
+  //     setProjectInitialising(true);
+  //     await checkProjectService(domainName);
+  //     setProjectInitialising(false);
+  //     setCurProjectId(projectId);
+
+  //     navigate("/dashboard/workflows");
+  //   },
+  //   [checkProjectService, navigate, setProjectInitialising, setCurProjectId]
+  // );
 
   return (
     <div
       className={clsx(
-        "flex text-[14px] gap-[14px] items-center text-white font-source-code text-[14px] font-normal leading-normal ",
-        className
-      )}>
+        "flex text-[14px] gap-[14px] items-center text-white font-outfit font-normal leading-normal ",
+        className,
+      )}
+    >
       {currentOrganisation ? (
         <Popover open={orgOpen} onOpenChange={setOrgOpen}>
-          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
+          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-black-light">
             {currentOrganisation?.displayName ?? "--"}
             <StepSelect />
           </PopoverTrigger>
-          <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
-            <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[10px] max-h-[300px] scrollbar-hide overflow-auto">
-              {organisationList.map((item) => (
+          <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
+            <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+              {organisationList?.map((item: any) => (
                 <div
                   className={clsx(
                     itemClassName,
                     itemHoverClassName,
-                    currentOrganisationId === item.id && itemSelectClassName
+                    currentOrganisationId === item.id && itemSelectClassName,
                   )}
                   onClick={() => {
                     setCurrentOrganisationId(item.id);
                     setOrgOpen(false);
                   }}
-                  key={item.id}>
+                  key={item.id}
+                >
                   {item.displayName}
                 </div>
               ))}
             </div>
 
-            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] ">
-            <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
-              <Add />
-              create organisation
-            </Button>
-          </div> */}
+            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-black-light">
+              <Button className="text-white w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+                navigate("/profile/organisation/general")
+                setOrgOpen(false)
+              }}>
+                <Add />
+                create organisation
+              </Button>
+            </div> */}
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
+        <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
           No Organisation
         </div>
       )}
       <div>/</div>
 
-      {currentProject ? (
-        <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
-          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-[#303030]">
-            {currentProject?.displayName ?? "--"}
-            <StepSelect />
-          </PopoverTrigger>
-          <PopoverContent className="lg:p-0 lg:pb-[17px] left-[0] lg:-top-[10px] w-[259px]">
-            <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-[0] max-h-[300px] scrollbar-hide overflow-auto">
-              {projectList.map((item) => (
-                <div
-                  className={clsx(
-                    itemClassName,
-                    itemHoverClassName,
-                    currentProject?.id === item.id && itemSelectClassName
-                  )}
-                  onClick={() => {
-                    setCurrentProjectId(item.id);
-                    setPjtOpen(false);
-                  }}
-                  key={item.id}>
-                  {item?.displayName ?? "--"}
-                </div>
-              ))}
+      <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
+        <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-black-light">
+          {currentProject ? (
+            currentProject.displayName
+          ) : (
+            <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
+              No project
             </div>
+          )}
+          <StepSelect />
+        </PopoverTrigger>
+        <PopoverContent className="lg:p-0 lg:pb-[17px] left-0 lg:-top-[10px] w-[259px]">
+          <div className="lg:pt-[9px] lg:pl-[10px] lg:pr-[8px] lg:pb-0 max-h-[300px] scrollbar-hide overflow-auto">
+            {projectList?.map((item: Project) => (
+              <div
+                className={clsx(
+                  itemClassName,
+                  itemHoverClassName,
+                  currentProject?.id === item.id && itemSelectClassName,
+                )}
+                onClick={() => {
+                  setCurrentProject(item.id, item.domainName);
+                  setPjtOpen(false);
+                }}
+                key={item.id}
+              >
+                {item?.displayName ?? "--"}
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-black-light">
+            <Button
+              disabled={!isAdmin}
+              className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${"w-full"}`}
+              onClick={() => projectEditDialogRef.current?.open()}
+            >
+              <Plus />
+              <span>create project</span>
+            </Button>
+            <Button
+              className="text-white w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase"
+              disabled={!isAdmin}
+              onClick={() => {
+                navigate("/profile/organisation/project");
+                setPjtOpen(false);
+              }}
+            >
+              <Add />
+              manage projects
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
 
-            <div className="flex flex-col items-center gap-[10px] justify-center lg:pt-[20px] lg:px-[12px] border-t border-[#303030] hidden">
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
-                <Add />
-                create organisation
-              </Button>
-              <Button className="text-white w-full text-center font-syne text-[12px] font-semibold py-[7px] leading-[14px] lowercase">
-                <Add />
-                create project
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
-      ) : (
-        <div className="text-white font-source-code text-[14px] font-normal leading-[18px] lowercase">
-          No project
-        </div>
-      )}
+      <ProjectEditDialog
+        type="create"
+        ref={projectEditDialogRef}
+        disabled={!isAdmin}
+        showCreateButton={false}
+        fullWidth={true}
+        // onCheckProjectService={onCheckProjectService}
+        onSubmit={async ({ name, domainName }) => {
+          const result = await request.projects.addProject({
+            data: {
+              organizationId: currentOrganisationId,
+              displayName: name,
+              domainName,
+            },
+          });
+
+          await updateProjectListHandler(currentOrganisationId || "");
+          setCurrentProject(result.data.id, result.data.domainName);
+          setPjtOpen(false);
+          navigate("/dashboard/workflows");
+          return { projectId: result.data.id };
+        }}
+      />
     </div>
   );
 }

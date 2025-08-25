@@ -1,6 +1,6 @@
+import { SUCCESS_CODE } from "@/api/constants";
 import type { TDataResponse } from "@/api/types/index";
 import { request } from "..";
-import { sleep } from "@etransfer/utils";
 
 export interface IOrganizationItem {
   id: string;
@@ -10,31 +10,18 @@ export interface IOrganizationItem {
 }
 
 export const getOrganizationList = async (): Promise<IOrganizationItem[]> => {
-  // const result: TDataResponse<{ items: IOrganizationItem[] }> =
-  //   await request.organizations.getUserOrganizations();
-  // if (result.code !== "SUCCESS_CODE") throw result.message;
-  // return result.data.items;
-  await sleep(1000);
-  return [
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      displayName: "orgName",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6aa",
-      displayName: "orgName name",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66aafa6aa",
-      displayName: "orgName name name",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-  ];
+  const result: TDataResponse<{ items: IOrganizationItem[] }> =
+    await request.organizations.getUserOrganizations();
+  if (result.code !== SUCCESS_CODE) throw result.message;
+  return result.data.items;
+};
+
+export const createOrganization = async (
+  displayName: string,
+): Promise<IOrganizationItem> => {
+  const result: TDataResponse<IOrganizationItem> =
+    await request.organizations.createOrganization({ data: { displayName } });
+  return result.data;
 };
 
 export interface IProjectItem {
@@ -46,70 +33,33 @@ export interface IProjectItem {
 }
 
 export const getProjectList = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IProjectItem[]> => {
-  await sleep(1000);
-  return [
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      displayName: "projectName",
-      domainName: "string",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa61",
-      displayName: "projectName name",
-      domainName: "string",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa62",
-      displayName: "projectName name name",
-      domainName: "string",
-      memberCount: 0,
-      creationTime: Date.now(),
-    },
-  ];
-  // const result: TDataResponse<{ items: IProjectItem[] }> =
-  //   await request.organizations.getUserOrganizations({
-  //     params: {
-  //       organizationId,
-  //     },
-  //   });
-  // if (result.code !== "SUCCESS_CODE") throw result.message;
-  // return result.data.items;
+  const result: TDataResponse<{ items: IProjectItem[] }> =
+    await request.projects.getUserProject({
+      params: {
+        organizationId,
+      },
+    });
+  if (result.code !== SUCCESS_CODE) throw result.message;
+  return result.data.items;
 };
 
 export interface IPermissionsItem {
   name: string;
+  displayName: string;
+  parentName?: null | string;
+  isGranted: boolean;
+  allowedProviders: any[];
+  grantedProviders: any[];
 }
 
 export const getOrganizationPermissions = async (organizationId: string) => {
-  // const result: TDataResponse<{ items: IPermissionsItem[] }> =
-  //   await request.organizations.getOrganizationPermissions({
-  //     query: organizationId,
-  //   });
-  // return result.data?.items;
-  await sleep(3000);
-  return [
-    {
-      name: "create",
-    },
-    {
-      name: "edit",
-    },
-    {
-      name: "delete",
-    },
-    {
-      name: "memberAdd",
-    },
-    {
-      name: "memberDelete",
-    },
-  ];
+  const result: TDataResponse<{ items: IPermissionsItem[] }> =
+    await request.organizations.getOrganizationPermissions({
+      query: organizationId,
+    });
+  return result.data?.items;
 };
 
 export enum InvitationStatus {
@@ -120,89 +70,80 @@ export enum InvitationStatus {
 
 export interface IRoles {
   organizationId: string;
-  roleId: string;
-  roleName: string;
+  id: string;
+  name: string;
+}
+
+export enum IMemberStatus {
+  joined = 0,
+  pending = 1,
+  refused = 2,
 }
 
 export interface IMemberItem {
   id: string;
   userName: string;
-
   email: string;
-
   roleId: string | null;
+  status?: IMemberStatus;
 }
 
 export const getOrganizationMembers = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IMemberItem[]> => {
-  // const result: TDataResponse<{ items: IMemberItem[] }> =
-  //   await request.organizations.getOrganizationMembers({
-  //     query: organizationId,
-  //   });
-  // return result.data?.items ?? [];
-  return [
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      userName: "string",
-      email: "axxx.ss@cxx.com",
-      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
-      userName: "string1",
-      email: "ss.ss@a.cxx",
-      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
-      userName: "string1",
-      email: "aaa.ss@xx.xx",
-      roleId: null,
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66af1a6",
-      userName: "string1",
-      email:  "aaa.ss@xx.xxs",
-      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-    },
-  ];
+  const result: TDataResponse<{ items: IMemberItem[] }> =
+    await request.organizations.getOrganizationMembers({
+      query: organizationId,
+    });
+  return result.data?.items ?? [];
 };
 
 export interface IRoleItem {
-  roleName: string;
-  roleId: string;
+  name: string;
+  id: string;
 }
 
 export const getOrganizationRoles = async (
-  organizationId: string
+  organizationId: string,
 ): Promise<IRoleItem[]> => {
-  // const result: TDataResponse<{ items: IRoleItem[] }> =
-  //   await request.organizations.getOrganizationRoles({
-  //     query: organizationId,
-  //   });
-  // return result.data.items;
-  return [
-    {
-      roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      roleName: "owner",
-    },
-    {
-      roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-      roleName: "member",
-    },
-  ];
+  const result: TDataResponse<{ items: IRoleItem[] }> =
+    await request.organizations.getOrganizationRoles({
+      query: organizationId,
+    });
+  return result.data.items;
 };
 
-// roles: [
-//   {
-//     organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//     roleId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//     roleName: "owner",
-//   },
-//   {
-//     organizationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//     roleId: "fa85f64-5717-4562-b3fc-2c963f66a",
-//     roleName: "member",
-//   },
-// ],
+export interface IRolePermissionsItem {
+  name: string;
+  displayName: string;
+  parentName?: string | null;
+  isGranted?: boolean;
+  allowedProviders: string[];
+  grantedProviders: { providerName: string; providerKey: string }[];
+}
+
+export interface IRolePermissionGroupsItem {
+  name: string;
+  displayName: string;
+  displayNameKey: string;
+  displayNameResource: string;
+  permissions: IRolePermissionsItem[];
+}
+
+export interface IRolePermission {
+  entityDisplayName: string;
+  groups: IRolePermissionGroupsItem[];
+}
+
+export const getOrganizationRolesPermission = async (
+  organizationId: string,
+  params: { providerName: string; providerKey: string },
+): Promise<IRolePermission> => {
+  const result: TDataResponse<IRolePermission> =
+    await request.organizations.getOrganizationRolePermissions({
+      query: organizationId,
+      params,
+    });
+
+  return result.data;
+};

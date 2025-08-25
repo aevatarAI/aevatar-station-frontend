@@ -1,3 +1,5 @@
+import Edit from "@/assets/edit_action.svg?react";
+import Loading from "@/assets/loading.svg?react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,21 +17,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import {
-  editKeyApiForm,
   type TEditApiKeyForm,
+  editKeyApiForm,
 } from "@/constants/form/editKeyApi";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Edit from "@/assets/edit_action.svg?react";
-import clsx from "clsx";
-import Loading from "@/assets/loading.svg?react";
-import { sleep } from "@etransfer/utils";
-import { useToast } from "@/hooks/use-toast";
+interface EditApiKeyDialogProps {
+  name: string;
+  disabled?: boolean;
+  onYes: (name: string) => Promise<void>;
+}
 
-export default function EditApiKeyDialog() {
+export default function EditApiKeyDialog({
+  name,
+  disabled,
+  onYes,
+}: EditApiKeyDialogProps) {
   const form = useForm<TEditApiKeyForm>({
     resolver: zodResolver(editKeyApiForm),
   });
@@ -39,9 +46,8 @@ export default function EditApiKeyDialog() {
 
   const onSubmit = useCallback(
     async (values: TEditApiKeyForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
-      await sleep(2000);
+      onYes(values.name);
       setBtnLoading(false);
       setOpen(false);
       toast({
@@ -49,7 +55,7 @@ export default function EditApiKeyDialog() {
         description: "successfully saved",
       });
     },
-    [toast]
+    [toast, onYes],
   );
 
   useEffect(() => {
@@ -58,12 +64,17 @@ export default function EditApiKeyDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Edit className="cursor-pointer" />
-      </DialogTrigger>
+      {disabled ? (
+        <Edit className="opacity-50" />
+      ) : (
+        <DialogTrigger asChild>
+          <Edit className="cursor-pointer" />
+        </DialogTrigger>
+      )}
       <DialogContent
         aria-describedby="edit api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             edit api key
@@ -80,7 +91,11 @@ export default function EditApiKeyDialog() {
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">name of the key</FormLabel>
                     <FormControl>
-                      <Input placeholder="name" {...field} />
+                      <Input
+                        placeholder="name"
+                        {...field}
+                        defaultValue={name}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -89,16 +104,18 @@ export default function EditApiKeyDialog() {
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       key={"save"}

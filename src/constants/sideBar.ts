@@ -1,5 +1,9 @@
 export const TAB_LIST = [
   "apikeys",
+  "usage",
+  "g-agents",
+  "workflows",
+  "configuration",
   "general",
   "notifications",
   "member",

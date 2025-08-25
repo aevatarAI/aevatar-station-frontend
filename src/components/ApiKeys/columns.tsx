@@ -1,14 +1,16 @@
+import dayjs from "@/api/dayjs";
 import Copy from "@/components/Copy";
-import { shortenString } from "@/lib/text";
+import { shortenString } from "@/utils/helpers";
 import type { ColumnDef } from "@tanstack/react-table";
-import dayjs from "dayjs";
 
 export interface IApiKeysList {
   id: string;
-  name: string;
-  apiKeys: string;
-  createdTime: number | string;
-  createdBy: string;
+  projectId: string;
+  appName: string;
+  appId: string;
+  appSecret: string;
+  createTime: number | string;
+  creatorName: string;
   isEdit?: boolean;
   isRemove?: boolean;
 }
@@ -20,42 +22,61 @@ export interface IApiKeysListTable extends IApiKeysList {
 
 export const columns: ColumnDef<IApiKeysListTable>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "appName",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
-        {row.original.name}
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px]">
+        {row.original.appName}
       </div>
     ),
   },
   {
-    id: "apiKeys",
-    header: "api keys",
+    accessorKey: "appId",
+    header: "client id",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code pr-[20px] md:pr-[30px]">
-        <span>{shortenString(row.original.apiKeys)}</span>
+      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+        <span>{row.original.appId}</span>
         <Copy
-          toCopy={row.original.apiKeys}
-          className="text-[#606060] hover:text-white"
+          description="client id copied"
+          toCopy={row.original.appId}
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),
   },
   {
-    accessorKey: "createdTime",
-    header: "created",
+    id: "appSecret",
+    header: "api key",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-source-code">
-        {dayjs(row.original.createdTime).format("DD/MM/YYYY HH:mm")}
+      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+        <span>{shortenString(row.original.appSecret)}</span>
+        <Copy
+          description="api key copied"
+          toCopy={row.original.appSecret}
+          className="text-gray-deep hover:text-white"
+        />
       </div>
     ),
   },
   {
-    accessorKey: "createdBy",
-    header: "created by",
+    accessorKey: "createTime",
+    header: "created",
     cell: ({ row }) => (
-      <div className="text-[15px] font-semibold">{row.original.createdBy}</div>
+      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+        {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
+      </div>
     ),
+  },
+  {
+    accessorKey: "creatorName",
+    header: "created by",
+    cell: ({ row }) => {
+      return (
+        <div className="min-w-[125px] text-[14px] font-semibold">
+          {row.original.creatorName || "Unknown"}
+        </div>
+      );
+    },
   },
   {
     id: "operation",

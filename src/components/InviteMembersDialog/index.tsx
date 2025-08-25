@@ -19,24 +19,24 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
+import Loading from "@/assets/loading.svg?react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Loading from "@/assets/loading.svg?react";
-import clsx from "clsx";
 
 import {
-  inviteMembersForm,
   type TInviteMembersKeyForm,
+  inviteMembersForm,
 } from "@/constants/form/inviteMembers";
-import { useAtom } from "jotai";
 import { CURRENT_ORGANIZATION_ROLE_ATOM } from "@/state/atoms/organisation";
+import { useAtom } from "jotai";
 
 export default function InviteMembersDialog({
   defaultRole,
@@ -58,30 +58,35 @@ export default function InviteMembersDialog({
 
   const onSubmit = useCallback(
     async (values: TInviteMembersKeyForm) => {
-      console.log(values, "values===");
       setBtnLoading(true);
       await onAddMember(values);
       setBtnLoading(false);
       setOpen(false);
     },
-    [onAddMember]
+    [onAddMember],
   );
 
   useEffect(() => {
-    open && form.reset();
-  }, [form, open]);
+    if (open) {
+      form.reset({
+        email: "",
+        role: defaultRole,
+      });
+    }
+  }, [form, open, defaultRole]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[12px] font-semibold leading-[14px]">
+        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
           <Plus />
           <span>add new member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[#303030]">
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+      >
         <DialogHeader>
           <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
             invite team members
@@ -113,22 +118,24 @@ export default function InviteMembersDialog({
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
-                      onValueChange={field.onChange}>
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger aria-disabled={field?.disabled}>
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="w-[286px] left-0 -top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                      <SelectContentHypotenuse wrapperClassName="w-[286px] left-0 -top-[4px]">
                         {roleList.map((item) => (
                           <SelectItem
-                            className="text-[14px]"
-                            key={item.roleId}
-                            value={item.roleId}>
-                            {item.roleName}
+                            key={item.id}
+                            value={item.id}
+                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[16px]"
+                          >
+                            {item.name.split("_")[1]}
                           </SelectItem>
                         ))}
-                      </SelectContent>
+                      </SelectContentHypotenuse>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -142,12 +149,12 @@ export default function InviteMembersDialog({
                   <FormItem className="flex gap-[8px] items-center -mt-[12px]">
                     <FormControl>
                       <Checkbox
-                        className="border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#606060] data-[state=checked]:border-[#606060]"
+                        className="border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-deep data-[state=checked]:border-gray-deep"
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="font-normal mb-0 !mt-0">
+                    <FormLabel className="font-normal mb-0 mt-0!">
                       invite to default project
                     </FormLabel>
                   </FormItem>
@@ -156,16 +163,18 @@ export default function InviteMembersDialog({
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
-                  className="text-[12px] py-[7px] leading-[14px]"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
-                  }}>
+                  }}
+                >
                   cancel
                 </Button>
                 <Button
-                  className="text-[12px] bg-white text-[#303030] py-[7px] leading-[14px]"
-                  type="submit">
+                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  type="submit"
+                >
                   {btnLoading && (
                     <Loading
                       className={clsx("aevatarai-loading-icon")}

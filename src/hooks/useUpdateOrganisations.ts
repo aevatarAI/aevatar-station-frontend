@@ -1,45 +1,68 @@
 import { getOrganizationList, getProjectList } from "@/api/utils/organization";
 import { useToast } from "@/hooks/use-toast";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_PROJECT_ATOM,
   ORGANIZATIONS_LIST_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@etransfer/utils";
+import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
 
-export const useUpdateOrganisations = () => {
-  const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
-  const [curOrg, setCurOrganisations] = useAtom(CURRENT_ORGANIZATION_ATOM);
+export const useUpdateProjectHandler = () => {
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
   const [curProject, setCurProject] = useAtom(CURRENT_PROJECT_ATOM);
   const { toast } = useToast();
+  const setCurrentProject = useSetCurrentProject();
 
-  const updateProjectList = useCallback(
+  return useCallback(
     async (id: string) => {
       try {
         const list = await getProjectList(id);
+        if (!list.length) {
+          setProjectList(list);
+          setCurProject(null);
+          return;
+        }
         const isSome = list.some((item) => item.id === curProject);
 
         const curId = isSome && curProject ? curProject : list[0].id;
+
         setProjectList(list);
-        if (!curProject) setCurProject(curId);
+        if (!isSome)
+          setCurrentProject(
+            curId,
+            list.find((item) => item.id === curId)?.domainName || "",
+          );
       } catch (error) {
         toast({
           description: handleErrorMessage(error, "fetch Project error"),
         });
       }
     },
-    [setProjectList, setCurProject, toast, curProject]
+    [setProjectList, setCurProject, setCurrentProject, toast, curProject],
   );
+};
 
-  const updateOrganizationList = useCallback(async () => {
+export const useUpdateOrganisationsHandler = () => {
+  const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
+  const [curOrg, setCurOrganisations] = useAtom(CURRENT_ORGANIZATION_ATOM);
+
+  const { toast } = useToast();
+
+  const updateProjectList = useUpdateProjectHandler();
+
+  return useCallback(async () => {
     try {
       const list = await getOrganizationList();
-      setOrganisations(list);
 
+      setOrganisations(list);
+      if (!list.length) {
+        setCurOrganisations(null);
+        return;
+      }
       const isSome = list.some((item) => item.id === curOrg);
       const curId = isSome && curOrg ? curOrg : list[0].id;
       if (!isSome) setCurOrganisations(curId);
@@ -50,6 +73,10 @@ export const useUpdateOrganisations = () => {
       });
     }
   }, [curOrg, setOrganisations, setCurOrganisations, toast, updateProjectList]);
+};
+
+export const useUpdateOrganisations = () => {
+  const updateOrganizationList = useUpdateOrganisationsHandler();
 
   useEffect(() => {
     updateOrganizationList();

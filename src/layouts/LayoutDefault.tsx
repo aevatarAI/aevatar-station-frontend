@@ -1,4 +1,9 @@
-import "@fontsource/source-code-pro";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import "@fontsource/outfit";
 import "@fontsource/syne";
 import "@fontsource/syne/600.css";
 import "@fontsource/syne/700.css";
@@ -11,7 +16,9 @@ import Loading from "@/components/Loading";
 import { Toaster } from "@/components/ui/toaster";
 import type React from "react";
 
-import ProviderComponent from "@/components/providers/webProvider";
+import RestartPodServer from "@/components/ RestartPodServer";
+
+const queryClient = new QueryClient();
 
 export default function LayoutDefault({
   children,
@@ -19,12 +26,15 @@ export default function LayoutDefault({
   children: React.ReactNode;
 }) {
   return (
-    <ProviderComponent>
+    <QueryClientProvider client={queryClient}>
+      {/* <ProviderComponent> */}
       <div>
-        <div className="flex-grow">{children}</div>
+        <div className="grow">{children}</div>
         <Loading />
         <Toaster />
+        <RestartPodServer />
       </div>
-    </ProviderComponent>
+      {/* </ProviderComponent> */}
+    </QueryClientProvider>
   );
 }

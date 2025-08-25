@@ -1,3 +1,12 @@
+import {
+  AtomicAevatarType,
+  type TAtomicAevatar,
+  TELEGRAM_ABILITIES,
+  TWITTER_ABILITIES,
+  formSchema,
+} from "@//assets/schema/atomic-aevatar";
+import { cn } from "@//lib/utils";
+import { atomicAevatarAtom } from "@//state/atoms";
 import CloudIcon from "@/assets/cloud.svg?react";
 import MinusIcon from "@/assets/minus.svg?react";
 import PlusIcon from "@/assets/plus.svg?react";
@@ -28,21 +37,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@//lib/utils";
-import {
-  AtomicAevatarType,
-  type TAtomicAevatar,
-  TELEGRAM_ABILITIES,
-  TWITTER_ABILITIES,
-  formSchema,
-} from "@//assets/schema/atomic-aevatar";
-import { atomicAevatarAtom } from "@//state/atoms";
+import { useNavigate } from "@/hooks/navigate";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 import Dropzone from "react-dropzone";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useNavigate } from "@/hooks/navigate";
 
 interface ICreateFormProps {
   name?: string;
@@ -96,7 +96,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
 
   const existingItem = useMemo(
     () => atomicAevatars.find((a) => a.name === name),
-    [name, atomicAevatars]
+    [name, atomicAevatars],
   );
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col lg:flex-row gap-[19px]">
           <div className="flex-1">
-            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[15px] font-semibold font-syne pt-[9px] px-[10px] pb-[8px]">
+            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[14px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
               Atomic-Aevatars Type
             </h2>
             <Card className="cutCorner__white w-full">
@@ -127,7 +127,8 @@ export default function CreateForm({ name }: ICreateFormProps) {
                       <Select
                         value={field.value}
                         disabled={field.disabled}
-                        onValueChange={field.onChange}>
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Type" />
@@ -167,7 +168,7 @@ export default function CreateForm({ name }: ICreateFormProps) {
             </Card>
           </div>
           <div className="flex-1">
-            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[15px] font-semibold font-syne pt-[9px] px-[10px] pb-[8px]">
+            <h2 className="bg-white mb-[13px] block w-full border border-solid border-[#303030] text-black text-[14px] font-semibold font-outfit pt-[9px] px-[10px] pb-[8px]">
               Details
             </h2>
             <Card className="cutCorner__white w-full">
@@ -182,7 +183,8 @@ export default function CreateForm({ name }: ICreateFormProps) {
                           <FormLabel>Model Provider</FormLabel>
                           <Select
                             value={field.value}
-                            onValueChange={field.onChange}>
+                            onValueChange={field.onChange}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Model Provider" />
@@ -272,16 +274,18 @@ export default function CreateForm({ name }: ICreateFormProps) {
                               });
                             }}
                             multiple={true}
-                            maxSize={5000000}>
+                            maxSize={5000000}
+                          >
                             {({ getRootProps, getInputProps }) => (
                               <div
                                 {...getRootProps({
                                   className: cn(
-                                    "border py-[17px] flex items-center justify-center cursor-pointer"
+                                    "border py-[17px] flex items-center justify-center cursor-pointer",
                                   ),
-                                })}>
+                                })}
+                              >
                                 <input {...getInputProps()} />
-                                <p className="font-pro text-[11px] text-[#606060] flex gap-4 items-center">
+                                <p className="font-outfit text-[12px] text-[#606060] flex gap-4 items-center">
                                   <CloudIcon />
                                   Click to upload (PDF)
                                 </p>
@@ -296,8 +300,9 @@ export default function CreateForm({ name }: ICreateFormProps) {
                       {fields.map((field, index) => (
                         <div
                           key={field.id}
-                          className="flex mb-[10px] justify-between">
-                          <div className="font-pro text-[11px] text-[#606060]">
+                          className="flex mb-[10px] justify-between"
+                        >
+                          <div className="font-outfit text-[12px] text-[#606060]">
                             {field.name}
                           </div>
                           <MinusIcon onClick={() => remove(index)} />
@@ -346,7 +351,8 @@ export default function CreateForm({ name }: ICreateFormProps) {
                             <ToggleGroup
                               {...field}
                               type="multiple"
-                              onValueChange={(value) => field.onChange(value)}>
+                              onValueChange={(value) => field.onChange(value)}
+                            >
                               {(type === AtomicAevatarType.Telegram
                                 ? TELEGRAM_ABILITIES
                                 : TWITTER_ABILITIES
@@ -354,7 +360,8 @@ export default function CreateForm({ name }: ICreateFormProps) {
                                 <ToggleGroupItem
                                   key={ability}
                                   value={ability}
-                                  aria-label={ability}>
+                                  aria-label={ability}
+                                >
                                   {ability}
                                 </ToggleGroupItem>
                               ))}
@@ -379,7 +386,8 @@ export default function CreateForm({ name }: ICreateFormProps) {
                   <TooltipTrigger asChild>
                     <Button
                       className="min-w-[183px] flex mt-[9px] text-[#606060] border-[#606060] hover:bg-inherit hover:text-[#606060] cursor-not-allowed"
-                      type="button">
+                      type="button"
+                    >
                       <WarningIcon /> Delete
                     </Button>
                   </TooltipTrigger>

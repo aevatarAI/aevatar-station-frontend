@@ -1,40 +1,42 @@
+import { request } from "@/api";
 import {
-  getOrganizationMembers,
   type IMemberItem,
+  IMemberStatus,
+  getOrganizationMembers,
 } from "@/api/utils/organization";
-import InviteMembersDialog from "@/components/InviteMembersDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
+import InviteMembersDialog from "@/components/InviteMembersDialog";
 import { columns } from "@/components/OrganisationMember/columns";
 import {
   Select,
-  SelectContent,
+  SelectContentHypotenuse,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { textGradient } from "@/constants/cls";
 import { useToast } from "@/hooks/use-toast";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
 import {
   CURRENT_ORGANIZATION_ATOM,
   CURRENT_ORGANIZATION_ROLE_ATOM,
   ORGANIZATION_MEMBER_ATOM,
 } from "@/state/atoms/organisation";
-import { handleErrorMessage, sleep } from "@etransfer/utils";
+import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { request } from "@/api";
 
 export default function OrganisationMember() {
-  const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
-  const [loading, setLoading] = useState<boolean>();
-  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>();
+  const [memberList, setMemberList] = useAtom(ORGANIZATION_MEMBER_ATOM);
+  const [organizationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const [roleList] = useAtom(CURRENT_ORGANIZATION_ROLE_ATOM);
-
-  const userPermissions = useUserPermissions();
+  const userPermissions = useOrgPermissions();
+  const [profile] = useAtom(USER_PROFILE_ATOM);
 
   const getMembers = useCallback(async () => {
     try {
@@ -58,39 +60,19 @@ export default function OrganisationMember() {
   const onChangeRole = useCallback(
     async (userId: string, roleId: string) => {
       try {
+        if (!organizationId) return;
+
         await request.organizations.editOrganizationRoles({
+          query: organizationId,
+
           data: {
             userId,
             roleId,
           },
         });
         toast({
-          description: "Successfully",
+          description: "successfully saved",
         });
-      } catch (error) {
-        toast({
-          description: handleErrorMessage(error),
-        });
-      }
-    },
-    [toast]
-  );
-
-  const onSetMember = useCallback(
-    async (email: string, join: boolean, roleId: string) => {
-      try {
-        const result = await request.organizations.editOrganizationMembers({
-          data: {
-            email,
-            join,
-            roleId,
-          },
-        });
-        console.log(result, "result==");
-        toast({
-          description: `successfully ${join ? "invited" : "removed"}`,
-        });
-        await sleep(1000);
         getMembers();
       } catch (error) {
         toast({
@@ -98,7 +80,41 @@ export default function OrganisationMember() {
         });
       }
     },
-    [toast, getMembers]
+    [organizationId, toast, getMembers],
+  );
+
+  const onSetMember = useCallback(
+    async (email: string, join: boolean, roleId: string) => {
+      try {
+        if (!organizationId) return;
+        await request.organizations.editOrganizationMembers({
+          query: organizationId,
+          data: {
+            email,
+            join,
+            roleId,
+          },
+        });
+
+        toast({
+          description: `successfully ${join ? "invited" : "removed"}`,
+        });
+        getMembers();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error),
+        });
+      }
+    },
+    [organizationId, toast, getMembers],
+  );
+
+  const getRoleName = useCallback(
+    (roleId: string) =>
+      roleList
+        .find((roleItem) => roleItem.id === roleId)
+        ?.name?.split("_")[1] ?? "--",
+    [roleList],
   );
 
   const tableData = useMemo(
@@ -107,32 +123,41 @@ export default function OrganisationMember() {
         ...item,
         role: (
           <>
-            {item.roleId ? (
+            {!userPermissions?.organizationMembersManage ||
+            item.email === profile?.email ||
+            item.status !== IMemberStatus.joined ? (
+              <div className="text-[13px] font-outfit font-semibold lowercase">
+                {item.roleId && getRoleName(item.roleId)}
+                {item.status === IMemberStatus.refused && "rejected"}
+                {item.status === IMemberStatus.pending && "invite pending"}
+              </div>
+            ) : (
               <Select
-                value={item.roleId}
-                onValueChange={(v) => onChangeRole(item.id, v)}>
+                value={item.roleId ?? ""}
+                onValueChange={(v) => onChangeRole(item.id, v)}
+              >
                 <SelectTrigger className="border-none p-0 justify-start items-center bg-transparent">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="w-[193px] left-[0] -left-[70px] top-[4px] py-[16px] px-[22px] cutCorner cutCorner__white">
+                <SelectContentHypotenuse wrapperClassName="w-[193px] left-0 -left-[70px] top-[4px]">
                   {roleList.map((roleItem) => (
                     <SelectItem
-                      className="text-[14px]"
-                      key={roleItem.roleId}
-                      value={roleItem.roleId}>
-                      {roleItem.roleName}
+                      className="text-[16px]"
+                      key={roleItem.id}
+                      value={roleItem.id}
+                    >
+                      {roleItem.name.split("_")[1]}
                     </SelectItem>
                   ))}
-                </SelectContent>
+                </SelectContentHypotenuse>
               </Select>
-            ) : (
-              <div className="text-[12px] font-syne font-semibold">invite pending</div>
             )}
           </>
         ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {userPermissions.memberDelete ? (
+            {userPermissions.organizationMembersManage &&
+            item.email !== profile?.email ? (
               <DeleteDialog
                 onYes={() => onSetMember(item.email, false, item.roleId || "")}
                 title={"Are you sure you want to delete the member?"}
@@ -146,16 +171,24 @@ export default function OrganisationMember() {
           </div>
         ),
       })),
-    [memberList, userPermissions, roleList, onSetMember, onChangeRole]
+    [
+      memberList,
+      userPermissions,
+      roleList,
+      profile,
+      getRoleName,
+      onSetMember,
+      onChangeRole,
+    ],
   );
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>Organisation name members</div>
-        {userPermissions.memberAdd ? (
+        <div className={clsx(textGradient)}>Organisation members</div>
+        {userPermissions.organizationMembersManage ? (
           <InviteMembersDialog
-            defaultRole={roleList[0]?.roleId}
+            defaultRole={roleList[0]?.id}
             onAddMember={(values) =>
               onSetMember(values.email, true, values.role)
             }

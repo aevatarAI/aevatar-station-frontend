@@ -17,11 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { sendResetPasswordEmail } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -64,19 +63,19 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[12px] cursor-pointer font-source-code">
+        <span className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light">
           forgot password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline">
-            forgot Password?
+          <DialogTitle className="text-gradient inline mt-[4px]">
+            forgot password?
           </DialogTitle>
         </DialogHeader>
         {isSubmitted ? (
           <div>
-            <DialogDescription className="mb-7 font-source-code">
+            <DialogDescription className="mb-7 font-outfit">
               an account recovery email has been sent. if you don’t see it in 15
               minutes, check your junk folder and mark it as ‘not junk’.
             </DialogDescription>
@@ -84,14 +83,17 @@ const ForgotPasswordDialog = () => {
               <DialogClose asChild>
                 <Button
                   type="button"
-                  className="text-white text-[12px] px-[16px] py-[8px]"
+                  className="text-white text-[13px] px-[16px] py-[8px]"
                 >
-                  back to Login
+                  back to login
                 </Button>
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-white text-black-light text-[12px] px-[16px] py-[8px]"
+                className={`bg-white text-black-light text-[13px] px-[16px] py-[8px] ${
+                  loading ? "opacity-50" : "opacity-100"
+                }`}
+                onClick={form.handleSubmit(onSubmit)}
               >
                 resend password
               </Button>
@@ -115,7 +117,7 @@ const ForgotPasswordDialog = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="block text-[12px] font-semibold">
+                        <FormLabel className="block text-[13px] font-semibold">
                           email address
                         </FormLabel>
                         <FormControl>
@@ -138,17 +140,18 @@ const ForgotPasswordDialog = () => {
                   <DialogClose asChild>
                     <Button
                       type="button"
-                      className="text-white text-[12px] px-[16px] py-[8px]"
+                      className="text-white text-[13px] px-[16px] py-[8px]"
                     >
-                      back to Login
+                      back to login
                     </Button>
                   </DialogClose>
                   <Button
+                    formNoValidate
                     type="submit"
-                    className="bg-white text-[12px] text-black-light px-[16px] py-[8px]"
+                    className="bg-white text-[13px] text-black-light px-[16px] py-[8px]"
                     disabled={loading}
                   >
-                    Submit
+                    submit
                   </Button>
                 </div>
               </form>

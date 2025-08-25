@@ -1,83 +1,111 @@
+import { request } from "@/api";
+import { type IRoleItem, getOrganizationRoles } from "@/api/utils/organization";
 import CreateRoleDialog from "@/components/CreateRoleDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 
-import { columns, type IRoleList } from "@/components/OrganisationRole/columns";
+import { columns } from "@/components/OrganisationRole/columns";
 import PermissionManagerDialog from "@/components/PermissionManagerDialog";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import type { TFlatPermission } from "@/components/PermissionManagerInnerDialog";
 import { textGradient } from "@/constants/cls";
 import type { TCreateRoleForm } from "@/constants/form/createRole";
-import { sleep } from "@etransfer/utils";
+import { useToast } from "@/hooks/use-toast";
+import { useOrgPermissions } from "@/hooks/useOrgPermissions";
+import {
+  CURRENT_ORGANIZATION_ATOM,
+  CURRENT_ORGANIZATION_ROLE_ATOM,
+} from "@/state/atoms/organisation";
+import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
+import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationRole() {
-  const [roleList, setRoleList] = useState<IRoleList[]>([]);
+  const [roleList, setOrganisationRoles] = useAtom(
+    CURRENT_ORGANIZATION_ROLE_ATOM,
+  );
   const [loading, setLoading] = useState<boolean>();
+  const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
+  const userPermissions = useOrgPermissions();
+  const { toast } = useToast();
+  const getRoleList = useCallback(async () => {
+    try {
+      if (!currentOrganisationId) return;
+      setLoading(true);
+      const result = await getOrganizationRoles(currentOrganisationId);
+      setOrganisationRoles(result);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+
+      toast({
+        description: handleErrorMessage(error, "get roles list"),
+      });
+    }
+  }, [currentOrganisationId, toast, setOrganisationRoles]);
 
   useEffect(() => {
-    setLoading(true);
-    sleep(1000).then(() => {
-      setRoleList([
-        {
-          id: "1",
-          role: "name",
-          isRemove: true,
-        },
-        {
-          id: "2",
-          role: "name22222222222",
-          isRemove: false,
-        },
-        {
-          id: "3",
-          role: "name22223332222222",
-          isRemove: true,
-        },
-        {
-          id: "4",
-          role: "name22223332222222",
-          isRemove: false,
-        },
-      ]);
-      setLoading(false);
-    });
-  }, []);
+    getRoleList();
+  }, [getRoleList]);
 
-  const onDeleteYes = useCallback(async () => {
-    await sleep(1000);
-  }, []);
+  const onDeleteYes = useCallback(
+    async (id: string) => {
+      try {
+        if (!currentOrganisationId) return;
 
-  const onPermissionSave = useCallback(async (id: string, value: any) => {
-    console.log(id, value);
-    await sleep(1000);
-  }, []);
+        await request.organizations.deleteOrganizationRoles({
+          query: `${currentOrganisationId}/roles/${id}`,
+        });
+        toast({
+          description: "Successfully deleted",
+        });
+        getRoleList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "get roles list"),
+        });
+      }
+    },
+    [currentOrganisationId, toast, getRoleList],
+  );
+  const onPermissionSave = useCallback(
+    async (item: IRoleItem, values: TFlatPermission[]) => {
+      if (!currentOrganisationId) return;
+      await request.organizations.setOrganizationRolePermissions({
+        query: currentOrganisationId,
+        params: {
+          providerName: "R",
+          providerKey: item.name,
+        },
+        data: {
+          permissions: values,
+        },
+      });
+    },
+    [currentOrganisationId],
+  );
 
   const tableData = useMemo(
     () =>
       roleList.map((item) => ({
         ...item,
-        organisationRole: (
-          <PermissionManagerDialog
-            onSave={(v) => onPermissionSave(item.id, v)}
-          />
-        ),
+        organisationRole:
+          item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
+            <PermissionManagerDialog
+              readonly={!userPermissions?.roleEdit}
+              roleName={item.name}
+              onSave={(v) => onPermissionSave(item, v)}
+            />
+          ) : (
+            <span />
+          ),
         operation: (
           <div className="flex items-center justify-between gap-[7px] pl-[20px]">
-            {item.isRemove ? (
+            {userPermissions.roleDelete &&
+            item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
               <DeleteDialog
-                onYes={onDeleteYes}
+                onYes={() => onDeleteYes(item.id)}
                 title={"Are you sure you want to delete the role?"}
-                description={
-                  "*Once deleted, the existing role will become invalid."
-                }
               />
             ) : (
               <span />
@@ -85,19 +113,38 @@ export default function OrganisationRole() {
           </div>
         ),
       })),
-    [roleList, onDeleteYes, onPermissionSave]
+    [roleList, userPermissions, onDeleteYes, onPermissionSave],
   );
 
-  const onCreate = useCallback(async (values: TCreateRoleForm) => {
-    console.log(values, "values===");
-    await sleep(1000);
-  }, []);
+  const onCreate = useCallback(
+    async (values: TCreateRoleForm) => {
+      try {
+        if (!currentOrganisationId) return;
+        await request.organizations.addOrganizationRoles({
+          query: currentOrganisationId,
+          data: {
+            name: values.roleName,
+          },
+        });
+        getRoleList();
+      } catch (error) {
+        toast({
+          description: handleErrorMessage(error, "create role error"),
+        });
+      }
+    },
+    [currentOrganisationId, toast, getRoleList],
+  );
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>Organisation name roles</div>
-        <CreateRoleDialog onCreate={onCreate} />
+        <div className={clsx(textGradient)}>Organisation roles</div>
+        {userPermissions?.roleCreate ? (
+          <CreateRoleDialog onCreate={onCreate} />
+        ) : (
+          <span />
+        )}
       </div>
       <DataTable
         className={clsx(!loading && roleList.length && "min-w-[600px]")}

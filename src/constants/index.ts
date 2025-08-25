@@ -1,1 +1,15 @@
 export const reduxStorageRoot = "root";
+export const WEBSOCKET_URL = "ws://localhost:8080";
+
+export const INVITED = 0;
+export const DEFAULT = 0;
+export const NOTIFIED = 1;
+export const EXPIRED = 5;
+
+export const NONE = 0;
+export const ACCEPTED = 1;
+export const DECLINED = 2;
+export const READ = 3;
+export const IGNORED = 4;
+
+export const FIFTEEN_MB = 15 * 1024 * 1024;

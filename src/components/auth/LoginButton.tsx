@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { loadingAtom } from "@/state/atoms";
+import { handleErrorMessage } from "@/utils/error";
 import { useConnectWallet } from "@aelf-web-login/wallet-adapter-react";
-import { handleErrorMessage } from "@etransfer/utils";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
 
@@ -15,8 +15,7 @@ export default function LoginButton() {
 
   const doLogin = useCallback(async () => {
     try {
-      const result = await connectWallet();
-      console.log("connectWallet===", result);
+      await connectWallet();
 
       navigate("/auth/atomic");
     } catch (e) {

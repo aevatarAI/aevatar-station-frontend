@@ -1,5 +1,7 @@
 import { service } from "@/api/axios";
 import Layout from "@/app/Account/Layout";
+import GithubIcon from "@/assets/github.svg?react";
+import GoogleIcon from "@/assets/google.svg?react";
 import robotImg1 from "@/assets/overview/robot1.png";
 import robotImg2 from "@/assets/overview/robot2.png";
 import robotImg3 from "@/assets/overview/robot3.png";
@@ -9,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,12 +19,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { login } from "@/services/auth";
-import { accessTokenAtom } from "@/state/atoms";
+import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
+import { generateRandomString } from "@/utils/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useAtom } from "jotai";
+import { useCallback, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
@@ -33,7 +36,7 @@ const formSchema = z.object({
   }),
   password: z
     .string()
-    .min(8, "password must be at least 8 characters long")
+    .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
       "password must contain at least one non-alphanumeric character",
@@ -49,25 +52,30 @@ const formSchema = z.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
-  const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
+  const [_, setAccessToken] = useAtom(accessTokenAtom);
+  const [__, setRefreshToken] = useAtom(refreshTokenAtom);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const navigate = useNavigate();
+
+  const getUserProfile = useUpdateProfile();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
       const { username, password } = values;
       try {
         const data = await login(username, password);
-        service.defaults.headers.Authorization = data.access_token;
-        setAccessToken(data.access_token);
-        navigate("/welcome");
-      } catch (err) {
-        console.error(err, "err");
+        const accessToken = `${data.token_type} ${data.access_token}`;
+        service.defaults.headers.Authorization = accessToken;
+        setAccessToken(accessToken);
+        setRefreshToken(data.refresh_token);
+        getUserProfile();
+        navigate("/redirect");
+      } catch (_err) {
         toast({
           description: "Login failed. Please check your username and password.",
         });
@@ -75,22 +83,40 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate],
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
   );
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/welcome");
-    }
-  }, [accessToken, navigate]);
+  const handleGithubLogin = () => {
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+    const redirectURI = import.meta.env.VITE_GITHUB_REDIRECT_URI;
+    const scope = "user";
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scope}`;
+
+    window.location.href = authUrl;
+  };
+
+  const handleGoogleLogin = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const redirectUri = encodeURIComponent(
+      `${window.location.origin}/auth/google/callback`,
+    );
+    const scope = encodeURIComponent("openid email profile");
+    const responseType = "id_token token";
+    const nonce = generateRandomString(16);
+
+    sessionStorage.setItem("oauth_nonce", nonce);
+
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&nonce=${nonce}`;
+  };
+
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[12px] font-source-code">
+        <p className="text-gray-light font-normal text-[13px] font-outfit">
           not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-source-code"
+            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
             onClick={() => {
               navigate("/register");
             }}
@@ -99,7 +125,7 @@ const Login = () => {
           </span>
         </p>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -112,7 +138,7 @@ const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -134,7 +160,7 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
+                    <FormLabel className="block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>
@@ -157,7 +183,7 @@ const Login = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
                 disabled={loading}
               >
                 {loading ? "logging in" : "log in"}
@@ -168,10 +194,34 @@ const Login = () => {
         <div className="text-right">
           <ForgotPasswordDialog />
         </div>
+        <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
+          <span className="text-gray-light font-normal font-semibold text-[13px]">
+            or sign in with
+          </span>
+          <div className="flex flex-between gap-[20px] max-[431px]:flex-col">
+            <Button
+              type="button"
+              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              onClick={handleGoogleLogin}
+            >
+              <GoogleIcon />
+              <span>google</span>
+            </Button>
+            <Button
+              type="button"
+              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              onClick={handleGithubLogin}
+            >
+              <GithubIcon />
+              <span>github</span>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
@@ -183,4 +233,5 @@ const LoginPage = () => {
     </Layout>
   );
 };
+
 export default LoginPage;

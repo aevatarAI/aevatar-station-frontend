@@ -12,7 +12,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="min-w-[125px] text-[15px] font-semibold pl-[15px]">
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px]">
         {row.original.userName}
       </div>
     ),
@@ -21,11 +21,12 @@ export const columns: ColumnDef<IMemberTable>[] = [
     id: "email",
     header: "email address",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-source-code">
+      <div className="flex items-center gap-[8px] font-outfit">
         <span>{row.original.email}</span>
         <Copy
+          description="email address copied"
           toCopy={row.original.email}
-          className="text-[#606060] hover:text-white"
+          className="text-gray-deep hover:text-white"
         />
       </div>
     ),

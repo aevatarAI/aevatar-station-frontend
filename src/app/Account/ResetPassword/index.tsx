@@ -1,11 +1,11 @@
+import LogoIcon from "@/assets/logo.svg?react";
+import { CustomButton } from "@/components/CustomButton";
 import DescHome from "@/components/DescHome";
-import ForgotPasswordDialog from "@/components/ForgotPasswordDialog";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,16 +15,16 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
 import { resetPassword, verifyResetToken } from "@/services/auth";
-import { sleep } from "@etransfer/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
 const formSchema = z
   .object({
     password: z
       .string()
-      .min(8, "password must be at least 8 characters long")
+      .min(6, "password must be at least 6 characters long")
       .regex(
         /[^a-zA-Z0-9]/,
         "password must contain at least one non-alphanumeric character",
@@ -57,13 +57,16 @@ const ResetPassword = () => {
   }, []);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
   });
   const navigate = useNavigate();
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
       setLoading(true);
       const verifyResult = await verifyResetToken(userId, resetToken);
-      // data true = valid token
       if (verifyResult.code !== "20000" || !verifyResult.data) {
         toast({
           description: verifyResult.message || "Invalid reset token.",
@@ -74,8 +77,9 @@ const ResetPassword = () => {
       try {
         const result = await resetPassword(userId, resetToken, password);
         if (result.code === "20001") {
-          console.log("reset successful!");
-          sleep(2000);
+          toast({
+            description: "password updated successfully",
+          });
           navigate("/login");
         } else {
           toast({
@@ -97,7 +101,7 @@ const ResetPassword = () => {
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
-      <div className="h-[1px] bg-black-light w-full" />
+      <div className="h-px bg-black-light w-full" />
       <div className="text-gray-light">
         <Form {...form}>
           <form
@@ -110,13 +114,13 @@ const ResetPassword = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
-                      password*
+                    <FormLabel className="block text-[13px] font-semibold">
+                      new password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="enter your new password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
@@ -133,13 +137,13 @@ const ResetPassword = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[12px] font-semibold">
-                      confirm (repeat) the password*
+                    <FormLabel className="block text-[13px] font-semibold">
+                      confirm new password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="re-enter your new password"
                         {...field}
                         {...form.register("confirmPassword", {
                           required: "required",
@@ -168,17 +172,23 @@ const ResetPassword = () => {
     </div>
   );
 };
+
 const ResetPasswordPage = () => {
   return (
-    <div className="relative flex justify-center px-[47px] min-h-[800px] h-screen flex-col items-center">
-      <div className="mt-[178px] flex  flex-col gap-[30px]">
-        <DescHome className="items-start lg:items-center" />
-        <div className="h-[1px] w-full bg-black-light" />
-        <ResetPassword />
+    <div className="flex flex-col h-screen pt-10 px-10">
+      <CustomButton path="/">
+        <LogoIcon />
+      </CustomButton>
+      <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
+        <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
+          <DescHome className="items-start lg:items-center" />
+          <div className="h-px w-full bg-black-light" />
+          <ResetPassword />
+        </div>
+        <div className="w-full lg:w-[408px]">
+          {socialMediaReander("relative w-full")}
+        </div>
       </div>
-      {socialMediaReander(
-        "relative lg:absolute w-full lg:w-[408px] lg:bottom-[40px] px-[47px] lg:px-0 mt-[68px] lg:mt-auto mb-[40px] lg:mb-auto",
-      )}
     </div>
   );
 };

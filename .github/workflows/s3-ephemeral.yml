@@ -1,0 +1,84 @@
+name: Update Ephemeral Frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_name:
+        required: true
+        type: string
+        description: 'Project name prefix for ephemeral env'
+      
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      # ✅ Checkout repo
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      # ✅ Setup pnpm
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # ✅ Setup Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml 
+
+      # ✅ Install dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # ✅ Set project_name
+      - name: Set project name
+        id: set-project-name
+        run: |
+          RAW_NAME="${{ github.event.inputs.project_name }}"
+          # Trim leading/trailing spaces only
+          NORMALIZED_NAME=$(echo "$RAW_NAME" | xargs)
+          echo "project_name_normalized=$NORMALIZED_NAME" >> $GITHUB_OUTPUT
+
+      # ✅ Create .env file
+      - name: create env file
+        run: |
+          touch .env
+          echo VITE_APP_NETWORKTYPE=TESTNET >> .env
+          echo VITE_APP_SIGNAL_R_URL=http://${{ steps.set-project-name.outputs.project_name_normalized }}.station-testing.aevatar.ai >> .env
+          echo VITE_APP_DOMAIN_URL=https://station-developer-testing.aevatar.ai >> .env
+          echo VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }} >> .env
+          echo VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }} >> .env
+          echo VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }} >> .env
+          echo VITE_GITHUB_SCOPE=${{ secrets.VITE_GITHUB_SCOPE }} >> .env
+          echo VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} >> .env
+
+      # ✅ Build
+      - run: pnpm build
+
+      # ✅ Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL_FRONTEND }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL_FRONTEND }}
+          aws-region: ap-northeast-1
+
+      # ✅ Check if project exists
+      - name: Check Project exists
+        run: |
+          FOLDER="s3://${{ secrets.AWS_S3_BUCKET_EPHEMERAL_FRONTEND }}/${{ steps.set-project-name.outputs.project_name_normalized }}/"
+          if aws s3 ls "$FOLDER" >/dev/null 2>&1; then
+            echo "Project exists: $FOLDER. Proceeding to deploy..."
+          else
+            echo "Error: Project $FOLDER does not exists"
+            exit 1
+          fi
+
+      # ✅ Deploy to S3
+      - name: Sync to S3
+        run: |
+          aws s3 sync dist \
+            s3://${{ secrets.AWS_S3_BUCKET_EPHEMERAL_FRONTEND }}/${{ steps.set-project-name.outputs.project_name_normalized }} --delete

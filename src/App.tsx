@@ -3,41 +3,23 @@ import Login from "@/app/Account/Login";
 import Register from "@/app/Account/Register";
 import ResetPasswordPage from "@/app/Account/ResetPassword";
 import Verification from "@/app/Account/Vertification";
+import Redirection from "@/app/Redirection";
 import { GithubLoginCallback } from "@/app/SocialLogin/github";
 import { GoogleLoginCallback } from "@/app/SocialLogin/google";
 import Demo from "@/app/demo";
 import Header from "@/components/Header";
+import ProjectInitialisingLoading from "@/components/ProjectInitialisingLoading";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
-import { useNavigate } from "@/hooks/navigate";
-import { useGetOrganizations } from "@/hooks/useGetOrganizations";
-import { getProjects } from "@/hooks/useGetProjects";
-import { usePermissionNavigate } from "@/hooks/usePermissionNavigate";
 import LayoutDefault from "@/layouts/LayoutDefault";
 import { accessTokenAtom } from "@/state/atoms";
-import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
-import { type PropsWithChildren, Suspense, lazy, useEffect } from "react";
-import ReactLoading from "react-loading";
+import { type PropsWithChildren, Suspense, lazy } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import Welcome from "./app/Welcome";
-
+import Loading from "./components/PageLoading";
 const Profile = lazy(() => import("./app/Profile"));
 const Dashboard = lazy(() => import("./app/Dashboard"));
-
-export const Loading = () => (
-  <div
-    data-testid="page-loading"
-    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50"
-  >
-    <div className="flex text-2xl font-bold text-gray-800 flex items-center">
-      <div className="text-white font-outfit text-lg font-semibold leading-normal lowercase text-[18px]">
-        Scanning......
-      </div>
-      <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
-    </div>
-  </div>
-);
 
 const WithLazyLoading = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>
@@ -49,49 +31,6 @@ const WithLazyLoading = ({ children }: PropsWithChildren) => (
 const WithLazyLoadingNoHaeader = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>{children}</Suspense>
 );
-
-const Redirection = () => {
-  const navigate = useNavigate();
-  const { data, isLoading } = useGetOrganizations();
-  const [, setCurrentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
-  const { to } = usePermissionNavigate();
-
-  useEffect(() => {
-    if (isLoading || !data) return;
-
-    const fetchProjectsThenRedirect = async () => {
-      const organizationIds = data.data.items.map((datum: any) => datum.id);
-      const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id)
-      );
-
-      if (organizationIds.length === 0) {
-        return navigate("/welcome");
-      }
-
-      try {
-        let hasProjects = false;
-        const responses = await Promise.all(projectsPromises);
-
-        for (const index in responses) {
-          const response = responses[index];
-          if (response.code === "20000" && response.data.items.length > 0) {
-            hasProjects = true;
-            setCurrentOrganisationId(organizationIds[index]);
-            break;
-          }
-        }
-        navigate(hasProjects ? to : "/profile");
-      } catch (_e) {
-        navigate("/profile");
-      }
-    };
-
-    fetchProjectsThenRedirect();
-  }, [data, isLoading, to, setCurrentOrganisationId, navigate]);
-
-  return isLoading ? <Loading /> : null;
-};
 
 const PrivateRoute = ({
   path,
@@ -211,6 +150,7 @@ const App = () => (
         <div className="text-white text-center">404: No such page!</div>
       </Route>
     </Switch>
+    <ProjectInitialisingLoading />
   </LayoutDefault>
 );
 

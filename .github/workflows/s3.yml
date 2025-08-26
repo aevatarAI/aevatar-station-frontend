@@ -26,6 +26,7 @@ jobs:
         run: |
           touch .env
           echo VITE_APP_NETWORKTYPE=MAINNET >> .env
+          echo VITE_APP_DOMAIN_URL=https://station-developer-dev-staging.aevatar.ai >> .env
           echo VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }} >> .env
           echo VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }} >> .env
           echo VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }} >> .env

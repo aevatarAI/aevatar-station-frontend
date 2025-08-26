@@ -71,7 +71,7 @@ const ORGANIZATIONS_API_LIST = {
     baseConfig: { method: "POST" },
   },
   createOrganizationWithDefaultProject: {
-    target: " /api/organizations/create-with-default-project",
+    target: "/api/organizations/create-with-default-project",
     baseConfig: { method: "POST" },
   },
   addOrganization: {

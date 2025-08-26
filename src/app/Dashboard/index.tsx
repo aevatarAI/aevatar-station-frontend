@@ -30,17 +30,17 @@ function Dashboard() {
   return (
     <>
       {/* Fixed sidebar for desktop - full viewport height */}
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
+      {/* <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
         <SideBar onClose={handleClose} />
-      </div>
+      </div> */}
 
       {/* Mobile drawer/sheet */}
-      <Sheet>
+      {/* <Sheet>
         <SheetContent className="lg:hidden w-[200px] bg-[#191919]">
           <DialogClose ref={ref} />
           <SideBar onClose={handleClose} />
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
 
       {/* Scrollable main content */}
       <div className="flex-1 overflow-auto h-full bg-black">

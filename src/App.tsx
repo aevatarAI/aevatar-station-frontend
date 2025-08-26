@@ -6,7 +6,7 @@ import Verification from "@/app/Account/Vertification";
 import { GithubLoginCallback } from "@/app/SocialLogin/github";
 import { GoogleLoginCallback } from "@/app/SocialLogin/google";
 import Demo from "@/app/demo";
-import Header from "@/components/Header";
+import PageContainer from "@/components/PageContainer";
 import { AccessTokenUpdater } from "@/hooks/AccessTokenUpdater";
 import { SetAuthHeader } from "@/hooks/SetAuthHeader";
 import { useNavigate } from "@/hooks/navigate";
@@ -41,8 +41,7 @@ export const Loading = () => (
 
 const WithLazyLoading = ({ children }: PropsWithChildren) => (
   <Suspense fallback={<Loading />}>
-    <Header />
-    {children}
+    <PageContainer>{children}</PageContainer>
   </Suspense>
 );
 
@@ -62,7 +61,7 @@ const Redirection = () => {
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
       const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id)
+        getProjects(id),
       );
 
       if (organizationIds.length === 0) {

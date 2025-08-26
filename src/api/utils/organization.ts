@@ -24,6 +24,16 @@ export const createOrganization = async (
   return result.data;
 };
 
+export const createOrganizationWithDefaultProject = async (
+  displayName: string,
+): Promise<IOrganizationItem & { project: IProjectItem }> => {
+  const result: TDataResponse<IOrganizationItem & { project: IProjectItem }> =
+    await request.organizations.createOrganizationWithDefaultProject({
+      data: { displayName },
+    });
+  return result.data;
+};
+
 export interface IProjectItem {
   id: string;
   displayName: string;

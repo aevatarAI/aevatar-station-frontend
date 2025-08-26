@@ -1,4 +1,4 @@
-import { createOrganization } from "@/api/utils/organization";
+import { createOrganizationWithDefaultProject } from "@/api/utils/organization";
 import LogoIcon from "@/assets/logo.svg?react";
 import Copy from "@/components/Copy";
 import CreateOrgDialog from "@/components/CreateOrgDialog";
@@ -47,7 +47,9 @@ const WelcomePage: React.FC = () => {
   const onCreateOrg = useCallback(
     async (values: TCreateOrgForm) => {
       console.log(values);
-      const response = await createOrganization(values.orgName);
+      const response = await createOrganizationWithDefaultProject(
+        values.orgName,
+      );
       setCurrentOrganization(response.id);
       toast({
         description: "Organization created",

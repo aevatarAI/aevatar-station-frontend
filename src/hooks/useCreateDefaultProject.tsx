@@ -1,5 +1,9 @@
 import { createDefaultWorkflow } from "@/api/utils/apiWithDomain";
-import { createDefaultProject, getProjectList } from "@/api/utils/organization";
+import {
+  type IProjectItem,
+  createDefaultProject,
+  getProjectList,
+} from "@/api/utils/organization";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@/hooks/navigate";
 import { toast } from "@/hooks/use-toast";
@@ -83,7 +87,7 @@ export const useCreateDefaultProject = () => {
   }, []);
 
   const createProjectAndWorkflow = useCallback(
-    async (organizationId: string) => {
+    async (organizationId: string, _project?: IProjectItem | null) => {
       setProjectInitialisingLoading(true);
       await delay(500);
       const userPermissions = await getOrgPermissions(organizationId);
@@ -92,7 +96,13 @@ export const useCreateDefaultProject = () => {
         navigate("/profile");
         return;
       }
-      const project = await createProject(organizationId);
+      let project = _project;
+      if (!project) {
+        project = await createProject(organizationId);
+      } else {
+        const list = await getProjectList(organizationId);
+        setProjectList(list);
+      }
       if (!project) {
         setProjectInitialisingLoading(false);
         navigate("/profile/organisation/project?action=create");
@@ -132,6 +142,7 @@ export const useCreateDefaultProject = () => {
       getOrgPermissions,
       setCurrentProject,
       createProject,
+      setProjectList,
       checkProjectService,
       setProjectInitialisingLoading,
       createWorkflow,

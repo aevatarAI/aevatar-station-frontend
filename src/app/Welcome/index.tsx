@@ -54,7 +54,7 @@ const WelcomePage: React.FC = () => {
       toast({
         description: "Organization created",
       });
-      await createDefaultProject(response.id);
+      await createDefaultProject(response.id, response.project);
     },
     [setCurrentOrganization, toast, createDefaultProject],
   );

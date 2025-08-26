@@ -1,14 +1,14 @@
 export const websiteLink = {
   href: "https://aevatar.ai",
-  title: "website",
+  title: "Website",
 };
 export const githubLink = {
   href: "https://github.com/aevatarAI",
-  title: "github",
+  title: "Github",
 };
 export const docsLink = {
   href: "https://aevatar.ai/aevatar.ai_whitepaper_v0.1.pdf",
-  title: "docs",
+  title: "Docs",
 };
 
 export const socialMediaList = [websiteLink, githubLink, docsLink];

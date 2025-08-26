@@ -112,21 +112,21 @@ const Login = () => {
   return (
     <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
-          not a member yet?&nbsp;
+        <h2 className="text-[16px] font-semibold">Login</h2>
+        <p className="text-[#A1A1AA] font-normal text-[13px] font-outfit">
+          Not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
+            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-[#A1A1AA]"
             onClick={() => {
               navigate("/register");
             }}
           >
-            register
+            Sign up
           </span>
         </p>
       </div>
       <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="text-[#A1A1AA]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -138,8 +138,8 @@ const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      email address
+                    <FormLabel className="block text-sm font-semibold">
+                      Email address
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -147,8 +147,8 @@ const Login = () => {
                         {...form.register("username", {
                           required: "required",
                         })}
-                        placeholder="enter your email"
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        placeholder="Enter your email"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />
@@ -161,17 +161,17 @@ const Login = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[13px] font-semibold">
-                      password
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="Enter your password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />
@@ -186,7 +186,7 @@ const Login = () => {
                 className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
                 disabled={loading}
               >
-                {loading ? "logging in" : "log in"}
+                {loading ? "logging in" : "Log In"}
               </Button>
             </div>
           </form>
@@ -195,7 +195,7 @@ const Login = () => {
           <ForgotPasswordDialog />
         </div>
         <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
-          <span className="text-gray-light font-normal font-semibold text-[13px]">
+          <span className="text-[#A1A1AA] font-normal font-semibold text-[13px]">
             or sign in with
           </span>
           <div className="flex flex-between gap-[20px] max-[431px]:flex-col">

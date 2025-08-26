@@ -96,9 +96,9 @@ const Verification = () => {
   return (
     <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
-          already registered?&nbsp;
+        <h2 className="text-[16px] font-semibold">Verification</h2>
+        <p className="text-[#A1A1AA] font-normal text-[13px] font-outfit">
+          Already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer hover:text-gray-light"
             onClick={() => {
@@ -132,7 +132,7 @@ const Verification = () => {
                         {...form.register("verificationCode", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />

@@ -94,7 +94,7 @@
 
 @layer base {
   body {
-    @apply m-0 min-h-screen min-w-[320px] bg-[#141415] font-outfit text-white;
+    @apply m-0 min-h-screen min-w-[320px] bg-[var(--background)] font-outfit text-white;
   }
 }
 .aevatarai-text-gradient {

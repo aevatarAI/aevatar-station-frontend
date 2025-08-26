@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
 
@@ -133,7 +133,10 @@
   }
 
   .dark {
-    --background: 235 4% 8%;
+    --background: #09090b;
+    --bg-btn: #09090b;
+
+    --card-bg: #18181b;
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
@@ -181,8 +184,6 @@
     @apply border-border;
   }
   body {
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

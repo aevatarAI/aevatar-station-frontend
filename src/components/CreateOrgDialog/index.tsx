@@ -28,10 +28,14 @@ import { type TCreateOrgForm, createOrgForm } from "@/constants/form/createOrg";
 import { handleErrorMessage } from "@/utils/error";
 
 export interface ICreateOrgDialogProps {
+  btnClassName?: string;
   onCreate?: (values: TCreateOrgForm) => Promise<void>;
 }
 
-export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
+export default function CreateOrgDialog({
+  onCreate,
+  btnClassName,
+}: ICreateOrgDialogProps) {
   const form = useForm<TCreateOrgForm>({
     resolver: zodResolver(createOrgForm),
   });
@@ -72,7 +76,12 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[8px] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[#303030]">
+        <Button
+          className={clsx(
+            "py-[8px] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[#303030]",
+            btnClassName,
+          )}
+        >
           <Plus />
           <span>create organisation</span>
         </Button>
@@ -82,7 +91,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
+          <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal lowercase ">
             create new organisation
           </DialogTitle>
         </DialogHeader>

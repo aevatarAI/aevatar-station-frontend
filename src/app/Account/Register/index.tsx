@@ -97,9 +97,9 @@ const Register = () => {
   return (
     <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
-          already registered?&nbsp;
+        <h2 className="text-[16px] font-semibold">Register</h2>
+        <p className="text-[#A1A1AA] font-normal text-[13px] font-outfit">
+          Already registered?&nbsp;
           <span
             className="font-normal text-white cursor-pointer"
             onClick={() => {
@@ -111,7 +111,7 @@ const Register = () => {
         </p>
       </div>
       <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="text-[#A1A1AA]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -133,7 +133,7 @@ const Register = () => {
                         {...form.register("name", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />
@@ -155,7 +155,7 @@ const Register = () => {
                         {...form.register("email", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />
@@ -178,7 +178,7 @@ const Register = () => {
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[#A1A1AA] border-black-light"
                       />
                     </FormControl>
                     <FormMessage />

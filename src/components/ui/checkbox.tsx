@@ -3,14 +3,16 @@
 import { cn } from "@/lib/utils";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
+import clsx from "clsx";
 import * as React from "react";
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
     checkClassName?: string;
+    labelClassName?: string;
   }
->(({ className, checkClassName, ...props }, ref) => (
+>(({ className, checkClassName, labelClassName, ...props }, ref) => (
   <div className="flex items-center gap-[10px]">
     <CheckboxPrimitive.Root
       ref={ref}
@@ -30,7 +32,10 @@ const Checkbox = React.forwardRef<
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
     <label
-      className="text-[12px] text-gray-light font-outfit cursor-pointer"
+      className={clsx(
+        " text-gray-light font-outfit cursor-pointer",
+        labelClassName,
+      )}
       htmlFor={props?.id}
     >
       {props.name}

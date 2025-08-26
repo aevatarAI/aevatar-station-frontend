@@ -15,6 +15,7 @@ export const CheckboxGroup = ({
       <Checkbox
         defaultChecked
         id={datum.id}
+        labelClassName="text-white text-sm"
         name={datum.organizationName}
         onCheckedChange={(checked: boolean) => {
           if (!checked) {

@@ -63,14 +63,14 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light">
-          forgot password?
+        <span className="text-[13px] cursor-pointer font-outfit text-white hover:text-[#A1A1AA]">
+          Forgot password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
           <DialogTitle className="text-gradient inline mt-[4px]">
-            forgot password?
+            Forgot password?
           </DialogTitle>
         </DialogHeader>
         {isSubmitted ? (
@@ -90,7 +90,7 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className={`bg-white text-black-light text-[13px] px-[16px] py-[8px] ${
+                className={`bg-white text-[#A1A1AA] text-[13px] px-[16px] py-[8px] ${
                   loading ? "opacity-50" : "opacity-100"
                 }`}
                 onClick={form.handleSubmit(onSubmit)}
@@ -148,7 +148,7 @@ const ForgotPasswordDialog = () => {
                   <Button
                     formNoValidate
                     type="submit"
-                    className="bg-white text-[13px] text-black-light px-[16px] py-[8px]"
+                    className="bg-white text-[13px] text-[#A1A1AA] px-[16px] py-[8px]"
                     disabled={loading}
                   >
                     submit

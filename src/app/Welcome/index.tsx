@@ -2,6 +2,7 @@ import { createOrganization } from "@/api/utils/organization";
 import LogoIcon from "@/assets/logo.svg?react";
 import Copy from "@/components/Copy";
 import CreateOrgDialog from "@/components/CreateOrgDialog";
+import HypotenuseC from "@/components/HypotenuseC";
 import Loading from "@/components/Loading";
 import socialMediaReander from "@/components/SocialMediaReander";
 import { Button } from "@/components/ui/button";
@@ -63,89 +64,105 @@ const WelcomePage: React.FC = () => {
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]" />
       <div className="text-center mb-[72px]">
-        <h1 className="text-gradient text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
-          welcome to aevatar.ai
+        <h1 className="text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
+          Welcome to aevatar.ai
         </h1>
-        <p className="text-gray-light text-[16px] font-outfit">
-          create or join an organisation
+        <p className="text-[#A1A1AA] text-[16px] font-outfit">
+          Create or join an organisation
         </p>
       </div>
       <div className="w-full lg:w-[793px] flex-col-reverse lg:flex-row flex gap-5  justify-center ">
-        <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative border-0 min-h-[285px]">
-          {/* <div className="absolute inset-0 bg-black/50 z-10  border-0" /> */}
-          <h2 className="font-semibold text-[18px] mb-3 text-white">
-            create a new organisation
-          </h2>
-          <p className="text-[13px] text-gray-light font-outfit mb-[16px]">
-            create a new organisation - You will be the owner
-          </p>
-          <CreateOrgDialog onCreate={onCreateOrg} />
+        <div>
+          <div className="w-full lg:w-[346px] px-5 py-5 bg-[#18181B] relative border-0 min-h-[285px]">
+            {/* <div className="absolute inset-0 bg-black/50 z-10  border-0" /> */}
+            <h2 className="font-semibold text-[18px] mb-3 text-white">
+              Create a new organisation
+            </h2>
+            <p className="text-[13px] text-[#A1A1AA] font-outfit mb-[16px]">
+              Create a new organisation - You will be the owner
+            </p>
+            <CreateOrgDialog
+              btnClassName="rounded-md bg-[var(--bg-btn)]"
+              onCreate={onCreateOrg}
+            />
+          </div>
+          <HypotenuseC
+            className="welcome-hypotenuse"
+            emptyClassName="bg-[#18181B]!"
+            hypotenuseClassName="text-[#18181B]!"
+          />
         </div>
-
-        {hasInvites ? (
-          <div className="flex flex-col  justify-between w-full lg:w-[346px] px-5 py-5 bg-black border-0 min-h-[285px]">
-            <div>
-              <h2 className="font-semibold text-[18px] mb-3 text-white">
-                join an existing organisation
+        <div>
+          {hasInvites ? (
+            <div className="flex flex-col  justify-between w-full lg:w-[346px] px-5 py-5 bg-[#18181B] border-0 min-h-[285px]">
+              <div>
+                <h2 className="font-semibold text-[18px] mb-3 text-white">
+                  Join an existing organisation
+                </h2>
+                <p className="text-[13px] text-[#A1A1AA] font-outfit">
+                  Pending invitations for your approval
+                </p>
+                <div className="w-full h-px bg-black-light my-4" />
+                <CheckboxGroup
+                  data={invites}
+                  values={selectedValues}
+                  onChange={setSelectedValues}
+                />
+              </div>
+              <Button
+                disabled={isPending || selectedValues.length === 0}
+                className="mx-auto bottom-0 w-full cursor-pointer rounded-md bg-[var(--bg-btn)]"
+                onClick={async () => {
+                  for (const id of selectedValues) {
+                    await mutateAsync({ id, status: ACCEPTED });
+                  }
+                  try {
+                    const response = await refreshTokenLogin(
+                      refreshToken as string,
+                    );
+                    const { access_token, refresh_token } = response;
+                    setAccessToken(access_token);
+                    setRefreshToken(refresh_token);
+                    navigate("/profile");
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+              >
+                {isPending ? "joining..." : "join"}
+              </Button>
+            </div>
+          ) : (
+            <div className="w-full lg:w-[346px] px-5 py-5 bg-[#18181B] flex flex-col border-0 min-h-[285px]">
+              <h2 className="font-semibold text-[18px] mb-3 text-white ">
+                Join an existing organisation
               </h2>
-              <p className="text-[13px] text-gray-light font-outfit">
-                pending invitations for your approval
+              <p className="text-[13px] text-[#A1A1AA] font-outfit">
+                You haven't received an invitation yet. Share your address with
+                the organisation owner
               </p>
               <div className="w-full h-px bg-black-light my-4" />
-              <CheckboxGroup
-                data={invites}
-                values={selectedValues}
-                onChange={setSelectedValues}
-              />
-            </div>
-            <Button
-              disabled={isPending || selectedValues.length === 0}
-              className="mx-auto bottom-0 w-[226px] cursor-pointer"
-              onClick={async () => {
-                for (const id of selectedValues) {
-                  await mutateAsync({ id, status: ACCEPTED });
-                }
-                try {
-                  const response = await refreshTokenLogin(
-                    refreshToken as string,
-                  );
-                  const { access_token, refresh_token } = response;
-                  setAccessToken(access_token);
-                  setRefreshToken(refresh_token);
-                  navigate("/profile");
-                } catch (e) {
-                  console.error(e);
-                }
-              }}
-            >
-              {isPending ? "joining..." : "join"}
-            </Button>
-          </div>
-        ) : (
-          <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
-            <h2 className="font-semibold text-[18px] mb-3 text-white ">
-              join an existing organisation
-            </h2>
-            <p className="text-[13px] text-gray-light font-outfit">
-              you haven't received an invitation yet. Share your address with
-              the organisation owner
-            </p>
-            <div className="w-full h-px bg-black-light my-4" />
-            <span className="text-gray-light font-outfit text-[13px] font-semibold leading-normal lowercase mb-2.5 ">
-              your email address
-            </span>
-            <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[13px] font-outfit truncate overflow-hidden block max-w-[200px]">
-                {email}
+              <span className="text-[#A1A1AA] font-outfit text-[13px] font-semibold leading-normal lowercase mb-2.5 ">
+                your email address
               </span>
-              <Copy
-                description="email address copied"
-                toCopy={email}
-                className="text-gray-light hover:text-white"
-              />
+              <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
+                <span className="text-[13px] font-outfit truncate overflow-hidden block max-w-[200px]">
+                  {email}
+                </span>
+                <Copy
+                  description="email address copied"
+                  toCopy={email}
+                  className="text-[#A1A1AA] hover:text-white"
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          <HypotenuseC
+            className="welcome-hypotenuse"
+            emptyClassName="bg-[#18181B]!"
+            hypotenuseClassName="text-[#18181B]!"
+          />
+        </div>
       </div>
       {socialMediaReander(
         "relative lg:absolute w-full lg:w-[275px] bottom-[40px] lg:px-0 mt-[58px] justify-around",

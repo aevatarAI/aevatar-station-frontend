@@ -11,21 +11,16 @@ export const usePermissionNavigate = () => {
   } = useProjectPermissions();
 
   const to = useMemo(() => {
-    if (orgApiKeysPermission || projApiKeysPermission) {
-      return "/dashboard/apikeys";
-    }
+    // if (orgApiKeysPermission || projApiKeysPermission) {
+    //   return "/dashboard/apikeys";
+    // }
 
-    if (orgDashboardsPermission || projDashboardsPermission) {
-      return "/dashboard/usage";
-    }
+    // if (orgDashboardsPermission || projDashboardsPermission) {
+    //   return "/dashboard/usage";
+    // }
 
-    return "/dashboard/dll";
-  }, [
-    orgApiKeysPermission,
-    projApiKeysPermission,
-    orgDashboardsPermission,
-    projDashboardsPermission,
-  ]);
+    return "/dashboard/workflows";
+  }, []);
 
   return { to };
 };

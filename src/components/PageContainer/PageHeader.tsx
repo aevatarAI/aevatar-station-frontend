@@ -19,6 +19,7 @@ import {
   itemHoverClassName,
   itemSelectClassName,
 } from "@/constants/cls";
+import { MENU_MAP_LIST } from "@/constants/sideBar";
 import { useNavigate } from "@/hooks/navigate";
 import { useCurrentProject } from "@/hooks/useCurrentProject";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -41,6 +42,7 @@ export default function PageHeader() {
   const [unreadNotifications] = useAtom(UNREAD_NOTIFICATION_ATOM);
   const navigate = useNavigate();
   const [, selectTab] = useSideBarParams();
+  console.log(selectTab, "selectTab=");
 
   const [pjtOpen, setPjtOpen] = useState<boolean>();
   const [projectList] = useAtom(PROJECT_LIST_ATOM);
@@ -112,14 +114,16 @@ export default function PageHeader() {
 
         <div className="text-[var(--muted-foreground)]">/</div>
 
-        <p className="text-sm text-muted-foreground">{selectTab}</p>
+        <p className="text-sm text-muted-foreground">
+          {MENU_MAP_LIST[selectTab as keyof typeof MENU_MAP_LIST]?.text ?? ""}
+        </p>
       </div>
       <div className="flex items-center gap-4">
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button
           onClick={() => {
             mutate();
-            // navigate("/profile/profile/notifications");
+            navigate("/profile/profile/notifications");
           }}
         >
           {unreadNotifications ? (

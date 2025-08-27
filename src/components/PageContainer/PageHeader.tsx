@@ -32,6 +32,7 @@ import {
   CURRENT_ORGANIZATION_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
+import { PROFILE_DIALOG_ATOM } from "@/state/atoms/profile.dialog";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useRef, useState } from "react";
@@ -52,7 +53,7 @@ export default function PageHeader() {
 
   const [currentOrganisationId] = useAtom(CURRENT_ORGANIZATION_ATOM);
   const updateProjectListHandler = useUpdateProjectHandler();
-
+  const [, setProfileDialog] = useAtom(PROFILE_DIALOG_ATOM);
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
@@ -123,7 +124,11 @@ export default function PageHeader() {
         <button
           onClick={() => {
             mutate();
-            navigate("/profile/profile/notifications");
+            setProfileDialog({
+              open: true,
+              menu: "profile",
+              tab: "notifications",
+            });
           }}
         >
           {unreadNotifications ? (

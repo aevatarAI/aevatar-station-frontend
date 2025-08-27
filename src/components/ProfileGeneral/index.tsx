@@ -61,15 +61,15 @@ export default function ProfileGeneral() {
 
   return (
     <div>
-      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
+      {/* <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
         <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
           profile
         </div>
-      </div>
-      <div className="pt-[30px]">
+      </div> */}
+      <div>
         <div>
           <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
-            name
+            Name
           </div>
           <div className="flex gap-[10px]">
             <Input

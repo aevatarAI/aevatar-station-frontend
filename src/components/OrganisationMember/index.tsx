@@ -184,8 +184,8 @@ export default function OrganisationMember() {
 
   return (
     <div>
-      <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>Organisation members</div>
+      <div className="flex justify-between items-center pb-4">
+        <div className={clsx(textGradient)}>Organisation Members</div>
         {userPermissions.organizationMembersManage ? (
           <InviteMembersDialog
             defaultRole={roleList[0]?.id}

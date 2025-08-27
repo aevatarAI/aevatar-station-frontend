@@ -51,6 +51,7 @@ import clsx from "clsx";
 import SettingSidebar from "@/assets/setting-sidebar.svg?react";
 import Workflow from "@/assets/workflow.svg?react";
 
+import ProfileAndOrgDialog from "@/components/ProfileAndOrgDialog";
 import {
   Collapsible,
   CollapsibleContent,
@@ -307,6 +308,7 @@ export function PageSideBarInner({ children }: PropsWithChildren) {
           {/* Scrollable content area */}
           <div className="flex-1 overflow-auto">{children}</div>
         </div>
+        <ProfileAndOrgDialog />
       </SidebarInset>
     </>
   );

@@ -10,6 +10,7 @@ import { itemClassName, itemHoverClassName } from "@/constants/cls";
 import { useNavigate } from "@/hooks/navigate";
 import { useLogout } from "@/hooks/useLogout";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import { PROFILE_DIALOG_ATOM } from "@/state/atoms/profile.dialog";
 import { shortenString } from "@/utils/helpers";
 import clsx from "clsx";
 import { useAtom } from "jotai";
@@ -18,6 +19,7 @@ import { useMemo, useState } from "react";
 export default function ProfileAvatar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>();
+  const [, setProfileDialog] = useAtom(PROFILE_DIALOG_ATOM);
 
   const logout = useLogout();
   const [profile] = useAtom(USER_PROFILE_ATOM);
@@ -57,8 +59,9 @@ export default function ProfileAvatar() {
             className={clsx(itemClassName, itemHoverClassName)}
             onClick={() => {
               setOpen(false);
-
-              navigate("/profile");
+              setProfileDialog({
+                open: true,
+              });
             }}
           >
             profile

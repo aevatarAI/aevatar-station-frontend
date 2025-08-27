@@ -27,3 +27,26 @@ export const MENU_MAP_LIST = {
   member: { text: "Members", url: "/profile/projects/member" },
   role: { text: "Roles", url: "/profile/projects/role" },
 } as const;
+
+export const PROFILE_DIALOG_MENU = {
+  profile: {
+    text: "Profile",
+  },
+
+  organisation: {
+    text: "Organisation",
+  },
+};
+
+export const PROFILE_DIALOG_TABS = {
+  profile: {
+    general: { text: "General", url: "/profile/general" },
+    notifications: { text: "Notifications", url: "/profile/notifications" },
+  },
+  organisation: {
+    general: { text: "General", url: "/profile/organisation/general" },
+    project: { text: "Projects", url: "/profile/organisation/project" },
+    member: { text: "Members", url: "/profile/organisation/member" },
+    role: { text: "Roles", url: "/profile/organisation/role" },
+  },
+} as const;

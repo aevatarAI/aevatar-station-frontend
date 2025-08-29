@@ -64,20 +64,20 @@ const ForgotPasswordDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <span className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] ">
-          forgot password?
+          Forgot Password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
           <DialogTitle className="text-[var(--color-foreground)] inline mt-[4px]">
-            forgot password?
+            Forgot Password?
           </DialogTitle>
         </DialogHeader>
         {isSubmitted ? (
           <div>
             <DialogDescription className="mb-7 font-outfit">
-              an account recovery email has been sent. if you don’t see it in 15
-              minutes, check your junk folder and mark it as ‘not junk’.
+              An account recovery email has been sent. If you don't see it in 15
+              minutes, check your junk folder and mark it as 'not junk'.
             </DialogDescription>
             <div className="flex justify-between items-center">
               <DialogClose asChild>
@@ -86,7 +86,7 @@ const ForgotPasswordDialog = () => {
                   type="button"
                   className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
                 >
-                  back to login
+                  Back to Login
                 </Button>
               </DialogClose>
               <Button
@@ -97,15 +97,15 @@ const ForgotPasswordDialog = () => {
                 }`}
                 onClick={form.handleSubmit(onSubmit)}
               >
-                resend password
+                Resend Password
               </Button>
             </div>
           </div>
         ) : (
           <div>
             <DialogDescription>
-              a password reset link will be sent to your email to reset your
-              password. if you don't get an email within a few minutes, please
+              A password reset link will be sent to your email to reset your
+              password. If you don't get an email within a few minutes, please
               re-try.
             </DialogDescription>
             <Form {...form}>
@@ -120,12 +120,12 @@ const ForgotPasswordDialog = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="block text-[13px] font-semibold">
-                          email address
+                          Email Address
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="enter your email"
+                            placeholder="Enter your email"
                             className="placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)] text-[var(--color-foreground)]"
                             {...field}
                             {...form.register("email", {
@@ -145,7 +145,7 @@ const ForgotPasswordDialog = () => {
                       type="button"
                       className="text-[13px] px-[16px] py-[8px]"
                     >
-                      back to login
+                      Back to Login
                     </Button>
                   </DialogClose>
                   <Button
@@ -155,7 +155,7 @@ const ForgotPasswordDialog = () => {
                     className="bg-[var(--bg-primary)] text-[13px] text-[var(--primary-foreground)] px-[16px] py-[8px]"
                     disabled={loading}
                   >
-                    submit
+                    Submit
                   </Button>
                 </div>
               </form>

@@ -17,7 +17,7 @@ function AtomInput() {
   const [value, setValue] = useAtom(myPersistentAtom);
   return (
     <div className="ml-[20px]">
-      <span className="text-[var(--color-foreground)]">input: {value}</span>
+      <span className="text-[var(--color-foreground)]">Input: {value}</span>
       <Input
         className=" w-[200px] text-[var(--color-foreground)]"
         type="text"
@@ -119,7 +119,7 @@ export default function DemoPage() {
               request.organizations.getUserOrganizations();
             }}
           >
-            getUserOrganizations
+            Get User Organizations
           </Button>
         </div>
       </div>

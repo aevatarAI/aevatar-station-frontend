@@ -1,6 +1,7 @@
 import { request } from "@/api";
 import OrganisationProjects from "@/components/OrganisationProjects";
 import { useToast } from "@/hooks/use-toast";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
@@ -34,6 +35,11 @@ vi.mock("@/api", () => ({
 
 vi.mock("@/hooks/useUpdateOrganisations", () => ({
   useUpdateProjectHandler: vi.fn(),
+}));
+
+vi.mock("@/hooks/useSetCurrentProject", () => ({
+  __esModule: true,
+  default: vi.fn(),
 }));
 
 vi.mock("@/components/ProjectEditDialog", () => ({
@@ -97,12 +103,23 @@ describe("OrganisationProjects Component", () => {
       dismiss: vi.fn(),
       toasts: [],
     });
+
+    // Mock useSetCurrentProject
+    const mockSetCurrentProject = vi.fn();
+    (useSetCurrentProject as any).mockReturnValue(mockSetCurrentProject);
+
     vi.mocked(useUpdateProjectHandler).mockReturnValue(
       mockUpdateProjectListHandler,
     );
 
     // Mock API
-    vi.mocked(request.projects.addProject).mockResolvedValue({});
+    vi.mocked(request.projects.addProject).mockResolvedValue({
+      data: {
+        id: "new-project-id",
+        displayName: "Project Test",
+        domainName: "test.com",
+      },
+    });
     vi.mocked(request.projects.editProject).mockResolvedValue({});
     vi.mocked(request.projects.deleteProject).mockResolvedValue({});
   });

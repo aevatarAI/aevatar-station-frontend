@@ -92,7 +92,7 @@ export default function ApiKeys() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>api keys</div>
+        <div className={clsx(textGradient)}>API Keys</div>
         <CreateApiKeyDialog
           disabled={!permissions.apiKeysCreate || data?.data.length > 0}
         />

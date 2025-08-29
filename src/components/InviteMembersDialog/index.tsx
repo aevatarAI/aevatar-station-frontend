@@ -83,7 +83,7 @@ export default function InviteMembersDialog({
           className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]"
         >
           <Plus />
-          <span>add new member</span>
+          <span>Add New Member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -92,7 +92,7 @@ export default function InviteMembersDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
-            invite team members
+            Invite Team Members
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -104,7 +104,7 @@ export default function InviteMembersDialog({
                 name={"email"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="emailLabel" className="w-full">
-                    <FormLabel id="emailLabel">email address</FormLabel>
+                    <FormLabel id="emailLabel">Email Address</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
@@ -117,7 +117,7 @@ export default function InviteMembersDialog({
                 name="role"
                 render={({ field }) => (
                   <FormItem aria-labelledby="project" className="w-full">
-                    <FormLabel id="project">role</FormLabel>
+                    <FormLabel id="project">Role</FormLabel>
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
@@ -154,7 +154,7 @@ export default function InviteMembersDialog({
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
@@ -167,7 +167,7 @@ export default function InviteMembersDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "inviting" : "invite"}</span>
+                  <span>{btnLoading ? "Inviting" : "Invite"}</span>
                 </Button>
               </div>
             </div>

@@ -59,7 +59,7 @@ describe("OrganisationInner Component", () => {
     render(<OrganisationInner tab="general" />);
     expect(screen.getByTestId("general-component")).toBeInTheDocument();
     expect(screen.getByText("organisation settings")).toBeInTheDocument();
-    expect(screen.getByText("organisation name")).toBeInTheDocument();
+    expect(screen.getByText("Organisation name")).toBeInTheDocument();
   });
 
   it("should render OrganisationProjects component when tab is project", () => {
@@ -82,7 +82,7 @@ describe("OrganisationInner Component", () => {
     const generalComponent = screen.getByTestId("general-component");
     expect(generalComponent).toBeInTheDocument();
     expect(screen.getByText("organisation settings")).toBeInTheDocument();
-    expect(screen.getByText("organisation name")).toBeInTheDocument();
+    expect(screen.getByText("Organisation name")).toBeInTheDocument();
   });
 
   it("should handle readonly state based on permissions", () => {

@@ -110,7 +110,7 @@ describe("CrossURL Component", () => {
     render(<CrossURL />);
     await waitFor(() => {
       expect(getCrossURLs).toHaveBeenCalledWith(mockProjectId);
-      expect(screen.getByText("cors")).toBeInTheDocument();
+      expect(screen.getByText("CORS")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api1")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api2")).toBeInTheDocument();
     });
@@ -223,19 +223,19 @@ describe("Configuration Component", () => {
   it("should render title and button", () => {
     render(<Configuration />);
     expect(screen.getByText("configuration")).toBeInTheDocument();
-    expect(screen.getByText(" restart services")).toBeInTheDocument();
+    expect(screen.getByText("restart services")).toBeInTheDocument();
   });
 
   it("should call onRestart when button clicked", () => {
     const onRestart = vi.fn();
     render(<Configuration onRestart={onRestart} />);
-    fireEvent.click(screen.getByText(" restart services"));
+    fireEvent.click(screen.getByText("restart services"));
     expect(onRestart).toHaveBeenCalled();
   });
 
   it("should not fail if onRestart is not provided", () => {
     render(<Configuration />);
-    fireEvent.click(screen.getByText(" restart services"));
+    fireEvent.click(screen.getByText("restart services"));
     // No error thrown
   });
 });

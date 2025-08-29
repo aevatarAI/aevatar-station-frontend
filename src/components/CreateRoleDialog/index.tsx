@@ -68,7 +68,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
           className="py-2 py-1.5 gap-[10px] text-[13px] font-semibold leading-[14px]"
         >
           <Plus />
-          <span>add role</span>
+          <span>Add Role</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -77,7 +77,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       >
         <DialogHeader>
           <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal">
-            create role
+            Create Role
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -93,7 +93,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                       id="emailLabel"
                       className="text-[var(--color-foreground)]"
                     >
-                      role name
+                      Role Name
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
@@ -112,7 +112,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"
@@ -126,7 +126,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                       data-testid="loading-icon"
                     />
                   )}
-                  <span>{btnLoading ? "creating" : "create"}</span>
+                  <span>{btnLoading ? "Creating" : "Create"}</span>
                 </Button>
               </div>
             </div>

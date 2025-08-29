@@ -100,7 +100,7 @@ export default function DllEditDialog({
             <span
               className={clsx(disabled && "text-[var(--color-foreground)]!")}
             >
-              upload
+              Upload
             </span>
           </Button>
         ) : (
@@ -117,7 +117,7 @@ export default function DllEditDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-left inline text-[18px] pb-[18px] border-b border-[var(--color-border-black-light)] font-semibold leading-normal">
-            {type === "create" ? "upload dll file" : "update dll file"}
+            {type === "create" ? "Upload DLL File" : "Update DLL File"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -134,7 +134,7 @@ export default function DllEditDialog({
                         form={form as any}
                         name={"file"}
                         multiple={false}
-                        uploadText="click to select file (dll)"
+                        uploadText="Click to select file (DLL)"
                         accept={{ "application/octet-stream": [".dll"] }}
                         aria-label="DLL file input"
                       />
@@ -151,7 +151,7 @@ export default function DllEditDialog({
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"

@@ -77,7 +77,7 @@ export default function EditApiKeyDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
-            edit api key
+            Edit API Key
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -89,10 +89,10 @@ export default function EditApiKeyDialog({
                 name={"name"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
+                    <FormLabel id="nameLabel">Name of the Key</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name"
+                        placeholder="Name"
                         {...field}
                         defaultValue={name}
                       />
@@ -111,7 +111,7 @@ export default function EditApiKeyDialog({
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"
@@ -125,7 +125,7 @@ export default function EditApiKeyDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "saving" : "save"}</span>
+                  <span>{btnLoading ? "Saving" : "Save"}</span>
                 </Button>
               </div>
             </div>

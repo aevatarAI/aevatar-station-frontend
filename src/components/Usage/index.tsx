@@ -182,7 +182,7 @@ export function Usage() {
   return (
     <div className="pb-[25px]">
       <div className="flex max-[768px]:flex-col max-[768px]:items-start justify-between items-center">
-        <span className={clsx(textGradient)}>usage</span>
+        <span className={clsx(textGradient)}>Usage</span>
         <DatePickerWithRange date={date} onDateChange={setDate} />
       </div>
       {displayGraphs?.llmsModels && (
@@ -198,19 +198,19 @@ export function Usage() {
                 <strong className="underline text-[var(--color-foreground)]">
                   ?
                 </strong>{" "}
-                <span>total cost</span>
+                <span>Total Cost</span>
               </span>
               <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
                 <strong className="underline text-[var(--color-foreground)]">
                   ?
                 </strong>{" "}
-                <span>total input tokens</span>
+                <span>Total Input Tokens</span>
               </span>
               <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
                 <strong className="underline text-[var(--color-foreground)]">
                   ?
                 </strong>{" "}
-                <span>total output tokens</span>
+                <span>Total Output Tokens</span>
               </span>
             </div>
             <div className="max-[768px]:py-[10px]" />

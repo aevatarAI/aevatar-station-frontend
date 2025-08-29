@@ -81,14 +81,14 @@ export const Notifications = ({
                     className="py-[7px] px-[17px] leading-[14px] text-[13px]"
                     onClick={() => onJoin(item.id, ACCEPTED)}
                   >
-                    join
+                    Join
                   </LoadingButton>
                   <LoadingButton
                     data-testid="decline-button"
                     className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                     onClick={() => onDecline(item.id, DECLINED)}
                   >
-                    decline
+                    Decline
                   </LoadingButton>
                 </>
               )}
@@ -99,7 +99,7 @@ export const Notifications = ({
                   className="py-[7px] px-[17px] leading-[14px] text-[13px]"
                   disabled
                 >
-                  expired
+                  Expired
                 </Button>
               )}
               {item.type === INVITED && item.status === ACCEPTED && (
@@ -109,7 +109,7 @@ export const Notifications = ({
                   className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled
                 >
-                  joined
+                  Joined
                 </Button>
               )}
               {item.type === INVITED && item.status === DECLINED && (
@@ -119,7 +119,7 @@ export const Notifications = ({
                   className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled
                 >
-                  rejected
+                  Rejected
                 </Button>
               )}
             </div>

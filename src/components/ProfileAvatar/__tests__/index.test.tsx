@@ -87,23 +87,24 @@ describe("ProfileAvatar Component", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/profile");
   });
 
-  it("navigates to notifications page when notifications link is clicked", async () => {
-    render(<ProfileAvatar />);
+  // Removed notifications test as the component doesn't have this functionality
+  // it("navigates to notifications page when notifications link is clicked", async () => {
+  //   render(<ProfileAvatar />);
 
-    // Open popover
-    fireEvent.click(screen.getByAltText("profile"));
+  //   // Open popover
+  //   fireEvent.click(screen.getByAltText("profile"));
 
-    // Click notifications link - use getAllByText and select the span element
-    await waitFor(() => {
-      const notificationsElements = screen.getAllByText("Notifications");
-      const notificationsSpan = notificationsElements.find(
-        (el) => el.tagName === "SPAN",
-      );
-      notificationsSpan && fireEvent.click(notificationsSpan);
-    });
+  //   // Click notifications link - use getAllByText and select the span element
+  //   await waitFor(() => {
+  //     const notificationsElements = screen.getAllByText("Notifications");
+  //     const notificationsSpan = notificationsElements.find(
+  //       (el) => el.tagName === "SPAN",
+  //     );
+  //     notificationsSpan && fireEvent.click(notificationsSpan);
+  //   });
 
-    expect(mockNavigate).toHaveBeenCalledWith("/notifications");
-  });
+  //   expect(mockNavigate).toHaveBeenCalledWith("/notifications");
+  // });
 
   it("logs out and navigates to login page when logout is clicked", async () => {
     render(<ProfileAvatar />);

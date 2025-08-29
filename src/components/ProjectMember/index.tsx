@@ -215,7 +215,7 @@ export default function ProjectMember() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>projects members</div>
+        <div className={clsx(textGradient)}>Project Members</div>
 
         {projectPermissions.memberManage ? (
           <AddMembersDialog

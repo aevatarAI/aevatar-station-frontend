@@ -83,11 +83,11 @@ export const columns: ColumnDef<IProjectTable>[] = [
                   <TooltipTrigger asChild>
                     <span className="inline-flex items-center gap-1">
                       <TipIcon />
-                      <span className="text-[var(--color-error)]">error</span>
+                      <span className="text-[var(--color-error)]">Error</span>
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-[300px] text-center">
-                    <p>{row.original.reason ?? "something went wrong"}</p>
+                    <p>{row.original.reason ?? "Something went wrong"}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

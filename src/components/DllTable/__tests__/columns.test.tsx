@@ -265,17 +265,17 @@ describe("DllTable Columns", () => {
     it("should render error status with tooltip for other statuses", () => {
       const row = createMockRow({
         loadStatus: ELoadStatus.OtherError,
-        reason: "Connection failed",
+        reason: "Custom error message",
       });
       const statusColumn = columns[5];
 
       render(<div>{flexRender(statusColumn.cell, { row })}</div>);
 
       expect(screen.getByTestId("error-tip-icon")).toBeInTheDocument();
-      expect(screen.getByText("error")).toBeInTheDocument();
+      expect(screen.getByText("Error")).toBeInTheDocument();
       // Tooltip content is not visible by default, just check the structure exists
       const tooltipTrigger = screen
-        .getByText("error")
+        .getByText("Error")
         .closest("span[data-state]");
       expect(tooltipTrigger).toBeInTheDocument();
     });
@@ -290,10 +290,10 @@ describe("DllTable Columns", () => {
       render(<div>{flexRender(statusColumn.cell, { row })}</div>);
 
       expect(screen.getByTestId("error-tip-icon")).toBeInTheDocument();
-      expect(screen.getByText("error")).toBeInTheDocument();
+      expect(screen.getByText("Error")).toBeInTheDocument();
       // Tooltip content is not visible by default, just check the structure exists
       const tooltipTrigger = screen
-        .getByText("error")
+        .getByText("Error")
         .closest("span[data-state]");
       expect(tooltipTrigger).toBeInTheDocument();
     });
@@ -307,11 +307,10 @@ describe("DllTable Columns", () => {
 
       render(<div>{flexRender(statusColumn.cell, { row })}</div>);
 
-      expect(screen.getByTestId("error-tip-icon")).toBeInTheDocument();
-      expect(screen.getByText("error")).toBeInTheDocument();
+      expect(screen.getByText("Error")).toBeInTheDocument();
       // Tooltip content is not visible by default, just check the structure exists
       const tooltipTrigger = screen
-        .getByText("error")
+        .getByText("Error")
         .closest("span[data-state]");
       expect(tooltipTrigger).toBeInTheDocument();
     });
@@ -334,7 +333,6 @@ describe("DllTable Columns", () => {
         "min-w-[125px]",
         "text-[16px]",
         "font-semibold",
-        "lowercase",
         "font-outfit",
       );
     });

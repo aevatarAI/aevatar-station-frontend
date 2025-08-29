@@ -74,7 +74,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
       <DialogTrigger asChild>
         <Button className="py-[8px] bg-[var(--bg-background)] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[var(--color-border-black-light)]">
           <Plus />
-          <span>create organisation</span>
+          <span>Create Organisation</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -83,7 +83,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
       >
         <DialogHeader>
           <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal">
-            create new organisation
+            Create New Organisation
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -95,9 +95,9 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
                 name={"orgName"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="emailLabel" className="w-full">
-                    <FormLabel id="orgLabel">name of organisation</FormLabel>
+                    <FormLabel id="orgLabel">Name of Organisation</FormLabel>
                     <FormControl>
-                      <Input placeholder="name" {...field} />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +113,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"
@@ -127,7 +127,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
                       data-testid="loading-icon"
                     />
                   )}
-                  <span>{btnLoading ? "creating" : "create"}</span>
+                  <span>{btnLoading ? "Creating" : "Create"}</span>
                 </Button>
               </div>
             </div>

@@ -107,7 +107,7 @@ export default function AddMembersDialog({
                   name={"email"}
                   render={({ field }) => (
                     <FormItem aria-labelledby="emailLabel" className="w-full">
-                      <FormLabel id="emailLabel">email address</FormLabel>
+                      <FormLabel id="emailLabel">Email Address</FormLabel>
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
@@ -142,7 +142,7 @@ export default function AddMembersDialog({
                   name="role"
                   render={({ field }) => (
                     <FormItem aria-labelledby="roleLobal" className="w-full">
-                      <FormLabel id="roleLobal">role</FormLabel>
+                      <FormLabel id="roleLobal">Role</FormLabel>
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
@@ -181,7 +181,7 @@ export default function AddMembersDialog({
                       setOpen(false);
                     }}
                   >
-                    cancel
+                    Cancel
                   </Button>
                   <Button
                     variant="primary"
@@ -194,7 +194,7 @@ export default function AddMembersDialog({
                         style={{ width: 14, height: 14 }}
                       />
                     )}
-                    <span>{btnLoading ? "adding" : "add"}</span>
+                    <span>{btnLoading ? "Adding" : "Add"}</span>
                   </Button>
                 </div>
               </div>

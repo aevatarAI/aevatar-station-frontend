@@ -121,7 +121,7 @@ export default function CrossURL() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>cors</div>
+        <div className={clsx(textGradient)}>CORS</div>
         <CreateCrossURLDialog
           disabled={!projectPermissions?.corsOriginsCreate}
           type="create"

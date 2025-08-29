@@ -141,7 +141,7 @@ const ProjectEditDialog = forwardRef<
                 )}
               >
                 <Plus />
-                <span>create {fullWidth && "project"}</span>
+                <span>Create {fullWidth && "Project"}</span>
               </Button>
             )
           ) : (
@@ -154,7 +154,7 @@ const ProjectEditDialog = forwardRef<
         >
           <DialogHeader>
             <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
-              {type === "create" ? "create project" : "edit project"}
+              {type === "create" ? "Create Project" : "Edit Project"}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
@@ -166,7 +166,7 @@ const ProjectEditDialog = forwardRef<
                   name={"name"}
                   render={({ field }) => (
                     <FormItem aria-labelledby="nameLabel" className="w-full">
-                      <FormLabel id="nameLabel">project name</FormLabel>
+                      <FormLabel id="nameLabel">Project Name</FormLabel>
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
@@ -183,7 +183,7 @@ const ProjectEditDialog = forwardRef<
                       aria-labelledby="domainNameLabel"
                       className="w-full"
                     >
-                      <FormLabel id="domainNameLabel">domain name</FormLabel>
+                      <FormLabel id="domainNameLabel">Domain Name</FormLabel>
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
@@ -205,7 +205,7 @@ const ProjectEditDialog = forwardRef<
                       setOpen(false);
                     }}
                   >
-                    cancel
+                    Cancel
                   </Button>
                   <Button
                     variant="primary"

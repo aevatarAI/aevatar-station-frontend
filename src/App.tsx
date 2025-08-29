@@ -28,10 +28,10 @@ const Dashboard = lazy(() => import("./app/Dashboard"));
 export const Loading = () => (
   <div
     data-testid="page-loading"
-    className="flex items-center justify-center w-full h-full bg-black absolute top-0 left-0 z-50"
+    className="flex items-center justify-center w-full h-full bg-[var(--bg-background)] absolute top-0 left-0 z-50"
   >
-    <div className="flex text-2xl font-bold text-gray-800 flex items-center">
-      <div className="text-white font-outfit text-lg font-semibold leading-normal lowercase text-[18px]">
+    <div className="flex text-2xl font-bold flex items-center">
+      <div className="text-[var(--color-foreground)] font-outfit text-lg font-semibold leading-normal text-[18px]">
         Scanning......
       </div>
       <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
@@ -62,7 +62,7 @@ const Redirection = () => {
     const fetchProjectsThenRedirect = async () => {
       const organizationIds = data.data.items.map((datum: any) => datum.id);
       const projectsPromises = organizationIds.map((id: string) =>
-        getProjects(id)
+        getProjects(id),
       );
 
       if (organizationIds.length === 0) {
@@ -208,7 +208,9 @@ const App = () => (
       </PrivateRoute>
 
       <Route>
-        <div className="text-white text-center">404: No such page!</div>
+        <div className="text-[var(--color-foreground)] text-center">
+          404: No such page!
+        </div>
       </Route>
     </Switch>
   </LayoutDefault>

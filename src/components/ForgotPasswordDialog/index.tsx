@@ -63,13 +63,13 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light">
+        <span className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] ">
           forgot password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline mt-[4px]">
+          <DialogTitle className="text-[var(--color-foreground)] inline mt-[4px]">
             forgot password?
           </DialogTitle>
         </DialogHeader>
@@ -83,14 +83,14 @@ const ForgotPasswordDialog = () => {
               <DialogClose asChild>
                 <Button
                   type="button"
-                  className="text-white text-[13px] px-[16px] py-[8px]"
+                  className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
                 >
                   back to login
                 </Button>
               </DialogClose>
               <Button
                 type="submit"
-                className={`bg-white text-black-light text-[13px] px-[16px] py-[8px] ${
+                className={`bg-[var(--bg-primary)] text-[var(--primary-foreground)] text-[13px] px-[16px] py-[8px] ${
                   loading ? "opacity-50" : "opacity-100"
                 }`}
                 onClick={form.handleSubmit(onSubmit)}
@@ -124,7 +124,7 @@ const ForgotPasswordDialog = () => {
                           <Input
                             type="email"
                             placeholder="enter your email"
-                            className="placeholder:text-gray-deep border-black-light text-white"
+                            className="placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)] text-[var(--color-foreground)]"
                             {...field}
                             {...form.register("email", {
                               required: "required",
@@ -140,7 +140,7 @@ const ForgotPasswordDialog = () => {
                   <DialogClose asChild>
                     <Button
                       type="button"
-                      className="text-white text-[13px] px-[16px] py-[8px]"
+                      className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
                     >
                       back to login
                     </Button>
@@ -148,7 +148,7 @@ const ForgotPasswordDialog = () => {
                   <Button
                     formNoValidate
                     type="submit"
-                    className="bg-white text-[13px] text-black-light px-[16px] py-[8px]"
+                    className="bg-[var(--bg-primary)] text-[13px] text-[var(--primary-foreground)] px-[16px] py-[8px]"
                     disabled={loading}
                   >
                     submit

@@ -95,13 +95,13 @@ const Register = () => {
   );
 
   return (
-    <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
+    <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer"
             onClick={() => {
               navigate("/login");
             }}
@@ -110,8 +110,8 @@ const Register = () => {
           </span>
         </p>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -123,7 +123,7 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       name
                     </FormLabel>
                     <FormControl>
@@ -133,7 +133,7 @@ const Register = () => {
                         {...form.register("name", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -145,7 +145,7 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -155,7 +155,7 @@ const Register = () => {
                         {...form.register("email", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -167,7 +167,7 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>
@@ -178,7 +178,7 @@ const Register = () => {
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -190,7 +190,7 @@ const Register = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)]"
                 disabled={loading}
               >
                 send verification code

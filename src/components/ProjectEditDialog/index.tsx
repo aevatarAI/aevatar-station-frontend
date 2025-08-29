@@ -135,7 +135,7 @@ const ProjectEditDialog = forwardRef<
             showCreateButton && (
               <Button
                 disabled={disabled}
-                className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${
+                className={`text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${
                   fullWidth && "w-full"
                 }`}
               >
@@ -149,10 +149,10 @@ const ProjectEditDialog = forwardRef<
         </DialogTrigger>
         <DialogContent
           aria-describedby="create new api key"
-          className="z-[200] w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+          className="z-[200] w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
         >
           <DialogHeader>
-            <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+            <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
               {type === "create" ? "create project" : "edit project"}
             </DialogTitle>
           </DialogHeader>
@@ -186,7 +186,7 @@ const ProjectEditDialog = forwardRef<
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
-                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit lowercase">
+                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit">
                         Note: Once the project is created, the domain name
                         cannot be changed.
                       </div>
@@ -206,7 +206,7 @@ const ProjectEditDialog = forwardRef<
                     cancel
                   </Button>
                   <Button
-                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                    className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (

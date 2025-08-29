@@ -63,21 +63,7 @@ You MUST iterate implementing and fixing unit tests until all the following crit
    - Branches coverage percentage
    - Statements coverage percentage
 6. If any coverage metric is below 80%, highlight it in the output.
-7. Update the README.md file with the latest coverage information:
-   - Add a "Test Coverage" section if it doesn't exist
-   - Include a table showing all coverage metrics
-   - Update the coverage information after each significant change
-   - Use badges or formatted tables for better visualization
-   - Example format:
-     ```markdown
-     ## Test Coverage
-     | Metric | Coverage |
-     |--------|----------|
-     | Lines  | XX%      |
-     | Functions | XX%   |
-     | Branches | XX%    |
-     | Statements | XX%  |
-     ```
+
 
 ## Best Practices
 1. Keep tests focused and isolated

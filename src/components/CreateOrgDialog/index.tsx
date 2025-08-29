@@ -72,17 +72,17 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[8px] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[#303030]">
+        <Button className="py-[8px] bg-[var(--bg-background)] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[var(--color-border-black-light)]">
           <Plus />
           <span>create organisation</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
+          <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal">
             create new organisation
           </DialogTitle>
         </DialogHeader>
@@ -115,7 +115,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
                   cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

@@ -6,6 +6,7 @@ import type { Notification, QueryProps } from "@/hooks/useGetNotifications";
 import { useUpdateNotification } from "@/hooks/useUpdateNotifications";
 import { truncate } from "@/utils/helpers";
 import dayjs from "dayjs";
+
 interface NotificationsProps {
   data?: { data: Notification[] };
   isLoading: boolean;
@@ -44,8 +45,8 @@ export const Notifications = ({
 
   return (
     <div data-testid="notifications-container">
-      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-        <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
+      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
+        <div className="font-outfit text-[18px] font-semibold">
           Notifications
         </div>
       </div>
@@ -57,16 +58,16 @@ export const Notifications = ({
             data-testid={`notification-item-${item.id}`}
           >
             <div className="mb-[15px] lg:mb-0">
-              <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase mb-[10px]">
+              <div className="text-[var(--muted-foreground)] font-outfit text-[13px] font-normal leading-normal mb-[10px]">
                 {dayjs
                   .utc(item.creationTime)
                   .local()
                   .format("DD.MM.YYYY HH:mm")}
               </div>
-              <div className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal">
-                <span className="text-white">{`${item.creatorName} `}</span>
+              <div className="text-[var(--muted-foreground)] font-outfit text-[14px] font-semibold leading-normal">
+                <span className="text-[var(--color-foreground)]">{`${item.creatorName} `}</span>
                 <span>has invited you to join</span>
-                <span className="text-white">{` ${truncate(
+                <span className="text-[var(--color-foreground)]">{` ${truncate(
                   item.content,
                   "has invited you to join",
                 )}`}</span>

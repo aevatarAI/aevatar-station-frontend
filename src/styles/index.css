@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
 
@@ -18,17 +18,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  /* Light mode colors */
   --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  --color-foreground: var(--foreground);
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
   --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-foreground: var(--popover-foreground);
 
   --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
@@ -42,8 +43,7 @@
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));
 
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
+  --color-border: var(--border);
   --color-ring: hsl(var(--ring));
 
   --color-chart-1: hsl(var(--chart-1));
@@ -52,10 +52,32 @@
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
 
+  /* Custom color variables for light mode */
   --color-black-light: #303030;
   --color-gray-light: #b9b9b9;
   --color-gray-deep: #606060;
   --color-dialog-dark: #171717;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #e5e5e5;
+  --color-text-primary: #000000;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border-primary: #e0e0e0;
+  --color-border-secondary: #cccccc;
+  --color-border-black-light: #303030;
+  --color-border-gray-deep: #606060;
+  --color-border-gray-300: #d1d5db;
+  --color-border-gray-400: #9ca3af;
+  --color-border-gray-500: #6b7280;
+  --color-border-gray-600: #4b5563;
+  --color-accent-blue: #afc6dd;
+  --color-success: #53ff8a;
+  --color-error: #ff2e2e;
+  --color-warning: #ffa500;
+  --muted-foreground: #71717a;
+  --primary-foreground: #18181b;
+  --bg-black-light: #e4e4e7;
 
   @keyframes caret-blink {
     0%,
@@ -68,6 +90,82 @@
       opacity: 0;
     }
   }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Dark mode overrides */
+:root[data-theme="dark"] {
+  --color-bg-primary: #141415;
+  --color-bg-secondary: #191919;
+  --bg-background: #09090b;
+  --bg-primary: #fafafa;
+  --bg-muted: #18181b;
+  --bg-accent: #27272a;
+  --sidebar-background: #18181b;
+  --sidebar-foreground: #f4f4f5;
+  --color-bg-tertiary: #272728;
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #b9b9b9;
+  --color-text-tertiary: #606060;
+  --color-border-primary: #3f3f46;
+  --color-input: #3f3f46;
+  --color-sidebar-border: #3f3f46;
+  --color-border-secondary: #404040;
+  --color-border-black-light: #3f3f46;
+  --color-border-gray-deep: #404040;
+  --color-border-gray-300: #4b5563;
+  --color-border-gray-400: #6b7280;
+  --color-border-gray-500: #9ca3af;
+  --color-border-gray-600: #d1d5db;
+  --color-black-light: #303030;
+  --color-gray-light: #b9b9b9;
+  --color-gray-deep: #606060;
+  --color-dialog-dark: #171717;
+  --muted-foreground: #a1a1aa;
+  --primary-foreground: #18181b;
+  --bg-black-light: #3f3f46;
+}
+
+/* Light mode (default) */
+:root[data-theme="light"] {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --bg-muted: #f9f9fa;
+  --sidebar-background: #fafafa;
+  --sidebar-foreground: #3f3f46;
+  --bg-background: #ffffff;
+  --bg-primary: #18181b;
+  --bg-accent: #f4f4f5;
+
+  --color-bg-tertiary: #e5e5e5;
+  --color-text-primary: #09090b;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border-primary: #e4e4e7;
+  --color-sidebar-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-border-secondary: #cccccc;
+  --color-border-black-light: #e4e4e7;
+  --color-border-gray-deep: #606060;
+  --color-border-gray-300: #d1d5db;
+  --color-border-gray-400: #9ca3af;
+  --color-border-gray-500: #6b7280;
+  --color-border-gray-600: #4b5563;
+  --color-black-light: #303030;
+  --color-gray-light: #b9b9b9;
+  --color-gray-deep: #606060;
+  --color-dialog-dark: #fafafa;
+  --muted-foreground: #71717a;
+  --primary-foreground: #fafafa;
+  --bg-black-light: #e4e4e7;
 }
 
 /*
@@ -88,27 +186,12 @@
   }
 }
 
-@utility text-gradient {
-  @apply text-transparent bg-clip-text bg-linear-to-r from-[#FFFFFF] to-[#999999];
-}
-
 @layer base {
   body {
-    @apply m-0 min-h-screen min-w-[320px] bg-[#141415] font-outfit text-white;
+    @apply m-0 min-h-screen min-w-[320px] font-outfit;
+    background-color: var(--bg-background);
+    color: var(--color-text-primary);
   }
-}
-.aevatarai-text-gradient {
-  background: linear-gradient(91deg, #fff 15%, #999 98.97%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.aevatarai-text-gradient-center {
-  background: linear-gradient(91deg, #fff 0%, #999 16%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .aevatar-ai-watermark {

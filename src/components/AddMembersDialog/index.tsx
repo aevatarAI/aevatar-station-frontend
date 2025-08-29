@@ -90,10 +90,10 @@ export default function AddMembersDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="add new member"
-        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left text-[var(--color-foreground)] inline text-[18px] font-semibold leading-normal">
             add team members
           </DialogTitle>
           <Form {...form}>
@@ -180,7 +180,7 @@ export default function AddMembersDialog({
                     cancel
                   </Button>
                   <Button
-                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                    className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (

@@ -91,13 +91,13 @@ export default function OriganisactionHeader({
   return (
     <div
       className={clsx(
-        "flex text-[14px] gap-[14px] items-center text-white font-outfit font-normal leading-normal ",
+        "flex text-[14px] gap-[14px] items-center text-[var(--color-foreground)] font-outfit font-normal leading-normal ",
         className,
       )}
     >
       {currentOrganisation ? (
         <Popover open={orgOpen} onOpenChange={setOrgOpen}>
-          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-black-light">
+          <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
             {currentOrganisation?.displayName ?? "--"}
             <StepSelect />
           </PopoverTrigger>
@@ -121,8 +121,8 @@ export default function OriganisactionHeader({
               ))}
             </div>
 
-            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-black-light">
-              <Button className="text-white w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+            {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[var(--color-border-black-light)]">
+              <Button className="text-[var(--color-foreground)] w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
                 navigate("/profile/organisation/general")
                 setOrgOpen(false)
               }}>
@@ -133,18 +133,18 @@ export default function OriganisactionHeader({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
+        <div className="text-[var(--color-foreground)] font-outfit text-[14px] font-normal leading-[14px]">
           No Organisation
         </div>
       )}
       <div>/</div>
 
       <Popover open={pjtOpen} onOpenChange={setPjtOpen}>
-        <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px] data-[state=open]:bg-black-light">
+        <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
           {currentProject ? (
             currentProject.displayName
           ) : (
-            <div className="text-white font-outfit text-[14px] font-normal leading-[18px] lowercase">
+            <div className="text-[var(--color-foreground)] font-outfit text-[14px] font-normal leading-[18px]">
               No project
             </div>
           )}
@@ -169,17 +169,17 @@ export default function OriganisactionHeader({
               </div>
             ))}
           </div>
-          <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-black-light">
+          <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-[var(--color-border-black-light)]">
             <Button
               disabled={!isAdmin}
-              className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${"w-full"}`}
+              className={`text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${"w-full"}`}
               onClick={() => projectEditDialogRef.current?.open()}
             >
               <Plus />
               <span>create project</span>
             </Button>
             <Button
-              className="text-white w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase"
+              className="text-[var(--color-foreground)] w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]"
               disabled={!isAdmin}
               onClick={() => {
                 navigate("/profile/organisation/project");

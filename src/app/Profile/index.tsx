@@ -48,7 +48,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col lg:flex-row  h-[calc(100vh-60px)]">
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px]">
+      <div className="hidden lg:block w-[200px] min-w-[200px] bg-[var(--sidebar-background)] border-r border-[var(--color-sidebar-border)]">
         <SideBar />
       </div>
       <div className="pt-[31px] lg:pt-[39px] px-[20px] lg:pl-[43px] lg:pr-[40px] flex-1 overflow-auto">

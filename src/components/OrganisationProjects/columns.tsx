@@ -26,7 +26,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
         <Copy
           description="domain name copied"
           toCopy={row.original.domainName}
-          className="text-gray-deep hover:text-white"
+          className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
       </div>
     ),

@@ -70,7 +70,9 @@ describe("CheckboxLabel Component", () => {
     const checkbox = screen.getByRole("checkbox");
     const label = screen.getByText("Checkbox with style");
 
-    expect(checkbox).toHaveClass("border-[#989DA0] bg-white w-[14px] h-[14px]");
+    expect(checkbox).toHaveClass(
+      "border-[var(--color-border-primary)] bg-white w-[14px] h-[14px]",
+    );
     expect(label).toHaveClass(
       "font-normal text-[12px] leading-[14px] mb-0 mt-0! font-outfit",
     );

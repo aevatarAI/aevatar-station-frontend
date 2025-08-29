@@ -22,7 +22,7 @@ export default function ProfileAvatar() {
   const [profile] = useAtom(USER_PROFILE_ATOM);
 
   return (
-    <div className="border-4 border-white rounded-[2px] w-[34px] h-[34px] bg-white">
+    <div className="border-4 border-white rounded-[2px] w-[34px] h-[34px]">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
           <img src={profileImg} alt="profile" className="object-cover" />
@@ -47,7 +47,7 @@ export default function ProfileAvatar() {
               <Copy
                 description="email address copied"
                 toCopy={profile.email}
-                iconClassName="w-[20px] h-[20px] text-gray-deep hover:text-[#B9B9B9]"
+                iconClassName="w-[20px] h-[20px] text-[var(--muted-foreground)] hover:text-[var(--muted-foreground)]"
               />
             )}
           </div>

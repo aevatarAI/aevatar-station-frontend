@@ -226,11 +226,7 @@ export default function DllTable() {
         columns={columns}
         loading={loading}
         data={tableData}
-        emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            {dllEmptyMessage}
-          </div>
-        }
+        emptyNode={<div data-testid="empty-dll-message">{dllEmptyMessage}</div>}
         data-testid="dll-table"
       />
     </div>

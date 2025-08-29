@@ -18,7 +18,7 @@ export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
       {tab === "general" && (
         <General
           header="organisation settings"
-          title="organisation name"
+          title="Organisation name"
           readonly={!userPermissions?.organizationsEdit}
           inputPlaceholder={currentOrg?.displayName ?? "name"}
           defaultValue={currentOrg?.displayName ?? ""}

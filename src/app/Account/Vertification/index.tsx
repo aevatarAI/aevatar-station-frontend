@@ -94,13 +94,13 @@ const Verification = () => {
     }
   }, [toast, name, email]);
   return (
-    <div className="flex flex-col text-white  w-full lg:w-[408px] gap-4">
+    <div className="flex flex-col text-[var(--color-foreground)]  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">verification</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer hover:text-gray-light"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer hover:text-[var(--muted-foreground)]"
             onClick={() => {
               navigate("/login");
             }}
@@ -109,8 +109,8 @@ const Verification = () => {
           </span>
         </p>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -122,7 +122,7 @@ const Verification = () => {
                 name="verificationCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       Verification Code
                     </FormLabel>
                     <FormControl>
@@ -132,7 +132,7 @@ const Verification = () => {
                         {...form.register("verificationCode", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -144,13 +144,13 @@ const Verification = () => {
             <div className="flex flex-col gap-[10px]">
               <Button
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)]"
               >
                 register
               </Button>
               <div className="text-right">
                 <span
-                  className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light"
+                  className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
                   onClick={sendVerificationCode}
                 >
                   resend email

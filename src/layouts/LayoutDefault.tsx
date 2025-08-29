@@ -13,6 +13,7 @@ import "./style.css";
 import "./tailwind.css";
 
 import Loading from "@/components/Loading";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import type React from "react";
 
@@ -27,14 +28,16 @@ export default function LayoutDefault({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ProviderComponent> */}
-      <div>
-        <div className="grow">{children}</div>
-        <Loading />
-        <Toaster />
-        <RestartPodServer />
-      </div>
-      {/* </ProviderComponent> */}
+      <ThemeProvider>
+        {/* <ProviderComponent> */}
+        <div>
+          <div className="grow">{children}</div>
+          <Loading />
+          <Toaster />
+          <RestartPodServer />
+        </div>
+        {/* </ProviderComponent> */}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

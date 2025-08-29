@@ -85,10 +85,10 @@ export default function InviteMembersDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
             invite team members
           </DialogTitle>
         </DialogHeader>
@@ -130,7 +130,7 @@ export default function InviteMembersDialog({
                           <SelectItem
                             key={item.id}
                             value={item.id}
-                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[16px]"
+                            className="text-[var(--muted-foreground)] text-center font-outfit py-[7px] select-item-wrapper text-[16px]"
                           >
                             {item.name.split("_")[1]}
                           </SelectItem>
@@ -141,25 +141,6 @@ export default function InviteMembersDialog({
                   </FormItem>
                 )}
               />
-
-              {/* <FormField
-                control={form.control}
-                name="defaultProject"
-                render={({ field }) => (
-                  <FormItem className="flex gap-[8px] items-center -mt-[12px]">
-                    <FormControl>
-                      <Checkbox
-                        className="border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-deep data-[state=checked]:border-gray-deep"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal mb-0 mt-0!">
-                      invite to default project
-                    </FormLabel>
-                  </FormItem>
-                )}
-              /> */}
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
@@ -172,7 +153,7 @@ export default function InviteMembersDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

@@ -91,6 +91,7 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >((props, ref) => {
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const { formItemId, error } = useFormField();
 
   return (
@@ -98,7 +99,7 @@ const FormLabel = React.forwardRef<
       ref={ref}
       htmlFor={formItemId}
       {...props}
-      className={props.className}
+      className={clsx("text-[var(--color-foreground)]", props.className)}
     />
   );
 });

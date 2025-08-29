@@ -73,7 +73,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "status",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[16px] font-semibold lowercase font-outfit">
+        <div className="min-w-[125px] text-[16px] font-semibold font-outfit">
           {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
           {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&
@@ -83,7 +83,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
                   <TooltipTrigger asChild>
                     <span className="inline-flex items-center gap-1">
                       <TipIcon />
-                      <span className="text-[#FF2E2E]">error</span>
+                      <span className="text-[var(--color-error)]">error</span>
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-[300px] text-center">

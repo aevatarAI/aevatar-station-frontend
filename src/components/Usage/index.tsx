@@ -106,8 +106,8 @@ const CustomTooltip = ({
   if (!active || !payload || !payload.length) return null;
 
   return (
-    <div className="custom-tooltip bg-black p-1.5 border-black-light">
-      <p className="label font-outfit text-[#B9B9B9] text-[12px] my-0.5">
+    <div className="custom-tooltip bg-[var(--bg-primary)] p-1.5 border-[var(--color-border-black-light)]">
+      <p className="label font-outfit text-[var(--muted-foreground)] text-[12px] my-0.5">
         {label}
       </p>
       {payload.map((entry: any) => {
@@ -187,23 +187,29 @@ export function Usage() {
       </div>
       {displayGraphs?.llmsModels && (
         <>
-          <div className="max-[768px]:h-px max-[768px]:my-[30px] max-[768px]:bg-black-light min-[769px]:py-[15px]" />
-          <span className="text-[16px] text-gray-light font-semibold max-[768px]:text-white">
+          <div className="max-[768px]:h-px max-[768px]:my-[30px] max-[768px]:bg-[var(--bg-black-light)] min-[769px]:py-[15px]" />
+          <span className="text-[16px] text-[var(--muted-foreground)] font-semibold max-[768px]:text-[var(--color-foreground)]">
             llms model
           </span>
           <div className="py-[10px]" />
           <div className="flex justify-between items-center max-[768px]:grid max-[768px]:justify-normal max-[768px]:items-start">
             <div className="flex max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-[5px] gap-[10px]">
-              <span className="text-gray-light font-semibold text-[14px]">
-                <strong className="underline text-white">?</strong>{" "}
+              <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
+                <strong className="underline text-[var(--color-foreground)]">
+                  ?
+                </strong>{" "}
                 <span>total cost</span>
               </span>
-              <span className="text-gray-light font-semibold text-[14px]">
-                <strong className="underline text-white">?</strong>{" "}
+              <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
+                <strong className="underline text-[var(--color-foreground)]">
+                  ?
+                </strong>{" "}
                 <span>total input tokens</span>
               </span>
-              <span className="text-gray-light font-semibold text-[14px]">
-                <strong className="underline text-white">?</strong>{" "}
+              <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
+                <strong className="underline text-[var(--color-foreground)]">
+                  ?
+                </strong>{" "}
                 <span>total output tokens</span>
               </span>
             </div>
@@ -241,7 +247,7 @@ export function Usage() {
             </div>
           </div>
           <div className="py-[10px]" />
-          <div className="bg-[#141415] pt-[9px] pr-[35px] pb-[24px] pl-0">
+          <div className="bg-[var(--bg-background] pt-[9px] pr-[35px] pb-[24px] pl-0">
             <ResponsiveContainer width="100%" height={302}>
               <BarChart
                 data={UNCHANGED_DATA}
@@ -268,7 +274,7 @@ export function Usage() {
                 <Legend
                   wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
                   formatter={(value) => (
-                    <span className="font-outfit text-white text-[12px]">
+                    <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
                       {value}
                     </span>
                   )}
@@ -293,18 +299,18 @@ export function Usage() {
       {displayGraphs?.apiRequests && (
         <>
           <div className="py-[15px]" />
-          <span className="text-[16px] text-gray-light font-semibold max-[768px]:text-white">
+          <span className="text-[16px] text-[var(--muted-foreground)] font-semibold max-[768px]:text-[var(--color-foreground)]">
             api request
           </span>
           <div className="py-[10px]" />
-          <span className="text-gray-light font-semibold text-[14px]">
-            <strong className="underline text-white">
+          <span className="text-[var(--muted-foreground)] font-semibold text-[14px]">
+            <strong className="underline text-[var(--color-foreground)]">
               {data?.data?.totalRequests}
             </strong>{" "}
             api request
           </span>
           <div className="py-[10px]" />
-          <div className="bg-[#141415] pt-[30px] pr-[35px] pb-[24px] pl-0">
+          <div className="bg-[var(--bg-background)] pt-[30px] pr-[35px] pb-[24px] pl-0">
             {apiRequests.length > 0 ? (
               <ResponsiveContainer width="100%" height={302}>
                 <LineChart width={1040} height={302} data={apiRequests}>
@@ -320,7 +326,7 @@ export function Usage() {
                       paddingLeft: isMobile ? 44 : 0,
                     }}
                     formatter={(value) => (
-                      <span className="font-outfit text-white text-[12px]">
+                      <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
                         {value}
                       </span>
                     )}
@@ -381,7 +387,9 @@ export const EmptyAPIRequests = ({
             paddingLeft: isMobile ? 44 : 0,
           }}
           formatter={(value) => (
-            <span className="font-outfit text-white text-[12px]">{value}</span>
+            <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
+              {value}
+            </span>
           )}
         />
         <Line type="monotone" dataKey="count" stroke="#ffffff" />

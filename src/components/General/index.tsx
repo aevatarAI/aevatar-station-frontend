@@ -83,15 +83,13 @@ const General = forwardRef(
     }, [_buttonProps, readonly, inputText, onConfirm]);
     return (
       <div>
-        <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-          <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
-            {header}
-          </div>
+        <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
+          <div className="font-outfit text-[18px] font-semibold">{header}</div>
           <div>{_buttonProps.placement === "top-right" && buttonELe}</div>
         </div>
         <div className="pt-[30px]">
           <div>
-            <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+            <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
               {title}
             </div>
             <Input

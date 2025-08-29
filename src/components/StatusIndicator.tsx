@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useInterval } from "usehooks-ts";
 
 export enum Status {
-  Running = "text-[#53FF8A]",
-  Error = "text-[#FF2E2E]",
-  NotStarted = "text-[#B9B9B9]",
+  Running = "running",
+  Error = "error",
+  NotStarted = "not-started",
 }
 
 export default function StatusIndicator({
@@ -24,24 +24,45 @@ export default function StatusIndicator({
     }
   }, 200);
 
+  const getStatusColor = (status: Status) => {
+    switch (status) {
+      case Status.Running:
+        return "var(--color-success)";
+      case Status.Error:
+        return "var(--color-error)";
+      case Status.NotStarted:
+        return "var(--color-text-secondary)";
+      default:
+        return "var(--color-text-secondary)";
+    }
+  };
+
+  const getTextColor = (status: Status) => {
+    if (status === Status.NotStarted) {
+      return "var(--color-text-secondary)";
+    }
+    return "var(--color-text-primary)";
+  };
+
   return (
     <div className="flex items-center">
       <StatusIcon
         className={cn({
-          [Status.Running]: status === Status.Running,
-          [Status.Error]: isOn && status === Status.Error,
           "text-transparent": !isOn && status === Status.Error,
-          [Status.NotStarted]: status === Status.NotStarted,
         })}
+        style={{
+          color:
+            status === Status.Error && !isOn
+              ? "transparent"
+              : getStatusColor(status),
+        }}
       />
       <span
         className={cn(
           "font-outfit text-[13px] font-medium ml-[7px] uppercase",
-          {
-            "text-white": status !== Status.NotStarted,
-            [Status.NotStarted]: status === Status.NotStarted,
-          },
+          "text-[var(--color-text-primary)]",
         )}
+        style={{ color: getTextColor(status) }}
       >
         {status === Status.Running
           ? "Running"
@@ -51,7 +72,7 @@ export default function StatusIndicator({
         {message ? (
           <>
             :<br />
-            <span className="lowercase">{message}</span>
+            <span>{message}</span>
           </>
         ) : (
           ""

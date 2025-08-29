@@ -54,7 +54,10 @@ export function DatePickerWithRange({
             </div>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 bg-black-light" align="start">
+        <PopoverContent
+          className="w-auto p-0 bg-[var(--bg-black-light)]"
+          align="start"
+        >
           <Calendar
             initialFocus
             mode="range"

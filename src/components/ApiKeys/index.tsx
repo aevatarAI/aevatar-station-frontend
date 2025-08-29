@@ -103,9 +103,7 @@ export default function ApiKeys() {
         columns={columns}
         loading={isLoading}
         emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            No API keys created yet
-          </div>
+          <div data-testid="empty-dll-message">No API keys created yet</div>
         }
         data={tableData}
       />

@@ -138,9 +138,7 @@ export default function CrossURL() {
         loading={loading}
         data={tableData}
         emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            No Cross URL added yet
-          </div>
+          <div data-testid="empty-dll-message">No Cross URL added yet</div>
         }
         data-testid="cross-url-table"
       />

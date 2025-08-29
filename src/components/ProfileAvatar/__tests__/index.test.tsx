@@ -1,6 +1,7 @@
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { useNavigate } from "@/hooks/navigate";
 import { useLogout } from "@/hooks/useLogout";
+import { useTheme } from "@/hooks/useTheme";
 import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useAtom } from "jotai";
@@ -15,6 +16,10 @@ vi.mock("@/hooks/useLogout", () => ({
   useLogout: vi.fn(),
 }));
 
+vi.mock("@/hooks/useTheme", () => ({
+  useTheme: vi.fn(),
+}));
+
 // Mock useAtom
 vi.mock("jotai", () => ({
   useAtom: vi.fn(),
@@ -23,6 +28,7 @@ vi.mock("jotai", () => ({
 describe("ProfileAvatar Component", () => {
   const mockNavigate = vi.fn();
   const mockLogout = vi.fn();
+  const mockToggleTheme = vi.fn();
   const mockProfile = {
     userName: "Test User",
     email: "test@example.com",
@@ -32,6 +38,14 @@ describe("ProfileAvatar Component", () => {
     vi.clearAllMocks();
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
     vi.mocked(useLogout).mockReturnValue(mockLogout);
+    vi.mocked(useTheme).mockReturnValue({
+      theme: "dark" as const,
+      toggleTheme: mockToggleTheme,
+      setLightTheme: vi.fn(),
+      setDarkTheme: vi.fn(),
+      isLight: false,
+      isDark: true,
+    });
     vi.mocked(useAtom).mockImplementation((atom) => {
       if (atom === USER_PROFILE_ATOM) {
         return [mockProfile] as any;
@@ -63,12 +77,32 @@ describe("ProfileAvatar Component", () => {
     // Open popover
     fireEvent.click(screen.getByAltText("profile"));
 
-    // Click profile link
+    // Click profile link - use getAllByText and select the span element
     await waitFor(() => {
-      fireEvent.click(screen.getByText("profile"));
+      const accountElements = screen.getAllByText("Account");
+      const accountSpan = accountElements.find((el) => el.tagName === "SPAN");
+      accountSpan && fireEvent.click(accountSpan);
     });
 
     expect(mockNavigate).toHaveBeenCalledWith("/profile");
+  });
+
+  it("navigates to notifications page when notifications link is clicked", async () => {
+    render(<ProfileAvatar />);
+
+    // Open popover
+    fireEvent.click(screen.getByAltText("profile"));
+
+    // Click notifications link - use getAllByText and select the span element
+    await waitFor(() => {
+      const notificationsElements = screen.getAllByText("Notifications");
+      const notificationsSpan = notificationsElements.find(
+        (el) => el.tagName === "SPAN",
+      );
+      notificationsSpan && fireEvent.click(notificationsSpan);
+    });
+
+    expect(mockNavigate).toHaveBeenCalledWith("/notifications");
   });
 
   it("logs out and navigates to login page when logout is clicked", async () => {
@@ -79,11 +113,25 @@ describe("ProfileAvatar Component", () => {
 
     // Click logout link
     await waitFor(() => {
-      fireEvent.click(screen.getByText("log out"));
+      fireEvent.click(screen.getByText("Log out"));
     });
 
     expect(mockLogout).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith("/login");
+  });
+
+  it("toggles theme when theme toggle is clicked", async () => {
+    render(<ProfileAvatar />);
+
+    // Open popover
+    fireEvent.click(screen.getByAltText("profile"));
+
+    // Click theme toggle
+    await waitFor(() => {
+      fireEvent.click(screen.getByText("Light theme"));
+    });
+
+    expect(mockToggleTheme).toHaveBeenCalled();
   });
 
   it("handles missing profile data gracefully", () => {

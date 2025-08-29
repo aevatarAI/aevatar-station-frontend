@@ -189,8 +189,9 @@ const Register = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)]"
+                className="w-full flex justify-center border border-transparent"
                 disabled={loading}
               >
                 send verification code

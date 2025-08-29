@@ -66,6 +66,7 @@ export default function DeleteDialog({
 
           <div className="flex justify-between items-start self-stretch pt-[28px] gap-[14px]">
             <Button
+              variant="outline"
               className="text-[13px] flex-1 py-[7px] leading-[14px]"
               onClick={() => {
                 setOpen(false);
@@ -74,7 +75,8 @@ export default function DeleteDialog({
               cancel
             </Button>
             <LoadingButton
-              className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] flex-1 py-[7px] leading-[14px]"
+              variant="primary"
+              className="text-[13px] flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
               aria-label="yes"
               data-testid="delete-dll-btn"

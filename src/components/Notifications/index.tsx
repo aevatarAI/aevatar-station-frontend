@@ -94,6 +94,7 @@ export const Notifications = ({
               )}
               {item.type === INVITED && item.status === EXPIRED && (
                 <Button
+                  variant="outline"
                   data-testid="expired-button"
                   className="py-[7px] px-[17px] leading-[14px] text-[13px]"
                   disabled
@@ -103,6 +104,7 @@ export const Notifications = ({
               )}
               {item.type === INVITED && item.status === ACCEPTED && (
                 <Button
+                  variant="outline"
                   data-testid="joined-button"
                   className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled
@@ -112,6 +114,7 @@ export const Notifications = ({
               )}
               {item.type === INVITED && item.status === DECLINED && (
                 <Button
+                  variant="outline"
                   data-testid="rejected-button"
                   className="py-[7px]  px-[17px]  leading-[14px] text-[13px]"
                   disabled

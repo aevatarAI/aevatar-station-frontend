@@ -71,6 +71,7 @@ const General = forwardRef(
       if (readonly) return null;
       return (
         <LoadingButton
+          variant="primary"
           className={clsx(_buttonProps?.className, "font-semibold")}
           onClick={async () => {
             if (!inputText) return;

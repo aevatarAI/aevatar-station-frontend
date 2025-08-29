@@ -63,7 +63,10 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
+        <Button
+          variant="primary"
+          className="py-2 py-1.5 gap-[10px] text-[13px] font-semibold leading-[14px]"
+        >
           <Plus />
           <span>add role</span>
         </Button>
@@ -102,6 +105,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
@@ -111,7 +115,8 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                   cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

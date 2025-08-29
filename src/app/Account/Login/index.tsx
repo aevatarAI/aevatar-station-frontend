@@ -182,8 +182,9 @@ const Login = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)] hover:opacity-95"
+                className="w-full flex justify-center border border-transparent hover:opacity-95"
                 disabled={loading}
               >
                 {loading ? "logging in" : "log in"}
@@ -200,16 +201,18 @@ const Login = () => {
           </span>
           <div className="flex flex-between gap-[20px] max-[431px]:flex-col">
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)] hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGoogleLogin}
             >
               <GoogleIcon />
               <span>google</span>
             </Button>
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-[var(--bg-primary)] text-[var(--primary-foreground)] hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGithubLogin}
             >
               <GithubIcon />

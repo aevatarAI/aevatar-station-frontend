@@ -24,7 +24,6 @@ import {
   type TProjectEditForm,
 } from "@/constants/form/project";
 import { useToast } from "@/hooks/use-toast";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { handleErrorMessage } from "@/utils/error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
@@ -134,10 +133,12 @@ const ProjectEditDialog = forwardRef<
           {type === "create" ? (
             showCreateButton && (
               <Button
+                variant="primary"
                 disabled={disabled}
-                className={`text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${
-                  fullWidth && "w-full"
-                }`}
+                className={clsx(
+                  "text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]",
+                  fullWidth && "w-full",
+                )}
               >
                 <Plus />
                 <span>create {fullWidth && "project"}</span>
@@ -197,7 +198,8 @@ const ProjectEditDialog = forwardRef<
                 />
                 <div className="flex justify-between items-start w-full">
                   <Button
-                    className="text-[13px] py-[7px] leading-[14px]"
+                    variant="outline"
+                    className="text-[13px] py-2 px-3 leading-[14px]"
                     type="reset"
                     onClick={() => {
                       setOpen(false);
@@ -206,7 +208,8 @@ const ProjectEditDialog = forwardRef<
                     cancel
                   </Button>
                   <Button
-                    className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
+                    variant="primary"
+                    className="text-[13px] py-2 px-3 leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (

@@ -155,6 +155,7 @@ export default function CreateCrossURLDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
@@ -164,8 +165,9 @@ export default function CreateCrossURLDialog({
                   cancel
                 </Button>
                 <Button
+                  variant="primary"
                   className={clsx(
-                    "text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px] w-[79px]",
+                    "text-[13px] py-[7px] leading-[14px] w-[79px]",
                   )}
                   type="submit"
                 >

@@ -15,6 +15,7 @@ export default function Configuration({
         configuration
       </span>
       <Button
+        variant="primary"
         className="group flex flex-row items-center gap-[5px] px-[18px] py-[8px] border border-[var(--color-border-black-light)] font-outfit text-[13px] leading-[1.2]"
         onClick={onRestart}
       >

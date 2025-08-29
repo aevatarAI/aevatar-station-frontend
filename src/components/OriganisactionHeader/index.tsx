@@ -171,15 +171,17 @@ export default function OriganisactionHeader({
           </div>
           <div className="flex flex-col items-center gap-[10px] justify-center pt-[20px] lg:px-[12px] border-t border-[var(--color-border-black-light)]">
             <Button
+              variant="outline"
               disabled={!isAdmin}
-              className={`text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${"w-full"}`}
+              className={` text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${"w-full"}`}
               onClick={() => projectEditDialogRef.current?.open()}
             >
               <Plus />
               <span>create project</span>
             </Button>
             <Button
-              className="text-[var(--color-foreground)] w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]"
+              variant="outline"
+              className=" w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]"
               disabled={!isAdmin}
               onClick={() => {
                 navigate("/profile/organisation/project");

@@ -106,6 +106,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
@@ -115,7 +116,8 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
                   cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

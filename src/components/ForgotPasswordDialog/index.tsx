@@ -82,6 +82,7 @@ const ForgotPasswordDialog = () => {
             <div className="flex justify-between items-center">
               <DialogClose asChild>
                 <Button
+                  variant="outline"
                   type="button"
                   className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
                 >
@@ -90,6 +91,7 @@ const ForgotPasswordDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
+                variant="primary"
                 className={`bg-[var(--bg-primary)] text-[var(--primary-foreground)] text-[13px] px-[16px] py-[8px] ${
                   loading ? "opacity-50" : "opacity-100"
                 }`}
@@ -139,14 +141,16 @@ const ForgotPasswordDialog = () => {
                 <div className="flex justify-between items-center">
                   <DialogClose asChild>
                     <Button
+                      variant="outline"
                       type="button"
-                      className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
+                      className="text-[13px] px-[16px] py-[8px]"
                     >
                       back to login
                     </Button>
                   </DialogClose>
                   <Button
                     formNoValidate
+                    variant="primary"
                     type="submit"
                     className="bg-[var(--bg-primary)] text-[13px] text-[var(--primary-foreground)] px-[16px] py-[8px]"
                     disabled={loading}

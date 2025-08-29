@@ -11,6 +11,7 @@ import {
   USER_PROFILE_ATOM,
 } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
+import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useState } from "react";
 
@@ -77,6 +78,7 @@ export default function ProfileGeneral() {
               onChange={(e) => setName(e.target.value)}
             />
             <LoadingButton
+              variant="primary"
               className="font-semibold py-[7px] px-[17px] border-[var(--color-input)]"
               onClick={onNameSave}
             >

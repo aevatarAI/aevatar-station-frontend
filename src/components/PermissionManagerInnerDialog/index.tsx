@@ -366,7 +366,10 @@ export default function PermissionManagerInnerDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]">
+        <Button
+          variant="outline"
+          className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]"
+        >
           {`${readonly ? "view" : "edit"} permissions`}
         </Button>
       </DialogTrigger>
@@ -438,7 +441,8 @@ export default function PermissionManagerInnerDialog({
                 {!readonly && (
                   <div className="flex justify-between items-start self-stretch mt-auto pt-[8px]">
                     <Button
-                      className="text-[13px] py-[7px] leading-[14px]"
+                      variant="outline"
+                      className="text-[13px] py-2 px-3 leading-[14px]"
                       type="reset"
                       onClick={() => {
                         setOpen(false);
@@ -448,7 +452,8 @@ export default function PermissionManagerInnerDialog({
                     </Button>
 
                     <LoadingButton
-                      className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
+                      variant="primary"
+                      className={clsx("text-[13px] py-2 px-3 leading-[14px]")}
                       onClick={onSaveHandler}
                     >
                       save

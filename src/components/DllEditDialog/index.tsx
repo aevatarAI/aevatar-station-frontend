@@ -78,8 +78,9 @@ export default function DllEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
+            variant="primary"
             className={clsx(
-              "text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
+              " text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
@@ -89,7 +90,6 @@ export default function DllEditDialog({
           >
             <Dll
               className={clsx(
-                "text-[var(--color-foreground)]",
                 "w-[16px] h-[16px]",
                 disabled && "text-[var(--muted-foreground)]",
                 disabled
@@ -144,6 +144,7 @@ export default function DllEditDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
@@ -153,6 +154,7 @@ export default function DllEditDialog({
                   cancel
                 </Button>
                 <Button
+                  variant="primary"
                   className={clsx(
                     "text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px] w-[79px]",
                   )}

@@ -21,7 +21,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
     id: "email",
     header: "email address",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-outfit">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit">
         <span>{row.original.email}</span>
         <Copy
           description="email address copied"

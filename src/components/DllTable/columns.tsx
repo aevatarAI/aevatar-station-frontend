@@ -24,7 +24,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "created",
     header: "created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
           .utc(row.original.creationTime)
           .local()
@@ -37,7 +37,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "created by",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );
@@ -47,7 +47,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     accessorKey: "updated",
     header: "updated",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {row.original.lastModificationTime
           ? dayjs
               .utc(row.original.lastModificationTime)
@@ -62,7 +62,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
     header: "updated by",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.lastModifierName || "-"}
         </div>
       );

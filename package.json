@@ -4,8 +4,6 @@
 		"dev:local": "vite --host --mode local-dev",
 		"dev:production": "vite --host --mode production-local",
 		"build": "vite build",
-		"build:local": "vite build --mode local-dev",
-		"build:production": "vite build --mode production-local",
 		"preview": "vite preview",
 		"lint": "biome lint --write .",
 		"format": "biome format --write .",

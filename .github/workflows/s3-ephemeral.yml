@@ -43,17 +43,16 @@ jobs:
           echo "project_name_normalized=$NORMALIZED_NAME" >> $GITHUB_OUTPUT
 
       # ✅ Create .env file
-      - name: create env file
+      - name: create or replace .env.production.local
         run: |
-          touch .env
-          echo VITE_APP_NETWORKTYPE=TESTNET >> .env
-          echo VITE_APP_SIGNAL_R_URL=http://${{ steps.set-project-name.outputs.project_name_normalized }}.station-testing.aevatar.ai >> .env
-          echo VITE_APP_DOMAIN_URL=https://station-developer-testing.aevatar.ai >> .env
-          echo VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }} >> .env
-          echo VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }} >> .env
-          echo VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }} >> .env
-          echo VITE_GITHUB_SCOPE=${{ secrets.VITE_GITHUB_SCOPE }} >> .env
-          echo VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} >> .env
+          echo "VITE_APP_NETWORKTYPE=TESTNET" > .env.production.local
+          echo "VITE_APP_SIGNAL_R_URL=http://${{ steps.set-project-name.outputs.project_name_normalized }}.station-testing.aevatar.ai" >> .env.production.local
+          echo "VITE_APP_DOMAIN_URL=https://station-developer-testing.aevatar.ai" >> .env.production.local
+          echo "VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }}" >> .env.production.local
+          echo "VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }}" >> .env.production.local
+          echo "VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }}" >> .env.production.local
+          echo "VITE_GITHUB_SCOPE=${{ secrets.VITE_GITHUB_SCOPE }}" >> .env.production.local
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.production.local
 
       # ✅ Build
       - run: pnpm build

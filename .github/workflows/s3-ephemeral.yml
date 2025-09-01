@@ -42,7 +42,7 @@ jobs:
           NORMALIZED_NAME=$(echo "$RAW_NAME" | xargs)
           echo "project_name_normalized=$NORMALIZED_NAME" >> $GITHUB_OUTPUT
 
-      # ✅ Create .env file
+      # ✅ Create or replace .env.production.local
       - name: create or replace .env.production.local
         run: |
           echo "VITE_APP_NETWORKTYPE=TESTNET" > .env.production.local

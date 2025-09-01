@@ -52,3 +52,5 @@ export const projectInitialisingAtom = atomWithStorage<string[] | null>(
   undefined,
   { getOnInit: true },
 );
+
+export const projectInitialisingLoadingAtom = atom(false);

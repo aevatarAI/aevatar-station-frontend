@@ -1,6 +1,8 @@
 {
 	"scripts": {
-		"dev": "vite --host",
+		"dev": "vite --host --mode development",
+		"dev:local": "vite --host --mode local-dev",
+		"dev:production": "vite --host --mode production-local",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "biome lint --write .",

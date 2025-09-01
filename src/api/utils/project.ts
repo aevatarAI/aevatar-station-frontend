@@ -66,3 +66,19 @@ export const restartProjectServer = async (data: {
     });
   return result.data;
 };
+
+export const updateRecentUsed = async (data: {
+  projectId: string;
+  organizationId: string;
+}) => {
+  const result: TDataResponse<null> = await request.projects.updateRecentUsed({
+    data,
+  });
+  return result.data;
+};
+
+export const getRecentUsed = async () => {
+  const result: TDataResponse<{ organizationId: string; projectId: string }> =
+    await request.projects.getRecentUsed();
+  return result.data;
+};

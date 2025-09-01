@@ -10,37 +10,47 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
+      # ✅ Checkout repo
       - name: Check out the repo
         uses: actions/checkout@v4
 
+      # ✅ Setup pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+
+      # ✅ Setup Node.js       
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: "pnpm"
 
-      - run: pnpm install
-      - name: create env file
+      # ✅ Install dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # ✅ Create or replace .env.production.local
+      - name: create or override .env.production.local
         run: |
-          touch .env
-          echo VITE_APP_NETWORKTYPE=TESTNET >> .env
-          echo VITE_APP_SIGNAL_R_URL=https://station-dev-staging.aevatar.ai >> .env
-          echo VITE_APP_DOMAIN_URL=https://station-developer-dev-staging.aevatar.ai >> .env
-          echo VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }} >> .env
-          echo VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }} >> .env
-          echo VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }} >> .env
-          echo VITE_GITHUB_SCOPE=${{ secrets.VITE_GITHUB_SCOPE }} >> .env
-          echo VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} >> .env
+          echo "VITE_APP_NETWORKTYPE=TESTNET" > .env.production.local
+          echo "VITE_APP_SIGNAL_R_URL=https://station-developer-dev-staging.aevatar.ai" >> .env.production.local
+          echo "VITE_APP_DOMAIN_URL=https://station-developer-dev-staging.aevatar.ai" >> .env.production.local
+          echo "VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }}" >> .env.production.local
+          echo "VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }}" >> .env.production.local
+          echo "VITE_GITHUB_REDIRECT_URI=${{ secrets.VITE_GITHUB_REDIRECT_URI }}" >> .env.production.local
+          echo "VITE_GITHUB_SCOPE=${{ secrets.VITE_GITHUB_SCOPE }}" >> .env.production.local
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env.production.local
+      
+      # ✅ Build
       - run: pnpm build
 
+      # ✅ Configure AWS credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
           aws-region: ap-northeast-1
-
+          
+      # ✅ Deploy to S3
       - name: Sync to S3
         run: aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_STAGING }}

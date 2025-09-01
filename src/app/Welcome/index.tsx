@@ -1,4 +1,4 @@
-import { createOrganization } from "@/api/utils/organization";
+import { createOrganizationWithDefaultProject } from "@/api/utils/organization";
 import LogoIcon from "@/assets/logo.svg?react";
 import Copy from "@/components/Copy";
 import CreateOrgDialog from "@/components/CreateOrgDialog";
@@ -10,6 +10,7 @@ import { ACCEPTED } from "@/constants";
 import type { TCreateOrgForm } from "@/constants/form/createOrg";
 import { useNavigate } from "@/hooks/navigate";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateDefaultProject } from "@/hooks/useCreateDefaultProject";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
 import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
@@ -18,7 +19,6 @@ import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { refreshTokenLogin } from "@/services/auth";
 import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
-import { handleErrorMessage } from "@/utils/error";
 import { useAtom } from "jotai";
 import type React from "react";
 import { useCallback, useEffect } from "react";
@@ -34,25 +34,29 @@ const WelcomePage: React.FC = () => {
   const { invites, hasInvites, selectedValues, setSelectedValues } =
     useGetInvitations(data);
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
+
   const { data: org } = useGetOrganizations();
+  const createDefaultProject = useCreateDefaultProject();
 
   useEffect(() => {
     if (org?.data?.items?.length > 0) {
-      navigate("/profile/profile/general");
+      navigate("/redirect");
     }
   }, [org, navigate]);
 
   const onCreateOrg = useCallback(
     async (values: TCreateOrgForm) => {
       console.log(values);
-      const response = await createOrganization(values.orgName);
+      const response = await createOrganizationWithDefaultProject(
+        values.orgName,
+      );
       setCurrentOrganization(response.id);
       toast({
         description: "Organization created",
       });
-      navigate("/profile/organisation/project");
+      await createDefaultProject(response.id, response.project);
     },
-    [navigate, setCurrentOrganization, toast],
+    [setCurrentOrganization, toast, createDefaultProject],
   );
 
   if (isLoading) {
@@ -112,7 +116,7 @@ const WelcomePage: React.FC = () => {
                   const { access_token, refresh_token } = response;
                   setAccessToken(access_token);
                   setRefreshToken(refresh_token);
-                  navigate("/profile");
+                  navigate(`/redirect?orgId=${selectedValues[0]}`);
                 } catch (e) {
                   console.error(e);
                 }

@@ -41,6 +41,7 @@ interface IProjectEditDialogProps {
   type: "edit" | "create";
   name?: string;
   disabled?: boolean;
+  modal?: boolean;
   domainName?: string;
   fullWidth?: boolean;
   showCreateButton?: boolean;
@@ -64,6 +65,7 @@ const ProjectEditDialog = forwardRef<
     {
       type,
       name,
+      modal,
       disabled,
       domainName,
       fullWidth,
@@ -128,7 +130,7 @@ const ProjectEditDialog = forwardRef<
     }, [btnLoading, type]);
 
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} modal={modal} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           {type === "create" ? (
             showCreateButton && (

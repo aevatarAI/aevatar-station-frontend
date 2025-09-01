@@ -1,3 +1,4 @@
+import PageLoading from "@/components/PageLoading";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import type {
@@ -15,6 +16,7 @@ import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUpdateEffect } from "react-use";
+import { useSearchParams } from "wouter";
 
 const supportAgentTypes = [
   "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
@@ -32,9 +34,9 @@ enum WorkflowType {
 }
 
 export default function WorkflowPage() {
-  const [workflowType, setWorkflowType] = useState<WorkflowType>(
-    WorkflowType.WorkflowList,
-  );
+  const [workflowType, setWorkflowType] = useState<WorkflowType>();
+
+  const [searchParams] = useSearchParams();
 
   const [agentTypeList, setAgentTypeList] = useState<IAgentsConfiguration[]>();
   const [gaevatarList, setGaevatarList] = useState<IAgentInfoDetail[]>();
@@ -101,10 +103,21 @@ export default function WorkflowPage() {
   const onEditWorkflow = useCallback(
     async (workflowAgentId: string) => {
       await getWorkflowDetail(workflowAgentId);
-      onShowWorkflow();
+      await onShowWorkflow();
     },
     [onShowWorkflow, getWorkflowDetail],
   );
+
+  useEffect(() => {
+    const workflowId = searchParams.get("workflowId");
+    if (workflowId) {
+      onEditWorkflow(workflowId).catch(() => {
+        setWorkflowType(WorkflowType.WorkflowList);
+      });
+    } else {
+      setWorkflowType(WorkflowType.WorkflowList);
+    }
+  }, [searchParams, onEditWorkflow]);
 
   useEffect(() => {
     if (workflowType === WorkflowType.WorkflowList) {
@@ -196,6 +209,7 @@ export default function WorkflowPage() {
           />
         </div>
       )}
+      {!workflowType && <PageLoading className="relative" />}
     </AevatarProvider>
   );
 }

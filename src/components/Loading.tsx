@@ -12,7 +12,7 @@ export default function Loading() {
         <div className="text-[var(--color-foreground)] text-xl font-semibold font-outfit tracking-wide">
           Scanning......
         </div>
-        <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
+        <ReactLoading type="bars" color="var(--bg-accent)" />
       </div>
     </div>
   );

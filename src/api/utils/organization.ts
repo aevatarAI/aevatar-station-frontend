@@ -24,6 +24,16 @@ export const createOrganization = async (
   return result.data;
 };
 
+export const createOrganizationWithDefaultProject = async (
+  displayName: string,
+): Promise<IOrganizationItem & { project: IProjectItem }> => {
+  const result: TDataResponse<IOrganizationItem & { project: IProjectItem }> =
+    await request.organizations.createOrganizationWithDefaultProject({
+      data: { displayName },
+    });
+  return result.data;
+};
+
 export interface IProjectItem {
   id: string;
   displayName: string;
@@ -43,6 +53,16 @@ export const getProjectList = async (
     });
   if (result.code !== SUCCESS_CODE) throw result.message;
   return result.data.items;
+};
+
+export const createDefaultProject = async (data: {
+  organizationId: string;
+}): Promise<IProjectItem> => {
+  const result: TDataResponse<IProjectItem> =
+    await request.projects.createDefaultProject({
+      data,
+    });
+  return result.data;
 };
 
 export interface IPermissionsItem {

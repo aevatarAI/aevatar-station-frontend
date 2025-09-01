@@ -2,7 +2,9 @@ import { request } from "@/api";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import { columns } from "@/components/OrganisationProjects/columns";
-import ProjectEditDialog from "@/components/ProjectEditDialog";
+import ProjectEditDialog, {
+  type IProjectEditDialogRef,
+} from "@/components/ProjectEditDialog";
 import { textGradient } from "@/constants/cls";
 import type { TProjectEditForm } from "@/constants/form/project";
 import { useNavigate } from "@/hooks/navigate";
@@ -18,7 +20,8 @@ import {
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "wouter";
 
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
@@ -30,6 +33,16 @@ export default function OrganisationProjects() {
 
   const userPermissions = useOrgPermissions();
   const updateProjectListHandler = useUpdateProjectHandler();
+  const [searchParams] = useSearchParams();
+  const projectEditDialogRef = useRef<IProjectEditDialogRef>(null);
+
+  useEffect(() => {
+    const action = searchParams.get("action");
+    console.log(action, "action==");
+    if (action === "create") {
+      projectEditDialogRef.current?.open();
+    }
+  }, [searchParams]);
 
   const updateProjectList = useCallback(async () => {
     if (!organizationId) return;
@@ -147,6 +160,8 @@ export default function OrganisationProjects() {
         <div className={clsx(textGradient)}>Organisation Projects</div>
         {userPermissions?.projectsCreate ? (
           <ProjectEditDialog
+            modal={false}
+            ref={projectEditDialogRef}
             type="create"
             onSubmit={onCreate}
             // onCheckProjectService={onCheckProjectService}

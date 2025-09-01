@@ -9,14 +9,7 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig(({ mode }) => {
   // Load environment variables based on mode
 
-  const env =
-    mode.includes("local") || mode !== "production"
-      ? loadEnv(mode, process.cwd(), "")
-      : {
-          VITE_PROXY_AUTH_URL: "",
-          VITE_PROXY_API_URL: "",
-          VITE_APP_DOMAIN_URL: "",
-        };
+  const env = loadEnv(mode, process.cwd(), "");
   console.log("Mode:", mode);
   console.log("VITE_PROXY_AUTH_URL:", env.VITE_PROXY_AUTH_URL);
   console.log("VITE_PROXY_API_URL:", env.VITE_PROXY_API_URL);

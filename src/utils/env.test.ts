@@ -115,12 +115,12 @@ describe("Environment Configuration", () => {
       mockIsDevelopment.mockReturnValue(false);
       mockIsProduction.mockReturnValue(true);
       mockIsLocal.mockReturnValue(false);
-      mockGetCurrentMode.mockReturnValue("production");
+      mockGetCurrentMode.mockReturnValue("production-local");
 
       expect(mockIsDevelopment()).toBe(false);
       expect(mockIsProduction()).toBe(true);
       expect(mockIsLocal()).toBe(false);
-      expect(mockGetCurrentMode()).toBe("production");
+      expect(mockGetCurrentMode()).toBe("production-local");
     });
 
     it("should detect local environment correctly", () => {

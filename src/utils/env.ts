@@ -30,7 +30,7 @@ export const getEnvConfig = (): EnvConfig => {
 };
 
 export const isDevelopment = () => import.meta.env.DEV === true;
-export const isProduction = () => import.meta.env.PROD === true;
+export const isProduction = () => import.meta.env.MODE === "production-local";
 export const isLocal = () => import.meta.env.MODE === "local-dev";
 
 export const getCurrentMode = () => import.meta.env.MODE;

@@ -5,11 +5,11 @@ import VerificationPage from ".";
 describe("Verification Component", () => {
   it("renders correctly", () => {
     render(<VerificationPage />);
-    expect(screen.getByText("verification")).toBeInTheDocument();
+    expect(screen.getByText("Verification")).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("enter verification code"),
+      screen.getByPlaceholderText("Enter verification code"),
     ).toBeInTheDocument();
-    expect(screen.getByText("register")).toBeInTheDocument();
-    expect(screen.getByText("resend email")).toBeInTheDocument();
+    expect(screen.getByText("Register")).toBeInTheDocument();
+    expect(screen.getByText("Resend email")).toBeInTheDocument();
   });
 });

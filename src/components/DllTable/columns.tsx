@@ -12,8 +12,8 @@ export interface IProjectTable extends IDllPlugin {
 
 export const columns: ColumnDef<IProjectTable>[] = [
   {
-    accessorKey: "name",
-    header: "dll file",
+    accessorKey: "dllFile",
+    header: "DLL File",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.name}
@@ -22,7 +22,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
   },
   {
     accessorKey: "created",
-    header: "created",
+    header: "Created",
     cell: ({ row }) => (
       <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
@@ -33,8 +33,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
     ),
   },
   {
-    accessorKey: "creatorName",
-    header: "created by",
+    accessorKey: "createdBy",
+    header: "Created By",
     cell: ({ row }) => {
       return (
         <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
@@ -45,7 +45,7 @@ export const columns: ColumnDef<IProjectTable>[] = [
   },
   {
     accessorKey: "updated",
-    header: "updated",
+    header: "Updated",
     cell: ({ row }) => (
       <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {row.original.lastModificationTime
@@ -58,8 +58,8 @@ export const columns: ColumnDef<IProjectTable>[] = [
     ),
   },
   {
-    accessorKey: "lastModifierName",
-    header: "updated by",
+    accessorKey: "updatedBy",
+    header: "Updated By",
     cell: ({ row }) => {
       return (
         <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
@@ -69,13 +69,13 @@ export const columns: ColumnDef<IProjectTable>[] = [
     },
   },
   {
-    accessorKey: "loadStatus",
-    header: "status",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => {
       return (
         <div className="min-w-[125px] text-[16px] font-semibold font-outfit">
-          {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
-          {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
+          {row.original.loadStatus === ELoadStatus.Uploaded && "Uploaded"}
+          {row.original.loadStatus === ELoadStatus.Deployed && "Deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&
             row.original.loadStatus !== ELoadStatus.Deployed && (
               <TooltipProvider delayDuration={0} key={`${row.id}-provider`}>

@@ -50,17 +50,17 @@ const Verification = () => {
           form.setError("verificationCode", {
             message:
               response.message ||
-              "invalid verification code. please check and try again.",
+              "Invalid verification code. Please check and try again.",
           });
           return;
         }
 
-        toast({ description: "verification successful." });
+        toast({ description: "Verification successful." });
 
         const isLoggedIn = await loginUser(name, password);
 
         if (!isLoggedIn) {
-          toast({ description: "log in failed." });
+          toast({ description: "Log in failed." });
           return;
         }
 
@@ -96,7 +96,7 @@ const Verification = () => {
   return (
     <div className="flex flex-col text-[var(--color-foreground)]  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">verification</h2>
+        <h2 className="text-[18px] font-semibold">Verification</h2>
         <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
           already registered?&nbsp;
           <span
@@ -127,10 +127,10 @@ const Verification = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter verification code"
+                        placeholder="Enter verification code"
                         {...field}
                         {...form.register("verificationCode", {
-                          required: "required",
+                          required: "Required",
                         })}
                         className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
@@ -147,14 +147,14 @@ const Verification = () => {
                 type="submit"
                 className="w-full flex justify-center border border-transparent"
               >
-                register
+                Register
               </Button>
               <div className="text-right">
                 <span
                   className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
                   onClick={sendVerificationCode}
                 >
-                  resend email
+                  Resend email
                 </span>
               </div>
             </div>

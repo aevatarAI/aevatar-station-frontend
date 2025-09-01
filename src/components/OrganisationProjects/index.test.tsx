@@ -133,7 +133,7 @@ describe("OrganisationProjects Component", () => {
 
     // Check if the table is rendered
     expect(screen.getByText("Name")).toBeInTheDocument();
-    expect(screen.getByText("domain name")).toBeInTheDocument();
+    expect(screen.getByText("Domain Name")).toBeInTheDocument();
   });
 
   it("should call addProject API on create project", async () => {

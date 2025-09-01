@@ -10,7 +10,7 @@ export interface IRoleTable extends IRoleItem {
 export const columns: ColumnDef<IRoleTable>[] = [
   {
     accessorKey: "role",
-    header: "role",
+    header: "Role",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[14px] font-semibold pl-[15px]">
         {row.original.name?.split("_")?.[1] ?? "--"}
@@ -20,7 +20,7 @@ export const columns: ColumnDef<IRoleTable>[] = [
 
   {
     accessorKey: "organisationRole",
-    header: "organisation role",
+    header: "Organisation Role",
     cell: ({ row }) => row.original.organisationRole,
   },
 

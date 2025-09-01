@@ -19,11 +19,11 @@ export const useUpdateOrganisationName = () => {
             displayName,
           },
         });
-        toast({ description: "successfully saved" });
+        toast({ description: "Successfully saved" });
 
         return result;
       } catch (error) {
-        toast({ description: handleErrorMessage(error, "error updating") });
+        toast({ description: handleErrorMessage(error, "Error updating") });
       }
     },
   });

@@ -416,7 +416,7 @@ describe("ProjectMember Columns", () => {
       roleId: "role-1",
     };
 
-    const emailColumn = columns.find((col) => col.id === "email");
+    const emailColumn = columns.find((col) => col.id === "emailAddress");
     const cell = emailColumn?.cell?.({ row: { original: data } });
 
     expect(cell?.props.children).toHaveLength(2);
@@ -433,10 +433,10 @@ describe("ProjectMember Columns", () => {
       role: <div>Admin Role</div>,
     };
 
-    const roleColumn = columns.find((col) => col.accessorKey === "role");
+    const roleColumn = columns.find((col) => col.accessorKey === "projectRole");
     const cell = roleColumn?.cell?.({ row: { original: data } });
 
-    expect(cell).toBe(data.role);
+    expect(cell?.props.children).toBe(data.role);
   });
 
   it("should render operation column correctly", () => {

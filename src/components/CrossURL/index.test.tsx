@@ -136,7 +136,7 @@ describe("CrossURL Component", () => {
         "https://test.com",
       );
       expect(mockToast).toHaveBeenCalledWith({
-        description: "cross-origin domain added",
+        description: "Cross-origin domain added",
       });
       expect(getCrossURLs).toHaveBeenCalledTimes(2); // initial + after add
     });
@@ -168,7 +168,7 @@ describe("CrossURL Component", () => {
         mockCrossURLs[0].id,
       );
       expect(mockToast).toHaveBeenCalledWith({
-        description: "cross-origin domain deleted",
+        description: "Cross-origin domain deleted",
       });
       expect(getCrossURLs).toHaveBeenCalledTimes(2); // initial + after delete
     });

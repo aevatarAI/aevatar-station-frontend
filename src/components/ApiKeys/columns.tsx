@@ -31,13 +31,13 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "appId",
-    header: "client id",
+    accessorKey: "clientId",
+    header: "Client ID",
     cell: ({ row }) => (
       <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{row.original.appId}</span>
         <Copy
-          description="client id copied"
+          description="Client ID copied"
           toCopy={row.original.appId}
           className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
@@ -45,13 +45,13 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    id: "appSecret",
-    header: "api key",
+    accessorKey: "apiKey",
+    header: "API Key",
     cell: ({ row }) => (
       <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.appSecret)}</span>
         <Copy
-          description="api key copied"
+          description="API key copied"
           toCopy={row.original.appSecret}
           className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
@@ -59,8 +59,8 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "createTime",
-    header: "created",
+    accessorKey: "created",
+    header: "Created",
     cell: ({ row }) => (
       <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
@@ -68,8 +68,8 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "creatorName",
-    header: "created by",
+    accessorKey: "createdBy",
+    header: "Created By",
     cell: ({ row }) => {
       return (
         <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">

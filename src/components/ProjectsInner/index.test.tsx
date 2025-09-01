@@ -108,7 +108,7 @@ describe("ProjectsInner Component", () => {
     expect(screen.getByText("Save")).toBeInTheDocument();
 
     // Verify extraInput (domain name input) is rendered
-    expect(screen.getByText("domain name")).toBeInTheDocument();
+    expect(screen.getByText("Domain Name")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("mock.com")).toBeInTheDocument();
   });
 

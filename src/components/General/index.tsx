@@ -27,7 +27,7 @@ export interface IGeneralProps {
 
 const defalutButtonProps: IGeneralProps["buttonProps"] = {
   placement: "bottom-left",
-  text: "save",
+  text: "Save",
   className: "text-[13px] font-normal px-[18px] py-[8px]",
 };
 

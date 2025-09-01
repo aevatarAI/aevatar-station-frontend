@@ -17,10 +17,10 @@ export default function OrganisationInner({ tab }: IOrganisationInnerProps) {
     <div>
       {tab === "general" && (
         <General
-          header="organisation settings"
-          title="Organisation name"
+          header="Organisation Settings"
+          title="Organisation Name"
           readonly={!userPermissions?.organizationsEdit}
-          inputPlaceholder={currentOrg?.displayName ?? "name"}
+          inputPlaceholder={currentOrg?.displayName ?? "Name"}
           defaultValue={currentOrg?.displayName ?? ""}
           buttonProps={{ placement: "bottom-left" }}
           onConfirm={handleUpdateName}

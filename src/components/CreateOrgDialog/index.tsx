@@ -49,7 +49,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
         setOpen(false);
         toast({
           title: "",
-          description: "successfully created",
+          description: "Successfully created",
         });
       } catch (error) {
         setBtnLoading(false);

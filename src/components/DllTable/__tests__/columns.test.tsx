@@ -72,8 +72,8 @@ describe("DllTable Columns", () => {
 
     it("should have correct accessor key", () => {
       const nameColumn = columns[0];
-      expect(nameColumn.accessorKey).toBe("name");
-      expect(nameColumn.header).toBe("dll file");
+      expect(nameColumn.accessorKey).toBe("dllFile");
+      expect(nameColumn.header).toBe("DLL File");
     });
   });
 
@@ -95,7 +95,7 @@ describe("DllTable Columns", () => {
     it("should have correct accessor key", () => {
       const createdColumn = columns[1];
       expect(createdColumn.accessorKey).toBe("created");
-      expect(createdColumn.header).toBe("created");
+      expect(createdColumn.header).toBe("Created");
     });
 
     it("should apply correct CSS classes", () => {
@@ -151,8 +151,8 @@ describe("DllTable Columns", () => {
 
     it("should have correct accessor key", () => {
       const creatorColumn = columns[2];
-      expect(creatorColumn.accessorKey).toBe("creatorName");
-      expect(creatorColumn.header).toBe("created by");
+      expect(creatorColumn.accessorKey).toBe("createdBy");
+      expect(creatorColumn.header).toBe("Created By");
     });
   });
 
@@ -194,7 +194,7 @@ describe("DllTable Columns", () => {
     it("should have correct accessor key", () => {
       const updatedColumn = columns[3];
       expect(updatedColumn.accessorKey).toBe("updated");
-      expect(updatedColumn.header).toBe("updated");
+      expect(updatedColumn.header).toBe("Updated");
     });
   });
 
@@ -234,8 +234,8 @@ describe("DllTable Columns", () => {
 
     it("should have correct accessor key", () => {
       const modifierColumn = columns[4];
-      expect(modifierColumn.accessorKey).toBe("lastModifierName");
-      expect(modifierColumn.header).toBe("updated by");
+      expect(modifierColumn.accessorKey).toBe("updatedBy");
+      expect(modifierColumn.header).toBe("Updated By");
     });
   });
 
@@ -248,7 +248,7 @@ describe("DllTable Columns", () => {
         <div>{flexRender(statusColumn.cell, { row })}</div>,
       );
 
-      expect(container).toHaveTextContent("uploaded");
+      expect(container).toHaveTextContent("Uploaded");
     });
 
     it("should render 'deployed' for Deployed status", () => {
@@ -259,7 +259,7 @@ describe("DllTable Columns", () => {
         <div>{flexRender(statusColumn.cell, { row })}</div>,
       );
 
-      expect(container).toHaveTextContent("deployed");
+      expect(container).toHaveTextContent("Deployed");
     });
 
     it("should render error status with tooltip for other statuses", () => {
@@ -317,8 +317,8 @@ describe("DllTable Columns", () => {
 
     it("should have correct accessor key", () => {
       const statusColumn = columns[5];
-      expect(statusColumn.accessorKey).toBe("loadStatus");
-      expect(statusColumn.header).toBe("status");
+      expect(statusColumn.accessorKey).toBe("status");
+      expect(statusColumn.header).toBe("Status");
     });
 
     it("should apply correct CSS classes", () => {
@@ -377,13 +377,12 @@ describe("DllTable Columns", () => {
 
     it("should have all required columns", () => {
       const expectedColumns = [
-        "name",
+        "dllFile",
         "created",
-        "creatorName",
+        "createdBy",
         "updated",
-        "lastModifierName",
-        "loadStatus",
-        "operation",
+        "updatedBy",
+        "status",
       ];
 
       expectedColumns.forEach((columnKey, index) => {

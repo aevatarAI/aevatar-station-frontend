@@ -81,7 +81,7 @@ export default function Header() {
                     navigate(to);
                   }}
                 >
-                  dashboard
+                  Dashboard
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
@@ -90,7 +90,7 @@ export default function Header() {
                     navigate("/profile");
                   }}
                 >
-                  settings
+                  Settings
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button

@@ -70,6 +70,10 @@ const ORGANIZATIONS_API_LIST = {
     target: "/api/organizations",
     baseConfig: { method: "POST" },
   },
+  createOrganizationWithDefaultProject: {
+    target: "/api/organizations/create-with-default-project",
+    baseConfig: { method: "POST" },
+  },
   addOrganization: {
     target: "/api/organizations",
     baseConfig: { method: "POST" },
@@ -203,6 +207,23 @@ const PROJECT_API_LIST = {
     target: "/api/projects",
     extendUrlSuffix: "/cors-origins",
     baseConfig: { method: "DELETE" },
+  },
+  createDefaultProject: {
+    target: "/api/projects/default",
+    baseConfig: { method: "POST" },
+  },
+  createDefaultWorkflow: {
+    target: getDomainBaseUrl(),
+    extendUrlSuffix: "/api/workflow-view/default",
+    baseConfig: { method: "POST" },
+  },
+  updateRecentUsed: {
+    target: "/api/projects/recent-used",
+    baseConfig: { method: "POST" },
+  },
+  getRecentUsed: {
+    target: "/api/projects/recent-used",
+    baseConfig: { method: "GET" },
   },
 };
 

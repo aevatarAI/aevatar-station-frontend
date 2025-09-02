@@ -18,6 +18,7 @@ import {
   PROJECT_PERMISSION_ATOM,
 } from "@/state/atoms/permissions";
 import { USER_LOGIN_TYPE, USER_PROFILE_ATOM } from "@/state/atoms/profile";
+import { aevatarAI } from "@aevatar-react-sdk/ui-react";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 import { useCallback } from "react";
@@ -59,6 +60,9 @@ export const useLogout = () => {
     setDllListType(RESET);
     setRestartPodServer(RESET);
     setProjectInitialising(RESET);
+    aevatarAI.fetchRequest.setHeaders({
+      Authorization: "",
+    });
   }, [
     setOrganizationsList,
     setProjectList,

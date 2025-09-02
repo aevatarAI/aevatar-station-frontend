@@ -113,7 +113,8 @@ const Redirection = () => {
       }
       if (!hasProjects) {
         setCurrentOrganisationId(organizationIds[0]);
-        await createDefaultProject(organizationIds[0]);
+        // await createDefaultProject(organizationIds[0]);
+        navigate("/profile/organisation/project?action=create");
       } else {
         navigate(hasProjects ? to : "/profile");
       }
@@ -131,7 +132,6 @@ const Redirection = () => {
     setCurrentProject,
     setOrganisations,
     setProjectList,
-    createDefaultProject,
   ]);
 
   useEffect(() => {

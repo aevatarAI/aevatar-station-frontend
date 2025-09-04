@@ -39,15 +39,15 @@ const formSchema = z.object({
     .min(6, "password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "password must contain at least one non-alphanumeric character"
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "password must contain at least one lowercase letter ('a'-'z')"
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "password must contain at least one uppercase letter ('A'-'Z')"
     ),
 });
 
@@ -83,7 +83,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken]
   );
 
   const handleGithubLogin = () => {
@@ -92,13 +92,15 @@ const Login = () => {
     const scope = "user";
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scope}`;
 
+    console.log({ clientId });
+
     window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const redirectUri = encodeURIComponent(
-      `${window.location.origin}/auth/google/callback`,
+      `${window.location.origin}/auth/google/callback`
     );
     const scope = encodeURIComponent("openid email profile");
     const responseType = "id_token token";
@@ -225,7 +227,7 @@ const Login = () => {
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    [],
+    []
   );
   return (
     <Layout backgroundImage={randomImage}>

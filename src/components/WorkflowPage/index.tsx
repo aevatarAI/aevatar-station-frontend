@@ -1,4 +1,5 @@
 import PageLoading from "@/components/PageLoading";
+import { useTheme } from "@/hooks/useTheme";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import type {
@@ -141,8 +142,10 @@ export default function WorkflowPage() {
     }
   }, [projectId]);
 
+  const { theme } = useTheme();
+
   return (
-    <AevatarProvider>
+    <AevatarProvider theme={theme}>
       {workflowType === WorkflowType.WorkflowList && (
         <div className={clsx("h-full pt-[35px] pl-[43px] pr-[40px]")}>
           <WorkflowList

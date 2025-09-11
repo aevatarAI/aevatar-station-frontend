@@ -19,32 +19,32 @@ export const columns: ColumnDef<IProjectTable>[] = [
   },
   {
     id: "domainName",
-    header: "domain name",
+    header: "Domain Name",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{row.original.domainName}</span>
         <Copy
-          description="domain name copied"
+          description="Domain name copied"
           toCopy={row.original.domainName}
-          className="text-gray-deep hover:text-white"
+          className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
       </div>
     ),
   },
   {
     accessorKey: "members",
-    header: "members",
+    header: "Members",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {row.original.memberCount}
       </div>
     ),
   },
   {
     accessorKey: "created",
-    header: "created",
+    header: "Created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
           .utc(row.original.creationTime)
           .local()

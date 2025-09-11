@@ -115,8 +115,8 @@ describe("ProjectRole Component", () => {
     const table = screen.getByRole("table");
     expect(table).toBeInTheDocument();
 
-    expect(screen.getByText("role")).toBeInTheDocument();
-    expect(screen.getByText("project role")).toBeInTheDocument();
+    expect(screen.getByText("Role")).toBeInTheDocument();
+    expect(screen.getByText("Project Role")).toBeInTheDocument();
   });
 
   it("should fetch roles on initial load", async () => {

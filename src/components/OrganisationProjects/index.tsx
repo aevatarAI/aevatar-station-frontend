@@ -157,7 +157,7 @@ export default function OrganisationProjects() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>organisation projects</div>
+        <div className={clsx(textGradient)}>Organisation Projects</div>
         {userPermissions?.projectsCreate ? (
           <ProjectEditDialog
             modal={false}

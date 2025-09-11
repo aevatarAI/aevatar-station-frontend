@@ -97,12 +97,12 @@ const ResetPassword = () => {
     [toast, userId, resetToken, navigate],
   );
   return (
-    <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">
+    <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">reset password</h2>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -125,7 +125,7 @@ const ResetPassword = () => {
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -148,7 +148,7 @@ const ResetPassword = () => {
                         {...form.register("confirmPassword", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -159,8 +159,9 @@ const ResetPassword = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent"
                 disabled={loading && !!userId && !!resetToken}
               >
                 submit
@@ -182,7 +183,7 @@ const ResetPasswordPage = () => {
       <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
         <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
           <DescHome className="items-start lg:items-center" />
-          <div className="h-px w-full bg-black-light" />
+          <div className="h-px w-full bg-[var(--bg-black-light)]" />
           <ResetPassword />
         </div>
         <div className="w-full lg:w-[408px]">

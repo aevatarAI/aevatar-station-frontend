@@ -145,7 +145,7 @@ export default function ProjectMember() {
           !item.roleId ||
           !projectPermissions.memberManage ||
           item.email === profile?.email ? (
-            <span className="text-[13px] font-outfit font-semibold lowercase">
+            <span className="text-[13px] font-outfit font-semibold">
               {item.roleId ? getRoleName(item.roleId) : "pending"}
             </span>
           ) : (
@@ -210,10 +210,12 @@ export default function ProjectMember() {
     );
   }, [orgMemberList, memberList]);
 
+  console.log(_orgMemberList, "_orgMemberList==");
+
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>projects members</div>
+        <div className={clsx(textGradient)}>Project Members</div>
 
         {projectPermissions.memberManage ? (
           <AddMembersDialog

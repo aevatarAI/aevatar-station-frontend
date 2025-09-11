@@ -92,7 +92,7 @@ export default function ApiKeys() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>api keys</div>
+        <div className={clsx(textGradient)}>API Keys</div>
         <CreateApiKeyDialog
           disabled={!permissions.apiKeysCreate || data?.data.length > 0}
         />
@@ -103,9 +103,7 @@ export default function ApiKeys() {
         columns={columns}
         loading={isLoading}
         emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            No API keys created yet
-          </div>
+          <div data-testid="empty-dll-message">No API keys created yet</div>
         }
         data={tableData}
       />

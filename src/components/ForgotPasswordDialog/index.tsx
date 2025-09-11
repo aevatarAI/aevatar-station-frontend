@@ -63,47 +63,49 @@ const ForgotPasswordDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-[13px] cursor-pointer font-outfit text-white hover:text-gray-light">
-          forgot password?
+        <span className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] ">
+          Forgot Password?
         </span>
       </DialogTrigger>
       <DialogContent className="max-w-[328px] p-5 flex flex-col gap-7">
         <DialogHeader>
-          <DialogTitle className="text-gradient inline mt-[4px]">
-            forgot password?
+          <DialogTitle className="text-[var(--color-foreground)] inline mt-[4px]">
+            Forgot Password?
           </DialogTitle>
         </DialogHeader>
         {isSubmitted ? (
           <div>
             <DialogDescription className="mb-7 font-outfit">
-              an account recovery email has been sent. if you don’t see it in 15
-              minutes, check your junk folder and mark it as ‘not junk’.
+              An account recovery email has been sent. If you don't see it in 15
+              minutes, check your junk folder and mark it as 'not junk'.
             </DialogDescription>
             <div className="flex justify-between items-center">
               <DialogClose asChild>
                 <Button
+                  variant="outline"
                   type="button"
-                  className="text-white text-[13px] px-[16px] py-[8px]"
+                  className="text-[var(--color-foreground)] text-[13px] px-[16px] py-[8px]"
                 >
-                  back to login
+                  Back to Login
                 </Button>
               </DialogClose>
               <Button
                 type="submit"
-                className={`bg-white text-black-light text-[13px] px-[16px] py-[8px] ${
+                variant="primary"
+                className={`bg-[var(--bg-primary)] text-[var(--primary-foreground)] text-[13px] px-[16px] py-[8px] ${
                   loading ? "opacity-50" : "opacity-100"
                 }`}
                 onClick={form.handleSubmit(onSubmit)}
               >
-                resend password
+                Resend Password
               </Button>
             </div>
           </div>
         ) : (
           <div>
             <DialogDescription>
-              a password reset link will be sent to your email to reset your
-              password. if you don't get an email within a few minutes, please
+              A password reset link will be sent to your email to reset your
+              password. If you don't get an email within a few minutes, please
               re-try.
             </DialogDescription>
             <Form {...form}>
@@ -118,13 +120,13 @@ const ForgotPasswordDialog = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="block text-[13px] font-semibold">
-                          email address
+                          Email Address
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="enter your email"
-                            className="placeholder:text-gray-deep border-black-light text-white"
+                            placeholder="Enter your email"
+                            className="placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)] text-[var(--color-foreground)]"
                             {...field}
                             {...form.register("email", {
                               required: "required",
@@ -139,19 +141,21 @@ const ForgotPasswordDialog = () => {
                 <div className="flex justify-between items-center">
                   <DialogClose asChild>
                     <Button
+                      variant="outline"
                       type="button"
-                      className="text-white text-[13px] px-[16px] py-[8px]"
+                      className="text-[13px] px-[16px] py-[8px]"
                     >
-                      back to login
+                      Back to Login
                     </Button>
                   </DialogClose>
                   <Button
                     formNoValidate
+                    variant="primary"
                     type="submit"
-                    className="bg-white text-[13px] text-black-light px-[16px] py-[8px]"
+                    className="bg-[var(--bg-primary)] text-[13px] text-[var(--primary-foreground)] px-[16px] py-[8px]"
                     disabled={loading}
                   >
-                    submit
+                    Submit
                   </Button>
                 </div>
               </form>

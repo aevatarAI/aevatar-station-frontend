@@ -7,12 +7,12 @@ export default function Loading() {
   if (!show) return null;
 
   return (
-    <div className="flex items-center justify-center w-full h-full bg-black fixed top-0 left-0 z-50">
-      <div className="text-2xl font-bold text-gray-800 flex flex-col lg:flex-row items-center">
-        <div className="text-white text-xl font-semibold font-outfit tracking-wide">
+    <div className="flex items-center justify-center w-full h-full bg-[var(--bg-background)] fixed top-0 left-0 z-50">
+      <div className="text-2xl font-bold text-[var(--color-text-primary)] flex flex-col lg:flex-row items-center">
+        <div className="text-[var(--color-foreground)] text-xl font-semibold font-outfit tracking-wide">
           Scanning......
         </div>
-        <ReactLoading type="bars" color="rgba(255, 255, 255, 0.20)" />
+        <ReactLoading type="bars" color="var(--bg-accent)" />
       </div>
     </div>
   );

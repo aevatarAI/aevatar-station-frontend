@@ -30,20 +30,20 @@ function Dashboard() {
   return (
     <>
       {/* Fixed sidebar for desktop - full viewport height */}
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
+      <div className="hidden lg:block w-[200px] min-w-[200px] h-full sticky top-0 bg-[var(--sidebar-background)] border-r border-[var(--color-sidebar-border)]">
         <SideBar onClose={handleClose} />
       </div>
 
       {/* Mobile drawer/sheet */}
       <Sheet>
-        <SheetContent className="lg:hidden w-[200px] bg-[#191919]">
+        <SheetContent className="lg:hidden w-[200px] bg-[var(--sidebar-background)]">
           <DialogClose ref={ref} />
           <SideBar onClose={handleClose} />
         </SheetContent>
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-full bg-black">
+      <div className="flex-1 overflow-auto h-full bg-[var(--color-bg-primary)]">
         <div
           className={clsx(
             " h-full",

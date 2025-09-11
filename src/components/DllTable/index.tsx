@@ -207,7 +207,7 @@ export default function DllTable() {
   return (
     <div className="min-h-[394px]">
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>dll</div>
+        <div className={clsx(textGradient)}>DLL</div>
 
         <DllEditDialog
           disabled={
@@ -226,11 +226,7 @@ export default function DllTable() {
         columns={columns}
         loading={loading}
         data={tableData}
-        emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            {dllEmptyMessage}
-          </div>
-        }
+        emptyNode={<div data-testid="empty-dll-message">{dllEmptyMessage}</div>}
         data-testid="dll-table"
       />
     </div>

@@ -24,7 +24,6 @@ import {
   type TProjectEditForm,
 } from "@/constants/form/project";
 import { useToast } from "@/hooks/use-toast";
-import { useProjectPermissions } from "@/hooks/useProjectPermissions";
 import { handleErrorMessage } from "@/utils/error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
@@ -136,13 +135,15 @@ const ProjectEditDialog = forwardRef<
           {type === "create" ? (
             showCreateButton && (
               <Button
+                variant="primary"
                 disabled={disabled}
-                className={`text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase ${
-                  fullWidth && "w-full"
-                }`}
+                className={clsx(
+                  "text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]",
+                  fullWidth && "w-full",
+                )}
               >
                 <Plus />
-                <span>create {fullWidth && "project"}</span>
+                <span>Create {fullWidth && "Project"}</span>
               </Button>
             )
           ) : (
@@ -151,11 +152,11 @@ const ProjectEditDialog = forwardRef<
         </DialogTrigger>
         <DialogContent
           aria-describedby="create new api key"
-          className="z-[200] w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+          className="z-[200] w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
         >
           <DialogHeader>
-            <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-              {type === "create" ? "create project" : "edit project"}
+            <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
+              {type === "create" ? "Create Project" : "Edit Project"}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
@@ -167,7 +168,7 @@ const ProjectEditDialog = forwardRef<
                   name={"name"}
                   render={({ field }) => (
                     <FormItem aria-labelledby="nameLabel" className="w-full">
-                      <FormLabel id="nameLabel">project name</FormLabel>
+                      <FormLabel id="nameLabel">Project Name</FormLabel>
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
@@ -184,11 +185,11 @@ const ProjectEditDialog = forwardRef<
                       aria-labelledby="domainNameLabel"
                       className="w-full"
                     >
-                      <FormLabel id="domainNameLabel">domain name</FormLabel>
+                      <FormLabel id="domainNameLabel">Domain Name</FormLabel>
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
-                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit lowercase">
+                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit">
                         Note: Once the project is created, the domain name
                         cannot be changed.
                       </div>
@@ -199,16 +200,18 @@ const ProjectEditDialog = forwardRef<
                 />
                 <div className="flex justify-between items-start w-full">
                   <Button
-                    className="text-[13px] py-[7px] leading-[14px]"
+                    variant="outline"
+                    className="text-[13px] py-2 px-3 leading-[14px]"
                     type="reset"
                     onClick={() => {
                       setOpen(false);
                     }}
                   >
-                    cancel
+                    Cancel
                   </Button>
                   <Button
-                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                    variant="primary"
+                    className="text-[13px] py-2 px-3 leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (

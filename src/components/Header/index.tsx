@@ -40,15 +40,14 @@ export default function Header() {
       )}
     >
       <div
-        className={clsx(
-          "fixed top-0 left-0 z-100 w-full  bg-black",
-          hidden && "hidden",
-        )}
+        className={clsx("fixed top-0 left-0 z-100 w-full", hidden && "hidden")}
+        style={{ backgroundColor: "var(--color-bg-primary)" }}
       >
         <div
           className={clsx(
-            "border-b border-black-light flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
+            "border-b flex items-center justify-between pt-[13px] pr-[16px] pb-[13px] pl-[19px]",
             "lg:px-[16px] lg:py-[13px] lg:pl-[19px]",
+            "border-[var(--color-border-primary)]",
           )}
         >
           <div>
@@ -60,8 +59,9 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "flex items-center justify-center gap-[20px] text-white font-outfit text-[16px] font-semibold leading-normal lowercase cursor-pointer ",
+              "flex items-center justify-center gap-[20px] font-outfit text-[16px] font-semibold leading-normal cursor-pointer ",
               "lg:gap-[34px]",
+              "text-[var(--color-text-primary)]",
             )}
           >
             {pathname !== "/welcome" && (
@@ -71,14 +71,17 @@ export default function Header() {
                   disabled={!projectList.length}
                   className={clsx(
                     pathname.startsWith("/dashboard") && selectCls,
-                    !projectList.length && "text-gray-deep cursor-not-allowed",
+                    !projectList.length && "cursor-not-allowed",
+                    !projectList.length
+                      ? "text-[var(--color-text-tertiary)]"
+                      : "text-[var(--color-text-primary)]",
                   )}
                   onClick={() => {
                     if (!projectList.length) return;
                     navigate(to);
                   }}
                 >
-                  dashboard
+                  Dashboard
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
@@ -87,7 +90,7 @@ export default function Header() {
                     navigate("/profile");
                   }}
                 >
-                  settings
+                  Settings
                 </button>
                 {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                 <button
@@ -99,7 +102,9 @@ export default function Header() {
                   {unreadNotifications ? (
                     <Notication />
                   ) : (
-                    <NoticationEmpty className="text-white" />
+                    <NoticationEmpty
+                      style={{ color: "var(--color-text-primary)" }}
+                    />
                   )}
                 </button>
               </>

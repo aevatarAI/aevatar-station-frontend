@@ -9,7 +9,7 @@ export interface ICrossURLTable extends ICrossURL {
 export const columns: ColumnDef<ICrossURLTable>[] = [
   {
     accessorKey: "domain",
-    header: "domain",
+    header: "Domain",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.domain}
@@ -18,9 +18,9 @@ export const columns: ColumnDef<ICrossURLTable>[] = [
   },
   {
     accessorKey: "created",
-    header: "created",
+    header: "Created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs
           .utc(row.original.creationTime)
           .local()
@@ -30,10 +30,10 @@ export const columns: ColumnDef<ICrossURLTable>[] = [
   },
   {
     accessorKey: "creatorName",
-    header: "created by",
+    header: "Created By",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );

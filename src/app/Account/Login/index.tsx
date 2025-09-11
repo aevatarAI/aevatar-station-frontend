@@ -110,13 +110,13 @@ const Login = () => {
   };
 
   return (
-    <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
+    <div className=" flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
           not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer font-outfit text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
             onClick={() => {
               navigate("/register");
             }}
@@ -125,8 +125,8 @@ const Login = () => {
           </span>
         </p>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -138,7 +138,7 @@ const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       email address
                     </FormLabel>
                     <FormControl>
@@ -148,7 +148,7 @@ const Login = () => {
                           required: "required",
                         })}
                         placeholder="enter your email"
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -160,7 +160,7 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
                       password
                     </FormLabel>
                     <FormControl>
@@ -171,7 +171,7 @@ const Login = () => {
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,8 +182,9 @@ const Login = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+                className="w-full flex justify-center border border-transparent hover:opacity-95"
                 disabled={loading}
               >
                 {loading ? "logging in" : "log in"}
@@ -195,21 +196,23 @@ const Login = () => {
           <ForgotPasswordDialog />
         </div>
         <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
-          <span className="text-gray-light font-normal font-semibold text-[13px]">
+          <span className="text-[var(--muted-foreground)] font-normal font-semibold text-[13px]">
             or sign in with
           </span>
           <div className="flex flex-between gap-[20px] max-[431px]:flex-col">
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGoogleLogin}
             >
               <GoogleIcon />
               <span>google</span>
             </Button>
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGithubLogin}
             >
               <GithubIcon />

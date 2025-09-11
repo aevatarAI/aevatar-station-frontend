@@ -70,14 +70,14 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
   const extraInput = useMemo(
     () => (
       <div className="pt-[20px] pb-[30px] lg:pb-[40px]">
-        <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal ">
-          domain name
+        <div className="text-[var(--color-foreground)] font-outfit text-[13px] font-semibold leading-normal ">
+          Domain Name
         </div>
         <Input
           className="max-w-[498px] disabled:opacity-100"
           disabled
           // disabled={!userProjectPermissions?.projectsEdit}
-          placeholder={curProject?.domainName ?? "domain name"}
+          placeholder={curProject?.domainName ?? "Domain name"}
           value={domainName}
           onChange={(e) => setDomainName(e.target.value)}
         />
@@ -91,10 +91,10 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
       {tab === "general" && (
         <General
           ref={generalRef}
-          header="project settings"
-          title={"project name"}
+          header="Project Settings"
+          title={"Project Name"}
           readonly={!userProjectPermissions?.projectsEdit}
-          inputPlaceholder={curProject?.displayName ?? "name"}
+          inputPlaceholder={curProject?.displayName ?? "Name"}
           defaultValue={curProject?.displayName}
           buttonProps={{ placement: "bottom-left" }}
           extraInput={extraInput}

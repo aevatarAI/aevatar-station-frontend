@@ -89,6 +89,7 @@ export default function CreateApiKeyDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
+          variant="primary"
           className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]"
           disabled={disabled}
         >
@@ -98,10 +99,10 @@ export default function CreateApiKeyDialog({
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
             create new api key
           </DialogTitle>
         </DialogHeader>
@@ -160,6 +161,7 @@ export default function CreateApiKeyDialog({
               />
               <div className="flex justify-between items-start self-stretch pt-[12px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
@@ -169,7 +171,8 @@ export default function CreateApiKeyDialog({
                   cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (

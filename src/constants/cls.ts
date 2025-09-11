@@ -1,20 +1,20 @@
 export const itemClassName =
-  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[14px] text-white";
+  "flex items-center font-outfit justify-center gap-[14px] h-[37px] text-[14px] text-[var(--color-foreground)]";
 
 export const itemHoverClassName =
-  "hover:bg-white/40 cursor-pointer hover:border-l-8 hover:border-white";
+  "hover:bg-[var(--bg-accent)] cursor-pointer hover:border-l-8 hover:border-[var(--bg-primary)]";
 
 export const itemSelectClassName =
-  "bg-white/40 cursor-pointer border-l-8 border-white";
+  "bg-[var(--bg-accent)] cursor-pointer border-l-8 border-[var(--bg-primary)]";
 
 export const textGradient =
-  "text-white font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient";
+  "text-[var(--color-foreground)] font-outfit text-[18px] font-semibold";
 
 export const menuItemClx =
-  "relative flex text-[#B9B9B9] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
+  "relative flex text-[var(--muted-foreground)] gap-[12px] items-center px-[18px] py-[5px] cursor-pointer";
 
 export const menuItemSelectedClx =
-  "bg-white/40 text-white before:w-[8px] before:h-full before:absolute before:right-0 before:bg-white";
+  "bg-[var(--color-muted)] text-[var(--color-foreground)]! before:w-[8px] before:h-full before:absolute before:right-0 before:bg-[var(--color-foreground)]";
 
 export const menuItemTextClx =
-  "font-outfit text-[14px] font-semibold leading-normal lowercase";
+  "font-outfit text-[14px] font-semibold leading-normal";

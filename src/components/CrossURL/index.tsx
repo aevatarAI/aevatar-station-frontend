@@ -40,7 +40,7 @@ export default function CrossURL() {
     } catch (error) {
       setLoading(false);
       toast({
-        description: handleErrorMessage(error, "Failed to get cross URL list"),
+        description: handleErrorMessage(error, "Failed to get Cross URL list"),
       });
     }
   }, [projectId, toast]);
@@ -55,12 +55,12 @@ export default function CrossURL() {
         if (!projectId) throw new Error("Project ID is required");
         await addProjectCorsOrigin(projectId, domain);
         toast({
-          description: "cross-origin domain added",
+          description: "Cross-origin domain added",
         });
         updateCrossURLList();
       } catch (error) {
         toast({
-          description: handleErrorMessage(error, "Failed to add cross-url"),
+          description: handleErrorMessage(error, "Failed to add Cross-URL"),
         });
       }
     },
@@ -69,16 +69,15 @@ export default function CrossURL() {
 
   const onDeleteYes = useCallback(
     async (id: string) => {
-      console.log("delete", id);
       try {
         if (!projectId) throw new Error("Project ID is required");
         await deleteProjectCorsOrigin(projectId, id);
         toast({
-          description: "cross-origin domain deleted",
+          description: "Cross-origin domain deleted",
         });
       } catch (error) {
         toast({
-          description: handleErrorMessage(error, "Failed to delete cross-url"),
+          description: handleErrorMessage(error, "Failed to delete Cross-URL"),
         });
       }
       updateCrossURLList();
@@ -105,7 +104,7 @@ export default function CrossURL() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className={clsx(TooltipContentCls)}>
-                    delete
+                    Delete
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -121,7 +120,7 @@ export default function CrossURL() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>cors</div>
+        <div className={clsx(textGradient)}>CORS</div>
         <CreateCrossURLDialog
           disabled={!projectPermissions?.corsOriginsCreate}
           type="create"
@@ -138,9 +137,7 @@ export default function CrossURL() {
         loading={loading}
         data={tableData}
         emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            No Cross URL added yet
-          </div>
+          <div data-testid="empty-dll-message">No Cross URL added yet</div>
         }
         data-testid="cross-url-table"
       />

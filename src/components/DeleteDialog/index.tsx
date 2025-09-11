@@ -44,7 +44,7 @@ export default function DeleteDialog({
       )}
       <DialogContent
         aria-describedby="edit api key"
-        className="w-[328px] p-5 flex flex-col rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <VisuallyHidden>
           <DialogTitle />
@@ -54,11 +54,11 @@ export default function DeleteDialog({
         <div className="text-center">
           <div className="flex flex-col items-center gap-[16px]">
             <TipIcon />
-            <div className="text-white text-center font-outfit text-[18px] font-semibold leading-normal lowercase w-[274px]">
+            <div className="text-[var(--color-foreground)] text-center font-outfit text-[18px] font-semibold w-[274px]">
               {title}
             </div>
             {description && (
-              <div className="text-[#B9B9B9] font-outfit text-[13px] font-normal leading-normal lowercase w-[220px]">
+              <div className="text-[var(--muted-foreground)] font-outfit text-[13px] font-normal leading-normal w-[220px]">
                 {description}
               </div>
             )}
@@ -66,6 +66,7 @@ export default function DeleteDialog({
 
           <div className="flex justify-between items-start self-stretch pt-[28px] gap-[14px]">
             <Button
+              variant="outline"
               className="text-[13px] flex-1 py-[7px] leading-[14px]"
               onClick={() => {
                 setOpen(false);
@@ -74,7 +75,8 @@ export default function DeleteDialog({
               cancel
             </Button>
             <LoadingButton
-              className="text-[13px] bg-white text-black-light flex-1 py-[7px] leading-[14px]"
+              variant="primary"
+              className="text-[13px] flex-1 py-[7px] leading-[14px]"
               onClick={onYesHandler}
               aria-label="yes"
               data-testid="delete-dll-btn"

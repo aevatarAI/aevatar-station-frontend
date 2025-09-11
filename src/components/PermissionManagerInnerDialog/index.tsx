@@ -25,7 +25,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useUpdateEffect } from "react-use";
 
 const checkboxCls =
-  "border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-100 disabled:bg-gray-deep disabled:border-gray-deep data-[state=checked]:bg-gray-deep data-[state=checked]:border-gray-deep";
+  "border-[var(--color-border-primary)] bg-[var(--bg-muted)]  disabled:cursor-not-allowed disabled:opacity-100 disabled:bg-[var(--bg-accent)] disabled:border-[var(--color-border-gray-deep)] data-[state=checked]:bg-[var(--bg-primary)] data-[state=checked]:border-[var(--color-border-gray-deep)]";
 
 type TChildPermission = {
   permission: string;
@@ -82,6 +82,7 @@ const TreeNode = ({
       <CheckboxLabel
         className={checkboxCls}
         wrapperClassName="pb-[18px]"
+        labelClassName="text-[var(--color-foreground)]"
         checked={node.checked}
         disabled={disabled}
         onCheckedChange={handleCheckChange}
@@ -365,16 +366,19 @@ export default function PermissionManagerInnerDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-black-light">
+        <Button
+          variant="outline"
+          className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]"
+        >
           {`${readonly ? "view" : "edit"} permissions`}
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] sm:w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-black-light"
+        className="w-[328px] sm:w-[636px] p-5 flex gap-0 flex-col rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-[22px] lowercase pb-[18px] border-b border-black-light">
+          <DialogTitle className="text-left inline text-[18px] font-semibold leading-[22px] pb-[18px] border-b border-[var(--color-border-black-light)]">
             Permission - manager
           </DialogTitle>
         </DialogHeader>
@@ -392,7 +396,8 @@ export default function PermissionManagerInnerDialog({
           ) : (
             <>
               <CheckboxLabel
-                wrapperClassName="pb-[18px] pt-0 border-b border-black-light"
+                wrapperClassName="pb-[18px] pt-0 border-b border-[var(--color-border-black-light)]"
+                labelClassName="text-[var(--color-foreground)]"
                 checked={allSelected}
                 disabled={readonly}
                 className={checkboxCls}
@@ -421,7 +426,7 @@ export default function PermissionManagerInnerDialog({
                   </div>
                   {/* permission card */}
                   <div className="flex-1">
-                    <div className="aevatarai-text-gradient-center font-outfit text-[18px] font-semibold leading-[22px] lowercase  pb-[14px] border-b border-black-light">
+                    <div className="font-outfit text-[18px] font-semibold leading-[22px] pb-[14px] border-b border-[var(--color-border-black-light)]">
                       {permissionTab?.split(".")?.[1] ?? permissionTab}
                     </div>
                     {permissionMap?.[permissionTab] && (
@@ -433,11 +438,11 @@ export default function PermissionManagerInnerDialog({
                     )}
                   </div>
                 </div>
-
                 {!readonly && (
-                  <div className="flex justify-between items-start self-stretch pt-[28px] mt-auto">
+                  <div className="flex justify-between items-start self-stretch mt-auto pt-[8px]">
                     <Button
-                      className="text-[13px] py-[7px] leading-[14px]"
+                      variant="outline"
+                      className="text-[13px] py-2 px-3 leading-[14px]"
                       type="reset"
                       onClick={() => {
                         setOpen(false);
@@ -447,7 +452,8 @@ export default function PermissionManagerInnerDialog({
                     </Button>
 
                     <LoadingButton
-                      className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                      variant="primary"
+                      className={clsx("text-[13px] py-2 px-3 leading-[14px]")}
                       onClick={onSaveHandler}
                     >
                       save

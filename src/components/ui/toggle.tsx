@@ -7,14 +7,14 @@ import * as React from "react";
 import { cn } from "@//lib/utils";
 
 const toggleVariants = cva(
-  "font-outfit inline-flex items-center justify-center text-gray-deep border text-[13px] font-medium ring-offset-background transition-colors hover:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2",
+  "font-outfit inline-flex items-center justify-center text-[var(--muted-foreground)] border text-[13px] font-medium ring-offset-background transition-colors hover:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2",
   {
     variants: {
       variant: {
         default:
           "bg-transparent data-[state=on]:border-accent-foreground data-[state=on]:text-accent-foreground",
         outline:
-          "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
+          "border border-[var(--color-input)] bg-transparent hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-10 px-3 min-w-10",

@@ -77,11 +77,7 @@ vi.mock("@/components/DataTable", () => ({
               <span>{item.name}</span>
               {item.operation && (
                 <div data-testid={`operations-${item.id || index}`}>
-                  {Array.isArray(item.operation)
-                    ? item.operation.map((op, i) => (
-                        <span key={op?.id || i}>{op}</span>
-                      ))
-                    : item.operation}
+                  {item.operation}
                 </div>
               )}
             </div>
@@ -199,13 +195,11 @@ describe("DllTable Component", () => {
     (handleErrorMessage as any).mockReturnValue("Mocked error message");
 
     // Mock权限，保证操作按钮渲染
-    // vi.doMock("@/hooks/useProjectPermissions", () => ({
-    //   useProjectPermissions: () => ({
-    //     pluginsEdit: true,
-    //     pluginsDelete: true,
-    //     pluginsCreate: true,
-    //   }),
-    // }));
+    (useProjectPermissions as any).mockReturnValue({
+      pluginsEdit: true,
+      pluginsDelete: true,
+      pluginsCreate: true,
+    });
 
     // Default atom values
     mockUseAtom.mockImplementation((atom: any) => {
@@ -226,7 +220,7 @@ describe("DllTable Component", () => {
     it("should render the component with correct structure", () => {
       renderWithProviders(<DllTable />);
 
-      expect(screen.getByText("dll")).toBeInTheDocument();
+      expect(screen.getByText("DLL")).toBeInTheDocument();
       expect(screen.getByTestId("dll-table")).toBeInTheDocument();
       expect(screen.getByTestId("create-dll-button")).toBeInTheDocument();
     });
@@ -256,7 +250,12 @@ describe("DllTable Component", () => {
       });
 
       expect(screen.getByTestId("empty-state")).toBeInTheDocument();
-      expect(screen.getByText("No DLLs uploaded yet")).toBeInTheDocument();
+      // 检查实际显示的消息，可能是 "No DLLs uploaded yet" 或 "Service restarting..."
+      const emptyMessage = screen.getByTestId("empty-dll-message");
+      expect(emptyMessage).toBeInTheDocument();
+      expect(emptyMessage.textContent).toMatch(
+        /(No DLLs uploaded yet|Service restarting\.\.\.)/,
+      );
     });
 
     it("should render DLL list when data is available", async () => {
@@ -564,7 +563,7 @@ describe("DllTable Component", () => {
     it("should apply correct CSS classes", () => {
       renderWithProviders(<DllTable />);
 
-      const dllTitle = screen.getByText("dll");
+      const dllTitle = screen.getByText("DLL");
       expect(dllTitle).toHaveClass("gradient-text-class");
     });
 

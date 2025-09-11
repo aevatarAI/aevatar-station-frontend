@@ -1,4 +1,5 @@
 import PageLoading from "@/components/PageLoading";
+import { useTheme } from "@/hooks/useTheme";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { delay } from "@/utils/common";
 import type {
@@ -141,8 +142,10 @@ export default function WorkflowPage() {
     }
   }, [projectId]);
 
+  const { theme } = useTheme();
+
   return (
-    <AevatarProvider>
+    <AevatarProvider theme={theme}>
       {workflowType === WorkflowType.WorkflowList && (
         <div className={clsx("h-full pt-[35px] pl-[43px] pr-[40px]")}>
           <WorkflowList
@@ -164,7 +167,7 @@ export default function WorkflowPage() {
             "h-full",
             // Apply fullscreen styles when fullscreen is active
             fullscreen &&
-              "fixed top-0 left-0 w-screen h-screen z-[2000] bg-black",
+              "fixed top-0 left-0 w-screen h-screen z-[2000] bg-[var(--bg-primary)]",
           )}
         >
           <WorkflowConfiguration
@@ -174,7 +177,7 @@ export default function WorkflowPage() {
               gaevatarTypeList: agentTypeList,
             }}
             extraControlBar={
-              <div className="w-full h-full bg-[#141415] flex flow-row border-[1px] border-[#303030]">
+              <div className="w-full h-full flex flow-row border-[1px] bg-[var(--color-bg-primary)] border-[var(--color-border-primary)]">
                 <div
                   className={`p-[4px] w-[26px] h-[26px] flex justify-center items-center cursor-pointer ${
                     fullscreenHandle.active ? "bg-[#AFC6DD]" : ""
@@ -186,15 +189,14 @@ export default function WorkflowPage() {
                   }}
                 >
                   <FullScreenIcon
+                    className={fullscreenHandle.active ? "" : ""}
                     style={{
                       width: 16,
                       height: 16,
+                      color: fullscreenHandle.active
+                        ? "var(--color-text-tertiary)"
+                        : "var(--color-text-secondary)",
                     }}
-                    className={
-                      fullscreenHandle.active
-                        ? "text-[#606060]"
-                        : "text-[#B9B9B9]"
-                    }
                   />
                 </div>
               </div>

@@ -16,7 +16,7 @@ describe("General Component", () => {
     expect(screen.getByText("Test Header")).toBeInTheDocument();
     expect(screen.getByText("Test Title")).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
-    expect(screen.getByText("save")).toBeInTheDocument();
+    expect(screen.getByText("Save")).toBeInTheDocument();
   });
 
   it("renders with custom button props", () => {
@@ -49,14 +49,14 @@ describe("General Component", () => {
     expect(input).toBeDisabled();
 
     // Button should not be present in readonly mode
-    expect(screen.queryByText("save")).not.toBeInTheDocument();
+    expect(screen.queryByText("Save")).not.toBeInTheDocument();
   });
 
   it("calls onConfirm with input value", async () => {
     render(<General {...defaultProps} />);
 
     const input = screen.getByRole("textbox");
-    const button = screen.getByText("save");
+    const button = screen.getByText("Save");
 
     fireEvent.change(input, { target: { value: "test value" } });
     await act(async () => {
@@ -69,7 +69,7 @@ describe("General Component", () => {
   it("does not call onConfirm with empty input", async () => {
     render(<General {...defaultProps} />);
 
-    const button = screen.getByText("save");
+    const button = screen.getByText("Save");
     await act(async () => {
       fireEvent.click(button);
     });

@@ -11,6 +11,7 @@ import {
   USER_PROFILE_ATOM,
 } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
+import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useCallback, useState } from "react";
 
@@ -61,15 +62,13 @@ export default function ProfileGeneral() {
 
   return (
     <div>
-      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-        <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
-          profile
-        </div>
+      <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
+        <div className="font-outfit text-[18px] font-semibold">Profile</div>
       </div>
       <div className="pt-[30px]">
         <div>
-          <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
-            name
+          <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+            Name
           </div>
           <div className="flex gap-[10px]">
             <Input
@@ -79,17 +78,18 @@ export default function ProfileGeneral() {
               onChange={(e) => setName(e.target.value)}
             />
             <LoadingButton
-              className="font-semibold py-[7px] px-[17px] border-input"
+              variant="primary"
+              className="font-semibold py-[7px] px-[17px] border-[var(--color-input)]"
               onClick={onNameSave}
             >
-              save
+              Save
             </LoadingButton>
           </div>
         </div>
       </div>
       <div className="pt-[30px]">
-        <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
-          email address
+        <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+          Email Address
         </div>
         <Input
           className="max-w-[498px] flex-1 disabled:opacity-100"
@@ -99,20 +99,20 @@ export default function ProfileGeneral() {
       </div>
       {userLoginType !== IUserLoginType.SOCIAL_MEDIA && (
         <div className="pt-[30px]">
-          <div className="text-[#B9B9B9] font-outfit text-[16px] font-semibold leading-normal pb-[10px]">
-            reset password
+          <div className="font-outfit text-[16px] font-semibold leading-normal pb-[10px]">
+            Reset Password
           </div>
-          <div className="text-[#B9B9B9] font-outfit text-[14px] font-normal leading-normal lowercase">
+          <div className="text-[var(--muted-foreground)] font-outfit text-[14px] font-normal leading-normal">
             A password reset link will be sent to your email to reset your
             password.
-            <br /> if you don't get an email within a few minutes. please
+            <br /> If you don't get an email within a few minutes, please
             re-try.
           </div>
           <Button
-            className="mt-[18px] py-[8px] px-[18px] border-none bg-white text-black-light text-[13px] leading-[14px]"
+            className="mt-[18px] py-[8px] px-[18px] border-none bg-[var(--bg-primary)] text-[var(--primary-foreground)] text-[13px] leading-[14px]"
             onClick={onResetPassword}
           >
-            reset password
+            Reset Password
           </Button>
         </div>
       )}

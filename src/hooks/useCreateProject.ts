@@ -22,7 +22,7 @@ export const useCreateProject = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast({ description: "unable to create project" });
+      toast({ description: "Unable to create project" });
     },
     onSettled: () => {
       queryClient.invalidateQueries({

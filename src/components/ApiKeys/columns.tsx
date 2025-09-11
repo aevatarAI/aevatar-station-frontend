@@ -31,48 +31,48 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     ),
   },
   {
-    accessorKey: "appId",
-    header: "client id",
+    accessorKey: "clientId",
+    header: "Client ID",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{row.original.appId}</span>
         <Copy
-          description="client id copied"
+          description="Client ID copied"
           toCopy={row.original.appId}
-          className="text-gray-deep hover:text-white"
+          className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
       </div>
     ),
   },
   {
-    id: "appSecret",
-    header: "api key",
+    accessorKey: "apiKey",
+    header: "API Key",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.appSecret)}</span>
         <Copy
-          description="api key copied"
+          description="API key copied"
           toCopy={row.original.appSecret}
-          className="text-gray-deep hover:text-white"
+          className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
       </div>
     ),
   },
   {
-    accessorKey: "createTime",
-    header: "created",
+    accessorKey: "created",
+    header: "Created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
         {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
       </div>
     ),
   },
   {
-    accessorKey: "creatorName",
-    header: "created by",
+    accessorKey: "createdBy",
+    header: "Created By",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );

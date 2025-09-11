@@ -1,5 +1,4 @@
 import Dll from "@/assets/dll_menu.svg?react";
-import Edit from "@/assets/edit_action.svg?react";
 import Loading from "@/assets/loading.svg?react";
 import DropzoneItem from "@/components/DropzoneItem";
 import { Button } from "@/components/ui/button";
@@ -79,40 +78,46 @@ export default function DllEditDialog({
         {type === "create" ? (
           <Button
             disabled={disabled}
+            variant="primary"
             className={clsx(
-              "text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              " text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
-                ? "group-hover:text-white"
-                : "group-hover:text-black-light",
+                ? "group-hover:text-[var(--color-foreground)]"
+                : "group-hover:text-[var(--primary-foreground)]",
             )}
           >
             <Dll
               className={clsx(
-                "text-white",
                 "w-[16px] h-[16px]",
-                disabled && "text-gray-deep",
+                disabled && "text-[var(--muted-foreground)]",
                 disabled
-                  ? "group-hover:text-white"
-                  : "group-hover:text-black-light",
+                  ? "group-hover:text-[var(--color-foreground)]"
+                  : "group-hover:text-[var(--primary-foreground)]",
               )}
             />
-            <span className={clsx(disabled && "text-white!")}>upload</span>
+            <span
+              className={clsx(disabled && "text-[var(--color-foreground)]!")}
+            >
+              Upload
+            </span>
           </Button>
         ) : (
           <Dll
-            className={clsx("cursor-pointer w-[16px] h-[16px] text-[#B9B9B9]")}
+            className={clsx(
+              "cursor-pointer w-[16px] h-[16px] text-[var(--muted-foreground)]",
+            )}
           />
         )}
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[329px] sm:w-[635px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[329px] sm:w-[635px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] pb-[18px] border-b border-black-light font-semibold leading-normal lowercase">
-            {type === "create" ? "upload dll file" : "update dll file"}
+          <DialogTitle className="text-left inline text-[18px] pb-[18px] border-b border-[var(--color-border-black-light)] font-semibold leading-normal">
+            {type === "create" ? "Upload DLL File" : "Update DLL File"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -129,7 +134,7 @@ export default function DllEditDialog({
                         form={form as any}
                         name={"file"}
                         multiple={false}
-                        uploadText="click to select file (dll)"
+                        uploadText="Click to select file (DLL)"
                         accept={{ "application/octet-stream": [".dll"] }}
                         aria-label="DLL file input"
                       />
@@ -139,17 +144,19 @@ export default function DllEditDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
+                  variant="primary"
                   className={clsx(
-                    "text-[13px] bg-white text-black-light py-[7px] leading-[14px] w-[79px]",
+                    "text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px] w-[79px]",
                   )}
                   type="submit"
                 >

@@ -27,6 +27,7 @@ const supportAgentTypes = [
   "social.twitter.twitter-webapi",
   "tool.twitter",
   "AevatarGAgentsConstants.ToolGAgentNameSpace.twitter",
+  "Aevatar.GAgents.Twitter.Agent.TwitterGAgent",
   "agentworkertest",
 ];
 

@@ -113,14 +113,14 @@ describe("SideBar Component", () => {
       dashboards: true,
     });
     render(<SideBar />);
-    expect(screen.getByText("api keys")).toBeInTheDocument();
+    expect(screen.getByText("API Keys")).toBeInTheDocument();
   });
 
   it("renders profile menu when path starts with /profile", () => {
     (useLocation as any).mockReturnValue(["/profile"]);
     render(<SideBar />);
-    expect(screen.getByText("general")).toBeInTheDocument();
-    expect(screen.getByText("notifications")).toBeInTheDocument();
+    expect(screen.getByText("General")).toBeInTheDocument();
+    expect(screen.getByText("Notifications")).toBeInTheDocument();
   });
 
   it("calls onClose when menu item is clicked", () => {
@@ -131,14 +131,14 @@ describe("SideBar Component", () => {
     });
 
     render(<SideBar onClose={mockOnClose} />);
-    fireEvent.click(screen.getByText("api keys"));
+    fireEvent.click(screen.getByText("API Keys"));
     expect(mockOnClose).toHaveBeenCalled();
   });
 
   it("calls mutate when notifications menu item is clicked", () => {
     (useLocation as any).mockReturnValue(["/profile"]);
     render(<SideBar />);
-    fireEvent.click(screen.getByText("notifications"));
+    fireEvent.click(screen.getByText("Notifications"));
     expect(mockMutate).toHaveBeenCalled();
   });
 

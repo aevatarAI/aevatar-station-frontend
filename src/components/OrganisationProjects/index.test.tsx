@@ -46,9 +46,7 @@ vi.mock("@/components/ProjectEditDialog", () => ({
   __esModule: true,
   default: ({ type, onSubmit }: any) => (
     // biome-ignore lint/a11y/useButtonType: <explanation>
-    <button
-      onClick={() => onSubmit({ name: "Project Test", domainName: "test.com" })}
-    >
+    <button onClick={() => onSubmit({ name: "Project Test" })}>
       {type === "create" ? "Create Project" : "Edit Project"}
     </button>
   ),
@@ -148,7 +146,6 @@ describe("OrganisationProjects Component", () => {
         data: {
           organizationId: "organization-1",
           displayName: "Project Test",
-          domainName: "test.com",
         },
       }),
     );

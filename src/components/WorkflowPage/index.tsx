@@ -181,7 +181,7 @@ export default function WorkflowPage() {
               <div className="w-full h-full flex flow-row border-[1px] bg-[var(--color-bg-primary)] border-[var(--color-border-primary)]">
                 <div
                   className={`p-[4px] w-[26px] h-[26px] flex justify-center items-center cursor-pointer ${
-                    fullscreenHandle.active ? "bg-[#AFC6DD]" : ""
+                    fullscreenHandle.active ? "" : ""
                   }`}
                   onClick={() => {
                     fullscreenHandle.active
@@ -195,8 +195,8 @@ export default function WorkflowPage() {
                       width: 16,
                       height: 16,
                       color: fullscreenHandle.active
-                        ? "var(--color-text-tertiary)"
-                        : "var(--color-text-secondary)",
+                        ? "var(--primary-foreground-text)"
+                        : "var(--primary-foreground-text)",
                     }}
                   />
                 </div>

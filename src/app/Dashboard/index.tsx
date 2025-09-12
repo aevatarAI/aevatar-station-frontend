@@ -43,7 +43,7 @@ function Dashboard() {
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-full bg-[var(--color-bg-primary)]">
+      <div className="flex-1 overflow-auto h-full bg-[var(--bg-background)]">
         <div
           className={clsx(
             " h-full",

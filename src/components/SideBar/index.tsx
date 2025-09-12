@@ -16,6 +16,7 @@ import {
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
+import { MENU_TEXT_LIST_MAP, TAB_TEXT_LIST_MAP } from "@/constants/sideBar";
 import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
 import { useGetUnreadNotifications } from "@/hooks/useGetUnreadNotifications";
@@ -163,7 +164,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (userPermissions.apiKeys || userProjectPermissions.apiKeys) {
       menuList.push({
         icon: <ApikeysIcon />,
-        text: "api keys",
+        text: "apikeys",
         url: "/dashboard/apikeys",
       });
     }
@@ -217,7 +218,10 @@ export function SideBar({ className, onClose }: ISideBarProps) {
               )}
             >
               {tab.icon}
-              <span className={clsx(menuItemTextClx)}>{tab.text}</span>
+              <span className={clsx(menuItemTextClx)}>
+                {TAB_TEXT_LIST_MAP[tab.text as keyof typeof TAB_TEXT_LIST_MAP]
+                  ?.text || tab.text}
+              </span>
             </div>
           ))}
         </div>
@@ -242,7 +246,8 @@ export function SideBar({ className, onClose }: ISideBarProps) {
                 "font-outfit text-[12px] font-normal leading-normal mb-[16px] text-[var(--color-text-secondary)]",
               )}
             >
-              {item[0]}
+              {MENU_TEXT_LIST_MAP[item[0] as keyof typeof MENU_TEXT_LIST_MAP]
+                ?.text || item[0]}
             </div>
             <div className="flex flex-col gap-[10px]">
               {item[1].map((tab) => (
@@ -263,7 +268,11 @@ export function SideBar({ className, onClose }: ISideBarProps) {
                   )}
                 >
                   {tab.icon}
-                  <span className={clsx(menuItemTextClx)}>{tab.text}</span>
+                  <span className={clsx(menuItemTextClx)}>
+                    {TAB_TEXT_LIST_MAP[
+                      tab.text as keyof typeof TAB_TEXT_LIST_MAP
+                    ]?.text || tab.text}
+                  </span>
                 </div>
               ))}
             </div>

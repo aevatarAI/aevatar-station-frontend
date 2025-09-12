@@ -45,7 +45,9 @@ interface IProjectEditDialogProps {
   domainName?: string;
   fullWidth?: boolean;
   showCreateButton?: boolean;
-  onSubmit: (values: TProjectEditForm) => Promise<{ projectId: string }>;
+  onSubmit: (
+    values: TProjectEditForm,
+  ) => Promise<{ projectId: string; domainName: string }>;
   onCheckProjectService?: (
     domainName: string,
     projectId: string,
@@ -79,7 +81,7 @@ const ProjectEditDialog = forwardRef<
       resolver: zodResolver(ProjectEditForm),
       defaultValues: {
         name,
-        domainName,
+        // domainName,
       },
     });
     const [open, setOpen] = useState(false);
@@ -95,7 +97,7 @@ const ProjectEditDialog = forwardRef<
       async (values: TProjectEditForm) => {
         try {
           setBtnLoading(true);
-          const { projectId } = await onFinish(values);
+          const { projectId, domainName } = await onFinish(values);
           setBtnLoading(false);
           setOpen(false);
           toast({
@@ -104,7 +106,7 @@ const ProjectEditDialog = forwardRef<
               type === "create" ? "created" : "saved"
             }`,
           });
-          await onCheckProjectService?.(values.domainName, projectId);
+          await onCheckProjectService?.(domainName, projectId);
         } catch (error) {
           toast({
             title: "error",
@@ -176,7 +178,7 @@ const ProjectEditDialog = forwardRef<
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="domainName"
                   disabled={type === "edit"}
@@ -197,7 +199,7 @@ const ProjectEditDialog = forwardRef<
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <div className="flex justify-between items-start w-full">
                   <Button
                     variant="outline"

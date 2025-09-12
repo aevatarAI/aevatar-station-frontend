@@ -202,12 +202,11 @@ export default function OriganisactionHeader({
         showCreateButton={false}
         fullWidth={true}
         // onCheckProjectService={onCheckProjectService}
-        onSubmit={async ({ name, domainName }) => {
+        onSubmit={async ({ name }) => {
           const result = await request.projects.addProject({
             data: {
               organizationId: currentOrganisationId,
               displayName: name,
-              domainName,
             },
           });
 
@@ -215,7 +214,10 @@ export default function OriganisactionHeader({
           setCurrentProject(result.data.id, result.data.domainName);
           setPjtOpen(false);
           navigate("/dashboard/workflows");
-          return { projectId: result.data.id };
+          return {
+            projectId: result.data.id,
+            domainName: result.data.domainName,
+          };
         }}
       />
     </div>

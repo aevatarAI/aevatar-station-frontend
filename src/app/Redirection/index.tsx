@@ -25,7 +25,7 @@ const Redirection = () => {
   const { to } = usePermissionNavigate();
   const [, setOrganisations] = useAtom(ORGANIZATIONS_LIST_ATOM);
   const [, setProjectList] = useAtom(PROJECT_LIST_ATOM);
-  const createDefaultProject = useCreateDefaultProject();
+  const _createDefaultProject = useCreateDefaultProject();
   const [searchParams] = useSearchParams();
 
   const getRecentUsedData = useCallback(async () => {
@@ -45,7 +45,7 @@ const Redirection = () => {
         curProject: projectInfo,
         projectList,
       };
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   }, []);

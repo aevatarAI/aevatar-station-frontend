@@ -42,7 +42,7 @@ export const useCreateProjectHandler = () => {
       queryClient.invalidateQueries({
         queryKey: ["projects", { organizationId }],
       });
-      return result();
+      return result;
     },
     [organizationId, queryClient],
   );

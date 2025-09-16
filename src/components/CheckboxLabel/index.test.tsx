@@ -68,7 +68,7 @@ describe("CheckboxLabel Component", () => {
     render(<CheckboxLabel text="Checkbox with style" />);
 
     const checkbox = screen.getByRole("checkbox");
-    const label = screen.getByText("Checkbox with style");
+    const _label = screen.getByText("Checkbox with style");
 
     expect(checkbox).toHaveClass("border-[var(--color-border-primary)]");
     expect(checkbox).toHaveClass("w-[14px]");

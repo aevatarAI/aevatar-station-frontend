@@ -8,7 +8,7 @@ import {
 } from "./env";
 
 // Mock import.meta.env
-const mockImportMetaEnv = {
+const _mockImportMetaEnv = {
   VITE_APP_NETWORKTYPE: "TESTNET",
   VITE_APP_SIGNAL_R_URL: "https://test.example.com",
   VITE_APP_DOMAIN_URL: "https://api.test.example.com",

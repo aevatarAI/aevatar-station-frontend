@@ -33,7 +33,7 @@ describe("useAccessTokenAtom", () => {
 
   it("should return access token from atom when available", () => {
     const mockToken = "test-access-token";
-    mockUseAtom.mockReturnValue([mockToken, vi.fn()]);
+    mockUseAtom.mockReturnValue([mockToken, vi.fn()] as any);
 
     const { result } = renderHook(() => useAccessTokenAtom());
 
@@ -54,7 +54,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when both atom and localStorage are null", () => {
-    mockUseAtom.mockReturnValue([null, vi.fn()]);
+    mockUseAtom.mockReturnValue([null, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -63,7 +63,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when atom is undefined", () => {
-    mockUseAtom.mockReturnValue([undefined, vi.fn()]);
+    mockUseAtom.mockReturnValue([undefined, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -72,7 +72,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when atom is not a string", () => {
-    mockUseAtom.mockReturnValue([123, vi.fn()]);
+    mockUseAtom.mockReturnValue([123, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -81,7 +81,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when atom is an object", () => {
-    mockUseAtom.mockReturnValue([{}, vi.fn()]);
+    mockUseAtom.mockReturnValue([{}, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -90,7 +90,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when atom is an array", () => {
-    mockUseAtom.mockReturnValue([[], vi.fn()]);
+    mockUseAtom.mockReturnValue([[], vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -99,7 +99,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should return empty string when atom is boolean", () => {
-    mockUseAtom.mockReturnValue([true, vi.fn()]);
+    mockUseAtom.mockReturnValue([true, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(null);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -110,7 +110,7 @@ describe("useAccessTokenAtom", () => {
   it("should prioritize atom value over localStorage", () => {
     const atomToken = "atom-token";
     const localStorageToken = "local-storage-token";
-    mockUseAtom.mockReturnValue([atomToken, vi.fn()]);
+    mockUseAtom.mockReturnValue([atomToken, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue(localStorageToken);
 
     const { result } = renderHook(() => useAccessTokenAtom());
@@ -120,7 +120,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should handle empty string from atom", () => {
-    mockUseAtom.mockReturnValue(["", vi.fn()]);
+    mockUseAtom.mockReturnValue(["", vi.fn()] as any);
 
     const { result } = renderHook(() => useAccessTokenAtom());
 
@@ -128,7 +128,7 @@ describe("useAccessTokenAtom", () => {
   });
 
   it("should handle empty string from localStorage", () => {
-    mockUseAtom.mockReturnValue([null, vi.fn()]);
+    mockUseAtom.mockReturnValue([null, vi.fn()] as any);
     mockLocalStorage.getItem.mockReturnValue("");
 
     const { result } = renderHook(() => useAccessTokenAtom());

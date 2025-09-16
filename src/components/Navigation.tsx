@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const links = [
+const _links = [
   { href: "/auth/atomic", label: "Atomic-Aevatar" },
   { href: "/auth/aevatar", label: "Aevatar" },
   { href: "/auth/dashboard", label: "Dashboard" },

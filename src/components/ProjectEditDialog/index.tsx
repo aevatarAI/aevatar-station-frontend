@@ -124,11 +124,11 @@ const ProjectEditDialog = forwardRef<
 
     const btnText = useMemo(() => {
       if (type === "create") {
-        if (btnLoading) return "creating";
-        return "create";
+        if (btnLoading) return "Creating";
+        return "Create";
       }
-      if (btnLoading) return "saving";
-      return "save";
+      if (btnLoading) return "Saving";
+      return "Save";
     }, [btnLoading, type]);
 
     return (

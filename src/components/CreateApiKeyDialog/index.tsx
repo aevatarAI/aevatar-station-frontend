@@ -47,7 +47,9 @@ import { useForm } from "react-hook-form";
 
 export default function CreateApiKeyDialog({
   disabled,
-}: { disabled: boolean }) {
+}: {
+  disabled: boolean;
+}) {
   const { data: projectList, isLoading } = useGetProjects();
   const [currentProject] = useAtom(CURRENT_PROJECT_ATOM);
   const { mutate } = useCreateAPIKey();
@@ -94,7 +96,7 @@ export default function CreateApiKeyDialog({
           disabled={disabled}
         >
           <Plus />
-          <span>create</span>
+          <span>Create</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -103,7 +105,7 @@ export default function CreateApiKeyDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
-            create new api key
+            Create new api key
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -115,7 +117,7 @@ export default function CreateApiKeyDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
+                    <FormLabel id="nameLabel">Name of the key</FormLabel>
                     <FormControl>
                       <Input placeholder="name" {...field} />
                     </FormControl>
@@ -129,7 +131,7 @@ export default function CreateApiKeyDialog({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem aria-labelledby="project" className="w-full">
-                    <FormLabel id="project">project</FormLabel>
+                    <FormLabel id="project">Project</FormLabel>
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
@@ -168,7 +170,7 @@ export default function CreateApiKeyDialog({
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"
@@ -181,7 +183,7 @@ export default function CreateApiKeyDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "creating" : "create"}</span>
+                  <span>{btnLoading ? "Creating" : "Create"}</span>
                 </Button>
               </div>
             </div>

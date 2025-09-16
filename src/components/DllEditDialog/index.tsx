@@ -68,8 +68,8 @@ export default function DllEditDialog({
   }, [form, open]);
 
   const btnText = useMemo(() => {
-    if (btnLoading) return "uploading";
-    return "upload";
+    if (btnLoading) return "Uploading";
+    return "Upload";
   }, [btnLoading]);
 
   return (

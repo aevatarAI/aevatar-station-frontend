@@ -79,8 +79,8 @@ export default function CreateCrossURLDialog({
   }, [form, open]);
 
   const btnText = useMemo(() => {
-    if (btnLoading) return "adding";
-    return "add";
+    if (btnLoading) return "Adding";
+    return "Add";
   }, [btnLoading]);
 
   return (
@@ -110,7 +110,7 @@ export default function CreateCrossURLDialog({
             <span
               className={clsx(disabled && "text-[var(--color-foreground)]!")}
             >
-              add
+              Add
             </span>
           </Button>
         ) : (
@@ -162,7 +162,7 @@ export default function CreateCrossURLDialog({
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"

@@ -70,7 +70,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
   const extraInput = useMemo(
     () => (
       <div className="pt-[20px] pb-[30px] lg:pb-[40px]">
-        <div className="text-[var(--color-foreground)] font-outfit text-[13px] font-semibold leading-normal ">
+        <div className="text-[var(--color-foreground)] font-geist text-[13px] font-semibold leading-normal ">
           Domain Name
         </div>
         <Input

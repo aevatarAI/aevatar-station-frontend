@@ -60,7 +60,7 @@ describe("SocialMediaReander", () => {
     links.forEach((link) => {
       expect(link).toHaveClass(
         "text-[var(--muted-foreground)]",
-        "font-outfit",
+        "font-geist",
         "text-[16px]",
         "font-semibold",
         "leading-normal",

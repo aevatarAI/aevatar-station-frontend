@@ -34,7 +34,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "clientId",
     header: "Client ID",
     cell: ({ row }) => (
-      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-geist pr-[20px] md:pr-[30px]">
         <span>{row.original.appId}</span>
         <Copy
           description="Client ID copied"
@@ -48,7 +48,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "apiKey",
     header: "API Key",
     cell: ({ row }) => (
-      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[20px] md:pr-[30px]">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-geist pr-[20px] md:pr-[30px]">
         <span>{shortenString(row.original.appSecret)}</span>
         <Copy
           description="API key copied"
@@ -62,7 +62,7 @@ export const columns: ColumnDef<IApiKeysListTable>[] = [
     accessorKey: "created",
     header: "Created",
     cell: ({ row }) => (
-      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-geist">
         {dayjs.utc(row.original.createTime).local().format("DD.MM.YYYY HH:mm")}
       </div>
     ),

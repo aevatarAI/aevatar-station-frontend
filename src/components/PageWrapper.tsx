@@ -10,11 +10,11 @@ export default function PageWrapper({ children, title }: IPageWrapperProps) {
     <div className="flex flex-col grow">
       <div className="p-[42px] w-full h-full flex flex-col">
         <div className="flex justify-between">
-          <h1 className="uppercase text-lg font-semibold font-outfit mb-[49px]">
+          <h1 className="uppercase text-lg font-semibold font-geist mb-[49px]">
             {title}
           </h1>
           <a
-            className="text-[var(--color-foreground)] font-outfit text-xs flex"
+            className="text-[var(--color-foreground)] font-geist text-xs flex"
             href="https://aevatar.ai/docs"
             target="_blank"
             rel="noopener noreferrer"

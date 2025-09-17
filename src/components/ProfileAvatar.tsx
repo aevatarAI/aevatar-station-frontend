@@ -7,6 +7,7 @@ import {
 import DarkIcon from "@/assets/dark.svg?react";
 import LightIcon from "@/assets/light.svg?react";
 import NotificationsIcon from "@/assets/notification_empty.svg?react";
+import profileImgLight from "@/assets/profile-light.png";
 import profileImg from "@/assets/profile.png";
 import Copy from "@/components/Copy";
 import { useNavigate } from "@/hooks/navigate";
@@ -66,10 +67,16 @@ export default function ProfileAvatar() {
   }, [profile]);
 
   return (
-    <div className="border-4 border-white rounded-[2px] w-[34px] h-[34px]">
+    <div>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
-          <img src={profileImg} alt="profile" className="object-cover" />
+          <div className="border-[2.78px] border-[transparent] rounded-[2px] w-[34px] h-[34px]">
+            <img
+              src={theme === "dark" ? profileImg : profileImgLight}
+              alt="profile"
+              className="object-cover"
+            />
+          </div>
         </PopoverTrigger>
         <PopoverContent
           className={`profile-popover border shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] p-0! rounded-md min-w-32 ${
@@ -86,7 +93,9 @@ export default function ProfileAvatar() {
               <div className="flex flex-col gap-1 grow items-start justify-start min-h-px min-w-px">
                 {profileName && (
                   <div
-                    className={`font-['Geist:SemiBold',_sans-serif] font-semibold leading-none overflow-ellipsis overflow-hidden text-[14px] text-nowrap w-full text-[var(--sidebar-foreground)]`}
+                    className={
+                      "font-geist font-semibold leading-none overflow-ellipsis overflow-hidden text-[14px] text-nowrap w-full text-[var(--sidebar-foreground)]"
+                    }
                   >
                     <span>
                       {profileName?.length >= 30
@@ -97,7 +106,9 @@ export default function ProfileAvatar() {
                 )}
                 <div className="flex gap-1 items-center justify-start w-full">
                   <div
-                    className={`font-['Geist:Regular',_sans-serif] font-normal leading-none overflow-ellipsis overflow-hidden text-[12px] text-nowrap text-[var(--color-popover-foreground)]`}
+                    className={
+                      "font-geist font-normal leading-none overflow-ellipsis overflow-hidden text-[12px] text-nowrap text-[var(--color-popover-foreground)]"
+                    }
                   >
                     <span className="leading-[16px]">
                       {profile?.email ?? "--"}
@@ -124,7 +135,9 @@ export default function ProfileAvatar() {
 
           {/* Account Section */}
           <div
-            className={"flex flex-col items-start justify-start p-1 w-full "}
+            className={
+              "flex flex-col items-start justify-start p-1 w-full pb-0"
+            }
           >
             <div
               className={`flex gap-2 items-center justify-start min-w-32 pl-8 pr-2 py-1.5 rounded w-full relative cursor-pointer transition-colors ${
@@ -145,7 +158,7 @@ export default function ProfileAvatar() {
                 <AccountIcon />
               </div>
               <div
-                className={`font-['Geist:Regular',_sans-serif] font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap ${
+                className={`font-geist font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap ${
                   theme === "dark" ? "text-neutral-50" : "text-zinc-950"
                 }`}
               >
@@ -156,7 +169,9 @@ export default function ProfileAvatar() {
 
           {/* Notifications Section */}
           <div
-            className={"flex flex-col items-start justify-start p-1 w-full "}
+            className={
+              "flex flex-col items-start justify-start p-1 w-full pt-0"
+            }
           >
             <div
               className={`flex gap-2 items-center justify-start min-w-32 pl-8 pr-2 py-1.5 rounded w-full relative cursor-pointer transition-colors ${
@@ -177,7 +192,7 @@ export default function ProfileAvatar() {
                 <NotificationsIcon style={{ width: "16px", height: "16px" }} />
               </div>
               <div
-                className={`font-['Geist:Regular',_sans-serif] font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap ${
+                className={`font-geist font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap ${
                   theme === "dark" ? "text-neutral-50" : "text-zinc-950"
                 }`}
               >
@@ -252,7 +267,9 @@ export default function ProfileAvatar() {
                 <LogoutIcon />
               </div>
               <div
-                className={`font-['Geist:Regular',_sans-serif] font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap text-[var(--popover-foreground)]`}
+                className={
+                  "font-geist font-normal grow leading-[20px] min-h-px min-w-px overflow-ellipsis overflow-hidden text-[14px] text-nowrap text-[var(--popover-foreground)]"
+                }
               >
                 <span>Log out</span>
               </div>

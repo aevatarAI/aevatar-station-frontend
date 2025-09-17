@@ -85,16 +85,16 @@ const General = forwardRef(
     return (
       <div>
         <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
-          <div className="font-outfit text-[18px] font-semibold">{header}</div>
+          <div className="font-geist text-[18px] font-semibold">{header}</div>
           <div>{_buttonProps.placement === "top-right" && buttonELe}</div>
         </div>
         <div className="pt-[30px]">
           <div>
-            <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+            <div className="font-geist text-[13px] font-semibold leading-normal pb-[10px]">
               {title}
             </div>
             <Input
-              className="max-w-[498px] disabled:opacity-100"
+              className="max-w-[498px] disabled:opacity-100 placeholder:text-[var(--color-text-secondary)]"
               placeholder={inputPlaceholder}
               value={inputText}
               disabled={readonly}

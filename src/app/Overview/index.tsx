@@ -57,7 +57,7 @@ export default function Overview() {
             <br />
             aevatar.ai
           </h1>
-          <h2 className="text-sm font-outfit mb-[36px] lg:mb-[54.5px] text-muted-foreground">
+          <h2 className="text-sm font-geist mb-[36px] lg:mb-[54.5px] text-muted-foreground">
             the future of on-chain autonomous
             <br />
             intelligence

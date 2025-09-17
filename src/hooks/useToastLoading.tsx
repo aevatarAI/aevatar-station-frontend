@@ -13,7 +13,7 @@ export const useToastLoading = () => {
             className={clsx("aevatarai-loading-icon")}
             style={{ width: 14, height: 14 }}
           />
-          <div className="text-[var(--color-foreground)] font-outfit text-[13px] font-normal leading-normal">
+          <div className="text-[var(--color-foreground)] font-geist text-[13px] font-normal leading-normal">
             loading...
           </div>
         </div>

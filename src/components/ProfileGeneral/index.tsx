@@ -63,11 +63,11 @@ export default function ProfileGeneral() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
-        <div className="font-outfit text-[18px] font-semibold">Profile</div>
+        <div className="font-geist text-[18px] font-semibold">Profile</div>
       </div>
       <div className="pt-[30px]">
         <div>
-          <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+          <div className="font-geist text-[13px] font-semibold leading-normal pb-[10px]">
             Name
           </div>
           <div className="flex gap-[10px]">
@@ -88,7 +88,7 @@ export default function ProfileGeneral() {
         </div>
       </div>
       <div className="pt-[30px]">
-        <div className="font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+        <div className="font-geist text-[13px] font-semibold leading-normal pb-[10px]">
           Email Address
         </div>
         <Input
@@ -99,10 +99,10 @@ export default function ProfileGeneral() {
       </div>
       {userLoginType !== IUserLoginType.SOCIAL_MEDIA && (
         <div className="pt-[30px]">
-          <div className="font-outfit text-[16px] font-semibold leading-normal pb-[10px]">
+          <div className="font-geist text-[16px] font-semibold leading-normal pb-[10px]">
             Reset Password
           </div>
-          <div className="text-[var(--muted-foreground)] font-outfit text-[14px] font-normal leading-normal">
+          <div className="text-[var(--muted-foreground)] font-geist text-[14px] font-normal leading-normal">
             A password reset link will be sent to your email to reset your
             password.
             <br /> If you don't get an email within a few minutes, please

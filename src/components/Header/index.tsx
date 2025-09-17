@@ -59,7 +59,7 @@ export default function Header() {
           </div>
           <div
             className={clsx(
-              "flex items-center justify-center gap-[20px] font-outfit text-[16px] font-semibold leading-normal cursor-pointer ",
+              "flex items-center justify-center gap-[20px] font-geist text-[16px] font-semibold leading-normal cursor-pointer ",
               "lg:gap-[34px]",
               "text-[var(--color-text-primary)]",
             )}

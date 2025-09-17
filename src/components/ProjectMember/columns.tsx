@@ -21,7 +21,7 @@ export const columns: ColumnDef<IMemberTable>[] = [
     id: "emailAddress",
     header: "Email Address",
     cell: ({ row }) => (
-      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-outfit pr-[15px]  ">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-geist pr-[15px]  ">
         <span className="truncate max-w-full max-[640px]:max-w-[250px]">
           {row.original.email}
         </span>

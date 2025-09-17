@@ -32,7 +32,7 @@ const Checkbox = React.forwardRef<
     </CheckboxPrimitive.Root>
     <label
       className={cn(
-        "text-[12px] text-[var(--muted-foreground)] font-outfit cursor-pointer",
+        "text-[12px] text-[var(--muted-foreground)] font-geist cursor-pointer",
         labelClassName,
       )}
       htmlFor={props?.id}

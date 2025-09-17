@@ -189,7 +189,7 @@ describe("Overview", () => {
     const subtitle = screen.getByRole("heading", { level: 2 });
     expect(subtitle).toHaveClass(
       "text-sm",
-      "font-outfit",
+      "font-geist",
       "mb-[36px]",
       "lg:mb-[54.5px]",
       "text-muted-foreground",

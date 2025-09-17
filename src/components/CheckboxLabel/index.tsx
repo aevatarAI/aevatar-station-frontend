@@ -4,7 +4,7 @@ import type { CheckboxProps } from "@radix-ui/react-checkbox";
 import clsx from "clsx";
 
 const checkboxLabel =
-  "font-normal text-[12px] leading-[14px] mb-0 mt-0! font-outfit";
+  "font-normal text-[12px] leading-[14px] mb-0 mt-0! font-geist";
 const checkboxCls =
   "border-[var(--color-border-primary)] bg-[var(--bg-muted)]  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[var(--bg-primary)] data-[state=checked]:border-[var(--color-border-gray-deep)]";
 

@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { itemClassName, itemHoverNotBorderClassName } from "@/constants/cls";
 import { DllSchema, type TDllEditForm } from "@/constants/form/dll";
 import { useToast } from "@/hooks/use-toast";
 import { handleErrorMessage } from "@/utils/error";
@@ -80,7 +81,7 @@ export default function DllEditDialog({
             disabled={disabled}
             variant="primary"
             className={clsx(
-              " text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
+              " text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
@@ -104,11 +105,15 @@ export default function DllEditDialog({
             </span>
           </Button>
         ) : (
-          <Dll
+          <div
             className={clsx(
-              "cursor-pointer w-[16px] h-[16px] text-[var(--muted-foreground)]",
+              itemClassName,
+              itemHoverNotBorderClassName,
+              "justify-start py-1.5 px-2 rounded-[4px]",
             )}
-          />
+          >
+            Edit
+          </div>
         )}
       </DialogTrigger>
       <DialogContent

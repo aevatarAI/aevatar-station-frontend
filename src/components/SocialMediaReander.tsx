@@ -5,7 +5,7 @@ const socialMediaReander = (className: string) => (
   <div className={clsx("flex justify-between", className)}>
     {socialMediaList.map((item) => (
       <a
-        className="text-[var(--muted-foreground)] font-outfit text-[16px] font-semibold leading-normal"
+        className="text-[var(--muted-foreground)] font-geist text-[16px] font-semibold leading-normal"
         key={item.title}
         href={item.href}
         target="_blank"

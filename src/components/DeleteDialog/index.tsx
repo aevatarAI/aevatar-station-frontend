@@ -9,9 +9,10 @@ import {
 
 import TipIcon from "@/assets/tip_icon.svg?react";
 import LoadingButton from "@/components/LoadingButton.tsx";
-import { useToast } from "@/hooks/use-toast";
+import { itemClassName, itemHoverNotBorderClassName } from "@/constants/cls";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import clsx from "clsx";
 import { useCallback, useState } from "react";
 interface IDeleteDialogProps {
   title: string;
@@ -36,10 +37,27 @@ export default function DeleteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {disabled ? (
-        <Delete className="opacity-50" role="img" />
+        <div
+          className={clsx(
+            itemClassName,
+            itemHoverNotBorderClassName,
+            "opacity-50",
+          )}
+        >
+          Delete
+        </div>
       ) : (
         <DialogTrigger asChild>
-          <Delete className="cursor-pointer w-[17px] h-[17px]" role="img" />
+          <div
+            className={clsx(
+              itemClassName,
+              itemHoverNotBorderClassName,
+              "text-[var(--text-destructive)]",
+              "justify-start py-1.5 px-2 rounded-[4px]",
+            )}
+          >
+            Delete
+          </div>
         </DialogTrigger>
       )}
       <DialogContent
@@ -54,11 +72,11 @@ export default function DeleteDialog({
         <div className="text-center">
           <div className="flex flex-col items-center gap-[16px]">
             <TipIcon />
-            <div className="text-[var(--color-foreground)] text-center font-outfit text-[18px] font-semibold w-[274px]">
+            <div className="text-[var(--color-foreground)] text-center font-geist text-[18px] font-semibold w-[274px]">
               {title}
             </div>
             {description && (
-              <div className="text-[var(--muted-foreground)] font-outfit text-[13px] font-normal leading-normal w-[220px]">
+              <div className="text-[var(--muted-foreground)] font-geist text-[13px] font-normal leading-normal w-[220px]">
                 {description}
               </div>
             )}

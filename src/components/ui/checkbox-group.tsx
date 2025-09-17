@@ -17,6 +17,7 @@ export const CheckboxGroup = ({
         id={datum.id}
         labelClassName="text-[var(--color-foreground)]"
         name={datum.organizationName}
+        className="border-[var(--color-border-checkbox)]"
         onCheckedChange={(checked: boolean) => {
           if (!checked) {
             const filtered = values.filter((value) => value !== datum.id);

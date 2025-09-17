@@ -97,7 +97,7 @@ const Verification = () => {
     <div className="flex flex-col text-[var(--color-foreground)]  w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">Verification</h2>
-        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
           already registered?&nbsp;
           <span
             className="font-normal text-[var(--color-foreground)] cursor-pointer hover:text-[var(--muted-foreground)]"
@@ -151,7 +151,7 @@ const Verification = () => {
               </Button>
               <div className="text-right">
                 <span
-                  className="text-[13px] cursor-pointer font-outfit text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
+                  className="text-[13px] cursor-pointer font-geist text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
                   onClick={sendVerificationCode}
                 >
                   Resend email

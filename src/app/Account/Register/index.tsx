@@ -98,7 +98,7 @@ const Register = () => {
     <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
           already registered?&nbsp;
           <span
             className="font-normal text-[var(--color-foreground)] cursor-pointer"

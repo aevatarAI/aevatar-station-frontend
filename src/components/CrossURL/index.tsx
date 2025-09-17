@@ -8,6 +8,11 @@ import { type ICrossURLTable, columns } from "@/components/CrossURL/columns";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Tooltip,
   TooltipContent,
   TooltipContentCls,
@@ -21,6 +26,7 @@ import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function CrossURL() {
@@ -90,26 +96,26 @@ export default function CrossURL() {
       (crossURLs || []).map((item) => ({
         ...item,
         operation: (
-          <div className="flex items-center gap-[7px] pl-[20px]">
-            {projectPermissions?.corsOriginsDelete ? (
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div>
-                      <DeleteDialog
-                        onYes={() => onDeleteYes(item.id)}
-                        title={"Are you sure you want to delete this URL?"}
-                        data-testid={"delete-cross-url-button"}
-                      />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className={clsx(TooltipContentCls)}>
-                    Delete
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <span />
+          <div className="flex justify-end px-[20px]">
+            {projectPermissions?.corsOriginsDelete && (
+              <Popover>
+                <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                  <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="end"
+                  className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                >
+                  <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                    <DeleteDialog
+                      onYes={() => onDeleteYes(item.id)}
+                      title={"Are you sure you want to delete this URL?"}
+                      data-testid={"delete-cross-url-button"}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
         ),

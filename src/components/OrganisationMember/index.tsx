@@ -8,6 +8,12 @@ import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import InviteMembersDialog from "@/components/InviteMembersDialog";
 import { columns } from "@/components/OrganisationMember/columns";
+import ProjectEditDialog from "@/components/ProjectEditDialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContentHypotenuse,
@@ -27,6 +33,7 @@ import { USER_PROFILE_ATOM } from "@/state/atoms/profile";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function OrganisationMember() {
@@ -126,7 +133,7 @@ export default function OrganisationMember() {
             {!userPermissions?.organizationMembersManage ||
             item.email === profile?.email ||
             item.status !== IMemberStatus.joined ? (
-              <div className="text-[13px] font-outfit font-semibold">
+              <div className="text-[13px] font-geist font-semibold">
                 {item.roleId && getRoleName(item.roleId)}
                 {item.status === IMemberStatus.refused && "rejected"}
                 {item.status === IMemberStatus.pending && "invite pending"}
@@ -155,19 +162,32 @@ export default function OrganisationMember() {
           </>
         ),
         operation: (
-          <div className="flex items-center justify-between gap-[7px] pl-[20px]">
+          <div className="flex justify-end px-[20px]">
             {userPermissions.organizationMembersManage &&
-            item.email !== profile?.email ? (
-              <DeleteDialog
-                onYes={() => onSetMember(item.email, false, item.roleId || "")}
-                title={"Are you sure you want to delete the member?"}
-                description={
-                  "*Once deleted, the existing member will become invalid."
-                }
-              />
-            ) : (
-              <span />
-            )}
+              item.email !== profile?.email && (
+                <Popover>
+                  <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                    <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="bottom"
+                    align="end"
+                    className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                  >
+                    <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                      <DeleteDialog
+                        onYes={() =>
+                          onSetMember(item.email, false, item.roleId || "")
+                        }
+                        title={"Are you sure you want to delete the member?"}
+                        description={
+                          "*Once deleted, the existing member will become invalid."
+                        }
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
           </div>
         ),
       })),

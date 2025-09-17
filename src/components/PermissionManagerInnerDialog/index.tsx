@@ -368,7 +368,7 @@ export default function PermissionManagerInnerDialog({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="py-[6px] px-[16px] font-outfit text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]"
+          className="py-[6px] px-[16px] font-geist text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]"
         >
           {`${readonly ? "view" : "edit"} permissions`}
         </Button>
@@ -426,7 +426,7 @@ export default function PermissionManagerInnerDialog({
                   </div>
                   {/* permission card */}
                   <div className="flex-1">
-                    <div className="font-outfit text-[18px] font-semibold leading-[22px] pb-[14px] border-b border-[var(--color-border-black-light)]">
+                    <div className="font-geist text-[18px] font-semibold leading-[22px] pb-[14px] border-b border-[var(--color-border-black-light)]">
                       {permissionTab?.split(".")?.[1] ?? permissionTab}
                     </div>
                     {permissionMap?.[permissionTab] && (

@@ -243,7 +243,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
           >
             <div
               className={clsx(
-                "font-outfit text-[12px] font-normal leading-normal mb-[16px] text-[var(--color-text-secondary)]",
+                "font-geist text-[12px] font-normal leading-normal mb-[16px] text-[var(--color-text-secondary)]",
               )}
             >
               {MENU_TEXT_LIST_MAP[item[0] as keyof typeof MENU_TEXT_LIST_MAP]
@@ -297,7 +297,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       <div className={clsx("inline-flex pl-[22px] flex-col gap-[24px]")}>
         {socialMediaList.map((item) => (
           <a
-            className="font-outfit text-[14px] font-semibold leading-normal text-[var(--muted-foreground)]"
+            className="font-geist text-[14px] font-semibold leading-normal text-[var(--muted-foreground)]"
             key={item.title}
             href={item.href}
             target="_blank"

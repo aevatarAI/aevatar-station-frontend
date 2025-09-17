@@ -110,7 +110,7 @@ describe("DllTable Columns", () => {
         "pr-[20px]",
         "md:pr-[30px]",
         "w-[175px]",
-        "font-outfit",
+        "font-geist",
       );
     });
   });
@@ -333,7 +333,7 @@ describe("DllTable Columns", () => {
         "min-w-[125px]",
         "text-[16px]",
         "font-semibold",
-        "font-outfit",
+        "font-geist",
       );
     });
   });

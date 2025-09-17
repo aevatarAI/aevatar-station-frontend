@@ -72,9 +72,9 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[8px] bg-[var(--bg-background)] gap-[7px] text-[16px] font-semibold leading-[20px]  w-full border-[var(--color-border-black-light)]">
+        <Button className="py-[8px] bg-[var(--bg-background)] gap-[7px] text-[16px] font-medium leading-[20px]  w-full border-[var(--color-border-black-light)]">
           <Plus />
-          <span>Create Organisation</span>
+          <span>Create organisation</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -82,7 +82,7 @@ export default function CreateOrgDialog({ onCreate }: ICreateOrgDialogProps) {
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal">
+          <DialogTitle className="text-left inline text-[18px] font-medium leading-normal">
             Create New Organisation
           </DialogTitle>
         </DialogHeader>

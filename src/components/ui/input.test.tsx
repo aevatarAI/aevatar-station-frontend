@@ -77,7 +77,7 @@ describe("Input", () => {
     const input = screen.getByRole("textbox");
     expect(input).toHaveClass(
       "text-[13px]",
-      "font-outfit",
+      "font-geist",
       "border",
       "border-[var(--color-input)]",
       "bg-[var(--bg-background)]",

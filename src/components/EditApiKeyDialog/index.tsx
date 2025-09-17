@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { itemHoverNotBorderClassName } from "@/constants/cls";
+import { itemClassName } from "@/constants/cls";
 import {
   type TEditApiKeyForm,
   editKeyApiForm,
@@ -68,7 +70,15 @@ export default function EditApiKeyDialog({
         <Edit className="opacity-50" />
       ) : (
         <DialogTrigger asChild>
-          <Edit className="cursor-pointer" />
+          <div
+            className={clsx(
+              itemClassName,
+              itemHoverNotBorderClassName,
+              "justify-start py-1.5 px-2 rounded-[4px]",
+            )}
+          >
+            Edit
+          </div>
         </DialogTrigger>
       )}
       <DialogContent

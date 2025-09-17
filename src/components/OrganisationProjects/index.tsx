@@ -5,6 +5,12 @@ import { columns } from "@/components/OrganisationProjects/columns";
 import ProjectEditDialog, {
   type IProjectEditDialogRef,
 } from "@/components/ProjectEditDialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { textGradient } from "@/constants/cls";
 import type { TProjectEditForm } from "@/constants/form/project";
 import { useNavigate } from "@/hooks/navigate";
@@ -14,12 +20,12 @@ import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
-  CURRENT_PROJECT_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "wouter";
 
@@ -126,29 +132,41 @@ export default function OrganisationProjects() {
       projectList.map((item) => ({
         ...item,
         operation: (
-          <div className="flex items-center gap-[7px] pl-[20px]">
-            {userPermissions?.projectsEdit ? (
-              <ProjectEditDialog
-                type="edit"
-                name={item.displayName}
-                domainName={item.domainName}
-                onSubmit={(v) => onEdit(v, item.id)}
-              />
-            ) : (
-              <span />
+          <>
+            {(userPermissions?.projectsEdit ||
+              userPermissions?.projectsDelete) && (
+              <Popover>
+                <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                  <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="end"
+                  className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                >
+                  <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                    {userPermissions?.projectsEdit && (
+                      <ProjectEditDialog
+                        type="edit"
+                        name={item.displayName}
+                        domainName={item.domainName}
+                        onSubmit={(v) => onEdit(v, item.id)}
+                      />
+                    )}
+                    {userPermissions?.projectsDelete && (
+                      <DeleteDialog
+                        onYes={() => onDeleteYes(item.id)}
+                        title={"Are you sure you want to delete the project?"}
+                        description={
+                          "*Once deleted, the existing project will become invalid."
+                        }
+                      />
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
-            {userPermissions?.projectsDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete the project?"}
-                description={
-                  "*Once deleted, the existing project will become invalid."
-                }
-              />
-            ) : (
-              <span />
-            )}
-          </div>
+          </>
         ),
       })),
     [projectList, userPermissions, onEdit, onDeleteYes],

@@ -91,7 +91,7 @@ export default function OriganisactionHeader({
   return (
     <div
       className={clsx(
-        "flex text-[14px] gap-[14px] items-center text-[var(--color-foreground)] font-outfit font-normal leading-normal ",
+        "flex text-[14px] gap-[14px] items-center text-[var(--color-foreground)] font-geist font-normal leading-normal ",
         className,
       )}
     >
@@ -122,7 +122,7 @@ export default function OriganisactionHeader({
             </div>
 
             {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[var(--color-border-black-light)]">
-              <Button className="text-[var(--color-foreground)] w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+              <Button className="text-[var(--color-foreground)] w-full text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
                 navigate("/profile/organisation/general")
                 setOrgOpen(false)
               }}>
@@ -133,7 +133,7 @@ export default function OriganisactionHeader({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="text-[var(--color-foreground)] font-outfit text-[14px] font-normal leading-[14px]">
+        <div className="text-[var(--color-foreground)] font-geist text-[14px] font-normal leading-[14px]">
           No Organisation
         </div>
       )}
@@ -144,7 +144,7 @@ export default function OriganisactionHeader({
           {currentProject ? (
             currentProject.displayName
           ) : (
-            <div className="text-[var(--color-foreground)] font-outfit text-[14px] font-normal leading-[18px]">
+            <div className="text-[var(--color-foreground)] font-geist text-[14px] font-normal leading-[18px]">
               No project
             </div>
           )}
@@ -173,7 +173,7 @@ export default function OriganisactionHeader({
             <Button
               variant="outline"
               disabled={!isAdmin}
-              className={` text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] ${"w-full"}`}
+              className={` text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] ${"w-full"}`}
               onClick={() => projectEditDialogRef.current?.open()}
             >
               <Plus />
@@ -181,7 +181,7 @@ export default function OriganisactionHeader({
             </Button>
             <Button
               variant="outline"
-              className=" w-full text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]"
+              className=" w-full text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px]"
               disabled={!isAdmin}
               onClick={() => {
                 navigate("/profile/organisation/project");

@@ -107,13 +107,13 @@ const CustomTooltip = ({
 
   return (
     <div className="custom-tooltip bg-[var(--bg-primary)] p-1.5 border-[var(--color-border-black-light)]">
-      <p className="label font-outfit text-[var(--muted-foreground)] text-[12px] my-0.5">
+      <p className="label font-geist text-[var(--muted-foreground)] text-[12px] my-0.5">
         {label}
       </p>
       {payload.map((entry: any) => {
         return (
           <p
-            className="font-outfit text-[12px] my-[2px]"
+            className="font-geist text-[12px] my-[2px]"
             key={`item-${entry.name}`}
           >
             <span style={{ color: entry.color }}>{entry.name}: </span>
@@ -274,7 +274,7 @@ export function Usage() {
                 <Legend
                   wrapperStyle={{ paddingLeft: isMobile ? 44 : 0 }}
                   formatter={(value) => (
-                    <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
+                    <span className="font-geist text-[var(--color-foreground)] text-[12px]">
                       {value}
                     </span>
                   )}
@@ -326,7 +326,7 @@ export function Usage() {
                       paddingLeft: isMobile ? 44 : 0,
                     }}
                     formatter={(value) => (
-                      <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
+                      <span className="font-geist text-[var(--color-foreground)] text-[12px]">
                         {value}
                       </span>
                     )}
@@ -387,7 +387,7 @@ export const EmptyAPIRequests = ({
             paddingLeft: isMobile ? 44 : 0,
           }}
           formatter={(value) => (
-            <span className="font-outfit text-[var(--color-foreground)] text-[12px]">
+            <span className="font-geist text-[var(--color-foreground)] text-[12px]">
               {value}
             </span>
           )}

@@ -7,6 +7,11 @@ import type { IRoleItem } from "@/api/utils/organization";
 import { getProjectRoles } from "@/api/utils/project";
 import type { TFlatPermission } from "@/components/PermissionManagerInnerDialog";
 import ProjectRoleManagerDialog from "@/components/ProjectRoleManagerDialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { textGradient } from "@/constants/cls";
 import type { TCreateRoleForm } from "@/constants/form/createRole";
 import { useToast } from "@/hooks/use-toast";
@@ -16,9 +21,9 @@ import {
   CURRENT_PROJECT_ROLE_ATOM,
 } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
-import { sleep } from "@etransfer/utils";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { columns } from "./columns";
 
@@ -101,13 +106,26 @@ export default function ProjectRole() {
             <span />
           ),
         operation: (
-          <div className="flex items-center justify-between gap-[7px] pl-[20px]">
+          <div className="flex justify-end px-[20px]">
             {projectPermissions.projectsEdit &&
             item.name.split("_")[1].toLocaleLowerCase() !== "owner" ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete the role?"}
-              />
+              <Popover>
+                <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                  <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="end"
+                  className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                >
+                  <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                    <DeleteDialog
+                      onYes={() => onDeleteYes(item.id)}
+                      title={"Are you sure you want to delete the role?"}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
             ) : (
               <span />
             )}

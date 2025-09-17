@@ -88,9 +88,10 @@ export default function CreateCrossURLDialog({
       <DialogTrigger asChild>
         {type === "create" ? (
           <Button
+            variant="primary"
             disabled={disabled}
             className={clsx(
-              "text-[var(--color-foreground)] text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group",
+              "text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] group",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
@@ -100,7 +101,7 @@ export default function CreateCrossURLDialog({
           >
             <Add
               className={clsx(
-                "text-[var(--color-foreground)] w-[14px]! h-[14px]!",
+                "w-[14px]! h-[14px]!",
                 disabled && "text-[var(--muted-foreground)]",
                 disabled
                   ? "group-hover:text-[var(--color-foreground)]"
@@ -128,8 +129,8 @@ export default function CreateCrossURLDialog({
         <DialogHeader>
           <DialogTitle className="text-left inline text-[18px] pb-[18px] font-semibold leading-normal">
             {type === "create"
-              ? "add cross-origin domain"
-              : "update cross-origin domain"}
+              ? "Add cross-origin domain"
+              : "Update cross-origin domain"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -141,7 +142,7 @@ export default function CreateCrossURLDialog({
                 name={"domain"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="domain" className="w-full">
-                    <FormLabel id="domain">domain</FormLabel>
+                    <FormLabel id="domain">Domain</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="-"

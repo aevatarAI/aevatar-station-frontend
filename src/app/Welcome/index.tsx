@@ -13,7 +13,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useCreateDefaultProject } from "@/hooks/useCreateDefaultProject";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
-import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import {
+  type Invite,
+  getOrganisationInvites,
+} from "@/hooks/useGetOrganisationInvites";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { refreshTokenLogin } from "@/services/auth";
@@ -21,7 +24,7 @@ import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
 import type React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const WelcomePage: React.FC = () => {
   const { toast } = useToast();
@@ -29,12 +32,11 @@ const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [refreshToken, setRefreshToken] = useAtom(refreshTokenAtom);
-  const { data, isLoading } = useGetOrganisationInvites();
+  const [invitations, setInvitations] = useState<Invite[]>([]);
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } =
-    useGetInvitations(data);
+    useGetInvitations(invitations);
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
-
   const { data: org } = useGetOrganizations();
   const createDefaultProject = useCreateDefaultProject();
 
@@ -58,8 +60,21 @@ const WelcomePage: React.FC = () => {
     },
     [setCurrentOrganization, toast, createDefaultProject],
   );
+  const [isLoadingInvites, setIsLoadingInvites] = useState(false);
 
-  if (isLoading) {
+  useEffect(() => {
+    setIsLoadingInvites(true);
+    getOrganisationInvites()
+      .then((data) => {
+        setInvitations(data);
+        setIsLoadingInvites(false);
+      })
+      .finally(() => {
+        setIsLoadingInvites(false);
+      });
+  }, []);
+
+  if (isLoadingInvites) {
     return <Loading />;
   }
 
@@ -70,7 +85,7 @@ const WelcomePage: React.FC = () => {
         <h1 className=" text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
         </h1>
-        <p className="text-[var(--muted-foreground)] text-[16px] font-outfit">
+        <p className="text-[var(--muted-foreground)] text-[16px] font-geist">
           create or join an organisation
         </p>
       </div>
@@ -80,7 +95,7 @@ const WelcomePage: React.FC = () => {
           <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)]">
             create a new organisation
           </h2>
-          <p className="text-[13px] text-[var(--muted-foreground)] font-outfit mb-[16px]">
+          <p className="text-[13px] text-[var(--muted-foreground)] font-geist mb-[16px]">
             create a new organisation - You will be the owner
           </p>
           <CreateOrgDialog onCreate={onCreateOrg} />
@@ -92,7 +107,7 @@ const WelcomePage: React.FC = () => {
               <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)]">
                 join an existing organisation
               </h2>
-              <p className="text-[13px] text-[var(--muted-foreground)] font-outfit">
+              <p className="text-[13px] text-[var(--muted-foreground)] font-geist">
                 pending invitations for your approval
               </p>
               <div className="w-full h-px bg-[var(--bg-black-light)] my-4" />
@@ -130,16 +145,16 @@ const WelcomePage: React.FC = () => {
             <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)] ">
               join an existing organisation
             </h2>
-            <p className="text-[13px] text-[var(--muted-foreground)] font-outfit">
+            <p className="text-[13px] text-[var(--muted-foreground)] font-geist">
               you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
             <div className="w-full h-px bg-[var(--bg-black-light)] my-4" />
-            <span className="text-[var(--muted-foreground)] font-outfit text-[13px] font-semibold leading-normal mb-2.5 ">
+            <span className="text-[var(--muted-foreground)] font-geist text-[13px] font-semibold leading-normal mb-2.5 ">
               your email address
             </span>
             <div className="flex justify-between px-[14px] py-[10px] border border-[var(--color-border-black-light)]">
-              <span className="text-[13px] font-outfit truncate overflow-hidden block max-w-[200px]">
+              <span className="text-[13px] font-geist truncate overflow-hidden block max-w-[200px]">
                 {email}
               </span>
               <Copy

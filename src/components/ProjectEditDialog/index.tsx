@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import Loading from "@/assets/loading.svg?react";
+import { itemClassName, itemHoverNotBorderClassName } from "@/constants/cls";
 import {
   ProjectEditForm,
   type TProjectEditForm,
@@ -140,7 +141,7 @@ const ProjectEditDialog = forwardRef<
                 variant="primary"
                 disabled={disabled}
                 className={clsx(
-                  "text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px]",
+                  "text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px]",
                   fullWidth && "w-full",
                 )}
               >
@@ -149,7 +150,15 @@ const ProjectEditDialog = forwardRef<
               </Button>
             )
           ) : (
-            <Edit className="cursor-pointer" />
+            <div
+              className={clsx(
+                itemClassName,
+                itemHoverNotBorderClassName,
+                "justify-start py-1.5 px-2 rounded-[4px]",
+              )}
+            >
+              Edit
+            </div>
           )}
         </DialogTrigger>
         <DialogContent
@@ -191,7 +200,7 @@ const ProjectEditDialog = forwardRef<
                       <FormControl>
                         <Input placeholder="-" {...field} />
                       </FormControl>
-                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-outfit">
+                      <div className="self-stretch justify-center text-Grey-1 text-xs font-normal font-geist">
                         Note: Once the project is created, the domain name
                         cannot be changed.
                       </div>

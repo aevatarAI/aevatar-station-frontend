@@ -151,7 +151,7 @@ export default function DropzoneItem({
             })}
           >
             <input {...getInputProps()} aria-label={uploadText} />
-            <p className="font-outfit text-[12px] text-[var(--muted-foreground)] flex flex-col gap-[4px] items-center">
+            <p className="font-geist text-[12px] text-[var(--muted-foreground)] flex flex-col gap-[4px] items-center">
               <UploadIcon />
               <div>{uploadText}</div>
             </p>
@@ -165,11 +165,11 @@ export default function DropzoneItem({
             <div>
               <div
                 data-testid="field-name-dropzoneItem"
-                className="font-outfit text-[12px] text-[var(--muted-foreground)]"
+                className="font-geist text-[12px] text-[var(--muted-foreground)]"
               >
                 {field.name}
               </div>
-              <div className="font-outfit text-[12px] text-[var(--muted-foreground)]">
+              <div className="font-geist text-[12px] text-[var(--muted-foreground)]">
                 {field.content?.size && `${field.content?.size} bytes`}
               </div>
             </div>

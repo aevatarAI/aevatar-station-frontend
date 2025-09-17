@@ -113,10 +113,10 @@ const Login = () => {
     <div className=" flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
         <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-outfit">
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
           not a member yet?&nbsp;
           <span
-            className="font-normal text-[var(--color-foreground)] cursor-pointer font-outfit text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer font-geist text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
             onClick={() => {
               navigate("/register");
             }}

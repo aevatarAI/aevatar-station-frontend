@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
+/* Geist Font - Using @fontsource/geist */
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-*: initial;
   --font-syne: Syne;
-  --font-outfit: Outfit;
+  --font-geist: Geist, sans-serif;
   --font-pro: Source Code Pro;
   --font-kode: Kode Mono, monospace;
   --font-source-code: Source Code Pro;
@@ -113,6 +114,7 @@
   --sidebar-foreground: #f4f4f5;
   --color-bg-tertiary: #272728;
   --color-text-primary: #fafafa;
+  --color-text-foreground: #fafafa;
   --color-text-secondary: #b9b9b9;
   --color-text-tertiary: #606060;
   --color-border-primary: #3f3f46;
@@ -120,6 +122,7 @@
   --color-sidebar-border: #3f3f46;
   --color-border-secondary: #404040;
   --color-border-black-light: #3f3f46;
+  --color-border-checkbox: #fafafa;
   --color-border-gray-deep: #404040;
   --color-border-gray-300: #4b5563;
   --color-border-gray-400: #6b7280;
@@ -134,6 +137,7 @@
   --primary-foreground-text: #fafafa;
   --bg-black-light: #3f3f46;
   --hover-primary: #f4f4f5;
+  --text-destructive: #b91c1c;
 }
 
 /* Light mode (default) */
@@ -149,6 +153,7 @@
 
   --color-bg-tertiary: #e5e5e5;
   --color-text-primary: #09090b;
+  --color-text-foreground: #09090b;
   --color-text-secondary: #666666;
   --color-text-tertiary: #999999;
   --color-border-primary: #e4e4e7;
@@ -157,6 +162,8 @@
   --color-border-secondary: #cccccc;
   --color-border-black-light: #e4e4e7;
   --color-border-gray-deep: #606060;
+  --color-border-checkbox: #18181b;
+
   --color-border-gray-300: #d1d5db;
   --color-border-gray-400: #9ca3af;
   --color-border-gray-500: #6b7280;
@@ -170,6 +177,8 @@
   --bg-black-light: #e4e4e7;
   --hover-primary: #27272a;
   --primary-foreground-text: #18181b;
+
+  --text-destructive: #dc2626;
 }
 
 /*
@@ -192,7 +201,7 @@
 
 @layer base {
   body {
-    @apply m-0 min-h-screen min-w-[320px] font-outfit;
+    @apply m-0 min-h-screen min-w-[320px] font-geist;
     background-color: var(--bg-background);
     color: var(--color-text-primary);
   }

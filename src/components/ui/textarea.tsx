@@ -9,7 +9,7 @@ const Textarea = React.forwardRef<
   return (
     <textarea
       className={cn(
-        "flex min-h-[80px] resize-none font-outfit text-[13px] w-full border border-[var(--color-input)] bg-[var(--bg-background)] px-[18px] py-[10px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "flex min-h-[80px] resize-none font-geist text-[13px] w-full border border-[var(--color-input)] bg-[var(--bg-background)] px-[18px] py-[10px] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className,
         {
           "border-destructive": props["aria-invalid"],

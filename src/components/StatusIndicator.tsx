@@ -59,7 +59,7 @@ export default function StatusIndicator({
       />
       <span
         className={cn(
-          "font-outfit text-[13px] font-medium ml-[7px] uppercase",
+          "font-geist text-[13px] font-medium ml-[7px] uppercase",
           "text-[var(--color-text-primary)]",
         )}
         style={{ color: getTextColor(status) }}

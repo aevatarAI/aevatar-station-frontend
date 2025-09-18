@@ -73,7 +73,7 @@ export default function CreateApiKeyDialog({
       setOpen(false);
       toast({
         title: "",
-        description: "successfully created",
+        description: "Successfully created",
       });
     },
     [toast],
@@ -84,7 +84,7 @@ export default function CreateApiKeyDialog({
   }, [form, open]);
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -100,12 +100,12 @@ export default function CreateApiKeyDialog({
         </Button>
       </DialogTrigger>
       <DialogContent
-        aria-describedby="create new api key"
+        aria-describedby="Create new API key"
         className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
           <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
-            Create new api key
+            Create new API key
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -119,7 +119,7 @@ export default function CreateApiKeyDialog({
                   <FormItem aria-labelledby="nameLabel" className="w-full">
                     <FormLabel id="nameLabel">Name of the key</FormLabel>
                     <FormControl>
-                      <Input placeholder="name" {...field} />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

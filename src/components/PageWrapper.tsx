@@ -19,7 +19,7 @@ export default function PageWrapper({ children, title }: IPageWrapperProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="hidden sm:block">information</span>{" "}
+            <span className="hidden sm:block">Information</span>{" "}
             <InfoIcon className="ml-[5px] cursor-pointer" />
           </a>
         </div>

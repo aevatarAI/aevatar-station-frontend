@@ -19,12 +19,14 @@ interface IDeleteDialogProps {
   description?: string;
   disabled?: boolean;
   onYes?: () => Promise<void>;
+  "data-testid"?: string;
 }
 export default function DeleteDialog({
   title,
   description,
   disabled,
   onYes,
+  "data-testid": dataTestId,
 }: IDeleteDialogProps) {
   const [open, setOpen] = useState(false);
 
@@ -43,6 +45,7 @@ export default function DeleteDialog({
             itemHoverNotBorderClassName,
             "opacity-50",
           )}
+          data-testid={dataTestId}
         >
           Delete
         </div>
@@ -55,6 +58,7 @@ export default function DeleteDialog({
               "text-[var(--text-destructive)]",
               "justify-start py-1.5 px-2 rounded-[4px]",
             )}
+            data-testid={dataTestId}
           >
             Delete
           </div>

@@ -14,9 +14,9 @@ vi.mock("@/api/axios");
 describe("Login Component", () => {
   it("renders correctly", () => {
     render(<LoginPage />);
-    expect(screen.getByText("login")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("enter your email")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("password")).toBeInTheDocument();
-    expect(screen.getByText("log in")).toBeInTheDocument();
+    expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Enter your email")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
+    expect(screen.getByText("Log in")).toBeInTheDocument();
   });
 });

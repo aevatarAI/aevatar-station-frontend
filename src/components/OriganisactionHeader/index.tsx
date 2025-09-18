@@ -177,7 +177,7 @@ export default function OriganisactionHeader({
               onClick={() => projectEditDialogRef.current?.open()}
             >
               <Plus />
-              <span>create project</span>
+              <span>Create project</span>
             </Button>
             <Button
               variant="outline"
@@ -189,7 +189,7 @@ export default function OriganisactionHeader({
               }}
             >
               <Add />
-              manage projects
+              Manage projects
             </Button>
           </div>
         </PopoverContent>

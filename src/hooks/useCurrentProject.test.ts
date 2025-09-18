@@ -7,7 +7,7 @@ vi.mock("jotai", () => ({
 }));
 
 vi.mock("react", () => ({
-  useMemo: vi.fn((fn, deps) => fn()),
+  useMemo: vi.fn((fn, _deps) => fn()),
 }));
 
 import { useAtom } from "jotai";

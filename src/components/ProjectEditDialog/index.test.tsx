@@ -31,7 +31,7 @@ describe("ProjectEditDialog Component", () => {
     vi.resetAllMocks();
   });
 
-  it("should render create dialog when type is 'create'", () => {
+  it("should render create dialog when type is 'Create'", () => {
     render(<ProjectEditDialog type="create" onSubmit={mockOnSubmit} />);
     expect(screen.getByText("Create")).toBeInTheDocument();
 
@@ -44,7 +44,7 @@ describe("ProjectEditDialog Component", () => {
     // expect(screen.getByText("create")).toBeInTheDocument();
   });
 
-  //   it("should render edit dialog when type is 'edit'", () => {
+  //   it("should render edit dialog when type is 'Edit'", () => {
   //     render(
   //       <ProjectEditDialog
   //         type="edit"

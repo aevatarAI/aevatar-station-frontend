@@ -36,7 +36,7 @@ export const Notifications = ({
   }
 
   if (isError) {
-    return <div data-testid="error-message">error...</div>;
+    return <div data-testid="error-message">Error...</div>;
   }
 
   if (!data?.data?.length) {

@@ -149,7 +149,7 @@ export default function WorkflowPage() {
   return (
     <AevatarProvider theme={theme}>
       {workflowType === WorkflowType.WorkflowList && (
-        <div className={clsx("h-full pt-[35px] pl-[43px] pr-[40px]")}>
+        <div className={clsx("pt-[35px] pl-[43px] pr-[40px]")}>
           <WorkflowList
             ref={workflowListRef}
             onEditWorkflow={(workflowAgentId) => {
@@ -166,7 +166,6 @@ export default function WorkflowPage() {
       {workflowType === WorkflowType.WorkflowEdit && (
         <div
           className={clsx(
-            "h-full",
             // Apply fullscreen styles when fullscreen is active
             fullscreen &&
               "fixed top-0 left-0 w-screen h-screen z-[2000] bg-[var(--bg-primary)]",

@@ -94,23 +94,29 @@ describe("DeleteDialog Component", () => {
   });
 
   it("should render delete icon when not disabled", () => {
-    render(<DeleteDialog {...defaultProps} />);
-    const deleteIcon = screen.getByTestId("delete-icon");
-    expect(deleteIcon).toBeInTheDocument();
-    expect(deleteIcon).toHaveClass("cursor-pointer");
+    render(<DeleteDialog {...defaultProps} data-testid="delete-button" />);
+    const deleteButton = screen.getByTestId("delete-button");
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).toHaveClass("cursor-pointer");
   });
 
   it("should render disabled delete icon when disabled prop is true", () => {
-    render(<DeleteDialog {...defaultProps} disabled={true} />);
-    const deleteIcon = screen.getByTestId("delete-icon");
-    expect(deleteIcon).toHaveClass("opacity-50");
+    render(
+      <DeleteDialog
+        {...defaultProps}
+        disabled={true}
+        data-testid="delete-button"
+      />,
+    );
+    const deleteButton = screen.getByTestId("delete-button");
+    expect(deleteButton).toHaveClass("opacity-50");
   });
 
   it("should open dialog when delete icon is clicked", async () => {
     const user = userEvent.setup();
-    render(<DeleteDialog {...defaultProps} />);
+    render(<DeleteDialog {...defaultProps} data-testid="delete-button" />);
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
 
     await waitFor(() => {
       const dialog = screen.getByTestId("dialog");
@@ -123,9 +129,9 @@ describe("DeleteDialog Component", () => {
 
   it("should display title and description in dialog", async () => {
     const user = userEvent.setup();
-    render(<DeleteDialog {...defaultProps} />);
+    render(<DeleteDialog {...defaultProps} data-testid="delete-button" />);
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
 
     await waitFor(() => {
       const dialogContent = screen.getByTestId("dialog-content");
@@ -136,9 +142,9 @@ describe("DeleteDialog Component", () => {
 
   it("should close dialog when cancel button is clicked", async () => {
     const user = userEvent.setup();
-    render(<DeleteDialog {...defaultProps} />);
+    render(<DeleteDialog {...defaultProps} data-testid="delete-button" />);
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
     await user.click(screen.getByText("cancel"));
 
     await waitFor(() => {
@@ -152,9 +158,9 @@ describe("DeleteDialog Component", () => {
 
   it("should call onYes and close dialog when yes button is clicked", async () => {
     const user = userEvent.setup();
-    render(<DeleteDialog {...defaultProps} />);
+    render(<DeleteDialog {...defaultProps} data-testid="delete-button" />);
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
     await user.click(screen.getByText("yes"));
 
     await waitFor(() => {
@@ -169,9 +175,15 @@ describe("DeleteDialog Component", () => {
 
   it("should not show description when description prop is not provided", async () => {
     const user = userEvent.setup();
-    render(<DeleteDialog title="Delete Confirmation" onYes={mockOnYes} />);
+    render(
+      <DeleteDialog
+        title="Delete Confirmation"
+        onYes={mockOnYes}
+        data-testid="delete-button"
+      />,
+    );
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
 
     await waitFor(() => {
       const dialogContent = screen.getByTestId("dialog-content");
@@ -189,9 +201,15 @@ describe("DeleteDialog Component", () => {
         () => new Promise((resolve) => setTimeout(resolve, 100)),
       );
     const user = userEvent.setup();
-    render(<DeleteDialog {...defaultProps} onYes={asyncOnYes} />);
+    render(
+      <DeleteDialog
+        {...defaultProps}
+        onYes={asyncOnYes}
+        data-testid="delete-button"
+      />,
+    );
 
-    await user.click(screen.getByTestId("delete-icon"));
+    await user.click(screen.getByTestId("delete-button"));
     await user.click(screen.getByText("yes"));
 
     await waitFor(() => {

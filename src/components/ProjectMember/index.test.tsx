@@ -97,9 +97,17 @@ vi.mock("@/components/AddMembersDialog", () => ({
 
 vi.mock("@/components/DeleteDialog", () => ({
   __esModule: true,
-  default: ({ onYes }: { onYes: any }) => (
+  default: ({
+    onYes,
+    "data-testid": dataTestId,
+  }: {
+    onYes: any;
+    "data-testid"?: string;
+  }) => (
     // biome-ignore lint/a11y/useButtonType: <explanation>
-    <button onClick={onYes}>Delete Member</button>
+    <button onClick={onYes} data-testid={dataTestId}>
+      Delete Member
+    </button>
   ),
 }));
 
@@ -209,9 +217,18 @@ describe("ProjectMember Component", () => {
   it("should call editProjectMembers API on delete member", async () => {
     render(<ProjectMember />);
 
-    // Wait for initial render
+    // Wait for the table to render
     await waitFor(() => {
-      expect(screen.getByText("Delete Member")).toBeInTheDocument();
+      expect(screen.getByRole("table")).toBeInTheDocument();
+    });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButton = screen.getByRole("button", { name: "" });
+    fireEvent.click(ellipsisButton);
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-member-button")).toBeInTheDocument();
     });
 
     // Trigger delete
@@ -273,7 +290,7 @@ describe("ProjectMember Component", () => {
         query: "project-1",
         data: { userId: "member-1", roleId: "role-2" },
       });
-    } catch (error) {
+    } catch (_error) {
       // This is expected to fail
     }
 
@@ -292,9 +309,18 @@ describe("ProjectMember Component", () => {
 
     render(<ProjectMember />);
 
-    // Wait for initial render
+    // Wait for the table to render
     await waitFor(() => {
-      expect(screen.getByText("Delete Member")).toBeInTheDocument();
+      expect(screen.getByRole("table")).toBeInTheDocument();
+    });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButton = screen.getByRole("button", { name: "" });
+    fireEvent.click(ellipsisButton);
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-member-button")).toBeInTheDocument();
     });
 
     // Trigger delete

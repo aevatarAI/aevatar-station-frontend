@@ -97,6 +97,7 @@ export default function DllEditDialog({
                   ? "group-hover:text-[var(--color-foreground)]"
                   : "group-hover:text-[var(--primary-foreground)]",
               )}
+              data-testid="dll-icon"
             />
             <span
               className={clsx(disabled && "text-[var(--color-foreground)]!")}

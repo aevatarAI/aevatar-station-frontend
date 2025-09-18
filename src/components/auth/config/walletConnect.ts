@@ -16,7 +16,7 @@ const RPC_SERVER_TDVW = ChainConfig.sideChainRpcUrl;
 const { NETWORK_TYPE, GRAPHQL_SERVER, CONNECT_SERVER, SERVICE_SERVER } =
   PORTKEY_CONFIG;
 
-const didConfig = {
+const _didConfig = {
   graphQLUrl: GRAPHQL_SERVER,
   connectUrl: CONNECT_SERVER,
   serviceUrl: SERVICE_SERVER,

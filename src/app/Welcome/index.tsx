@@ -137,7 +137,7 @@ const WelcomePage: React.FC = () => {
                 }
               }}
             >
-              {isPending ? "joining..." : "join"}
+              {isPending ? "Joining..." : "Join"}
             </Button>
           </div>
         ) : (
@@ -158,7 +158,7 @@ const WelcomePage: React.FC = () => {
                 {email}
               </span>
               <Copy
-                description="email address copied"
+                description="Email address copied"
                 toCopy={email}
                 className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
               />

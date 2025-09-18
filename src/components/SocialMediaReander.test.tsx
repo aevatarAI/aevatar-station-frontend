@@ -4,7 +4,7 @@ import socialMediaReander from "./SocialMediaReander";
 
 describe("SocialMediaReander", () => {
   it("renders all social media links", () => {
-    const { container } = render(socialMediaReander(""));
+    render(socialMediaReander(""));
 
     expect(screen.getByText("Website")).toBeInTheDocument();
     expect(screen.getByText("Github")).toBeInTheDocument();

@@ -75,7 +75,7 @@ describe("useCloseDialog", () => {
   it("should maintain handleClose function stability across re-renders", () => {
     const { result, rerender } = renderHook(() => useCloseDialog());
 
-    const initialHandleClose = result.current.handleClose;
+    const _initialHandleClose = result.current.handleClose;
 
     rerender();
 

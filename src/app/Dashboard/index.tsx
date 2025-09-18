@@ -43,19 +43,17 @@ function Dashboard() {
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-full mb-[20px] bg-[var(--bg-background)]">
-        <div
-          className={clsx(
-            " h-full",
-            selectTab !== "workflows" && "pt-[31px] px-[20px] ",
-          )}
-        >
-          {selectTab === "apikeys" && <ApiKeys />}
-          {selectTab === "usage" && <Usage />}
-          {selectTab === "g-agents" && <GAgents />}
-          {selectTab === "workflows" && <WorkflowPage />}
-          {selectTab === "configuration" && <DllPage />}
-        </div>
+      <div
+        className={clsx(
+          "flex-1 overflow-auto h-full mb-[20px] bg-[var(--bg-background)]",
+          selectTab !== "workflows" && "pt-[31px] px-[20px] ",
+        )}
+      >
+        {selectTab === "apikeys" && <ApiKeys />}
+        {selectTab === "usage" && <Usage />}
+        {selectTab === "g-agents" && <GAgents />}
+        {selectTab === "workflows" && <WorkflowPage />}
+        {selectTab === "configuration" && <DllPage />}
       </div>
     </>
   );
@@ -122,7 +120,7 @@ export default function DashboardWrapper() {
   }, [isProjectInit, checkCurrentProjectService]);
 
   return (
-    <div className="flex h-[calc(100vh-60px)] overflow-auto ">
+    <div className="flex h-[calc(100vh-60px)]">
       {!isProjectInit && <ProjectInitialising />}
 
       {isProjectInit && <Dashboard />}

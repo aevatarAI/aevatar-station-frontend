@@ -70,7 +70,7 @@ const ProjectEditDialog = forwardRef<
       name,
       modal,
       disabled,
-      domainName,
+      domainName: _domainName,
       fullWidth,
       showCreateButton = true,
       onSubmit: onFinish,

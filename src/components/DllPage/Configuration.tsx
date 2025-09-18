@@ -12,7 +12,7 @@ export default function Configuration({
       style={{ minHeight: 44 }}
     >
       <span className="font-geist font-semibold text-[18px] leading-[1.2] text-left">
-        configuration
+        Configuration
       </span>
       <Button
         variant="primary"
@@ -21,7 +21,7 @@ export default function Configuration({
       >
         <RestartIcon className="w-[14px]! h-[14px]! group-hover:text-[var(--primary-foreground)]" />
         <span className="font-geist font-semibold text-[13px] leading-[1.2] text-center">
-          restart services
+          Restart services
         </span>
       </Button>
     </div>

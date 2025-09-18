@@ -26,18 +26,18 @@ describe("ResetPassword Component", () => {
 
   it("renders the form correctly", () => {
     render(<ResetPassword />);
-    expect(screen.getByText("reset password")).toBeInTheDocument();
-    expect(screen.getByLabelText("new password*")).toBeInTheDocument();
-    expect(screen.getByLabelText("confirm new password*")).toBeInTheDocument();
-    expect(screen.getByText("submit")).toBeInTheDocument();
+    expect(screen.getByText("Reset password")).toBeInTheDocument();
+    expect(screen.getByLabelText("New password*")).toBeInTheDocument();
+    expect(screen.getByLabelText("Confirm new password*")).toBeInTheDocument();
+    expect(screen.getByText("Submit")).toBeInTheDocument();
   });
 
   it("validates password requirements", async () => {
     render(<ResetPassword />);
 
-    const passwordInput = screen.getByLabelText("new password*");
-    const confirmInput = screen.getByLabelText("confirm new password*");
-    const submitButton = screen.getByText("submit");
+    const passwordInput = screen.getByLabelText("New password*");
+    const confirmInput = screen.getByLabelText("Confirm new password*");
+    const submitButton = screen.getByText("Submit");
 
     // Test password too short
     await act(async () => {
@@ -97,9 +97,9 @@ describe("ResetPassword Component", () => {
   it("validates password confirmation", async () => {
     render(<ResetPassword />);
 
-    const passwordInput = screen.getByLabelText("new password*");
-    const confirmInput = screen.getByLabelText("confirm new password*");
-    const submitButton = screen.getByText("submit");
+    const passwordInput = screen.getByLabelText("New password*");
+    const confirmInput = screen.getByLabelText("Confirm new password*");
+    const submitButton = screen.getByText("Submit");
 
     await act(async () => {
       fireEvent.change(passwordInput, { target: { value: "Password123!" } });
@@ -108,7 +108,7 @@ describe("ResetPassword Component", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("passwords do not match")).toBeInTheDocument();
+      expect(screen.getByText("Passwords do not match")).toBeInTheDocument();
     });
   });
 
@@ -118,9 +118,9 @@ describe("ResetPassword Component", () => {
 
     render(<ResetPassword />);
 
-    const passwordInput = screen.getByLabelText("new password*");
-    const confirmInput = screen.getByLabelText("confirm new password*");
-    const submitButton = screen.getByText("submit");
+    const passwordInput = screen.getByLabelText("New password*");
+    const confirmInput = screen.getByLabelText("Confirm new password*");
+    const submitButton = screen.getByText("Submit");
 
     await act(async () => {
       fireEvent.change(passwordInput, { target: { value: "Password123!" } });
@@ -143,9 +143,9 @@ describe("ResetPassword Component", () => {
 
     render(<ResetPassword />);
 
-    const passwordInput = screen.getByLabelText("new password*");
-    const confirmInput = screen.getByLabelText("confirm new password*");
-    const submitButton = screen.getByText("submit");
+    const passwordInput = screen.getByLabelText("New password*");
+    const confirmInput = screen.getByLabelText("Confirm new password*");
+    const submitButton = screen.getByText("Submit");
 
     await act(async () => {
       fireEvent.change(passwordInput, { target: { value: "Password123!" } });
@@ -169,9 +169,9 @@ describe("ResetPassword Component", () => {
 
     render(<ResetPassword />);
 
-    const passwordInput = screen.getByLabelText("new password*");
-    const confirmInput = screen.getByLabelText("confirm new password*");
-    const submitButton = screen.getByText("submit");
+    const passwordInput = screen.getByLabelText("New password*");
+    const confirmInput = screen.getByLabelText("Confirm new password*");
+    const submitButton = screen.getByText("Submit");
 
     await act(async () => {
       fireEvent.change(passwordInput, { target: { value: "Password123!" } });

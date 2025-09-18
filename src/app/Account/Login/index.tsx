@@ -112,7 +112,7 @@ const Login = () => {
   return (
     <div className=" flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">login</h2>
+        <h2 className="text-[18px] font-semibold">Login</h2>
         <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
           not a member yet?&nbsp;
           <span
@@ -121,7 +121,7 @@ const Login = () => {
               navigate("/register");
             }}
           >
-            register
+            Register
           </span>
         </p>
       </div>
@@ -139,7 +139,7 @@ const Login = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
-                      email address
+                      Email address
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -147,7 +147,7 @@ const Login = () => {
                         {...form.register("username", {
                           required: "required",
                         })}
-                        placeholder="enter your email"
+                        placeholder="Enter your email"
                         className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
@@ -161,12 +161,12 @@ const Login = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
-                      password
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
@@ -187,7 +187,7 @@ const Login = () => {
                 className="w-full flex justify-center border border-transparent hover:opacity-95"
                 disabled={loading}
               >
-                {loading ? "logging in" : "log in"}
+                {loading ? "Logging in" : "Log in"}
               </Button>
             </div>
           </form>
@@ -207,7 +207,7 @@ const Login = () => {
               onClick={handleGoogleLogin}
             >
               <GoogleIcon />
-              <span>google</span>
+              <span>Google</span>
             </Button>
             <Button
               variant="primary"
@@ -216,7 +216,7 @@ const Login = () => {
               onClick={handleGithubLogin}
             >
               <GithubIcon />
-              <span>github</span>
+              <span>Github</span>
             </Button>
           </div>
         </div>

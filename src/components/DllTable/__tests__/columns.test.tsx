@@ -240,7 +240,7 @@ describe("DllTable Columns", () => {
   });
 
   describe("Load Status Column", () => {
-    it("should render 'uploaded' for Uploaded status", () => {
+    it("should render 'Uploaded' for Uploaded status", () => {
       const row = createMockRow({ loadStatus: ELoadStatus.Uploaded });
       const statusColumn = columns[5];
 
@@ -251,7 +251,7 @@ describe("DllTable Columns", () => {
       expect(container).toHaveTextContent("Uploaded");
     });
 
-    it("should render 'deployed' for Deployed status", () => {
+    it("should render 'Deployed' for Deployed status", () => {
       const row = createMockRow({ loadStatus: ELoadStatus.Deployed });
       const statusColumn = columns[5];
 

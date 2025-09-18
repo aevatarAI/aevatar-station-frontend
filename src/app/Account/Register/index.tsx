@@ -97,7 +97,7 @@ const Register = () => {
   return (
     <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">register</h2>
+        <h2 className="text-[18px] font-semibold">Register</h2>
         <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
           already registered?&nbsp;
           <span
@@ -106,7 +106,7 @@ const Register = () => {
               navigate("/login");
             }}
           >
-            login
+            Login
           </span>
         </p>
       </div>
@@ -124,11 +124,11 @@ const Register = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
-                      name
+                      Name
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your name"
+                        placeholder="Enter your name"
                         {...field}
                         {...form.register("name", {
                           required: "required",
@@ -146,11 +146,11 @@ const Register = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
-                      email address
+                      Email address
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your email"
+                        placeholder="Enter your email"
                         {...field}
                         {...form.register("email", {
                           required: "required",
@@ -168,11 +168,11 @@ const Register = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
-                      password
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your password"
+                        placeholder="Enter your password"
                         type="password"
                         {...field}
                         {...form.register("password", {
@@ -194,7 +194,7 @@ const Register = () => {
                 className="w-full flex justify-center border border-transparent"
                 disabled={loading}
               >
-                send verification code
+                Send verification code
               </Button>
             </div>
           </form>

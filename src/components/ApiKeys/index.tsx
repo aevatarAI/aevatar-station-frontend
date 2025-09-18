@@ -79,7 +79,7 @@ export default function ApiKeys() {
   // }
 
   if (isError) {
-    return <div>error...</div>;
+    return <div>Error...</div>;
   }
 
   return (

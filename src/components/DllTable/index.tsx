@@ -162,7 +162,10 @@ export default function DllTable() {
             {(projectPermissions?.pluginsEdit ||
               projectPermissions?.pluginsDelete) && (
               <Popover>
-                <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                <PopoverTrigger
+                  className="flex items-center gap-[8px] py-[4px] px-[6px]"
+                  aria-label="More options"
+                >
                   <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
                 </PopoverTrigger>
                 <PopoverContent

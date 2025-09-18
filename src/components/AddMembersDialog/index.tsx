@@ -88,7 +88,7 @@ export default function AddMembersDialog({
           className="py-2 py-1.5 gap-[10px] text-[13px] font-semibold leading-[14px]"
         >
           <Plus />
-          <span>add new member</span>
+          <span>Add new member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -97,7 +97,7 @@ export default function AddMembersDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-left text-[var(--color-foreground)] inline text-[18px] font-semibold leading-normal">
-            add team members
+            Add team members
           </DialogTitle>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>

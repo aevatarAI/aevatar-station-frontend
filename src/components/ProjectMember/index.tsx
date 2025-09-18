@@ -197,6 +197,7 @@ export default function ProjectMember() {
                       description={
                         "*Once deleted, the existing member will become invalid."
                       }
+                      data-testid="delete-member-button"
                     />
                   </div>
                 </PopoverContent>

@@ -77,7 +77,7 @@ const ForgotPasswordDialog = () => {
           <div>
             <DialogDescription className="mb-7 font-geist">
               An account recovery email has been sent. If you don't see it in 15
-              minutes, check your junk folder and mark it as 'not junk'.
+              minutes, check your junk folder and mark it as 'Not junk'.
             </DialogDescription>
             <div className="flex justify-between items-center">
               <DialogClose asChild>

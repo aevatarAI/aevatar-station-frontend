@@ -432,6 +432,16 @@ describe("DllTable Component", () => {
         const user = userEvent.setup();
         renderWithProviders(<DllTable />);
 
+        // Wait for the component to render
+        await waitFor(() => {
+          expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
+        });
+
+        // Click on the ellipsis button to open the popover
+        const ellipsisButton = screen.getAllByRole("button")[1]; // First button is create, second is ellipsis
+        await user.click(ellipsisButton);
+
+        // Wait for the edit button to appear in the popover
         await waitFor(() => {
           expect(screen.getByTestId("edit-dll-dll-1")).toBeInTheDocument();
         });
@@ -458,6 +468,16 @@ describe("DllTable Component", () => {
         const user = userEvent.setup();
         renderWithProviders(<DllTable />);
 
+        // Wait for the component to render
+        await waitFor(() => {
+          expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
+        });
+
+        // Click on the ellipsis button to open the popover
+        const ellipsisButton = screen.getAllByRole("button")[1]; // First button is create, second is ellipsis
+        await user.click(ellipsisButton);
+
+        // Wait for the delete button to appear in the popover
         await waitFor(() => {
           expect(screen.getByTestId("delete-dll-dll-1")).toBeInTheDocument();
         });
@@ -487,6 +507,16 @@ describe("DllTable Component", () => {
         const user = userEvent.setup();
         renderWithProviders(<DllTable />);
 
+        // Wait for the component to render
+        await waitFor(() => {
+          expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
+        });
+
+        // Click on the ellipsis button to open the popover
+        const ellipsisButton = screen.getAllByRole("button")[1]; // First button is create, second is ellipsis
+        await user.click(ellipsisButton);
+
+        // Wait for the delete button to appear in the popover
         await waitFor(() => {
           expect(screen.getByTestId("delete-dll-dll-1")).toBeInTheDocument();
         });
@@ -514,11 +544,9 @@ describe("DllTable Component", () => {
         expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
         expect(screen.getByTestId("dll-item-dll-2")).toBeInTheDocument();
 
-        // Check that delete and edit buttons are rendered for each item
-        expect(screen.getByTestId("delete-dll-dll-1")).toBeInTheDocument();
-        expect(screen.getByTestId("delete-dll-dll-2")).toBeInTheDocument();
-        expect(screen.getByTestId("edit-dll-dll-1")).toBeInTheDocument();
-        expect(screen.getByTestId("edit-dll-dll-2")).toBeInTheDocument();
+        // Check that operations containers are rendered for each item
+        expect(screen.getByTestId("operations-dll-1")).toBeInTheDocument();
+        expect(screen.getByTestId("operations-dll-2")).toBeInTheDocument();
       });
     });
 
@@ -637,20 +665,47 @@ describe("DllTable Component", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("create-dll-button")).toBeInTheDocument();
+        expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
+      });
+
+      // Click create button first
+      const createButton = screen.getByTestId("create-dll-button");
+      await user.click(createButton);
+
+      // Wait for create operation to complete
+      await waitFor(() => {
+        expect(request.plugins.addPlugins).toHaveBeenCalled();
+      });
+
+      // Reset the mock to clear previous calls
+      vi.mocked(request.plugins.addPlugins).mockClear();
+
+      // Click on the ellipsis button to open the popover
+      const ellipsisButtons = screen.getAllByRole("button", {
+        name: /more options/i,
+      });
+      const ellipsisButton = ellipsisButtons[0];
+      await user.click(ellipsisButton);
+
+      // Wait for the delete button to appear in the popover
+      await waitFor(() => {
         expect(screen.getByTestId("delete-dll-dll-1")).toBeInTheDocument();
       });
 
-      // Simulate multiple quick clicks
-      const createButton = screen.getByTestId("create-dll-button");
+      // Click delete button
       const deleteButton = screen.getByTestId("delete-dll-dll-1");
-
-      await user.click(createButton);
       await user.click(deleteButton);
 
-      await waitFor(() => {
-        expect(request.plugins.addPlugins).toHaveBeenCalled();
-        expect(request.plugins.deletePlugins).toHaveBeenCalled();
-      });
+      // Wait for delete operation to complete with longer timeout
+      await waitFor(
+        () => {
+          expect(request.plugins.deletePlugins).toHaveBeenCalledWith({
+            query: "dll-client",
+            query1: "dll-1",
+          });
+        },
+        { timeout: 3000 },
+      );
     });
 
     it("should maintain loading state during operations", async () => {
@@ -697,6 +752,19 @@ describe("DllTable Component", () => {
       const user = userEvent.setup();
       renderWithProviders(<DllTable />);
 
+      // Wait for the component to render
+      await waitFor(() => {
+        expect(screen.getByTestId("dll-item-dll-1")).toBeInTheDocument();
+      });
+
+      // Click on the ellipsis button to open the popover
+      const ellipsisButtons = screen.getAllByRole("button", {
+        name: /more options/i,
+      });
+      const ellipsisButton = ellipsisButtons[0];
+      await user.click(ellipsisButton);
+
+      // Wait for the delete button to appear in the popover
       await waitFor(() => {
         expect(screen.getByTestId("delete-dll-dll-1")).toBeInTheDocument();
       });

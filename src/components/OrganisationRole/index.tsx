@@ -122,6 +122,7 @@ export default function OrganisationRole() {
                     <DeleteDialog
                       onYes={() => onDeleteYes(item.id)}
                       title={"Are you sure you want to delete the role?"}
+                      data-testid="delete-button"
                     />
                   </div>
                 </PopoverContent>

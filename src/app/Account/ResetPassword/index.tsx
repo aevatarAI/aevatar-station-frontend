@@ -40,7 +40,7 @@ const formSchema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "passwords do not match",
+    message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 const ResetPassword = () => {
@@ -78,7 +78,7 @@ const ResetPassword = () => {
         const result = await resetPassword(userId, resetToken, password);
         if (result.code === "20001") {
           toast({
-            description: "password updated successfully",
+            description: "Password updated successfully",
           });
           navigate("/login");
         } else {
@@ -99,7 +99,7 @@ const ResetPassword = () => {
   return (
     <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">reset password</h2>
+        <h2 className="text-[18px] font-semibold">Reset password</h2>
       </div>
       <div className="h-px bg-[var(--bg-black-light)] w-full" />
       <div className="text-[var(--muted-foreground)]">
@@ -115,15 +115,15 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[13px] font-semibold">
-                      new password*
+                      New password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="enter your new password"
+                        placeholder="Enter your new password"
                         {...field}
                         {...form.register("password", {
-                          required: "required",
+                          required: "Required",
                         })}
                         className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
@@ -138,15 +138,15 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[13px] font-semibold">
-                      confirm new password*
+                      Confirm new password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="re-enter your new password"
+                        placeholder="Re-enter your new password"
                         {...field}
                         {...form.register("confirmPassword", {
-                          required: "required",
+                          required: "Required",
                         })}
                         className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
@@ -164,7 +164,7 @@ const ResetPassword = () => {
                 className="w-full flex justify-center border border-transparent"
                 disabled={loading && !!userId && !!resetToken}
               >
-                submit
+                Submit
               </Button>
             </div>
           </form>

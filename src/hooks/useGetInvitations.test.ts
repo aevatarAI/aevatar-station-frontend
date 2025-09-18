@@ -4,8 +4,8 @@ import { useGetInvitations } from "./useGetInvitations";
 
 // Mock utility functions
 vi.mock("@/utils/helpers", () => ({
-  deduplicate: vi.fn((arr) => arr),
-  reverse: vi.fn((arr) => [...arr].reverse()),
+  deduplicate: vi.fn((arr) => arr || []),
+  reverse: vi.fn((arr) => (arr ? [...arr].reverse() : [])),
 }));
 
 describe("useGetInvitations", () => {
@@ -14,7 +14,7 @@ describe("useGetInvitations", () => {
   });
 
   it("should initialize with empty selectedValues", () => {
-    const mockInvitations = { data: [] };
+    const mockInvitations = [];
     const { result } = renderHook(() => useGetInvitations(mockInvitations));
 
     expect(result.current.selectedValues).toEqual([]);
@@ -22,12 +22,10 @@ describe("useGetInvitations", () => {
   });
 
   it("should process invitations data correctly", () => {
-    const mockInvitations = {
-      data: [
-        { id: "invite-1", organizationId: "org-1", name: "Invite 1" },
-        { id: "invite-2", organizationId: "org-2", name: "Invite 2" },
-      ],
-    };
+    const mockInvitations = [
+      { id: "invite-1", organizationId: "org-1", name: "Invite 1" },
+      { id: "invite-2", organizationId: "org-2", name: "Invite 2" },
+    ];
 
     const { result } = renderHook(() => useGetInvitations(mockInvitations));
 
@@ -43,7 +41,7 @@ describe("useGetInvitations", () => {
   });
 
   it("should return setSelectedValues function", () => {
-    const mockInvitations = { data: [] };
+    const mockInvitations = [];
     const { result } = renderHook(() => useGetInvitations(mockInvitations));
 
     expect(typeof result.current.setSelectedValues).toBe("function");

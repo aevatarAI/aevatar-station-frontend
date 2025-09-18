@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import WelcomePage from "./index";
 
@@ -50,6 +56,7 @@ vi.mock("@/hooks/useGetOrganisationInvites", () => ({
     data: { items: [] },
     isLoading: false,
   }),
+  getOrganisationInvites: vi.fn().mockResolvedValue({ items: [] }),
 }));
 
 vi.mock("@/hooks/useGetOrganizations", () => ({
@@ -202,14 +209,18 @@ describe("WelcomePage", () => {
     vi.clearAllMocks();
   });
 
-  it("should render the welcome page with all main elements", () => {
-    render(<WelcomePage />);
+  it("should render the welcome page with all main elements", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
-    // Check for main heading
-    expect(screen.getByText("welcome to aevatar.ai")).toBeInTheDocument();
-    expect(
-      screen.getByText("create or join an organisation"),
-    ).toBeInTheDocument();
+    // Wait for the component to finish loading
+    await waitFor(() => {
+      expect(screen.getByText("welcome to aevatar.ai")).toBeInTheDocument();
+      expect(
+        screen.getByText("create or join an organisation"),
+      ).toBeInTheDocument();
+    });
 
     // Check for logo
     expect(screen.getByTestId("logo")).toBeInTheDocument();
@@ -232,24 +243,30 @@ describe("WelcomePage", () => {
     expect(screen.getByTestId("social-media")).toBeInTheDocument();
   });
 
-  it("should render create organization dialog", () => {
-    render(<WelcomePage />);
+  it("should render create organization dialog", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
     expect(screen.getByTestId("create-org-button")).toBeInTheDocument();
   });
 
-  it("should render checkbox group for invitations", () => {
-    render(<WelcomePage />);
+  it("should render checkbox group for invitations", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
     expect(screen.getByTestId("checkbox-group")).toBeInTheDocument();
     expect(screen.getByText("Test Org 1")).toBeInTheDocument();
     expect(screen.getByText("Test Org 2")).toBeInTheDocument();
   });
 
-  it("should render join button", () => {
-    render(<WelcomePage />);
+  it("should render join button", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
-    const joinButton = screen.getByText("join");
+    const joinButton = screen.getByText("Join");
     expect(joinButton).toBeInTheDocument();
     expect(joinButton).toHaveAttribute("disabled");
   });
@@ -276,10 +293,14 @@ describe("WelcomePage", () => {
       mockResponse,
     );
 
-    render(<WelcomePage />);
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
     const createButton = screen.getByTestId("create-org-button");
-    fireEvent.click(createButton);
+    await act(async () => {
+      fireEvent.click(createButton);
+    });
 
     await waitFor(() => {
       expect(createOrganizationWithDefaultProject).toHaveBeenCalledWith(
@@ -299,8 +320,10 @@ describe("WelcomePage", () => {
     });
   });
 
-  it("should render with correct CSS classes", () => {
-    render(<WelcomePage />);
+  it("should render with correct CSS classes", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
     const container = screen
       .getByText("welcome to aevatar.ai")
@@ -317,8 +340,10 @@ describe("WelcomePage", () => {
     );
   });
 
-  it("should render social media with correct classes", () => {
-    render(<WelcomePage />);
+  it("should render social media with correct classes", async () => {
+    await act(async () => {
+      render(<WelcomePage />);
+    });
 
     const socialMedia = screen.getByTestId("social-media");
     expect(socialMedia).toHaveClass("relative");

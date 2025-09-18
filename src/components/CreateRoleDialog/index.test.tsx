@@ -53,8 +53,10 @@ describe("CreateRoleDialog", () => {
     await user.click(submitButton);
 
     // Check for loading text and icon
-    expect(await screen.findByText("Creating")).toBeInTheDocument();
-    expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Creating")).toBeInTheDocument();
+      expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
+    });
 
     // Wait for the loading state to finish
     await waitFor(() => {

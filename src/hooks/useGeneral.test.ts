@@ -38,6 +38,7 @@ vi.mock("jotai", () => ({
 // Mock the organization atom
 vi.mock("@/state/atoms/organisation", () => ({
   CURRENT_ORGANIZATION_ATOM: "mock-org-atom",
+  ORGANIZATIONS_LIST_ATOM: "mock-organizations-list-atom",
 }));
 
 describe("useGeneral", () => {

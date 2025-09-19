@@ -161,6 +161,7 @@ export default function DllEditDialog({
                 </Button>
                 <Button
                   variant="primary"
+                  disabled={btnLoading}
                   className={clsx(
                     "text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px] w-[79px]",
                   )}

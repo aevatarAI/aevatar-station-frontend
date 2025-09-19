@@ -55,7 +55,7 @@ export default function WorkflowPage() {
     }),
     [fullscreen],
   );
-
+  console.log(workflowType, "workflowType==");
   const refreshGaevatarList = useCallback(async () => {
     const agentTypeList =
       await aevatarAI.services.agent.getAllAgentsConfiguration();

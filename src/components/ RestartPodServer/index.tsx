@@ -41,7 +41,7 @@ export default function RestartPodServer() {
             setRestartPodServer(RESET);
             dismiss();
             toast({
-              description: "service restarted successfully",
+              description: "Service restarted successfully",
             });
           }
           await delay(3000);

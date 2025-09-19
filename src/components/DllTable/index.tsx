@@ -141,7 +141,7 @@ export default function DllTable() {
           query1: id,
         });
         toast({
-          description: "successfully deleted",
+          description: "Successfully deleted",
         });
         updateDllList();
       } catch (error) {

@@ -51,12 +51,12 @@ export default function DllEditDialog({
         setOpen(false);
         toast({
           title: "",
-          description: "dll uploaded",
+          description: "DLL uploaded",
         });
       } catch (error) {
         toast({
           title: "error",
-          description: handleErrorMessage(error, "something error"),
+          description: handleErrorMessage(error, "Something error"),
         });
         setBtnLoading(false);
       }

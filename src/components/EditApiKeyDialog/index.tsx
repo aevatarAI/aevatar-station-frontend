@@ -54,7 +54,7 @@ export default function EditApiKeyDialog({
       setOpen(false);
       toast({
         title: "",
-        description: "successfully saved",
+        description: "Successfully saved",
       });
     },
     [toast, onYes],

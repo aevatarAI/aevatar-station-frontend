@@ -46,7 +46,7 @@ function Dashboard() {
       <div
         className={clsx(
           "flex-1 overflow-auto h-full mb-[20px] bg-[var(--bg-background)]",
-          selectTab !== "workflows" && "pt-[31px] px-[20px] ",
+          selectTab !== "workflows" && "pt-[31px] px-[20px] pb-[20px]",
         )}
       >
         {selectTab === "apikeys" && <ApiKeys />}

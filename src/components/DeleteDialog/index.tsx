@@ -94,7 +94,7 @@ export default function DeleteDialog({
                 setOpen(false);
               }}
             >
-              cancel
+              Cancel
             </Button>
             <LoadingButton
               variant="primary"
@@ -103,7 +103,7 @@ export default function DeleteDialog({
               aria-label="yes"
               data-testid="delete-dll-btn"
             >
-              yes
+              Yes
             </LoadingButton>
           </div>
         </div>

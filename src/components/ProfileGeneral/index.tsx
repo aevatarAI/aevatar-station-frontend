@@ -37,12 +37,12 @@ export default function ProfileGeneral() {
         },
       });
       toast({
-        description: "successfully saved",
+        description: "Successfully saved",
       });
       getUserProfile();
     } catch (error) {
       toast({
-        description: handleErrorMessage(error, "Error: save name"),
+        description: handleErrorMessage(error, "Error: Save name"),
       });
     }
   }, [toast, profile, name, getUserProfile]);
@@ -55,7 +55,7 @@ export default function ProfileGeneral() {
       toast({ description: "Reset password email sent successfully!" });
     } catch (error) {
       toast({
-        description: handleErrorMessage(error, "Error: reset password"),
+        description: handleErrorMessage(error, "Error: Reset password"),
       });
     }
   }, [profile, toast]);

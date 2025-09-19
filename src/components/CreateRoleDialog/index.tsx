@@ -50,7 +50,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       setOpen(false);
       toast({
         title: "",
-        description: "successfully created",
+        description: "Successfully created",
       });
     },
     [toast, onCreate],

@@ -61,12 +61,12 @@ export default function CreateCrossURLDialog({
         setOpen(false);
         toast({
           title: "",
-          description: "cross-origin domain added",
+          description: "Cross-origin domain added",
         });
       } catch (error) {
         toast({
           title: "error",
-          description: handleErrorMessage(error, "something error"),
+          description: handleErrorMessage(error, "Something error"),
         });
         setBtnLoading(false);
       }

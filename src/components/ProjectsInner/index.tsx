@@ -55,7 +55,7 @@ const ProjectsInner = ({ tab }: IOrganisationInnerProps) => {
           data: { displayName },
         });
         toast({
-          description: "successfully saved",
+          description: "Successfully saved",
         });
         updateProjectList(organizationId);
       } catch (error) {

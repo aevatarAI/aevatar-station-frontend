@@ -78,7 +78,7 @@ export default function OrganisationMember() {
           },
         });
         toast({
-          description: "successfully saved",
+          description: "Successfully saved",
         });
         getMembers();
       } catch (error) {

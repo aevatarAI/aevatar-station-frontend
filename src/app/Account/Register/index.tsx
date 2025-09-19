@@ -24,30 +24,30 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "name must be at least 1 character long")
+    .min(1, "Name must be at least 1 character long")
     .regex(
       /^[a-zA-Z0-9\-._@+]+$/,
       "Username is invalid, can only contain letters or digits.",
     ),
   email: z.string().email({
-    message: "please enter a valid email address.",
+    message: "Please enter a valid email address.",
   }),
   password: z
     .string()
-    .min(6, "password must be at least 6 characters long")
+    .min(6, "Password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "Password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "Password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "Password must contain at least one uppercase letter ('A'-'Z')",
     )
-    .regex(/[0-9]/, "password must contain at least one digit ('0'-'9')"),
+    .regex(/[0-9]/, "Password must contain at least one digit ('0'-'9')"),
 });
 
 const Register = () => {

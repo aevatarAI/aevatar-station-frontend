@@ -115,7 +115,7 @@ export default function OrganisationProjects() {
           query: id,
         });
         toast({
-          description: "successfully deleted",
+          description: "Successfully deleted",
         });
         updateProjectList();
       } catch (error) {

@@ -288,11 +288,11 @@ export default function PermissionManagerInnerDialog({
       setOpen(false);
       toast({
         title: "",
-        description: "successfully saved",
+        description: "Successfully saved",
       });
     } catch (error) {
       toast({
-        description: handleErrorMessage(error, "saved error"),
+        description: handleErrorMessage(error, "Saved error"),
       });
     }
   }, [onSave, permissionMap, permissionOrgMap, toast]);
@@ -370,7 +370,7 @@ export default function PermissionManagerInnerDialog({
           variant="outline"
           className="py-[6px] px-[16px] font-geist text-[13px] font-normal leading-[15px] border-[var(--color-border-black-light)]"
         >
-          {`${readonly ? "view" : "edit"} permissions`}
+          {`${readonly ? "View" : "Edit"} permissions`}
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -448,7 +448,7 @@ export default function PermissionManagerInnerDialog({
                         setOpen(false);
                       }}
                     >
-                      cancel
+                      Cancel
                     </Button>
 
                     <LoadingButton
@@ -456,7 +456,7 @@ export default function PermissionManagerInnerDialog({
                       className={clsx("text-[13px] py-2 px-3 leading-[14px]")}
                       onClick={onSaveHandler}
                     >
-                      save
+                      Save
                     </LoadingButton>
                   </div>
                 )}

@@ -99,7 +99,7 @@ export default function ProjectMember() {
           },
         });
         toast({
-          description: "successfully saved",
+          description: "Successfully saved",
         });
 
         getMembers();

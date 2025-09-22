@@ -27,11 +27,11 @@ importers:
         specifier: 0.3.2-alpha.3
         version: 0.3.2-alpha.3(@babel/core@7.26.10)(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(date-fns@4.1.0)(eslint@8.57.1)(query-string@7.1.3)(react-redux@9.2.0(@types/react@18.3.20)(react@18.3.1)(redux@5.0.1))
       '@aevatar-react-sdk/services':
-        specifier: 0.4.37-alpha.7
-        version: 0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+        specifier: 0.4.37-alpha.8
+        version: 0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
       '@aevatar-react-sdk/ui-react':
-        specifier: 0.4.37-alpha.7
-        version: 0.4.37-alpha.7(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)
+        specifier: 0.4.37-alpha.8
+        version: 0.4.37-alpha.8(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)
       '@etransfer/utils':
         specifier: 1.12.2-alpha.1
         version: 1.12.2-alpha.1(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)
@@ -56,6 +56,9 @@ importers:
       '@portkey/socket':
         specifier: 2.19.0-alpha.20
         version: 2.19.0-alpha.20(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3)
+      '@radix-ui/react-accordion':
+        specifier: ^1.2.12
+        version: 1.2.12(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-checkbox':
         specifier: ^1.1.5
         version: 1.2.2(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -334,28 +337,28 @@ packages:
     resolution: {integrity: sha512-xa8i/rsC/Dj6Wh0DWpgr4eODVu8tVktyTENJU0QGjwmu317PCyp/8p7rEcvplljAteoQ31cFxUCrnzFQ0iLG1g==}
     hasBin: true
 
-  '@aevatar-react-sdk/core@0.4.37-alpha.7':
-    resolution: {integrity: sha512-XSy8YoUmwMh6OBtuM4+YB769TtIAPR+iIq4vpevUOlkpT0UmoPWyvExV+BHn6P7UMNbug483gH4Jnluy8z01Vg==}
+  '@aevatar-react-sdk/core@0.4.37-alpha.8':
+    resolution: {integrity: sha512-2C1yXnXBNnwAi7Uy2Q5CdFIPBeJXrUWI62Yki9qZlgnaRfu2JXlrBYIYxHgFzZGtlK3Reol9R3vuqxXfYzGjZQ==}
     peerDependencies:
       aelf-sdk: 3.4.16-alpha.7
 
-  '@aevatar-react-sdk/services@0.4.37-alpha.7':
-    resolution: {integrity: sha512-0HgQDN5i3JtEbEAmnFDGILOSgLibAQCVnT4AcXeWgDJl89gQVGOt+Y3TYm85715iXdvYpVAvPXSiFLWdn7vLCg==}
+  '@aevatar-react-sdk/services@0.4.37-alpha.8':
+    resolution: {integrity: sha512-XYpdeepkRykZ2b8YMG+IIfs9NhaP7o/vxG97sU+BuJnbvxuctGYMecAbCU4NgPUOQg1ukGJcgE6AWjrXEvBcmg==}
     peerDependencies:
       aelf-sdk: 3.4.16-alpha.7
       query-string: ^7.1.1
 
-  '@aevatar-react-sdk/types@0.4.37-alpha.7':
-    resolution: {integrity: sha512-/zf99+xrXz6oQyvSaKP9M70y2xiJba44Isy1GvUt4FSyC3TZLrMGcZaK1o1SyksBb1+ihWO2BEoRMvRNpY+eDw==}
+  '@aevatar-react-sdk/types@0.4.37-alpha.8':
+    resolution: {integrity: sha512-54JsUOoGcGUaedwzD2pvRAXIY7bHpw+dCMOUWnpFFZrNACvk6zgNk0WTKP8+OOxPpQsScF8iDhmNiQUh+Anqxg==}
 
-  '@aevatar-react-sdk/ui-react@0.4.37-alpha.7':
-    resolution: {integrity: sha512-ne/Qrd6kAKl08abN2O9hVdepzn/5iM+6kyyUj94r0sli0ct8jnB7AJv0bZXILU9suu4UE01xpNzBtAY4MbVmPA==}
+  '@aevatar-react-sdk/ui-react@0.4.37-alpha.8':
+    resolution: {integrity: sha512-j5zzvhnkW2QBv1sECslkVYROXhNiI6FukujP3iRYnlLiR6Y/ErgfpKvBU+RGqaf7FMCaL8Q0gn/nhl2rdixFNw==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@aevatar-react-sdk/utils@0.4.37-alpha.7':
-    resolution: {integrity: sha512-TfDGMRG7FDviL/6AGDn6gSNvFa4xzmg60ymwtgoXHQQRgWQUD1Mz4Vr1MWPMparCTbQ7hSZ7gLRTY/X3wh+5bg==}
+  '@aevatar-react-sdk/utils@0.4.37-alpha.8':
+    resolution: {integrity: sha512-QaocJF1A8HTFGXjN1uXHQNfIl/xDuMbVPzzeGWmO7xEFsl55tthUK9Wk3/jt1FT8vPjtm6ODBXbWM1RSaM6dEQ==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -1179,8 +1182,24 @@ packages:
   '@radix-ui/primitive@1.1.2':
     resolution: {integrity: sha512-XnbHrrprsNqZKQhStrSwgRUQzoCI1glLzdw79xiZPoofhGICeZRSQ3dIxAKH1gb3OHfNf4d6f+vAv3kil2eggA==}
 
+  '@radix-ui/primitive@1.1.3':
+    resolution: {integrity: sha512-JTF99U/6XIjCBo0wqkU5sK10glYe27MRRsfwoiq5zzOEZLHU3A3KCMa5X/azekYRCJ0HlwI0crAXS/5dEHTzDg==}
+
   '@radix-ui/react-accessible-icon@1.1.4':
     resolution: {integrity: sha512-J8pIt7l32A9fGIn86vwccQzik5MgIOTtceeTxi6EiiFYwWHLxsTHwiOW4pI5sQhQJWd3MOEkumFBIHwIU038Cw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-accordion@1.2.12':
+    resolution: {integrity: sha512-T4nygeh9YE9dLRPhAHSeOZi7HBXo+0kYIPJXayZfvWOWA0+n3dESrZbjfDPUABkUNym6Hd+f2IR113To8D2GPA==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1285,6 +1304,19 @@ packages:
 
   '@radix-ui/react-checkbox@1.3.2':
     resolution: {integrity: sha512-yd+dI56KZqawxKZrJ31eENUwqc1QSqg4OZ15rybGjF2ZNwMO+wCyHzAVLRp9qoYJf7kYy0YpZ2b0JCzJ42HZpA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-collapsible@1.1.12':
+    resolution: {integrity: sha512-Uu+mSh4agx2ib1uIGPP4/CKNULyajb3p92LsVXmH2EHVMTfZWpll88XJ0j4W0z3f8NK1eYl1+Mf/szHPmcHzyA==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1673,6 +1705,19 @@ packages:
 
   '@radix-ui/react-presence@1.1.4':
     resolution: {integrity: sha512-ueDqRbdc4/bkaQT3GIpLQssRlFgWaL/U2z/S31qRwwLWoxHLgry3SIfCwhxeQNbirEUXFa+lq3RL3oBYXtcmIA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-presence@1.1.5':
+    resolution: {integrity: sha512-/jfEwNDdQVBCNvjkGit4h6pMOzq8bHkopq458dPt2lMjx+eBQUohZNG9A7DtO/O5ukSbxuaNGXMjHicgwy6rQQ==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -6071,11 +6116,11 @@ snapshots:
       '@types/node': 10.17.60
       long: 4.0.0
 
-  '@aevatar-react-sdk/core@0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
+  '@aevatar-react-sdk/core@0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
     dependencies:
-      '@aevatar-react-sdk/services': 0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/types': 0.4.37-alpha.7
-      '@aevatar-react-sdk/utils': 0.4.37-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/services': 0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/types': 0.4.37-alpha.8
+      '@aevatar-react-sdk/utils': 0.4.37-alpha.8(@babel/core@7.26.10)(eslint@8.57.1)
       '@portkey/request': 2.19.0-alpha.24
       aelf-sdk: 3.4.15(@babel/core@7.26.10)(eslint@8.57.1)
     transitivePeerDependencies:
@@ -6085,10 +6130,10 @@ snapshots:
       - query-string
       - supports-color
 
-  '@aevatar-react-sdk/services@0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
+  '@aevatar-react-sdk/services@0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)':
     dependencies:
-      '@aevatar-react-sdk/types': 0.4.37-alpha.7
-      '@aevatar-react-sdk/utils': 0.4.37-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/types': 0.4.37-alpha.8
+      '@aevatar-react-sdk/utils': 0.4.37-alpha.8(@babel/core@7.26.10)(eslint@8.57.1)
       '@portkey/request': 2.19.0-alpha.24
       aelf-sdk: 3.4.15(@babel/core@7.26.10)(eslint@8.57.1)
       query-string: 7.1.3
@@ -6098,14 +6143,14 @@ snapshots:
       - eslint
       - supports-color
 
-  '@aevatar-react-sdk/types@0.4.37-alpha.7': {}
+  '@aevatar-react-sdk/types@0.4.37-alpha.8': {}
 
-  '@aevatar-react-sdk/ui-react@0.4.37-alpha.7(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)':
+  '@aevatar-react-sdk/ui-react@0.4.37-alpha.8(@babel/core@7.26.10)(@types/node@22.14.1)(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(immer@10.1.1)(prop-types@15.8.1)(query-string@7.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.7)':
     dependencies:
-      '@aevatar-react-sdk/core': 0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/services': 0.4.37-alpha.7(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
-      '@aevatar-react-sdk/types': 0.4.37-alpha.7
-      '@aevatar-react-sdk/utils': 0.4.37-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)
+      '@aevatar-react-sdk/core': 0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/services': 0.4.37-alpha.8(@babel/core@7.26.10)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(eslint@8.57.1)(query-string@7.1.3)
+      '@aevatar-react-sdk/types': 0.4.37-alpha.8
+      '@aevatar-react-sdk/utils': 0.4.37-alpha.8(@babel/core@7.26.10)(eslint@8.57.1)
       '@fontsource/geist': 5.2.7
       '@hookform/resolvers': 3.10.0(react-hook-form@7.56.0(react@18.3.1))
       '@radix-ui/react-checkbox': 1.3.2(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6160,9 +6205,9 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  '@aevatar-react-sdk/utils@0.4.37-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)':
+  '@aevatar-react-sdk/utils@0.4.37-alpha.8(@babel/core@7.26.10)(eslint@8.57.1)':
     dependencies:
-      '@aevatar-react-sdk/types': 0.4.37-alpha.7
+      '@aevatar-react-sdk/types': 0.4.37-alpha.8
       aelf-sdk: 3.4.16-alpha.7(@babel/core@7.26.10)(eslint@8.57.1)
       events: 3.3.0
     transitivePeerDependencies:
@@ -6604,7 +6649,7 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@etransfer/request@1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(query-string@7.1.3)':
+  '@etransfer/request@1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)':
     dependencies:
       '@etransfer/types': 1.14.0
       '@etransfer/utils': 1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)
@@ -6616,11 +6661,12 @@ snapshots:
       - aelf-sdk
       - bignumber.js
       - debug
+      - qs
       - query-string
 
   '@etransfer/services@1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)':
     dependencies:
-      '@etransfer/request': 1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(query-string@7.1.3)
+      '@etransfer/request': 1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)
       '@etransfer/types': 1.14.0
       '@etransfer/utils': 1.14.0(@portkey/contracts@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(@portkey/types@2.15.10)(@portkey/utils@2.19.0-alpha.24(@portkey/request@2.19.0-alpha.24)(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(query-string@7.1.3))(aelf-sdk@3.4.15(@babel/core@7.26.10)(eslint@8.57.1))(bignumber.js@9.3.0)(qs@6.14.0)(query-string@7.1.3)
       '@portkey/types': 2.15.10
@@ -6662,7 +6708,6 @@ snapshots:
       bn.js: 5.2.1
       query-string: 7.1.3
     transitivePeerDependencies:
-      - debug
       - qs
 
   '@floating-ui/core@1.6.9':
@@ -7072,9 +7117,28 @@ snapshots:
 
   '@radix-ui/primitive@1.1.2': {}
 
+  '@radix-ui/primitive@1.1.3': {}
+
   '@radix-ui/react-accessible-icon@1.1.4(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/react-visually-hidden': 1.2.0(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.20
+      '@types/react-dom': 18.3.6(@types/react@18.3.20)
+
+  '@radix-ui/react-accordion@1.2.12(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.3
+      '@radix-ui/react-collapsible': 1.1.12(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-collection': 1.1.7(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-compose-refs': 1.1.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-direction': 1.1.1(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.1(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.1.3(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.2.2(@types/react@18.3.20)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
@@ -7178,6 +7242,22 @@ snapshots:
       '@radix-ui/react-use-controllable-state': 1.2.2(@types/react@18.3.20)(react@18.3.1)
       '@radix-ui/react-use-previous': 1.1.1(@types/react@18.3.20)(react@18.3.1)
       '@radix-ui/react-use-size': 1.1.1(@types/react@18.3.20)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.20
+      '@types/react-dom': 18.3.6(@types/react@18.3.20)
+
+  '@radix-ui/react-collapsible@1.1.12(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.3
+      '@radix-ui/react-compose-refs': 1.1.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.1(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.5(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.1.3(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.2.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.1(@types/react@18.3.20)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
@@ -7619,6 +7699,16 @@ snapshots:
       '@types/react-dom': 18.3.6(@types/react@18.3.20)
 
   '@radix-ui/react-presence@1.1.4(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(@types/react@18.3.20)(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.1(@types/react@18.3.20)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.20
+      '@types/react-dom': 18.3.6(@types/react@18.3.20)
+
+  '@radix-ui/react-presence@1.1.5(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@18.3.20)(react@18.3.1)
       '@radix-ui/react-use-layout-effect': 1.1.1(@types/react@18.3.20)(react@18.3.1)

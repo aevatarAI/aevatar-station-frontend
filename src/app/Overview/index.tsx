@@ -53,12 +53,12 @@ export default function Overview() {
         <div className="max-w-[285px] lg:mx-auto">
           <Thumbprint className="mb-[18px] lg:mb-[35px]" />
           <h1 className="text-4xl lg:text-[54px] font-bold font-syne mb-[25px] leading-tight ">
-            log in to
+            Log in to
             <br />
             aevatar.ai
           </h1>
           <h2 className="text-sm font-geist mb-[36px] lg:mb-[54.5px] text-muted-foreground">
-            the future of on-chain autonomous
+            The future of on-chain autonomous
             <br />
             intelligence
           </h2>

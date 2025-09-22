@@ -15,7 +15,7 @@ export default function ProjectInitialising({
     >
       <div className="text-2xl font-bold text-[var(--color-text-primary)] flex flex-col lg:flex-row items-center">
         <div className="text-[var(--color-foreground)] text-xl font-semibold font-geist tracking-wide">
-          initialising workspace......
+          Initialising workspace......
         </div>
         <ReactLoading type="bars" color="var(--bg-accent)" />
       </div>

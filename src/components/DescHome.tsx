@@ -7,7 +7,7 @@ export default function DescHome({ className }: { className?: string }) {
         aevatar.ai
       </h1>
       <p className="text-[var(--muted-foreground)] text-[16px] font-semibold">
-        the future of on-chain autonomous intelligence
+        The future of on-chain autonomous intelligence
       </p>
     </div>
   );

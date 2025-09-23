@@ -11,7 +11,7 @@ export default function PageLoading({ className }: { className?: string }) {
       )}
     >
       <div className="flex text-2xl font-bold text-[var(--color-text-primary)] flex items-center">
-        <div className="text-[var(--color-foreground)] font-geist text-lg font-semibold leading-normal lowercase text-[18px]">
+        <div className="text-[var(--color-foreground)] font-geist text-lg font-semibold leading-normal text-[18px]">
           Scanning......
         </div>
         <ReactLoading type="bars" color="var(--bg-accent)" />

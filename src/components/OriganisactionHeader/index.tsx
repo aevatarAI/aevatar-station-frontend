@@ -122,7 +122,7 @@ export default function OriganisactionHeader({
             </div>
 
             {/* <div className="flex justify-center lg:pt-[20px] lg:px-[12px] border-t border-[var(--color-border-black-light)]">
-              <Button className="text-[var(--color-foreground)] w-full text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] lowercase" onClick={() => {
+              <Button className="text-[var(--color-foreground)] w-full text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px]" onClick={() => {
                 navigate("/profile/organisation/general")
                 setOrgOpen(false)
               }}>

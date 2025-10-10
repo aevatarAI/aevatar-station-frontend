@@ -83,7 +83,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken]
   );
 
   const handleGithubLogin = () => {
@@ -92,13 +92,15 @@ const Login = () => {
     const scope = "user";
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scope}`;
 
+    console.log({ clientId });
+
     window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const redirectUri = encodeURIComponent(
-      `${window.location.origin}/auth/google/callback`,
+      `${window.location.origin}/auth/google/callback`
     );
     const scope = encodeURIComponent("openid email profile");
     const responseType = "id_token token";
@@ -228,7 +230,7 @@ const Login = () => {
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    [],
+    []
   );
   return (
     <Layout backgroundImage={randomImage}>

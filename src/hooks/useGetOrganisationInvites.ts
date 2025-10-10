@@ -10,7 +10,6 @@ export interface Invite {
 
 export const useGetOrganisationInvites = () => {
   const email = useEmail();
-
   return useQuery({
     queryKey: ["organisationInvites", { email }],
     queryFn: () =>
@@ -22,4 +21,14 @@ export const useGetOrganisationInvites = () => {
       }),
     enabled: !!email,
   });
+};
+
+export const getOrganisationInvites = async (): Promise<Invite[]> => {
+  const result = await request.notifications.getInvites({
+    params: {
+      pageIndex: 0,
+      pageSize: 100,
+    },
+  });
+  return result.data;
 };

@@ -48,7 +48,7 @@ vi.mock("@/components/General", () => ({
   }) => (
     <div>
       {extraInput}
-      <input placeholder="project name" data-testid="general-input" />
+      <input placeholder="Project name" data-testid="general-input" />
       {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
       <button onClick={() => onConfirm("mocked-project-name")}>Save</button>
     </div>
@@ -108,7 +108,7 @@ describe("ProjectsInner Component", () => {
     expect(screen.getByText("Save")).toBeInTheDocument();
 
     // Verify extraInput (domain name input) is rendered
-    expect(screen.getByText("domain name")).toBeInTheDocument();
+    expect(screen.getByText("Domain Name")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("mock.com")).toBeInTheDocument();
   });
 

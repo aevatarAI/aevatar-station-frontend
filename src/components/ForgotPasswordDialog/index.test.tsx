@@ -66,7 +66,7 @@ describe("ForgotPasswordDialog Component", () => {
     const trigger = screen.getByText(/forgot password\?/i);
     fireEvent.click(trigger);
 
-    const emailInput = screen.getByPlaceholderText("enter your email");
+    const emailInput = screen.getByPlaceholderText("Enter your email");
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
 
     const submitButton = screen.getByRole("button", { name: /submit/i });
@@ -94,7 +94,7 @@ describe("ForgotPasswordDialog Component", () => {
     const trigger = screen.getByText(/forgot password\?/i);
     fireEvent.click(trigger);
 
-    const emailInput = screen.getByPlaceholderText("enter your email");
+    const emailInput = screen.getByPlaceholderText("Enter your email");
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
 
     const submitButton = screen.getByRole("button", { name: /submit/i });
@@ -118,7 +118,7 @@ describe("ForgotPasswordDialog Component", () => {
     const trigger = screen.getByText(/forgot password\?/i);
     fireEvent.click(trigger);
 
-    const emailInput = screen.getByPlaceholderText("enter your email");
+    const emailInput = screen.getByPlaceholderText("Enter your email");
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
 
     const submitButton = screen.getByRole("button", { name: /submit/i });
@@ -153,7 +153,7 @@ describe("ForgotPasswordDialog Component", () => {
     const trigger = screen.getByText(/forgot password\?/i);
     fireEvent.click(trigger);
 
-    const emailInput = screen.getByPlaceholderText("enter your email");
+    const emailInput = screen.getByPlaceholderText("Enter your email");
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
 
     const submitButton = screen.getByRole("button", { name: /submit/i });

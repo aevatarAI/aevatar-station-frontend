@@ -13,7 +13,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useCreateDefaultProject } from "@/hooks/useCreateDefaultProject";
 import { useEmail } from "@/hooks/useEmail";
 import { useGetInvitations } from "@/hooks/useGetInvitations";
-import { useGetOrganisationInvites } from "@/hooks/useGetOrganisationInvites";
+import {
+  type Invite,
+  getOrganisationInvites,
+} from "@/hooks/useGetOrganisationInvites";
 import { useGetOrganizations } from "@/hooks/useGetOrganizations";
 import { useUpdateJoinNotifications } from "@/hooks/useUpdateNotifications";
 import { refreshTokenLogin } from "@/services/auth";
@@ -21,7 +24,7 @@ import { accessTokenAtom, refreshTokenAtom } from "@/state/atoms";
 import { CURRENT_ORGANIZATION_ATOM } from "@/state/atoms/organisation";
 import { useAtom } from "jotai";
 import type React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const WelcomePage: React.FC = () => {
   const { toast } = useToast();
@@ -29,12 +32,11 @@ const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [refreshToken, setRefreshToken] = useAtom(refreshTokenAtom);
-  const { data, isLoading } = useGetOrganisationInvites();
+  const [invitations, setInvitations] = useState<Invite[]>([]);
   const { mutateAsync, isPending } = useUpdateJoinNotifications();
   const { invites, hasInvites, selectedValues, setSelectedValues } =
-    useGetInvitations(data);
+    useGetInvitations(invitations);
   const [, setCurrentOrganization] = useAtom(CURRENT_ORGANIZATION_ATOM);
-
   const { data: org } = useGetOrganizations();
   const createDefaultProject = useCreateDefaultProject();
 
@@ -58,8 +60,21 @@ const WelcomePage: React.FC = () => {
     },
     [setCurrentOrganization, toast, createDefaultProject],
   );
+  const [isLoadingInvites, setIsLoadingInvites] = useState(false);
 
-  if (isLoading) {
+  useEffect(() => {
+    setIsLoadingInvites(true);
+    getOrganisationInvites()
+      .then((data) => {
+        setInvitations(data);
+        setIsLoadingInvites(false);
+      })
+      .finally(() => {
+        setIsLoadingInvites(false);
+      });
+  }, []);
+
+  if (isLoadingInvites) {
     return <Loading />;
   }
 
@@ -67,35 +82,35 @@ const WelcomePage: React.FC = () => {
     <div className="flex flex-col items-center lg:justify-center relative min-h-[800px] h-[calc(100vh-60px)] px-5">
       <LogoIcon className="mb-[45px] mt-[57px] lg:mt-[85px] min-w-[50px] min-h-[50px]" />
       <div className="text-center mb-[72px]">
-        <h1 className="text-gradient text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
+        <h1 className=" text-[36px] lg:text-[54px] font-syne font-semibold leading-none mb-[11px]">
           welcome to aevatar.ai
         </h1>
-        <p className="text-gray-light text-[16px] font-outfit">
+        <p className="text-[var(--muted-foreground)] text-[16px] font-geist">
           create or join an organisation
         </p>
       </div>
       <div className="w-full lg:w-[793px] flex-col-reverse lg:flex-row flex gap-5  justify-center ">
-        <div className="w-full lg:w-[346px] px-5 py-5 bg-black relative border-0 min-h-[285px]">
+        <div className="w-full lg:w-[346px] px-5 py-5 bg-[var(--bg-muted)] relative border-0 min-h-[285px]">
           {/* <div className="absolute inset-0 bg-black/50 z-10  border-0" /> */}
-          <h2 className="font-semibold text-[18px] mb-3 text-white">
+          <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)]">
             create a new organisation
           </h2>
-          <p className="text-[13px] text-gray-light font-outfit mb-[16px]">
+          <p className="text-[13px] text-[var(--muted-foreground)] font-geist mb-[16px]">
             create a new organisation - You will be the owner
           </p>
           <CreateOrgDialog onCreate={onCreateOrg} />
         </div>
 
         {hasInvites ? (
-          <div className="flex flex-col  justify-between w-full lg:w-[346px] px-5 py-5 bg-black border-0 min-h-[285px]">
+          <div className="flex flex-col  justify-between w-full lg:w-[346px] px-5 py-5 bg-[var(--bg-muted)] border-0 min-h-[285px]">
             <div>
-              <h2 className="font-semibold text-[18px] mb-3 text-white">
+              <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)]">
                 join an existing organisation
               </h2>
-              <p className="text-[13px] text-gray-light font-outfit">
+              <p className="text-[13px] text-[var(--muted-foreground)] font-geist">
                 pending invitations for your approval
               </p>
-              <div className="w-full h-px bg-black-light my-4" />
+              <div className="w-full h-px bg-[var(--bg-black-light)] my-4" />
               <CheckboxGroup
                 data={invites}
                 values={selectedValues}
@@ -104,7 +119,7 @@ const WelcomePage: React.FC = () => {
             </div>
             <Button
               disabled={isPending || selectedValues.length === 0}
-              className="mx-auto bottom-0 w-[226px] cursor-pointer"
+              className="mx-auto bottom-0 w-full bg-[var(--bg-background)] cursor-pointer"
               onClick={async () => {
                 for (const id of selectedValues) {
                   await mutateAsync({ id, status: ACCEPTED });
@@ -122,30 +137,30 @@ const WelcomePage: React.FC = () => {
                 }
               }}
             >
-              {isPending ? "joining..." : "join"}
+              {isPending ? "Joining..." : "Join"}
             </Button>
           </div>
         ) : (
-          <div className="w-full lg:w-[346px] px-5 py-5 bg-black flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
-            <h2 className="font-semibold text-[18px] mb-3 text-white ">
+          <div className="w-full lg:w-[346px] px-5 py-5 bg-[var(--bg-muted)] flex flex-col cutCornerNoBorder border-0 min-h-[285px]">
+            <h2 className="font-semibold text-[18px] mb-3 text-[var(--color-foreground)] ">
               join an existing organisation
             </h2>
-            <p className="text-[13px] text-gray-light font-outfit">
+            <p className="text-[13px] text-[var(--muted-foreground)] font-geist">
               you haven't received an invitation yet. Share your address with
               the organisation owner
             </p>
-            <div className="w-full h-px bg-black-light my-4" />
-            <span className="text-gray-light font-outfit text-[13px] font-semibold leading-normal lowercase mb-2.5 ">
+            <div className="w-full h-px bg-[var(--bg-black-light)] my-4" />
+            <span className="text-[var(--muted-foreground)] font-geist text-[13px] font-semibold leading-normal mb-2.5 ">
               your email address
             </span>
-            <div className="flex justify-between px-[14px] py-[10px] border border-black-light">
-              <span className="text-[13px] font-outfit truncate overflow-hidden block max-w-[200px]">
+            <div className="flex justify-between px-[14px] py-[10px] border border-[var(--color-border-black-light)]">
+              <span className="text-[13px] font-geist truncate overflow-hidden block max-w-[200px]">
                 {email}
               </span>
               <Copy
-                description="email address copied"
+                description="Email address copied"
                 toCopy={email}
-                className="text-gray-light hover:text-white"
+                className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
               />
             </div>
           </div>

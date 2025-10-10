@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   deduplicate,
   generateDates,
+  generateRandomString,
   reverse,
   shortenString,
   truncate,
@@ -77,5 +78,34 @@ describe("generateDates", () => {
   it("should handle same day", () => {
     const timestamp = dayjs("2024-01-01").valueOf();
     expect(generateDates(timestamp, timestamp)).toEqual(["01/01"]);
+  });
+});
+
+describe("generateRandomString", () => {
+  it("should generate string of specified length", () => {
+    const result = generateRandomString(10);
+    expect(result).toHaveLength(10);
+  });
+
+  it("should generate different strings on multiple calls", () => {
+    const result1 = generateRandomString(10);
+    const result2 = generateRandomString(10);
+    expect(result1).not.toBe(result2);
+  });
+
+  it("should generate string with valid characters", () => {
+    const result = generateRandomString(100);
+    const validChars = /^[A-Za-z0-9]+$/;
+    expect(result).toMatch(validChars);
+  });
+
+  it("should handle zero length", () => {
+    const result = generateRandomString(0);
+    expect(result).toBe("");
+  });
+
+  it("should handle large length", () => {
+    const result = generateRandomString(1000);
+    expect(result).toHaveLength(1000);
   });
 });

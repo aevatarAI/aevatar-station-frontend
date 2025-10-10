@@ -16,6 +16,7 @@ import {
   menuItemSelectedClx,
   menuItemTextClx,
 } from "@/constants/cls";
+import { MENU_TEXT_LIST_MAP, TAB_TEXT_LIST_MAP } from "@/constants/sideBar";
 import { socialMediaList } from "@/constants/socialMedia";
 import { useNavigate } from "@/hooks/navigate";
 import { useGetUnreadNotifications } from "@/hooks/useGetUnreadNotifications";
@@ -163,7 +164,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
     if (userPermissions.apiKeys || userProjectPermissions.apiKeys) {
       menuList.push({
         icon: <ApikeysIcon />,
-        text: "api keys",
+        text: "apikeys",
         url: "/dashboard/apikeys",
       });
     }
@@ -217,7 +218,10 @@ export function SideBar({ className, onClose }: ISideBarProps) {
               )}
             >
               {tab.icon}
-              <span className={clsx(menuItemTextClx)}>{tab.text}</span>
+              <span className={clsx(menuItemTextClx)}>
+                {TAB_TEXT_LIST_MAP[tab.text as keyof typeof TAB_TEXT_LIST_MAP]
+                  ?.text || tab.text}
+              </span>
             </div>
           ))}
         </div>
@@ -233,15 +237,17 @@ export function SideBar({ className, onClose }: ISideBarProps) {
             key={item[0]}
             className={clsx(
               "pb-[34px]",
-              item[0] === "profile" && "border-b border-black-light mb-[34px]",
+              item[0] === "profile" &&
+                "border-b mb-[34px] border-[var(--color-sidebar-border)]",
             )}
           >
             <div
               className={clsx(
-                "text-[#B9B9B9] font-outfit text-[12px] font-normal leading-normal lowercase mb-[16px]",
+                "font-geist text-[12px] font-normal leading-normal mb-[16px] text-[var(--color-text-secondary)]",
               )}
             >
-              {item[0]}
+              {MENU_TEXT_LIST_MAP[item[0] as keyof typeof MENU_TEXT_LIST_MAP]
+                ?.text || item[0]}
             </div>
             <div className="flex flex-col gap-[10px]">
               {item[1].map((tab) => (
@@ -262,7 +268,11 @@ export function SideBar({ className, onClose }: ISideBarProps) {
                   )}
                 >
                   {tab.icon}
-                  <span className={clsx(menuItemTextClx)}>{tab.text}</span>
+                  <span className={clsx(menuItemTextClx)}>
+                    {TAB_TEXT_LIST_MAP[
+                      tab.text as keyof typeof TAB_TEXT_LIST_MAP
+                    ]?.text || tab.text}
+                  </span>
                 </div>
               ))}
             </div>
@@ -287,7 +297,7 @@ export function SideBar({ className, onClose }: ISideBarProps) {
       <div className={clsx("inline-flex pl-[22px] flex-col gap-[24px]")}>
         {socialMediaList.map((item) => (
           <a
-            className="text-[#B9B9B9] font-outfit text-[14px] font-semibold leading-normal lowercase"
+            className="font-geist text-[14px] font-semibold leading-normal text-[var(--muted-foreground)]"
             key={item.title}
             href={item.href}
             target="_blank"

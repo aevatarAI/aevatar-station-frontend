@@ -10,14 +10,15 @@ const ToastProvider = ToastPrimitives.Provider;
 const ToastViewportEle: React.ElementType = ToastPrimitives.Viewport;
 
 const ToastViewport = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Viewport>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport> &
+  React.ElementRef<typeof ToastViewportEle>,
+  React.ComponentPropsWithoutRef<typeof ToastViewportEle> &
     React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <ToastViewportEle
     ref={ref}
     className={cn(
-      "fixed top-[10px] left-1/2 -translate-x-1/2 md:top-auto md:bottom-[22px] md:right-[30px] md:left-auto md:translate-x-0 bg-[#141415] z-100 flex max-h-screen w-[254px] flex-col-reverse p-0 sm:p-0 sm:flex-col md:max-w-[420px]",
+      "fixed top-[10px] left-1/2 -translate-x-1/2 md:top-auto md:bottom-[22px] md:right-[30px] md:left-auto md:translate-x-0 z-100 flex max-h-screen w-[254px] flex-col-reverse p-0 sm:p-0 sm:flex-col md:max-w-[420px]",
+      "bg-[var(--color-bg-primary)]",
       className,
     )}
     {...props}
@@ -26,11 +27,12 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between overflow-hidden rounded-md border border-[#272728] p-6 pr-8 sm:p-[20px] shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-(--radix-toast-swipe-end-x) data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full sm:data-[state=open]:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between overflow-hidden rounded-md border border-[var(--color-border-black-light)] p-6 pr-8 sm:p-[20px] shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-(--radix-toast-swipe-end-x) data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full sm:data-[state=open]:slide-in-from-bottom-full",
   {
     variants: {
       variant: {
-        default: "border bg-background text-foreground",
+        default:
+          "border bg-[var(--bg-background)] text-[var(--color-foreground)]",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
       },
@@ -108,7 +110,7 @@ const ToastTitle = React.forwardRef<
   <ToastActionTitleEle
     ref={ref}
     className={cn(
-      "text-white text-[13px] font-normal lowercase font-outfit",
+      "text-[13px] font-normal font-geist text-[var(--color-text-primary)]",
       className,
     )}
     {...props}
@@ -127,7 +129,7 @@ const ToastDescription = React.forwardRef<
   <ToastActionDescriptionEle
     ref={ref}
     className={cn(
-      "text-white text-[12px] font-normal lowercase font-outfit",
+      "text-[var(--color-foreground)] text-[12px] font-normal font-geist",
       className,
     )}
     {...props}

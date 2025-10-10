@@ -1,10 +1,10 @@
-import { ElementRef, useRef } from "react";
-import { DialogClose } from "@radix-ui/react-dialog";
+import type { DialogClose } from "@radix-ui/react-dialog";
+import { type ElementRef, useRef } from "react";
 
 export const useCloseDialog = () => {
   const ref = useRef<ElementRef<typeof DialogClose>>(null);
 
-  const handleClose = () => ref.current?.click()
+  const handleClose = () => ref.current?.click();
 
-  return { ref, handleClose }
-}
+  return { ref, handleClose };
+};

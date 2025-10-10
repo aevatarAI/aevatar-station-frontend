@@ -31,7 +31,7 @@ export default function LoginButton() {
   }, [connectWallet, setLoading, toast, navigate]);
 
   return (
-    <Button className="w-full text-white" onClick={doLogin}>
+    <Button className="w-full text-[var(--color-foreground)]" onClick={doLogin}>
       log in
     </Button>
   );

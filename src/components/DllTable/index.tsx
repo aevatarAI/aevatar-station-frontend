@@ -5,6 +5,11 @@ import DeleteDialog from "@/components/DeleteDialog";
 import DllEditDialog from "@/components/DllEditDialog";
 import { columns } from "@/components/DllTable/columns";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Tooltip,
   TooltipContent,
   TooltipContentCls,
@@ -23,6 +28,7 @@ import { delay } from "@/utils/common";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export enum EDllEmptyMessage {
@@ -135,7 +141,7 @@ export default function DllTable() {
           query1: id,
         });
         toast({
-          description: "successfully deleted",
+          description: "Successfully deleted",
         });
         updateDllList();
       } catch (error) {
@@ -152,46 +158,39 @@ export default function DllTable() {
       (dllList || []).map((item) => ({
         ...item,
         operation: (
-          <div className="flex items-center gap-[7px] pl-[20px]">
-            {projectPermissions?.pluginsEdit ? (
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div>
+          <div className="flex justify-end px-[20px]">
+            {(projectPermissions?.pluginsEdit ||
+              projectPermissions?.pluginsDelete) && (
+              <Popover>
+                <PopoverTrigger
+                  className="flex items-center gap-[8px] py-[4px] px-[6px]"
+                  aria-label="More options"
+                >
+                  <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="end"
+                  className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                >
+                  <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                    {projectPermissions?.pluginsEdit && (
                       <DllEditDialog
                         type="edit"
                         onSubmit={(v) => onEdit(v, item.id)}
                         data-testid={`edit-dll-${item.id}`}
                       />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className={clsx(TooltipContentCls)}>
-                    update
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <span />
-            )}
-            {projectPermissions?.pluginsDelete ? (
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div>
+                    )}
+                    {projectPermissions?.pluginsDelete && (
                       <DeleteDialog
                         onYes={() => onDeleteYes(item.id)}
                         title={"Are you sure you want to delete this dll?"}
                         data-testid={`delete-dll-${item.id}`}
                       />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className={clsx(TooltipContentCls)}>
-                    delete
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <span />
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
         ),
@@ -207,7 +206,7 @@ export default function DllTable() {
   return (
     <div className="min-h-[394px]">
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>dll</div>
+        <div className={clsx(textGradient)}>DLL</div>
 
         <DllEditDialog
           disabled={
@@ -226,11 +225,7 @@ export default function DllTable() {
         columns={columns}
         loading={loading}
         data={tableData}
-        emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            {dllEmptyMessage}
-          </div>
-        }
+        emptyNode={<div data-testid="empty-dll-message">{dllEmptyMessage}</div>}
         data-testid="dll-table"
       />
     </div>

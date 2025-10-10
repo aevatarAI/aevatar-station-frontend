@@ -24,30 +24,30 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "name must be at least 1 character long")
+    .min(1, "Name must be at least 1 character long")
     .regex(
       /^[a-zA-Z0-9\-._@+]+$/,
       "Username is invalid, can only contain letters or digits.",
     ),
   email: z.string().email({
-    message: "please enter a valid email address.",
+    message: "Please enter a valid email address.",
   }),
   password: z
     .string()
-    .min(6, "password must be at least 6 characters long")
+    .min(6, "Password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "Password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "Password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "Password must contain at least one uppercase letter ('A'-'Z')",
     )
-    .regex(/[0-9]/, "password must contain at least one digit ('0'-'9')"),
+    .regex(/[0-9]/, "Password must contain at least one digit ('0'-'9')"),
 });
 
 const Register = () => {
@@ -95,23 +95,23 @@ const Register = () => {
   );
 
   return (
-    <div className="flex flex-col text-white w-full lg:w-[408px] gap-4">
+    <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">register</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
-          already registered?&nbsp;
+        <h2 className="text-[18px] font-semibold">Register</h2>
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
+          Already registered?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer"
             onClick={() => {
               navigate("/login");
             }}
           >
-            login
+            Login
           </span>
         </p>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -123,17 +123,17 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      name
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
+                      Name
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your name"
+                        placeholder="Enter your name"
                         {...field}
                         {...form.register("name", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -145,17 +145,17 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      email address
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
+                      Email address
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your email"
+                        placeholder="Enter your email"
                         {...field}
                         {...form.register("email", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -167,18 +167,18 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      password
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="enter your password"
+                        placeholder="Enter your password"
                         type="password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -189,11 +189,12 @@ const Register = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent"
                 disabled={loading}
               >
-                send verification code
+                Send verification code
               </Button>
             </div>
           </form>

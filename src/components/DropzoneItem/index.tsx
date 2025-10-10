@@ -145,13 +145,13 @@ export default function DropzoneItem({
           <div
             {...getRootProps({
               className: cn(
-                "border border-dashed border-black-light py-[29px] flex items-center justify-center cursor-pointer focus-visible:outline-hidden",
+                "border border-dashed border-[var(--color-border-black-light)] py-[29px] flex items-center justify-center cursor-pointer focus-visible:outline-hidden",
               ),
               "data-testid": "dropzone-id",
             })}
           >
             <input {...getInputProps()} aria-label={uploadText} />
-            <p className="font-outfit text-[12px] text-[#B9B9B9] flex flex-col gap-[4px] items-center">
+            <p className="font-geist text-[12px] text-[var(--muted-foreground)] flex flex-col gap-[4px] items-center">
               <UploadIcon />
               <div>{uploadText}</div>
             </p>
@@ -165,11 +165,11 @@ export default function DropzoneItem({
             <div>
               <div
                 data-testid="field-name-dropzoneItem"
-                className="font-outfit text-[12px] text-[#B9B9B9]"
+                className="font-geist text-[12px] text-[var(--muted-foreground)]"
               >
                 {field.name}
               </div>
-              <div className="font-outfit text-[12px] text-gray-deep">
+              <div className="font-geist text-[12px] text-[var(--muted-foreground)]">
                 {field.content?.size && `${field.content?.size} bytes`}
               </div>
             </div>

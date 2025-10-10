@@ -17,7 +17,7 @@ export default function Layout({
       </CustomButton>
       <div className=" flex flex-col gap-[30px] lg:gap-[36px] basis-1/2 items-start lg:justify-center lg:items-center py-9 px-[47px] relative">
         <DescHome className="w-full lg:w-[408px]" />
-        <div className="h-px w-full lg:w-[408px] bg-black-light hidden lg:block" />
+        <div className="h-px w-full lg:w-[408px] bg-[var(--bg-black-light)] hidden lg:block" />
         <div className=" w-full lg:hidden inline-block">
           <div
             className="w-full h-full min-h-[40vh] cutCorner bg-no-repeat bg-cover bg-center"

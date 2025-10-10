@@ -147,7 +147,9 @@ const App = () => (
       </PrivateRoute>
 
       <Route>
-        <div className="text-white text-center">404: No such page!</div>
+        <div className="text-[var(--color-foreground)] text-center">
+          404: No such page!
+        </div>
       </Route>
     </Switch>
     <ProjectInitialisingLoading />

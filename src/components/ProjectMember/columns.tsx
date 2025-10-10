@@ -18,25 +18,29 @@ export const columns: ColumnDef<IMemberTable>[] = [
     ),
   },
   {
-    id: "email",
-    header: "email address",
+    id: "emailAddress",
+    header: "Email Address",
     cell: ({ row }) => (
-      <div className="flex items-center gap-[8px] font-outfit pr-[15px]  ">
+      <div className="flex text-[var(--primary-foreground-text)] items-center gap-[8px] font-geist pr-[15px]  ">
         <span className="truncate max-w-full max-[640px]:max-w-[250px]">
           {row.original.email}
         </span>
         <Copy
-          description="email address copied"
+          description="Email address copied"
           toCopy={row.original.email}
-          className="text-gray-deep hover:text-white"
+          className="text-[var(--muted-foreground)] hover:text-[var(--color-foreground)]"
         />
       </div>
     ),
   },
   {
-    accessorKey: "role",
-    header: "project role",
-    cell: ({ row }) => row.original.role,
+    accessorKey: "projectRole",
+    header: "Project Role",
+    cell: ({ row }) => (
+      <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[15px] truncate max-w-full max-[640px]:max-w-[250px]">
+        {row.original.role}
+      </div>
+    ),
   },
 
   {

@@ -3,14 +3,11 @@ import CreateApiKeyDialog from "@/components/CreateApiKeyDialog";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import EditApiKeyDialog from "@/components/EditApiKeyDialog";
-import Loading from "@/components/Loading";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipContentCls,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { textGradient } from "@/constants/cls";
 import { useDeleteAPIKey } from "@/hooks/useDeleteAPIKey";
 import { useGetAPIKeys } from "@/hooks/useGetAPIKey";
@@ -19,8 +16,8 @@ import { useUpdateAPIKey } from "@/hooks/useUpdateAPIKey";
 import { CURRENT_PROJECT_ATOM } from "@/state/atoms/organisation";
 import clsx from "clsx";
 import { useAtom } from "jotai";
+import { Ellipsis } from "lucide-react";
 import { useMemo } from "react";
-import { Button } from "../ui/button";
 
 export default function ApiKeys() {
   const [currentProjectId] = useAtom(CURRENT_PROJECT_ATOM);
@@ -33,50 +30,46 @@ export default function ApiKeys() {
     return data?.data?.map((item: IApiKeysList) => ({
       ...item,
       operation: (
-        <div key={item.id} className="flex justify-end gap-[7px] pr-[15px]">
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <EditApiKeyDialog
-                    name={item.appName}
-                    disabled={!permissions.apiKeysEdit}
-                    onYes={async (name: string) =>
-                      mutationUpdate({
-                        id: item.id,
-                        name,
-                        projectId: item.projectId,
-                      })
-                    }
-                  />
+        <>
+          {(permissions.apiKeysEdit || permissions?.apiKeysDelete) && (
+            <Popover>
+              <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+              </PopoverTrigger>
+              <PopoverContent
+                side="bottom"
+                align="end"
+                className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+              >
+                <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                  {permissions?.apiKeysEdit && (
+                    <EditApiKeyDialog
+                      name={item.appName}
+                      disabled={!permissions?.apiKeysEdit}
+                      onYes={async (name: string) =>
+                        mutationUpdate({
+                          id: item.id,
+                          name,
+                          projectId: item.projectId,
+                        })
+                      }
+                    />
+                  )}
+                  {permissions?.apiKeysDelete && (
+                    <DeleteDialog
+                      title="Are you sure you want to delete the API key?"
+                      description="*Once deleted, the existing API key will become invalid."
+                      disabled={!permissions?.apiKeysDelete}
+                      onYes={async () =>
+                        mutate({ projectId: item.projectId, id: item.id })
+                      }
+                    />
+                  )}
                 </div>
-              </TooltipTrigger>
-              <TooltipContent className={clsx(TooltipContentCls)}>
-                edit
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <DeleteDialog
-                    title="Are you sure you want to delete the API key?"
-                    description="*Once deleted, the existing API key will become invalid."
-                    disabled={!permissions.apiKeysDelete}
-                    onYes={async () =>
-                      mutate({ projectId: item.projectId, id: item.id })
-                    }
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent className={clsx(TooltipContentCls)}>
-                delete
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+              </PopoverContent>
+            </Popover>
+          )}
+        </>
       ),
     }));
   }, [data, permissions, mutate, mutationUpdate]);
@@ -86,15 +79,15 @@ export default function ApiKeys() {
   // }
 
   if (isError) {
-    return <div>error...</div>;
+    return <div>Error...</div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>api keys</div>
+        <div className={clsx(textGradient)}>API Keys</div>
         <CreateApiKeyDialog
-          disabled={!permissions.apiKeysCreate || data?.data.length > 0}
+          disabled={!permissions?.apiKeysCreate || data?.data.length > 0}
         />
       </div>
       <DataTable
@@ -103,9 +96,7 @@ export default function ApiKeys() {
         columns={columns}
         loading={isLoading}
         emptyNode={
-          <div className="lowercase" data-testid="empty-dll-message">
-            No API keys created yet
-          </div>
+          <div data-testid="empty-dll-message">No API keys created yet</div>
         }
         data={tableData}
       />

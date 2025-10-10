@@ -130,3 +130,17 @@ vi.mock("three", async () => {
     }),
   };
 });
+
+// Global mock for clsx - fix the mock syntax to return proper object
+vi.mock("clsx", () => ({
+  __esModule: true,
+  default: (...args: any[]) => args.filter(Boolean).join(" "),
+  clsx: (...args: any[]) => args.filter(Boolean).join(" "),
+}));
+
+// Mock tailwind-merge to work with our clsx mock
+vi.mock("tailwind-merge", () => ({
+  __esModule: true,
+  default: (...args: any[]) => args.filter(Boolean).join(" "),
+  twMerge: (...args: any[]) => args.filter(Boolean).join(" "),
+}));

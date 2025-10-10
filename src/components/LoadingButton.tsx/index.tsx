@@ -1,7 +1,7 @@
+import Loading from "@/assets/loading.svg?react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import Loading from "@/assets/loading.svg?react";
 
 export default function LoadingButton({
   className,
@@ -12,7 +12,7 @@ export default function LoadingButton({
 }: Omit<ButtonProps, "onClick"> & {
   onLoadingChange?: (loading: boolean) => void;
   onClick?: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => Promise<void>;
 }) {
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
@@ -24,12 +24,17 @@ export default function LoadingButton({
   return (
     <Button
       {...props}
-      className={clsx(btnLoading && "bg-white text-black py-[7px] leading-[14px]", className)}
+      className={clsx(
+        btnLoading &&
+          "bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]",
+        className,
+      )}
       onClick={async (e) => {
         setBtnLoading(true);
         await onClick?.(e);
         setBtnLoading(false);
-      }}>
+      }}
+    >
       {btnLoading && (
         <Loading
           className={clsx("aevatarai-loading-icon")}

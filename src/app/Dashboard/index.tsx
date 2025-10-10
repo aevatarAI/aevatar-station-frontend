@@ -30,32 +30,30 @@ function Dashboard() {
   return (
     <>
       {/* Fixed sidebar for desktop - full viewport height */}
-      <div className="hidden lg:block w-[200px] bg-[#191919] min-w-[200px] h-full sticky top-0">
+      <div className="hidden lg:block w-[200px] min-w-[200px] h-full sticky top-0 bg-[var(--sidebar-background)] border-r border-[var(--color-sidebar-border)]">
         <SideBar onClose={handleClose} />
       </div>
 
       {/* Mobile drawer/sheet */}
       <Sheet>
-        <SheetContent className="lg:hidden w-[200px] bg-[#191919]">
+        <SheetContent className="lg:hidden w-[200px] bg-[var(--sidebar-background)]">
           <DialogClose ref={ref} />
           <SideBar onClose={handleClose} />
         </SheetContent>
       </Sheet>
 
       {/* Scrollable main content */}
-      <div className="flex-1 overflow-auto h-full bg-black">
-        <div
-          className={clsx(
-            " h-full",
-            selectTab !== "workflows" && "pt-[31px] px-[20px] ",
-          )}
-        >
-          {selectTab === "apikeys" && <ApiKeys />}
-          {selectTab === "usage" && <Usage />}
-          {selectTab === "g-agents" && <GAgents />}
-          {selectTab === "workflows" && <WorkflowPage />}
-          {selectTab === "configuration" && <DllPage />}
-        </div>
+      <div
+        className={clsx(
+          "flex-1 overflow-auto h-full mb-[20px] bg-[var(--bg-background)]",
+          selectTab !== "workflows" && "pt-[31px] px-[20px] pb-[20px]",
+        )}
+      >
+        {selectTab === "apikeys" && <ApiKeys />}
+        {selectTab === "usage" && <Usage />}
+        {selectTab === "g-agents" && <GAgents />}
+        {selectTab === "workflows" && <WorkflowPage />}
+        {selectTab === "configuration" && <DllPage />}
       </div>
     </>
   );
@@ -122,7 +120,7 @@ export default function DashboardWrapper() {
   }, [isProjectInit, checkCurrentProjectService]);
 
   return (
-    <div className="flex h-[calc(100vh-60px)] overflow-auto ">
+    <div className="flex h-[calc(100vh-60px)]">
       {!isProjectInit && <ProjectInitialising />}
 
       {isProjectInit && <Dashboard />}

@@ -6,7 +6,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="relative w-full overflow-auto border border-solid rounded-lg border-[var(--color-border-primary)]">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -23,7 +23,8 @@ const TableHeader = React.forwardRef<
   <thead
     ref={ref}
     className={cn(
-      "[&_tr]:border-b text-gray-light text-xs font-bold font-outfit",
+      "[&_tr]:border-b text-[var(--muted-foreground)] text-xs font-bold font-geist border-b border-solid",
+      "border-[var(--color-border-primary)]",
       className,
     )}
     {...props}
@@ -65,7 +66,8 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "transition-colors hover:bg-muted/50 border-black-light data-[state=selected]:bg-muted text-white text-sm font-medium font-outfit",
+      "transition-colors hover:bg-muted/50 border-b border-solid data-[state=selected]:bg-muted text-[var(--color-foreground)] text-sm font-medium font-geist",
+      "border-[var(--color-border-primary)]",
       className,
     )}
     {...props}
@@ -80,7 +82,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "font-outfit text-[13px] font-semibold pb-[20px] leading-normal lowercase text-gray-deep text-left align-middle font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "font-geist text-[13px] font-semibold py-3 leading-normal text-[var(--color-text-foreground)] text-left align-middle font-semibold [&:has([role=checkbox])]:pr-0",
       className,
     )}
     {...props}
@@ -95,7 +97,7 @@ const TableCell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "py-[13.5px] text-[13px] font-outfit align-middle [&:has([role=checkbox])]:pr-0",
+      "py-[18px] text-[13px] font-geist align-middle [&:has([role=checkbox])]:pr-0",
       className,
     )}
     {...props}

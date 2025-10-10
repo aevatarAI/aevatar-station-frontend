@@ -59,15 +59,17 @@ vi.mock("@/assets/tip_icon.svg?react", () => ({
 // Mock DataTable component
 vi.mock("@/components/DataTable", () => ({
   default: ({ data }: { data: any[] }) => (
-    <div data-testid="mock-table">
-      {data?.map((item: any) => (
-        <div key={item.id} data-testid={`role-${item.id}`}>
-          {item.name}
-          {item.organisationRole}
-          {item.operation}
-        </div>
-      ))}
-    </div>
+    <table data-testid="mock-table">
+      <tbody>
+        {data?.map((item: any) => (
+          <tr key={item.id} data-testid={`role-${item.id}`}>
+            <td>{item.name}</td>
+            <td>{item.organisationRole}</td>
+            <td>{item.operation}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   ),
 }));
 
@@ -214,10 +216,22 @@ describe("OrganisationRole", () => {
 
     renderWithProvider(<OrganisationRole />);
 
+    // Wait for the table to render
     await waitFor(() => {
-      const deleteButton = screen.getByTestId("delete-button");
-      fireEvent.click(deleteButton);
+      expect(screen.getByRole("table")).toBeInTheDocument();
     });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButton = screen.getByRole("button", { name: "" });
+    fireEvent.click(ellipsisButton);
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-button")).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByTestId("delete-button");
+    fireEvent.click(deleteButton);
 
     await waitFor(() => {
       expect(mockDeleteRole).toHaveBeenCalledWith({
@@ -237,10 +251,22 @@ describe("OrganisationRole", () => {
 
     renderWithProvider(<OrganisationRole />);
 
+    // Wait for the table to render
     await waitFor(() => {
-      const deleteButton = screen.getByTestId("delete-button");
-      fireEvent.click(deleteButton);
+      expect(screen.getByRole("table")).toBeInTheDocument();
     });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButton = screen.getByRole("button", { name: "" });
+    fireEvent.click(ellipsisButton);
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-button")).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByTestId("delete-button");
+    fireEvent.click(deleteButton);
 
     await waitFor(() => {
       expect(mockToast.toast).toHaveBeenCalledWith({
@@ -308,6 +334,15 @@ describe("OrganisationRole", () => {
 
   it("should not show delete button for owner role", async () => {
     renderWithProvider(<OrganisationRole />);
+
+    // Wait for the table to render
+    await waitFor(() => {
+      expect(screen.getByRole("table")).toBeInTheDocument();
+    });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButton = screen.getByRole("button", { name: "" });
+    fireEvent.click(ellipsisButton);
 
     await waitFor(() => {
       const deleteButtons = screen.getAllByTestId("delete-button");

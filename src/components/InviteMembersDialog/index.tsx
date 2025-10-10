@@ -78,18 +78,21 @@ export default function InviteMembersDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
+        <Button
+          variant="primary"
+          className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]"
+        >
           <Plus />
-          <span>add new member</span>
+          <span>Add New Member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            invite team members
+          <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
+            Invite Team Members
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -101,7 +104,7 @@ export default function InviteMembersDialog({
                 name={"email"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="emailLabel" className="w-full">
-                    <FormLabel id="emailLabel">email address</FormLabel>
+                    <FormLabel id="emailLabel">Email Address</FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
@@ -114,7 +117,7 @@ export default function InviteMembersDialog({
                 name="role"
                 render={({ field }) => (
                   <FormItem aria-labelledby="project" className="w-full">
-                    <FormLabel id="project">role</FormLabel>
+                    <FormLabel id="project">Role</FormLabel>
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
@@ -130,7 +133,7 @@ export default function InviteMembersDialog({
                           <SelectItem
                             key={item.id}
                             value={item.id}
-                            className="text-[#B9B9B9] text-center font-outfit lowercase py-[7px] select-item-wrapper text-[16px]"
+                            className="text-[var(--muted-foreground)] text-center font-geist py-[7px] select-item-wrapper text-[16px]"
                           >
                             {item.name.split("_")[1]}
                           </SelectItem>
@@ -142,38 +145,21 @@ export default function InviteMembersDialog({
                 )}
               />
 
-              {/* <FormField
-                control={form.control}
-                name="defaultProject"
-                render={({ field }) => (
-                  <FormItem className="flex gap-[8px] items-center -mt-[12px]">
-                    <FormControl>
-                      <Checkbox
-                        className="border-[#989DA0] bg-white  disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-deep data-[state=checked]:border-gray-deep"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal mb-0 mt-0!">
-                      invite to default project
-                    </FormLabel>
-                  </FormItem>
-                )}
-              /> */}
-
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  className="text-[13px] bg-[var(--bg-primary)] text-[var(--primary-foreground)] py-[7px] leading-[14px]"
                   type="submit"
+                  variant="primary"
                 >
                   {btnLoading && (
                     <Loading
@@ -181,7 +167,7 @@ export default function InviteMembersDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "inviting" : "invite"}</span>
+                  <span>{btnLoading ? "Inviting" : "Invite"}</span>
                 </Button>
               </div>
             </div>

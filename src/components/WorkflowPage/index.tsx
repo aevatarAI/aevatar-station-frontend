@@ -19,17 +19,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUpdateEffect } from "react-use";
 import { useSearchParams } from "wouter";
 
-const supportAgentTypes = [
-  "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
-  "aevatar.mcp",
-  "psi.omni",
-  "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
-  "social.twitter.twitter-webapi",
-  "tool.twitter",
-  "AevatarGAgentsConstants.ToolGAgentNameSpace.twitter",
-  "Aevatar.GAgents.Twitter.Agent.TwitterGAgent",
-  "agentworkertest",
-];
+// const supportAgentTypes = [
+//   "Aevatar.GAgents.InputGAgent.GAgent.InputGAgent",
+//   "aevatar.mcp",
+//   "psi.omni",
+//   "Aevatar.GAgents.Twitter.GAgents.ChatAIAgent.ChatAIGAgent",
+//   "social.twitter.twitter-webapi",
+//   "tool.twitter",
+//   "AevatarGAgentsConstants.ToolGAgentNameSpace.twitter",
+//   "Aevatar.GAgents.Twitter.Agent.TwitterGAgent",
+//   "agentworkertest",
+// ];
 
 enum WorkflowType {
   WorkflowList = "WorkflowList",
@@ -61,9 +61,10 @@ export default function WorkflowPage() {
       await aevatarAI.services.agent.getAllAgentsConfiguration();
 
     // TODO: support more agent types
-    const _agentTypeList = agentTypeList.filter((item) =>
-      supportAgentTypes.includes(item.agentType),
-    );
+    const _agentTypeList = agentTypeList;
+    // .filter((item) =>
+    //   supportAgentTypes.includes(item.agentType),
+    // );
     setAgentTypeList(_agentTypeList);
 
     // const list = gaevatarList.map((item) => {

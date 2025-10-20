@@ -155,8 +155,8 @@ export default function WorkflowPage() {
             onEditWorkflow={(workflowAgentId) => {
               onEditWorkflow(workflowAgentId);
             }}
-            onNewWorkflow={async () => {
-              setEditWorkflow(undefined);
+            onNewWorkflow={async (workflow) => {
+              setEditWorkflow(workflow);
               await delay(10);
               onShowWorkflow();
             }}

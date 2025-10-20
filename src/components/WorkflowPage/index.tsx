@@ -155,9 +155,9 @@ export default function WorkflowPage() {
             onEditWorkflow={(workflowAgentId) => {
               onEditWorkflow(workflowAgentId);
             }}
-            onNewWorkflow={async (workflow) => {
-              setEditWorkflow(workflow);
-              await delay(10);
+            onNewWorkflow={async () => {
+              setEditWorkflow(undefined);
+              await delay(100);
               onShowWorkflow();
             }}
           />
@@ -203,10 +203,11 @@ export default function WorkflowPage() {
                 </div>
               </div>
             }
-            onBack={() => {
+            onBack={async () => {
               if (fullscreenHandle.active) {
                 fullscreenHandle.exit();
               } else {
+                await delay(500);
                 setWorkflowType(WorkflowType.WorkflowList);
               }
             }}

@@ -1,6 +1,7 @@
 import { request } from "@/api";
 import OrganisationProjects from "@/components/OrganisationProjects";
 import { useToast } from "@/hooks/use-toast";
+import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
@@ -36,13 +37,16 @@ vi.mock("@/hooks/useUpdateOrganisations", () => ({
   useUpdateProjectHandler: vi.fn(),
 }));
 
+vi.mock("@/hooks/useSetCurrentProject", () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
+
 vi.mock("@/components/ProjectEditDialog", () => ({
   __esModule: true,
   default: ({ type, onSubmit }: any) => (
     // biome-ignore lint/a11y/useButtonType: <explanation>
-    <button
-      onClick={() => onSubmit({ name: "Project Test", domainName: "test.com" })}
-    >
+    <button onClick={() => onSubmit({ name: "Project Test" })}>
       {type === "create" ? "Create Project" : "Edit Project"}
     </button>
   ),
@@ -97,12 +101,23 @@ describe("OrganisationProjects Component", () => {
       dismiss: vi.fn(),
       toasts: [],
     });
+
+    // Mock useSetCurrentProject
+    const mockSetCurrentProject = vi.fn();
+    (useSetCurrentProject as any).mockReturnValue(mockSetCurrentProject);
+
     vi.mocked(useUpdateProjectHandler).mockReturnValue(
       mockUpdateProjectListHandler,
     );
 
     // Mock API
-    vi.mocked(request.projects.addProject).mockResolvedValue({});
+    vi.mocked(request.projects.addProject).mockResolvedValue({
+      data: {
+        id: "new-project-id",
+        displayName: "Project Test",
+        domainName: "test.com",
+      },
+    });
     vi.mocked(request.projects.editProject).mockResolvedValue({});
     vi.mocked(request.projects.deleteProject).mockResolvedValue({});
   });
@@ -116,7 +131,7 @@ describe("OrganisationProjects Component", () => {
 
     // Check if the table is rendered
     expect(screen.getByText("Name")).toBeInTheDocument();
-    expect(screen.getByText("domain name")).toBeInTheDocument();
+    expect(screen.getByText("Domain Name")).toBeInTheDocument();
   });
 
   it("should call addProject API on create project", async () => {
@@ -131,7 +146,6 @@ describe("OrganisationProjects Component", () => {
         data: {
           organizationId: "organization-1",
           displayName: "Project Test",
-          domainName: "test.com",
         },
       }),
     );

@@ -61,12 +61,12 @@ export default function CreateCrossURLDialog({
         setOpen(false);
         toast({
           title: "",
-          description: "cross-origin domain added",
+          description: "Cross-origin domain added",
         });
       } catch (error) {
         toast({
           title: "error",
-          description: handleErrorMessage(error, "something error"),
+          description: handleErrorMessage(error, "Something error"),
         });
         setBtnLoading(false);
       }
@@ -79,8 +79,8 @@ export default function CreateCrossURLDialog({
   }, [form, open]);
 
   const btnText = useMemo(() => {
-    if (btnLoading) return "adding";
-    return "add";
+    if (btnLoading) return "Adding";
+    return "Add";
   }, [btnLoading]);
 
   return (
@@ -88,42 +88,49 @@ export default function CreateCrossURLDialog({
       <DialogTrigger asChild>
         {type === "create" ? (
           <Button
+            variant="primary"
             disabled={disabled}
             className={clsx(
-              "text-white text-center font-outfit text-[13px] font-semibold py-[7px] leading-[14px] disabled:opacity/100 disabled:pointer-events-auto group lowercase",
+              "text-center font-geist text-[13px] font-semibold py-[7px] leading-[14px] group",
               fullWidth && "w-full",
               disabled && "disabled:hover:bg-transparent",
               disabled
-                ? "group-hover:text-white"
-                : "group-hover:text-black-light",
+                ? "group-hover:text-[var(--color-foreground)]"
+                : "group-hover:text-[var(--primary-foreground)]",
             )}
           >
             <Add
               className={clsx(
-                "text-white w-[14px]! h-[14px]!",
-                disabled && "text-gray-deep",
+                "w-[14px]! h-[14px]!",
+                disabled && "text-[var(--muted-foreground)]",
                 disabled
-                  ? "group-hover:text-white"
-                  : "group-hover:text-black-light",
+                  ? "group-hover:text-[var(--color-foreground)]"
+                  : "group-hover:text-[var(--primary-foreground)]",
               )}
             />
-            <span className={clsx(disabled && "text-white!")}>add</span>
+            <span
+              className={clsx(disabled && "text-[var(--color-foreground)]!")}
+            >
+              Add
+            </span>
           </Button>
         ) : (
           <Dll
-            className={clsx("cursor-pointer w-[14px] h-[14px] text-[#B9B9B9]")}
+            className={clsx(
+              "cursor-pointer w-[14px] h-[14px] text-[var(--muted-foreground)]",
+            )}
           />
         )}
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] sm:w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] sm:w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] pb-[18px] font-semibold leading-normal lowercase">
+          <DialogTitle className="text-left inline text-[18px] pb-[18px] font-semibold leading-normal">
             {type === "create"
-              ? "add cross-origin domain"
-              : "update cross-origin domain"}
+              ? "Add cross-origin domain"
+              : "Update cross-origin domain"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -135,12 +142,12 @@ export default function CreateCrossURLDialog({
                 name={"domain"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="domain" className="w-full">
-                    <FormLabel id="domain">domain</FormLabel>
+                    <FormLabel id="domain">Domain</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="-"
                         {...field}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -149,17 +156,19 @@ export default function CreateCrossURLDialog({
               />
               <div className="flex justify-between items-start w-full">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
+                  variant="primary"
                   className={clsx(
-                    "text-[13px] bg-white text-black-light py-[7px] leading-[14px] w-[79px]",
+                    "text-[13px] py-[7px] leading-[14px] w-[79px]",
                   )}
                   type="submit"
                 >

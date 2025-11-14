@@ -60,9 +60,17 @@ vi.mock("@/components/CreateRoleDialog", () => ({
 
 vi.mock("@/components/DeleteDialog", () => ({
   __esModule: true,
-  default: ({ onYes }: { onYes: any }) => (
+  default: ({
+    onYes,
+    "data-testid": dataTestId,
+  }: {
+    onYes: any;
+    "data-testid"?: string;
+  }) => (
     // biome-ignore lint/a11y/useButtonType: <explanation>
-    <button onClick={onYes}>Delete Role</button>
+    <button onClick={onYes} data-testid={dataTestId}>
+      Delete Role
+    </button>
   ),
 }));
 
@@ -115,8 +123,8 @@ describe("ProjectRole Component", () => {
     const table = screen.getByRole("table");
     expect(table).toBeInTheDocument();
 
-    expect(screen.getByText("role")).toBeInTheDocument();
-    expect(screen.getByText("project role")).toBeInTheDocument();
+    expect(screen.getByText("Role")).toBeInTheDocument();
+    expect(screen.getByText("Project Role")).toBeInTheDocument();
   });
 
   it("should fetch roles on initial load", async () => {
@@ -155,7 +163,24 @@ describe("ProjectRole Component", () => {
       render(<ProjectRole />);
     });
 
-    const deleteButton = screen.getAllByText("Delete Role")[0];
+    // Wait for the table to render
+    await waitFor(() => {
+      expect(screen.getByRole("table")).toBeInTheDocument();
+    });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButtons = screen.getAllByRole("button", { name: "" });
+    const ellipsisButton = ellipsisButtons[0]; // Get the first ellipsis button
+    await act(async () => {
+      fireEvent.click(ellipsisButton);
+    });
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-role-button")).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByTestId("delete-role-button");
     await act(async () => {
       fireEvent.click(deleteButton);
     });
@@ -186,7 +211,7 @@ describe("ProjectRole Component", () => {
       render(<ProjectRole />);
     });
 
-    expect(screen.queryByText("Delete Role")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("delete-role-button")).not.toBeInTheDocument();
   });
 
   it("should show error toast when API call fails", async () => {
@@ -198,7 +223,24 @@ describe("ProjectRole Component", () => {
       render(<ProjectRole />);
     });
 
-    const deleteButton = screen.getAllByText("Delete Role")[0];
+    // Wait for the table to render
+    await waitFor(() => {
+      expect(screen.getByRole("table")).toBeInTheDocument();
+    });
+
+    // Click the ellipsis button to open the popover
+    const ellipsisButtons = screen.getAllByRole("button", { name: "" });
+    const ellipsisButton = ellipsisButtons[0]; // Get the first ellipsis button
+    await act(async () => {
+      fireEvent.click(ellipsisButton);
+    });
+
+    // Wait for the delete button to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("delete-role-button")).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByTestId("delete-role-button");
     await act(async () => {
       fireEvent.click(deleteButton);
     });

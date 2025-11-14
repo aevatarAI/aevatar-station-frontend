@@ -47,7 +47,9 @@ import { useForm } from "react-hook-form";
 
 export default function CreateApiKeyDialog({
   disabled,
-}: { disabled: boolean }) {
+}: {
+  disabled: boolean;
+}) {
   const { data: projectList, isLoading } = useGetProjects();
   const [currentProject] = useAtom(CURRENT_PROJECT_ATOM);
   const { mutate } = useCreateAPIKey();
@@ -71,7 +73,7 @@ export default function CreateApiKeyDialog({
       setOpen(false);
       toast({
         title: "",
-        description: "successfully created",
+        description: "Successfully created",
       });
     },
     [toast],
@@ -82,27 +84,28 @@ export default function CreateApiKeyDialog({
   }, [form, open]);
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
+          variant="primary"
           className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]"
           disabled={disabled}
         >
           <Plus />
-          <span>create</span>
+          <span>Create</span>
         </Button>
       </DialogTrigger>
       <DialogContent
-        aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        aria-describedby="Create new API key"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            create new api key
+          <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
+            Create new API key
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -114,9 +117,9 @@ export default function CreateApiKeyDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
+                    <FormLabel id="nameLabel">Name of the key</FormLabel>
                     <FormControl>
-                      <Input placeholder="name" {...field} />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,7 +131,7 @@ export default function CreateApiKeyDialog({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem aria-labelledby="project" className="w-full">
-                    <FormLabel id="project">project</FormLabel>
+                    <FormLabel id="project">Project</FormLabel>
                     <Select
                       value={field?.value}
                       disabled={field?.disabled}
@@ -160,16 +163,18 @@ export default function CreateApiKeyDialog({
               />
               <div className="flex justify-between items-start self-stretch pt-[12px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (
@@ -178,7 +183,7 @@ export default function CreateApiKeyDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "creating" : "create"}</span>
+                  <span>{btnLoading ? "Creating" : "Create"}</span>
                 </Button>
               </div>
             </div>

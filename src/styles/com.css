@@ -1,6 +1,6 @@
-div[data-radix-popper-content-wrapper] {
+/* div[data-radix-popper-content-wrapper] {
   z-index: 101 !important;
-}
+} */
 .scrollable-touch {
   -webkit-overflow-scrolling: touch;
 }

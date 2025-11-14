@@ -31,20 +31,20 @@ describe("ProjectEditDialog Component", () => {
     vi.resetAllMocks();
   });
 
-  it("should render create dialog when type is 'create'", () => {
+  it("should render create dialog when type is 'Create'", () => {
     render(<ProjectEditDialog type="create" onSubmit={mockOnSubmit} />);
-    expect(screen.getByText("create")).toBeInTheDocument();
+    expect(screen.getByText("Create")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("create"));
+    fireEvent.click(screen.getByText("Create"));
 
-    expect(screen.getByText("create project")).toBeInTheDocument();
+    expect(screen.getByText("Create Project")).toBeInTheDocument();
     // expect(screen.getByLabelText("project name")).toBeInTheDocument();
     // expect(screen.getByLabelText("domain name")).toBeInTheDocument();
     // expect(screen.getByText("cancel")).toBeInTheDocument();
     // expect(screen.getByText("create")).toBeInTheDocument();
   });
 
-  //   it("should render edit dialog when type is 'edit'", () => {
+  //   it("should render edit dialog when type is 'Edit'", () => {
   //     render(
   //       <ProjectEditDialog
   //         type="edit"

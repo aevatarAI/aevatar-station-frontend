@@ -50,7 +50,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
       setOpen(false);
       toast({
         title: "",
-        description: "successfully created",
+        description: "Successfully created",
       });
     },
     [toast, onCreate],
@@ -63,18 +63,21 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
+        <Button
+          variant="primary"
+          className="py-2 py-1.5 gap-[10px] text-[13px] font-semibold leading-[14px]"
+        >
           <Plus />
-          <span>add role</span>
+          <span>Add Role</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="create new api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left aevatarai-text-gradient-center inline text-[18px] font-semibold leading-normal lowercase bg-linear-to-r from-white to-gray-600">
-            create role
+          <DialogTitle className="text-left inline text-[18px] font-semibold leading-normal">
+            Create Role
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -86,7 +89,12 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                 name={"roleName"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="emailLabel" className="w-full">
-                    <FormLabel id="emailLabel">role name</FormLabel>
+                    <FormLabel
+                      id="emailLabel"
+                      className="text-[var(--color-foreground)]"
+                    >
+                      Role Name
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="-" {...field} />
                     </FormControl>
@@ -97,16 +105,18 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (
@@ -116,7 +126,7 @@ export default function CreateRoleDialog({ onCreate }: ICreateRoleDialogProps) {
                       data-testid="loading-icon"
                     />
                   )}
-                  <span>{btnLoading ? "creating" : "create"}</span>
+                  <span>{btnLoading ? "Creating" : "Create"}</span>
                 </Button>
               </div>
             </div>

@@ -5,23 +5,25 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-outfit text-[14px] font-semibold ring-offset-background transition-colors focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-geist text-[14px] font-medium ring-offset-background transition-colors focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
+        primary:
+          "bg-[var(--bg-primary)] text-[var(--primary-foreground)] hover:bg-[var(--hover-primary)] disabled:opacity-50",
         default:
-          "border-solid border-[0.75px] border-gray-deep md:hover:bg-white md:hover:text-black",
+          "border-solid border-[1px] border-[var(--color-input)] md:hover:bg-[var(--hover-primary)] md:hover:text-[var(--primary-foreground)]",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-[var(--color-input)] text-[var(--primary-foreground-text)] bg-[var(--bg-background)] hover:bg-[var(--bg-accent)] hover:text-[var(--primary-foreground-text)] disabled:opacity-50 disabled:cursor-not-allowed",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "px-[18px] py-[10px]",
+        default: "px-[18px] rounded-md py-[10px]",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",

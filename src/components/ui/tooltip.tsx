@@ -58,7 +58,7 @@ const Tooltip = ({
 };
 
 const TooltipContentCls =
-  "z-1000 max-w-[200px] text-[12px] font-outfit text-[#B9B9B9] bg-[#141415] p-[4px] " +
+  "z-1000 max-w-[200px] text-[12px] font-geist p-[4px] " +
   "whitespace-pre-wrap break-words text-left border-none";
 
 export {

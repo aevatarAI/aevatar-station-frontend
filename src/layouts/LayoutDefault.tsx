@@ -3,7 +3,9 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import "@fontsource/outfit";
+import "@fontsource/geist";
+import "@fontsource/geist/500.css";
+import "@fontsource/geist/700.css";
 import "@fontsource/syne";
 import "@fontsource/syne/600.css";
 import "@fontsource/syne/700.css";
@@ -13,6 +15,7 @@ import "./style.css";
 import "./tailwind.css";
 
 import Loading from "@/components/Loading";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import type React from "react";
 
@@ -27,14 +30,16 @@ export default function LayoutDefault({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ProviderComponent> */}
-      <div>
-        <div className="grow">{children}</div>
-        <Loading />
-        <Toaster />
-        <RestartPodServer />
-      </div>
-      {/* </ProviderComponent> */}
+      <ThemeProvider>
+        {/* <ProviderComponent> */}
+        <div>
+          <div className="grow">{children}</div>
+          <Loading />
+          <Toaster />
+          <RestartPodServer />
+        </div>
+        {/* </ProviderComponent> */}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

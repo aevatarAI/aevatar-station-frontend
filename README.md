@@ -26,6 +26,23 @@ A React-based frontend application for the Aevatar Station platform, built with 
 - 🌐 Cross-URL configuration
 - 🔔 Real-time notifications
 
+## Environment Configuration
+
+This project supports multiple environment configurations for different deployment scenarios. See [ENVIRONMENT.md](./ENVIRONMENT.md) for detailed configuration information.
+
+### Quick Start
+
+```bash
+# Development environment (staging backend)
+pnpm dev
+
+# Local environment (local backend)
+pnpm dev:local
+
+# Production environment (production backend)
+pnpm dev:production
+```
+
 ## Getting Started
 
 ### Prerequisites
@@ -52,8 +69,20 @@ pnpm dev
 
 ### Available Scripts
 
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
+#### Development Commands
+
+- `pnpm dev` - Start development server with development environment
+- `pnpm dev:local` - Start development server with local environment
+- `pnpm dev:production` - Start development server with production environment
+
+#### Build Commands
+
+- `pnpm build` - Build for development environment
+- `pnpm build:local` - Build for local environment
+- `pnpm build:production` - Build for production environment
+
+#### Other Commands
+
 - `pnpm preview` - Preview production build
 - `pnpm test` - Run tests
 - `pnpm test:coverage` - Run tests with coverage report

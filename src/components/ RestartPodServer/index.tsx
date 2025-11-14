@@ -24,7 +24,7 @@ export default function RestartPodServer() {
               className={clsx("aevatarai-loading-icon")}
               style={{ width: 14, height: 14 }}
             />
-            <span>service restarting...</span>
+            <span>Service Restarting...</span>
           </div>
         ),
         duration: 9999999999999,
@@ -41,7 +41,7 @@ export default function RestartPodServer() {
             setRestartPodServer(RESET);
             dismiss();
             toast({
-              description: "service restarted successfully",
+              description: "Service restarted successfully",
             });
           }
           await delay(3000);

@@ -2,7 +2,15 @@ import { request } from "@/api";
 import DataTable from "@/components/DataTable";
 import DeleteDialog from "@/components/DeleteDialog";
 import { columns } from "@/components/OrganisationProjects/columns";
-import ProjectEditDialog from "@/components/ProjectEditDialog";
+import ProjectEditDialog, {
+  type IProjectEditDialogRef,
+} from "@/components/ProjectEditDialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { textGradient } from "@/constants/cls";
 import type { TProjectEditForm } from "@/constants/form/project";
 import { useNavigate } from "@/hooks/navigate";
@@ -12,13 +20,14 @@ import useSetCurrentProject from "@/hooks/useSetCurrentProject";
 import { useUpdateProjectHandler } from "@/hooks/useUpdateOrganisations";
 import {
   CURRENT_ORGANIZATION_ATOM,
-  CURRENT_PROJECT_ATOM,
   PROJECT_LIST_ATOM,
 } from "@/state/atoms/organisation";
 import { handleErrorMessage } from "@/utils/error";
 import clsx from "clsx";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Ellipsis } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "wouter";
 
 export default function OrganisationProjects() {
   const [loading, setLoading] = useState<boolean>();
@@ -30,6 +39,16 @@ export default function OrganisationProjects() {
 
   const userPermissions = useOrgPermissions();
   const updateProjectListHandler = useUpdateProjectHandler();
+  const [searchParams] = useSearchParams();
+  const projectEditDialogRef = useRef<IProjectEditDialogRef>(null);
+
+  useEffect(() => {
+    const action = searchParams.get("action");
+    console.log(action, "action==");
+    if (action === "create") {
+      projectEditDialogRef.current?.open();
+    }
+  }, [searchParams]);
 
   const updateProjectList = useCallback(async () => {
     if (!organizationId) return;
@@ -47,7 +66,7 @@ export default function OrganisationProjects() {
 
   const onEdit = useCallback(
     async ({ name }: TProjectEditForm, id: string) => {
-      await request.projects.editProject({
+      const result = await request.projects.editProject({
         query: id,
         data: {
           displayName: name,
@@ -56,26 +75,25 @@ export default function OrganisationProjects() {
       });
 
       updateProjectList();
-      return { projectId: id };
+      return { projectId: id, domainName: result.data.domainName };
     },
     [updateProjectList],
   );
 
   const onCreate = useCallback(
-    async ({ domainName, name }: TProjectEditForm) => {
+    async ({ name }: TProjectEditForm) => {
       if (!organizationId) throw new Error("organizationId is required");
       const result = await request.projects.addProject({
         data: {
           organizationId,
           displayName: name,
-          domainName,
         },
       });
       const projectId = result.data.id;
       await updateProjectListHandler(organizationId);
       setCurrentProject(projectId, result.data.domainName);
       navigate("/dashboard/workflows");
-      return { projectId };
+      return { projectId, domainName: result.data.domainName };
     },
     [organizationId, updateProjectListHandler, setCurrentProject, navigate],
   );
@@ -97,7 +115,7 @@ export default function OrganisationProjects() {
           query: id,
         });
         toast({
-          description: "successfully deleted",
+          description: "Successfully deleted",
         });
         updateProjectList();
       } catch (error) {
@@ -114,29 +132,41 @@ export default function OrganisationProjects() {
       projectList.map((item) => ({
         ...item,
         operation: (
-          <div className="flex items-center gap-[7px] pl-[20px]">
-            {userPermissions?.projectsEdit ? (
-              <ProjectEditDialog
-                type="edit"
-                name={item.displayName}
-                domainName={item.domainName}
-                onSubmit={(v) => onEdit(v, item.id)}
-              />
-            ) : (
-              <span />
+          <>
+            {(userPermissions?.projectsEdit ||
+              userPermissions?.projectsDelete) && (
+              <Popover>
+                <PopoverTrigger className="flex items-center gap-[8px] py-[4px] px-[6px]">
+                  <Ellipsis className="text-[var(--color-text-foreground)] w-[16px] h-[16px]" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="end"
+                  className="lg:p-0 left-0 lg:-top-[10px] w-[224px]"
+                >
+                  <div className="lg:p-[8px] max-h-[300px] scrollbar-hide overflow-auto">
+                    {userPermissions?.projectsEdit && (
+                      <ProjectEditDialog
+                        type="edit"
+                        name={item.displayName}
+                        domainName={item.domainName}
+                        onSubmit={(v) => onEdit(v, item.id)}
+                      />
+                    )}
+                    {userPermissions?.projectsDelete && (
+                      <DeleteDialog
+                        onYes={() => onDeleteYes(item.id)}
+                        title={"Are you sure you want to delete the project?"}
+                        description={
+                          "*Once deleted, the existing project will become invalid."
+                        }
+                      />
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
-            {userPermissions?.projectsDelete ? (
-              <DeleteDialog
-                onYes={() => onDeleteYes(item.id)}
-                title={"Are you sure you want to delete the project?"}
-                description={
-                  "*Once deleted, the existing project will become invalid."
-                }
-              />
-            ) : (
-              <span />
-            )}
-          </div>
+          </>
         ),
       })),
     [projectList, userPermissions, onEdit, onDeleteYes],
@@ -144,9 +174,11 @@ export default function OrganisationProjects() {
   return (
     <div>
       <div className="flex justify-between items-center pb-[30px]">
-        <div className={clsx(textGradient)}>organisation projects</div>
+        <div className={clsx(textGradient)}>Organisation Projects</div>
         {userPermissions?.projectsCreate ? (
           <ProjectEditDialog
+            modal={false}
+            ref={projectEditDialogRef}
             type="create"
             onSubmit={onCreate}
             // onCheckProjectService={onCheckProjectService}

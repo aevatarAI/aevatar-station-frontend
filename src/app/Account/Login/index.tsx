@@ -32,22 +32,22 @@ import { z } from "zod";
 const images = [robotImg1, robotImg2, robotImg3, robotImg4];
 const formSchema = z.object({
   username: z.string().email({
-    message: "please enter a valid email address.",
+    message: "Please enter a valid email address.",
   }),
   password: z
     .string()
-    .min(6, "password must be at least 6 characters long")
+    .min(6, "Password must be at least 6 characters long")
     .regex(
       /[^a-zA-Z0-9]/,
-      "password must contain at least one non-alphanumeric character",
+      "Password must contain at least one non-alphanumeric character",
     )
     .regex(
       /[a-z]/,
-      "password must contain at least one lowercase letter ('a'-'z')",
+      "Password must contain at least one lowercase letter ('a'-'z')",
     )
     .regex(
       /[A-Z]/,
-      "password must contain at least one uppercase letter ('A'-'Z')",
+      "Password must contain at least one uppercase letter ('A'-'Z')",
     ),
 });
 
@@ -83,7 +83,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken],
+    [toast, setAccessToken, navigate, getUserProfile, setRefreshToken]
   );
 
   const handleGithubLogin = () => {
@@ -92,13 +92,15 @@ const Login = () => {
     const scope = "user";
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURI}&scope=${scope}`;
 
+    console.log({ clientId });
+
     window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const redirectUri = encodeURIComponent(
-      `${window.location.origin}/auth/google/callback`,
+      `${window.location.origin}/auth/google/callback`
     );
     const scope = encodeURIComponent("openid email profile");
     const responseType = "id_token token";
@@ -110,23 +112,23 @@ const Login = () => {
   };
 
   return (
-    <div className=" flex flex-col text-white w-full lg:w-[408px] gap-4">
+    <div className=" flex flex-col text-[var(--color-foreground)] w-full lg:w-[408px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">login</h2>
-        <p className="text-gray-light font-normal text-[13px] font-outfit">
-          not a member yet?&nbsp;
+        <h2 className="text-[18px] font-semibold">Login</h2>
+        <p className="text-[var(--muted-foreground)] font-normal text-[13px] font-geist">
+          Not a member yet?&nbsp;
           <span
-            className="font-normal text-white cursor-pointer font-outfit text-white hover:text-gray-light"
+            className="font-normal text-[var(--color-foreground)] cursor-pointer font-geist text-[var(--color-foreground)] hover:text-[var(--muted-foreground)]"
             onClick={() => {
               navigate("/register");
             }}
           >
-            register
+            Register
           </span>
         </p>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -138,8 +140,8 @@ const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      email address
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
+                      Email address
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -147,8 +149,8 @@ const Login = () => {
                         {...form.register("username", {
                           required: "required",
                         })}
-                        placeholder="enter your email"
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        placeholder="Enter your email"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -160,18 +162,18 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="block text-[13px] font-semibold">
-                      password
+                    <FormLabel className="text-[var(--color-foreground)] block text-[13px] font-semibold">
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         {...field}
                         {...form.register("password", {
                           required: "required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,11 +184,12 @@ const Login = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+                className="w-full flex justify-center border border-transparent hover:opacity-95"
                 disabled={loading}
               >
-                {loading ? "logging in" : "log in"}
+                {loading ? "Logging in" : "Log in"}
               </Button>
             </div>
           </form>
@@ -195,25 +198,27 @@ const Login = () => {
           <ForgotPasswordDialog />
         </div>
         <div className="flex flex-col gap-[10px] mt-[30px] max-[431px]:mt-[36px]">
-          <span className="text-gray-light font-normal font-semibold text-[13px]">
+          <span className="text-[var(--muted-foreground)] font-normal font-semibold text-[13px]">
             or sign in with
           </span>
           <div className="flex flex-between gap-[20px] max-[431px]:flex-col">
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGoogleLogin}
             >
               <GoogleIcon />
-              <span>google</span>
+              <span>Google</span>
             </Button>
             <Button
+              variant="primary"
               type="button"
-              className="w-full flex justify-center border border-transparent bg-white text-black-light hover:opacity-95"
+              className="w-full flex justify-center border border-transparent hover:opacity-95"
               onClick={handleGithubLogin}
             >
               <GithubIcon />
-              <span>github</span>
+              <span>Github</span>
             </Button>
           </div>
         </div>
@@ -225,7 +230,7 @@ const Login = () => {
 const LoginPage = () => {
   const randomImage = useMemo(
     () => images[Math.floor(Math.random() * images.length)],
-    [],
+    []
   );
   return (
     <Layout backgroundImage={randomImage}>

@@ -83,18 +83,21 @@ export default function AddMembersDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="py-[6px] gap-[10px] text-[13px] font-semibold leading-[14px]">
+        <Button
+          variant="primary"
+          className="py-2 py-1.5 gap-[10px] text-[13px] font-semibold leading-[14px]"
+        >
           <Plus />
-          <span>add new member</span>
+          <span>Add new member</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby="add new member"
-        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-7 rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            add team members
+          <DialogTitle className="text-left text-[var(--color-foreground)] inline text-[18px] font-semibold leading-normal">
+            Add team members
           </DialogTitle>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -104,7 +107,7 @@ export default function AddMembersDialog({
                   name={"email"}
                   render={({ field }) => (
                     <FormItem aria-labelledby="emailLabel" className="w-full">
-                      <FormLabel id="emailLabel">email address</FormLabel>
+                      <FormLabel id="emailLabel">Email Address</FormLabel>
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
@@ -139,7 +142,7 @@ export default function AddMembersDialog({
                   name="role"
                   render={({ field }) => (
                     <FormItem aria-labelledby="roleLobal" className="w-full">
-                      <FormLabel id="roleLobal">role</FormLabel>
+                      <FormLabel id="roleLobal">Role</FormLabel>
                       <Select
                         value={field?.value}
                         disabled={field?.disabled}
@@ -171,16 +174,18 @@ export default function AddMembersDialog({
                 />
                 <div className="flex justify-between items-start self-stretch pt-[8px]">
                   <Button
+                    variant="outline"
                     className="text-[13px] py-[7px] leading-[14px]"
                     type="reset"
                     onClick={() => {
                       setOpen(false);
                     }}
                   >
-                    cancel
+                    Cancel
                   </Button>
                   <Button
-                    className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                    variant="primary"
+                    className="text-[13px] py-[7px] leading-[14px]"
                     type="submit"
                   >
                     {btnLoading && (
@@ -189,7 +194,7 @@ export default function AddMembersDialog({
                         style={{ width: 14, height: 14 }}
                       />
                     )}
-                    <span>{btnLoading ? "adding" : "add"}</span>
+                    <span>{btnLoading ? "Adding" : "Add"}</span>
                   </Button>
                 </div>
               </div>

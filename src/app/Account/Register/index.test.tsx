@@ -1,4 +1,4 @@
-import { render, screen  } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Register from ".";
 
@@ -13,12 +13,12 @@ describe("Register Component", () => {
   it("renders the form correctly", () => {
     render(<Register />);
 
-    expect(screen.getByText("register")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("enter your name")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("enter your email")).toBeInTheDocument();
+    expect(screen.getByText("Register")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Enter your name")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Enter your email")).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("enter your password"),
+      screen.getByPlaceholderText("Enter your password"),
     ).toBeInTheDocument();
-    expect(screen.getByText("send verification code")).toBeInTheDocument();
+    expect(screen.getByText("Send verification code")).toBeInTheDocument();
   });
 });

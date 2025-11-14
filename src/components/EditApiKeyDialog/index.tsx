@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { itemHoverNotBorderClassName } from "@/constants/cls";
+import { itemClassName } from "@/constants/cls";
 import {
   type TEditApiKeyForm,
   editKeyApiForm,
@@ -52,7 +54,7 @@ export default function EditApiKeyDialog({
       setOpen(false);
       toast({
         title: "",
-        description: "successfully saved",
+        description: "Successfully saved",
       });
     },
     [toast, onYes],
@@ -68,16 +70,24 @@ export default function EditApiKeyDialog({
         <Edit className="opacity-50" />
       ) : (
         <DialogTrigger asChild>
-          <Edit className="cursor-pointer" />
+          <div
+            className={clsx(
+              itemClassName,
+              itemHoverNotBorderClassName,
+              "justify-start py-1.5 px-2 rounded-[4px]",
+            )}
+          >
+            Edit
+          </div>
         </DialogTrigger>
       )}
       <DialogContent
         aria-describedby="edit api key"
-        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-black-light"
+        className="w-[328px] p-5 flex flex-col gap-[28px] rounded-[6px] border border-[var(--color-border-black-light)]"
       >
         <DialogHeader>
-          <DialogTitle className="text-left text-gradient inline text-[18px] font-semibold leading-normal lowercase">
-            edit api key
+          <DialogTitle className="text-left  inline text-[18px] font-semibold leading-normal">
+            Edit API Key
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -89,10 +99,10 @@ export default function EditApiKeyDialog({
                 name={"name"}
                 render={({ field }) => (
                   <FormItem aria-labelledby="nameLabel" className="w-full">
-                    <FormLabel id="nameLabel">name of the key</FormLabel>
+                    <FormLabel id="nameLabel">Name of the Key</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name"
+                        placeholder="Name"
                         {...field}
                         defaultValue={name}
                       />
@@ -104,16 +114,18 @@ export default function EditApiKeyDialog({
 
               <div className="flex justify-between items-start self-stretch pt-[8px]">
                 <Button
+                  variant="outline"
                   className="text-[13px] py-[7px] leading-[14px]"
                   type="reset"
                   onClick={() => {
                     setOpen(false);
                   }}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
-                  className="text-[13px] bg-white text-black-light py-[7px] leading-[14px]"
+                  variant="primary"
+                  className="text-[13px] py-[7px] leading-[14px]"
                   type="submit"
                 >
                   {btnLoading && (
@@ -123,7 +135,7 @@ export default function EditApiKeyDialog({
                       style={{ width: 14, height: 14 }}
                     />
                   )}
-                  <span>{btnLoading ? "saving" : "save"}</span>
+                  <span>{btnLoading ? "Saving" : "Save"}</span>
                 </Button>
               </div>
             </div>

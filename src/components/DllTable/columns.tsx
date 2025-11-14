@@ -12,8 +12,8 @@ export interface IProjectTable extends IDllPlugin {
 
 export const columns: ColumnDef<IProjectTable>[] = [
   {
-    accessorKey: "name",
-    header: "dll file",
+    accessorKey: "dllFile",
+    header: "DLL File",
     cell: ({ row }) => (
       <div className="min-w-[125px] text-[14px] font-semibold pl-[15px] pr-[20px] md:pr-[30px]">
         {row.original.name}
@@ -22,9 +22,9 @@ export const columns: ColumnDef<IProjectTable>[] = [
   },
   {
     accessorKey: "created",
-    header: "created",
+    header: "Created",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-geist">
         {dayjs
           .utc(row.original.creationTime)
           .local()
@@ -33,11 +33,11 @@ export const columns: ColumnDef<IProjectTable>[] = [
     ),
   },
   {
-    accessorKey: "creatorName",
-    header: "created by",
+    accessorKey: "createdBy",
+    header: "Created By",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.creatorName || "Unknown"}
         </div>
       );
@@ -45,9 +45,9 @@ export const columns: ColumnDef<IProjectTable>[] = [
   },
   {
     accessorKey: "updated",
-    header: "updated",
+    header: "Updated",
     cell: ({ row }) => (
-      <div className="pr-[20px] md:pr-[30px] w-[175px] font-outfit">
+      <div className="text-[var(--primary-foreground-text)] pr-[20px] md:pr-[30px] w-[175px] font-geist">
         {row.original.lastModificationTime
           ? dayjs
               .utc(row.original.lastModificationTime)
@@ -58,24 +58,24 @@ export const columns: ColumnDef<IProjectTable>[] = [
     ),
   },
   {
-    accessorKey: "lastModifierName",
-    header: "updated by",
+    accessorKey: "updatedBy",
+    header: "Updated By",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[14px] font-semibold">
+        <div className="text-[var(--primary-foreground-text)] min-w-[125px] text-[14px] font-semibold">
           {row.original.lastModifierName || "-"}
         </div>
       );
     },
   },
   {
-    accessorKey: "loadStatus",
-    header: "status",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => {
       return (
-        <div className="min-w-[125px] text-[16px] font-semibold lowercase font-outfit">
-          {row.original.loadStatus === ELoadStatus.Uploaded && "uploaded"}
-          {row.original.loadStatus === ELoadStatus.Deployed && "deployed"}
+        <div className="min-w-[125px] text-[16px] font-semibold font-geist">
+          {row.original.loadStatus === ELoadStatus.Uploaded && "Uploaded"}
+          {row.original.loadStatus === ELoadStatus.Deployed && "Deployed"}
           {row.original.loadStatus !== ELoadStatus.Uploaded &&
             row.original.loadStatus !== ELoadStatus.Deployed && (
               <TooltipProvider delayDuration={0} key={`${row.id}-provider`}>
@@ -83,11 +83,11 @@ export const columns: ColumnDef<IProjectTable>[] = [
                   <TooltipTrigger asChild>
                     <span className="inline-flex items-center gap-1">
                       <TipIcon />
-                      <span className="text-[#FF2E2E]">error</span>
+                      <span className="text-[var(--color-error)]">Error</span>
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-[300px] text-center">
-                    <p>{row.original.reason ?? "something went wrong"}</p>
+                    <p>{row.original.reason ?? "Something went wrong"}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

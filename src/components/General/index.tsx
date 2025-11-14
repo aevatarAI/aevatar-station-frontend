@@ -27,7 +27,7 @@ export interface IGeneralProps {
 
 const defalutButtonProps: IGeneralProps["buttonProps"] = {
   placement: "bottom-left",
-  text: "save",
+  text: "Save",
   className: "text-[13px] font-normal px-[18px] py-[8px]",
 };
 
@@ -71,6 +71,7 @@ const General = forwardRef(
       if (readonly) return null;
       return (
         <LoadingButton
+          variant="primary"
           className={clsx(_buttonProps?.className, "font-semibold")}
           onClick={async () => {
             if (!inputText) return;
@@ -83,19 +84,17 @@ const General = forwardRef(
     }, [_buttonProps, readonly, inputText, onConfirm]);
     return (
       <div>
-        <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-black-light">
-          <div className="font-outfit text-[18px] font-semibold lowercase aevatarai-text-gradient">
-            {header}
-          </div>
+        <div className="flex justify-between items-center pb-[20px] lg:pb-[30px] border-b border-[var(--color-border-black-light)]">
+          <div className="font-geist text-[18px] font-semibold">{header}</div>
           <div>{_buttonProps.placement === "top-right" && buttonELe}</div>
         </div>
         <div className="pt-[30px]">
           <div>
-            <div className="text-[#B9B9B9] font-outfit text-[13px] font-semibold leading-normal pb-[10px]">
+            <div className="font-geist text-[13px] font-semibold leading-normal pb-[10px]">
               {title}
             </div>
             <Input
-              className="max-w-[498px] disabled:opacity-100"
+              className="max-w-[498px] disabled:opacity-100 placeholder:text-[var(--color-text-secondary)]"
               placeholder={inputPlaceholder}
               value={inputText}
               disabled={readonly}

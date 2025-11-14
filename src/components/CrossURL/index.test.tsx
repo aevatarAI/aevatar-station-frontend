@@ -110,7 +110,7 @@ describe("CrossURL Component", () => {
     render(<CrossURL />);
     await waitFor(() => {
       expect(getCrossURLs).toHaveBeenCalledWith(mockProjectId);
-      expect(screen.getByText("cors")).toBeInTheDocument();
+      expect(screen.getByText("CORS")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api1")).toBeInTheDocument();
       expect(screen.getByText("https://example.com/api2")).toBeInTheDocument();
     });
@@ -136,7 +136,7 @@ describe("CrossURL Component", () => {
         "https://test.com",
       );
       expect(mockToast).toHaveBeenCalledWith({
-        description: "cross-origin domain added",
+        description: "Cross-origin domain added",
       });
       expect(getCrossURLs).toHaveBeenCalledTimes(2); // initial + after add
     });
@@ -144,7 +144,7 @@ describe("CrossURL Component", () => {
 
   it("should handle add cross URL error", async () => {
     vi.mocked(addProjectCorsOrigin).mockRejectedValueOnce(
-      new Error("add error"),
+      new Error("Add error"),
     );
     render(<CrossURL />);
     const addBtn = await screen.findByTestId("create-cross-url-button");
@@ -152,15 +152,24 @@ describe("CrossURL Component", () => {
       fireEvent.click(addBtn);
     });
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({ description: "add error" });
+      expect(mockToast).toHaveBeenCalledWith({ description: "Add error" });
     });
   });
 
   it("should handle delete cross URL", async () => {
     render(<CrossURL />);
-    const deleteBtns = await screen.findAllByTestId("delete-cross-url-button");
+    // First click the ellipsis button to open the popover
+    const ellipsisBtns = await screen.findAllByRole("button", {
+      name: /more options/i,
+    });
+    const ellipsisBtn = ellipsisBtns[0];
     await act(async () => {
-      fireEvent.click(deleteBtns[0]);
+      fireEvent.click(ellipsisBtn);
+    });
+    // Then find and click the delete button
+    const deleteBtn = await screen.findByTestId("delete-cross-url-button");
+    await act(async () => {
+      fireEvent.click(deleteBtn);
     });
     await waitFor(() => {
       expect(deleteProjectCorsOrigin).toHaveBeenCalledWith(
@@ -168,7 +177,7 @@ describe("CrossURL Component", () => {
         mockCrossURLs[0].id,
       );
       expect(mockToast).toHaveBeenCalledWith({
-        description: "cross-origin domain deleted",
+        description: "Cross-origin domain deleted",
       });
       expect(getCrossURLs).toHaveBeenCalledTimes(2); // initial + after delete
     });
@@ -176,15 +185,24 @@ describe("CrossURL Component", () => {
 
   it("should handle delete cross URL error", async () => {
     vi.mocked(deleteProjectCorsOrigin).mockRejectedValueOnce(
-      new Error("delete error"),
+      new Error("Delete error"),
     );
     render(<CrossURL />);
-    const deleteBtns = await screen.findAllByTestId("delete-cross-url-button");
+    // First click the ellipsis button to open the popover
+    const ellipsisBtns = await screen.findAllByRole("button", {
+      name: /more options/i,
+    });
+    const ellipsisBtn = ellipsisBtns[0];
     await act(async () => {
-      fireEvent.click(deleteBtns[0]);
+      fireEvent.click(ellipsisBtn);
+    });
+    // Then find and click the delete button
+    const deleteBtn = await screen.findByTestId("delete-cross-url-button");
+    await act(async () => {
+      fireEvent.click(deleteBtn);
     });
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({ description: "delete error" });
+      expect(mockToast).toHaveBeenCalledWith({ description: "Delete error" });
     });
   });
 
@@ -222,20 +240,20 @@ describe("CrossURL Component", () => {
 describe("Configuration Component", () => {
   it("should render title and button", () => {
     render(<Configuration />);
-    expect(screen.getByText("configuration")).toBeInTheDocument();
-    expect(screen.getByText(" restart services")).toBeInTheDocument();
+    expect(screen.getByText("Configuration")).toBeInTheDocument();
+    expect(screen.getByText("Restart services")).toBeInTheDocument();
   });
 
   it("should call onRestart when button clicked", () => {
     const onRestart = vi.fn();
     render(<Configuration onRestart={onRestart} />);
-    fireEvent.click(screen.getByText(" restart services"));
+    fireEvent.click(screen.getByText("Restart services"));
     expect(onRestart).toHaveBeenCalled();
   });
 
   it("should not fail if onRestart is not provided", () => {
     render(<Configuration />);
-    fireEvent.click(screen.getByText(" restart services"));
+    fireEvent.click(screen.getByText("Restart services"));
     // No error thrown
   });
 });

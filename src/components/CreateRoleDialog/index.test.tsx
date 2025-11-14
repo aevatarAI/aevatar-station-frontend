@@ -21,20 +21,20 @@ describe("CreateRoleDialog", () => {
 
   it("renders the dialog trigger button", () => {
     render(<CreateRoleDialog />);
-    expect(screen.getByText("add role")).toBeInTheDocument();
+    expect(screen.getByText("Add Role")).toBeInTheDocument();
   });
 
   it("opens dialog when trigger button is clicked", () => {
     render(<CreateRoleDialog />);
-    fireEvent.click(screen.getByText("add role"));
-    expect(screen.getByText("create role")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Add Role"));
+    expect(screen.getByText("Create Role")).toBeInTheDocument();
   });
 
   it("closes dialog when cancel button is clicked", () => {
     render(<CreateRoleDialog />);
-    fireEvent.click(screen.getByText("add role"));
-    fireEvent.click(screen.getByText("cancel"));
-    expect(screen.queryByText("create role")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText("Add Role"));
+    fireEvent.click(screen.getByText("Cancel"));
+    expect(screen.queryByText("Create Role")).not.toBeInTheDocument();
   });
 
   it("shows loading state when submitting", async () => {
@@ -44,7 +44,7 @@ describe("CreateRoleDialog", () => {
     );
 
     render(<CreateRoleDialog onCreate={mockOnCreateLong} />);
-    await user.click(screen.getByText("add role"));
+    await user.click(screen.getByText("Add Role"));
 
     const roleNameInput = screen.getByRole("textbox");
     await user.type(roleNameInput, "Test Role");
@@ -53,19 +53,21 @@ describe("CreateRoleDialog", () => {
     await user.click(submitButton);
 
     // Check for loading text and icon
-    expect(await screen.findByText("creating")).toBeInTheDocument();
-    expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Creating")).toBeInTheDocument();
+      expect(screen.getByTestId("loading-icon")).toBeInTheDocument();
+    });
 
     // Wait for the loading state to finish
     await waitFor(() => {
-      expect(screen.queryByText("creating")).not.toBeInTheDocument();
+      expect(screen.queryByText("Creating")).not.toBeInTheDocument();
     });
   });
 
   it("calls onCreate with form values when submitted", async () => {
     const user = userEvent.setup();
     render(<CreateRoleDialog onCreate={mockOnCreate} />);
-    await user.click(screen.getByText("add role"));
+    await user.click(screen.getByText("Add Role"));
 
     const roleNameInput = screen.getByRole("textbox");
     await user.type(roleNameInput, "Test Role");
@@ -83,7 +85,7 @@ describe("CreateRoleDialog", () => {
   it("shows success toast after successful creation", async () => {
     const user = userEvent.setup();
     render(<CreateRoleDialog onCreate={mockOnCreate} />);
-    await user.click(screen.getByText("add role"));
+    await user.click(screen.getByText("Add Role"));
 
     const roleNameInput = screen.getByRole("textbox");
     await user.type(roleNameInput, "Test Role");
@@ -102,13 +104,13 @@ describe("CreateRoleDialog", () => {
   it("resets form when dialog is opened", async () => {
     const user = userEvent.setup();
     render(<CreateRoleDialog />);
-    await user.click(screen.getByText("add role"));
+    await user.click(screen.getByText("Add Role"));
 
     const roleNameInput = screen.getByRole("textbox");
     await user.type(roleNameInput, "Test Role");
 
-    await user.click(screen.getByText("cancel"));
-    await user.click(screen.getByText("add role"));
+    await user.click(screen.getByText("Cancel"));
+    await user.click(screen.getByText("Add Role"));
 
     const newRoleNameInput = screen.getByRole("textbox");
     expect(newRoleNameInput).toHaveValue("");

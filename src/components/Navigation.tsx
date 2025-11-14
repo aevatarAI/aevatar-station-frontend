@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const links = [
+const _links = [
   { href: "/auth/atomic", label: "Atomic-Aevatar" },
   { href: "/auth/aevatar", label: "Aevatar" },
   { href: "/auth/dashboard", label: "Dashboard" },
@@ -50,7 +50,7 @@ export default function Navigation() {
       {/* {links.map(({ href, label }) => (
 				<a
 					ref={urlPathname.startsWith(href) ? activeLinkRef : null}
-					className="block mb-[37px] py-[5px] px-[21px] font-outfit text-[16px] font-semibold break-words capitalize"
+					className="block mb-[37px] py-[5px] px-[21px] font-geist text-[16px] font-semibold break-words capitalize"
 					key={href}
 					href={href}
 				>

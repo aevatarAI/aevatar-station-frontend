@@ -71,7 +71,7 @@ describe("ProfileInner", () => {
 
   it("renders general tab by default", () => {
     renderWithQueryClient(<ProfileInner tab="general" />);
-    expect(screen.getByText("profile")).toBeInTheDocument();
+    expect(screen.getByText("Profile")).toBeInTheDocument();
   });
 
   it("renders notifications container when there is data", () => {

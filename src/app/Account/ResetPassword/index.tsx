@@ -24,23 +24,23 @@ const formSchema = z
   .object({
     password: z
       .string()
-      .min(6, "password must be at least 6 characters long")
+      .min(6, "Password must be at least 6 characters long")
       .regex(
         /[^a-zA-Z0-9]/,
-        "password must contain at least one non-alphanumeric character",
+        "Password must contain at least one non-alphanumeric character",
       )
       .regex(
         /[a-z]/,
-        "password must contain at least one lowercase letter ('a'-'z')",
+        "Password must contain at least one lowercase letter ('a'-'z')",
       )
       .regex(
         /[A-Z]/,
-        "password must contain at least one uppercase letter ('A'-'Z')",
+        "Password must contain at least one uppercase letter ('A'-'Z')",
       ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "passwords do not match",
+    message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 const ResetPassword = () => {
@@ -78,7 +78,7 @@ const ResetPassword = () => {
         const result = await resetPassword(userId, resetToken, password);
         if (result.code === "20001") {
           toast({
-            description: "password updated successfully",
+            description: "Password updated successfully",
           });
           navigate("/login");
         } else {
@@ -97,12 +97,12 @@ const ResetPassword = () => {
     [toast, userId, resetToken, navigate],
   );
   return (
-    <div className="flex flex-col text-white w-full lg:w-[426px] gap-4">
+    <div className="flex flex-col text-[var(--color-foreground)] w-full lg:w-[426px] gap-4">
       <div className="gap-3 flex-col flex">
-        <h2 className="text-[18px] font-semibold">reset password</h2>
+        <h2 className="text-[18px] font-semibold">Reset password</h2>
       </div>
-      <div className="h-px bg-black-light w-full" />
-      <div className="text-gray-light">
+      <div className="h-px bg-[var(--bg-black-light)] w-full" />
+      <div className="text-[var(--muted-foreground)]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -115,17 +115,17 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[13px] font-semibold">
-                      new password*
+                      New password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="enter your new password"
+                        placeholder="Enter your new password"
                         {...field}
                         {...form.register("password", {
-                          required: "required",
+                          required: "Required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -138,17 +138,17 @@ const ResetPassword = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="block text-[13px] font-semibold">
-                      confirm new password*
+                      Confirm new password*
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="re-enter your new password"
+                        placeholder="Re-enter your new password"
                         {...field}
                         {...form.register("confirmPassword", {
-                          required: "required",
+                          required: "Required",
                         })}
-                        className="h-[35px] placeholder:text-gray-deep border-black-light"
+                        className="h-[35px] placeholder:text-[var(--muted-foreground)] border-[var(--color-border-black-light)]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -159,11 +159,12 @@ const ResetPassword = () => {
 
             <div className="flex flex-col gap-[10px]">
               <Button
+                variant="primary"
                 type="submit"
-                className="w-full flex justify-center border border-transparent bg-white text-black-light"
+                className="w-full flex justify-center border border-transparent"
                 disabled={loading && !!userId && !!resetToken}
               >
-                submit
+                Submit
               </Button>
             </div>
           </form>
@@ -182,7 +183,7 @@ const ResetPasswordPage = () => {
       <div className="flex flex-1 flex-col items-center justify-between px-[47px] py-[40px]">
         <div className="flex flex-col gap-[50px] lg:w-[426px] mt-[73px]">
           <DescHome className="items-start lg:items-center" />
-          <div className="h-px w-full bg-black-light" />
+          <div className="h-px w-full bg-[var(--bg-black-light)]" />
           <ResetPassword />
         </div>
         <div className="w-full lg:w-[408px]">
